@@ -1,0 +1,94 @@
+{
+  "created_at": "2026-10-08T21:17:11+00:00",
+  "created_by": "scripts/check_data.py",
+  "datasets": {
+    "checkpoints.eraft_dsec": {
+      "path": "/data/eraft/checkpoints/dsec.tar",
+      "present": false
+    },
+    "checkpoints.eraft_mvsec20": {
+      "path": "/data/eraft/checkpoints/mvsec_20.tar",
+      "present": false
+    },
+    "dsec.root": {
+      "path": "/data/dsec",
+      "present": false
+    },
+    "eraft_mvsec_preprocessed": {
+      "path": "/data/eraft/mvsec_outdoor_day_1_20Hz",
+      "present": false
+    },
+    "lars.root": {
+      "files": [
+        {
+          "bytes": 23443553,
+          "rel": "lars_v1.0.0_annotations.zip",
+          "sha256": "fb89e9eac02ecc7aa69cc8a994c6d347e3dcb30ccda5504252fc1b29ea3c7928"
+        },
+        {
+          "bytes": 1013227874,
+          "rel": "lars_v1.0.0_images.zip",
+          "sha256": null
+        }
+      ],
+      "files_listed": 2,
+      "kind": "dir",
+      "n_files": 2,
+      "path": "~/projects_02/event-maritime-flow/LARS Dataset",
+      "present": true,
+      "total_bytes": 1036671427
+    },
+    "mvsec.calib": {
+      "path": "/data/mvsec/calib",
+      "present": false
+    },
+    "mvsec.gt_flow": {
+      "path": "/data/mvsec/gt_flow",
+      "present": false
+    },
+    "mvsec.root": {
+      "path": "/data/mvsec",
+      "present": false
+    },
+    "smd.onboard": {
+      "path": "/data/smd/VIS_Onboard",
+      "present": false
+    },
+    "v2e.slomo_ckpt": {
+      "files": [
+        {
+          "bytes": 158447937,
+          "rel": "SuperSloMo39.ckpt",
+          "sha256": null
+        }
+      ],
+      "files_listed": 1,
+      "kind": "file",
+      "n_files": 1,
+      "path": "~/projects_02/event-maritime-flow/external/v2e/input/SuperSloMo39.ckpt",
+      "present": true,
+      "total_bytes": 158447937
+    }
+  },
+  "git_dirty": true,
+  "git_sha": "acfce0cc31dbae72754e663e7856f327e90e2a0f",
+  "kind": "data_inventory",
+  "max_files_listed": 2000,
+  "sha_max_bytes": 67108864,
+  "summary": {
+    "absent": [
+      "checkpoints.eraft_dsec",
+      "checkpoints.eraft_mvsec20",
+      "dsec.root",
+      "eraft_mvsec_preprocessed",
+      "mvsec.calib",
+      "mvsec.gt_flow",
+      "mvsec.root",
+      "smd.onboard"
+    ],
+    "present": [
+      "lars.root",
+      "v2e.slomo_ckpt"
+    ]
+  }
+}

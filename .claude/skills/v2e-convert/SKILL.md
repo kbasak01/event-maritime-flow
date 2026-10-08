@@ -7,8 +7,9 @@ argument-hint: "[source] [clip-id] [profile]"
 # v2e conversion: $ARGUMENTS
 
 ## Rules
-- v2e runs only in the `v2e` conda env, only via `src/evflow/sim/v2e_runner.py`, only with a
-  profile from `configs/v2e_profiles.yaml`. No ad-hoc flags in code.
+- v2e runs only in the isolated `v2e` venv (`v2e.python` in `paths.local.yaml`), only via
+  `src/evflow/sim/v2e_runner.py`, only with a profile from
+  `configs/v2e_profiles.yaml`. No ad-hoc flags in code.
 - Always pass: `--no_preview --skip_video_output --overwrite --dvs_h5 <out>.h5
   --dvs_emulator_seed <seed>` and an explicit `--input_frame_rate` (from `ffprobe -v error
   -select_streams v:0 -show_entries stream=r_frame_rate` for videos, from the dataset's timestamps
@@ -25,7 +26,7 @@ argument-hint: "[source] [clip-id] [profile]"
 ## Procedure
 1. Resolve source paths from `configs/paths.local.yaml`; compute input SHA-256.
 2. Build argv = `common` + profile `size` + profile `args` + per-run flags; show it.
-3. `conda run -n v2e python <v2e.repo>/v2e.py <argv>`; capture stdout/stderr to the run log
+3. `<v2e.python> <v2e.repo>/v2e.py <argv>`; capture stdout/stderr to the run log
    (v2e prints undersampling warnings for the lowpass filter — grep for them and fail if present).
 4. Inspect the h5 (`h5ls -v`) the first time; convert to the canonical store with
    `io/v2e_reader.py`; apply the clock re-map if MVSEC.

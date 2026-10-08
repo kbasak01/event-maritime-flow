@@ -12,7 +12,7 @@ lars:
   root: /data/lars                     # images/, annotations/, sequences/
 v2e:
   repo: /home/USER/event-maritime-flow/external/v2e
-  conda_env: v2e
+  python: /home/USER/event-maritime-flow/external/venvs/v2e/bin/python   # isolated uv venv (D-005)
   slomo_ckpt: /home/USER/event-maritime-flow/external/v2e/input/SuperSloMo39.ckpt
 checkpoints:
   eraft_dsec: /data/eraft/checkpoints/dsec.tar

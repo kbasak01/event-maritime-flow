@@ -2,7 +2,7 @@
 
 | Phase | State | Gate file | Date |
 |---|---|---|---|
-| 0 | not started | – | – |
+| 0 | passed locally; CI pending | docs/gates/phase-0.md | 2026-10-08 |
 | 1 | not started | – | – |
 | 2 | not started | – | – |
 | 3 | not started | – | – |
@@ -14,4 +14,6 @@
 | 9 | not started | – | – |
 | 10 | not started | – | – |
 
-Pending GPU jobs for the user: none.
+Pending GPU jobs: none (Claude may launch GPU jobs after `gpu-job` prep, D-006).
+
+Pending user actions: dataset downloads (MVSEC, DSEC-Flow, SMD, E-RAFT checkpoints, LaRS sequences); install ffmpeg before Phase 2.

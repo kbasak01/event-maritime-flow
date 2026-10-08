@@ -46,33 +46,40 @@ event-maritime-flow/
 
 ## 2. Environments
 
-### 2.1 Main env `evflow`
+uv venvs replace the original conda envs (D-005: conda is not installed on the workstation). Both
+venvs are gitignored.
+
+### 2.1 Main env `evflow` → `.venv/`
 
 ```bash
-conda create -n evflow python=3.11 -y && conda activate evflow
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cu124   # match your driver
-pip install numpy scipy numba h5py hdf5plugin opencv-python-headless imageio pyyaml tqdm \
-            matplotlib onnx onnxruntime-gpu pytest ruff tensorboard
-pip install -e . --no-deps
+uv venv -p 3.11 .venv && source .venv/bin/activate
+uv pip install torch torchvision --index-url https://download.pytorch.org/whl/cu124   # match your driver
+uv pip install numpy scipy numba h5py hdf5plugin opencv-python-headless imageio pyyaml tqdm \
+               matplotlib onnx onnxruntime-gpu pytest ruff tensorboard
+uv pip install -e . --no-deps
 python -c "import torch, h5py, hdf5plugin, onnxruntime as ort; print(torch.cuda.is_available(), ort.get_available_providers())"
+uv pip freeze > requirements.lock
 ```
 
-Pin exact versions into `requirements.lock` with `pip freeze` once Phase 0 is green. TensorRT EP is
-optional (install TensorRT matching ORT's documented compatibility; record the versions).
+`make` targets assume the venv is active. TensorRT EP is optional (install TensorRT matching ORT's
+documented compatibility; record the versions).
 
-### 2.2 v2e env `v2e` (isolated on purpose)
+### 2.2 v2e env → `external/venvs/v2e/` (isolated on purpose)
 
 ```bash
-conda create -n v2e python=3.10 -y && conda activate v2e
-# install CUDA PyTorch for your driver first (v2e README order: conda/pytorch first, then pip)
 git clone https://github.com/SensorsINI/v2e external/v2e
-cd external/v2e && git rev-parse HEAD > ../../configs/v2e_commit.txt
-python -m pip install -e .
-# SuperSloMo39.ckpt (151 MB, link in v2e README) → external/v2e/input/SuperSloMo39.ckpt
-python v2e.py -h | head -5
+git -C external/v2e rev-parse HEAD > configs/v2e_commit.txt
+uv venv -p 3.10 external/venvs/v2e
+# CUDA PyTorch first, then v2e (v2e README order)
+uv pip install -p external/venvs/v2e torch torchvision --index-url https://download.pytorch.org/whl/cu124
+uv pip install -p external/venvs/v2e -e external/v2e gdown
+# SuperSloMo39.ckpt (Google Drive id from v2e README) → external/v2e/input/SuperSloMo39.ckpt
+external/venvs/v2e/bin/gdown 1ETID_4xqLpRBrRo1aOT7Yphs3QqWR_fx -O external/v2e/input/SuperSloMo39.ckpt
+external/venvs/v2e/bin/python external/v2e/v2e.py -h | head -5
+uv pip freeze -p external/venvs/v2e > configs/v2e_requirements.lock
 ```
 
-`sim/v2e_runner.py` calls `conda run -n v2e python external/v2e/v2e.py …` (path from
+`sim/v2e_runner.py` calls `<v2e.python> <v2e.repo>/v2e.py …` (both paths from
 `paths.local.yaml`). Never import v2e into `evflow`.
 
 ### 2.3 Optional oracle envs (outputs only cross over)
@@ -88,7 +95,7 @@ python v2e.py -h | head -5
 | MVSEC | `outdoor_day1`, `outdoor_day2`, `indoor_flying1–3` `*_data.hdf5`; GT flow `*_gt_flow_dist.npz`; calibration zips | HDF5 + GT-flow Google Drive folders linked from the MVSEC Download page | CC BY-SA 4.0. HDF5 mirrors ROS bag topics (`davis/left/events`, `davis/left/image_raw`, `image_raw_ts`, `image_raw_event_inds`). |
 | E-RAFT MVSEC preprocessed | `mvsec_outdoor_day_1_20Hz.tar` | E-RAFT README | Phase 4 reproduction gate only |
 | E-RAFT checkpoints | `dsec.tar`, `mvsec_20.tar` | E-RAFT README | MIT |
-| DSEC-Flow | 2–3 train sequences with flow GT: `events_left` (events.h5 + rectify_map.h5), `image_timestamps.txt`, flow PNGs + timestamps | DSEC download page | licence **(verify)** in Phase 0; 640×480 events, flow at 10 Hz |
+| DSEC-Flow | 2–3 train sequences with flow GT: `events_left` (events.h5 + rectify_map.h5), `image_timestamps.txt`, flow PNGs + timestamps | DSEC download page | data CC BY-SA 4.0, code MIT (see `docs/LICENSES.md`); 640×480 events, flow at 10 Hz |
 | SMD | Visible On-Board (11 videos, 768 MB) | SMD page (Google Drive) | 1920×1080; no licence stated → no redistribution |
 | LaRS | Images v1.0.0 (966 MB), Annotations v1.0.0 (22.3 MB), Sequence images v1.0.0 (13.6 GB) | LaRS page (form + terms) | read terms before download; test annotations not public |
 

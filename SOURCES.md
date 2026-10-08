@@ -2,16 +2,17 @@
 
 Checked 2026-10-08. "Verified" = read on the primary page that day. **(verify)** = could not be
 confirmed (page blocked or silent) and must be resolved in Phase 0 into `docs/LICENSES.md`.
+All Phase 0 (verify) items were resolved on 2026-10-08; `docs/LICENSES.md` is authoritative.
 
 ## Datasets
 
 | Name | Role | Key facts used in the plan | Licence | Source |
 |---|---|---|---|---|
 | **MVSEC** (Zhu et al., RA-L 2018) | T1 + T2 core | Two DAVIS 346B (346×260) with APS frames + DVS events + IMU; HDF5 files mirror ROS topics (`davis/left/events`, `davis/left/image_raw`, `image_raw_ts`, `image_raw_event_inds`); GT flow `*_gt_flow_dist.npz` with keys `timestamps`, `x_flow_dist`, `y_flow_dist` (from EV-FlowNet, RSS 2018) | CC BY-SA 4.0 (verified, dataset page) | daniilidis-group.github.io/mvsec |
-| **DSEC / DSEC-Flow** (Gehrig et al., RA-L 2021; E-RAFT 3DV 2021) | T1 generalisation | 640×480 events; `events/{p,x,y,t}`, `ms_to_idx`, `t_offset`, `rectify_map.h5`; flow GT 16-bit PNG decoded `(v − 2¹⁵)/128`, valid = channel 3; flow at 10 Hz over 100 ms windows; 18 train sequences have flow GT; test GT hidden behind an online benchmark | code MIT (verified); **data licence (verify)** — site blocks automated access | github.com/uzh-rpg/DSEC, dsec.ifi.uzh.ch |
-| **LaRS** (Žust, Perš, Kristan, ICCV 2023) | maritime T3 + class slices + clutter study | 4000+ labelled keyframes, 9 preceding frames each; semantic PNG ids 0 obstacle / 1 water / 2 sky / 255 ignore; panoptic COCO; 19 scene attributes; downloads: images 966 MB, annotations 22.3 MB (train+val only), sequences 13.6 GB | own terms & conditions — **read before download (verify)** | lojzezust.github.io/lars-dataset |
-| **Singapore Maritime Dataset (SMD)** (Prasad et al., T-ITS 2017) | maritime T3 (long on-board clips) | Canon 70D, 1920×1080; 40 visible on-shore (3 GB), 11 visible on-board (768 MB), 30 NIR on-shore; conditions incl. haze, rain, sunrise/sunset | none stated on the page → treat as research use, no redistribution **(verify)** | sites.google.com/site/dilipprasad/home/singapore-maritime-dataset |
-| UZH-FPV (Delmerico et al., ICRA 2019) | optional extra self-supervised training data | mDAVIS 346 events; used by tudelft/event_flow for self-supervised training | **(verify)** | fpv.ifi.uzh.ch |
+| **DSEC / DSEC-Flow** (Gehrig et al., RA-L 2021; E-RAFT 3DV 2021) | T1 generalisation | 640×480 events; `events/{p,x,y,t}`, `ms_to_idx`, `t_offset`, `rectify_map.h5`; flow GT 16-bit PNG decoded `(v − 2¹⁵)/128`, valid = channel 3; flow at 10 Hz over 100 ms windows; 18 train sequences have flow GT; test GT hidden behind an online benchmark | code MIT; data CC BY-SA 4.0 (resolved 2026-10-08, see `docs/LICENSES.md`) | github.com/uzh-rpg/DSEC, dsec.ifi.uzh.ch |
+| **LaRS** (Žust, Perš, Kristan, ICCV 2023) | maritime T3 + class slices + clutter study | 4000+ labelled keyframes, 9 preceding frames each; semantic PNG ids 0 obstacle / 1 water / 2 sky / 255 ignore; panoptic COCO; 19 scene attributes; downloads: images 966 MB, annotations 22.3 MB (train+val only), sequences 13.6 GB | CC BY-NC 4.0, no redistribution (resolved 2026-10-08, see `docs/LICENSES.md`) | lojzezust.github.io/lars-dataset |
+| **Singapore Maritime Dataset (SMD)** (Prasad et al., T-ITS 2017) | maritime T3 (long on-board clips) | Canon 70D, 1920×1080; 40 visible on-shore (3 GB), 11 visible on-board (768 MB), 30 NIR on-shore; conditions incl. haze, rain, sunrise/sunset | none stated → research use, no redistribution, no README imagery (resolved 2026-10-08, see `docs/LICENSES.md`) | sites.google.com/site/dilipprasad/home/singapore-maritime-dataset |
+| UZH-FPV (Delmerico et al., ICRA 2019) | optional extra self-supervised training data | mDAVIS 346 events; used by tudelft/event_flow for self-supervised training | CC BY-NC-SA 3.0 (resolved 2026-10-08, see `docs/LICENSES.md`) | fpv.ifi.uzh.ch |
 
 Correction to the original project brief: MaSTr1325 is a set of single labelled images, not
 sequences, so it cannot feed v2e; LaRS (keyframe + 9 context frames) and SMD (full videos) replace it.

@@ -18,8 +18,9 @@ the rules below. Current phase is recorded in `docs/STATUS.md` — update it at 
 4. **Splits are sacred.** Calibration, CT range, epoch/model selection: `mvsec_tune` only. Test
    sequences are evaluation-only. Fidelity statistics on test sequences are reported, never used for
    a choice.
-5. **Long GPU jobs are run by the user.** v2e conversions and training runs: prepare the command and
-   manifest with the `gpu-job` skill, print it, stop. Smoke tests (< 2 min) you may run yourself.
+5. **Long GPU jobs: prepare, then run.** v2e conversions and training runs: prepare the script and
+   manifest with the `gpu-job` skill first, then Claude may launch them itself (user authorisation,
+   D-006, 2026-10-08). Never point a training or calibration job at a test split.
 6. **Licences.** `src/` is MIT. Never copy or import code from `tub-rip/event_based_optical_flow`
    (GPL-3.0). MIT code (E-RAFT, tudelft/event_flow, v2e) may be vendored with its licence header and
    an entry in `docs/LICENSES.md`. No dataset files, frames or event files in git or releases.
@@ -41,7 +42,8 @@ the rules below. Current phase is recorded in `docs/STATUS.md` — update it at 
 
 - `make lint` (ruff) · `make test` (CPU, no data) · `make test-data` (needs datasets, marker
   `dataset`) · `make smoke` · `make train-smoke` · `make reproduce-tables`.
-- Main env `evflow`; v2e runs only in conda env `v2e` via `src/evflow/sim/v2e_runner.py`.
+- Main env `evflow` = uv venv `.venv/` (`source .venv/bin/activate`); v2e runs only in the isolated
+  uv venv `external/venvs/v2e/` via `src/evflow/sim/v2e_runner.py` (D-005).
 
 ## Working style
 
