@@ -4,11 +4,11 @@ Phase 9 walks every line. Verdict ∈ {met, met-with-caveat, unmet} + evidence p
 `docs/LIMITATIONS.md`. "Critical" lines block publication if unmet.
 
 ## A. Data integrity and conventions
-- [ ] A1 (critical) Canonical store: `t` int64 µs monotonic, `p` ∈ {0,1}, `x<width`, `y<height`, `ms_to_idx` satisfies the DSEC definition — checked on every converted file (`event-data-auditor` report).
-- [ ] A2 (critical) MVSEC event column order, time units and polarity encoding were verified against the file and recorded in `docs/DECISIONS.md`.
+- [x] A1 (critical) Canonical store: `t` int64 µs monotonic, `p` ∈ {0,1}, `x<width`, `y<height`, `ms_to_idx` satisfies the DSEC definition — checked on every converted file (`event-data-auditor` report). — Phase 1 gate: `docs/gates/phase-1.md`.
+- [x] A2 (critical) MVSEC event column order, time units and polarity encoding were verified against the file and recorded in `docs/DECISIONS.md`. — Phase 1 gate: `docs/gates/phase-1.md`.
 - [ ] A3 v2e `--dvs_h5` layout verified with `h5ls -v` and recorded before the converter was written.
-- [ ] A4 DSEC events rectified with `rectify_map.h5`; flow PNG decode round-trips; valid mask honoured.
-- [ ] A5 MVSEC GT flow and events refer to the same (distorted/undistorted) pixel space; stated.
+- [x] A4 DSEC events rectified with `rectify_map.h5`; flow PNG decode round-trips; valid mask honoured. — Phase 1 gate: `docs/gates/phase-1.md`.
+- [x] A5 MVSEC GT flow and events refer to the same (distorted/undistorted) pixel space; stated. — Phase 1 gate: `docs/gates/phase-1.md`.
 - [ ] A6 Split manifests regenerate byte-identically from the seed; SHA-256 committed.
 - [ ] A7 (critical) No test sequence used for calibration, CT range, epoch or model selection (grep of configs + run manifests).
 
@@ -21,8 +21,8 @@ Phase 9 walks every line. Verdict ∈ {met, met-with-caveat, unmet} + evidence p
 - [ ] B6 Throughput measured and the corpus cuts it forced are documented.
 
 ## C. Metrics
-- [ ] C1 (critical) EPE/%Out/NPE/AE match hand-computed fixtures and the vendored MIT oracle to 1e-6.
-- [ ] C2 (critical) FWL = 1 for zero flow exactly; correct flow > wrong-sign flow on analytic fixtures.
+- [x] C1 (critical) EPE/%Out/NPE/AE match hand-computed fixtures and the vendored MIT oracle to 1e-6. — Phase 1 gate: `docs/gates/phase-1.md`.
+- [x] C2 (critical) FWL = 1 for zero flow exactly; correct flow > wrong-sign flow on analytic fixtures. — Phase 1 gate: `docs/gates/phase-1.md`.
 - [ ] C3 Flow units = pixels over the window, forward; dt=1 and dt=4 never mixed in one mean.
 - [ ] C4 MVSEC eval windows, sparse mask, crop rule written in `configs/eval_mvsec.yaml` and quoted in README.
 - [ ] C5 Phase 4 reproduction gate met (our metrics on E-RAFT flows = E-RAFT's own, ≤ 1e-3 px; EPE within 10 % of paper) or miss documented.
