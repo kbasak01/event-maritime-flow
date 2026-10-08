@@ -18,5 +18,5 @@ checkpoints:
   eraft_dsec: /home/USER/event-maritime-flow/data/eraft/checkpoints/dsec.tar
   eraft_mvsec20: /home/USER/event-maritime-flow/data/eraft/checkpoints/mvsec_20.tar
 outputs:
-  events: /scratch/evflow/events       # converted + synthetic event stores
-  runs: /scratch/evflow/runs
+  events: /home/USER/event-maritime-flow/data/converted   # converted + synthetic event stores (D-018)
+  runs: /home/USER/event-maritime-flow/runs

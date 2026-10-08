@@ -22,3 +22,6 @@ markers = [
   "slow: > 60 s",
 ]
 addopts = "-m 'not gpu and not dataset and not slow'"
+
+[tool.ruff.lint.isort]
+known-local-folder = ["fixtures", "oracles"]

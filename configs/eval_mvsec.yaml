@@ -1,17 +1,62 @@
-# MVSEC evaluation protocol. Fixed in Phase 1, quoted verbatim in the README.
-# The literature uses more than one outdoor_day1 window; record the one chosen and why.
+# MVSEC evaluation protocol. Fixed in Phase 1 (D-019), quoted verbatim in the README.
+# Sources: EV-FlowNet eval code (daniilidis-group/EV-FlowNet @cf801ef src/test.py, src/eval_utils.py)
+# and E-RAFT (uzh-rpg/E-RAFT @c58ce05 config/mvsec_20.json). No code from either is copied.
+camera: left
+pixel_space: raw_distorted        # *_gt_flow_dist.npz and davis/left/events share it (D-015, A5)
+gt_source: "*_gt_flow_dist.npz (keys: timestamps, x_flow_dist, y_flow_dist; 20 Hz, Unix s)"
+
+regions:
+  center_256: {rows: [2, 258], cols: [45, 301]}          # EV-FlowNet central 256x256 crop
+  center_256_no_hood: {rows: [2, 192], cols: [45, 301]}  # + car hood: full-image rows >= 192
+
 sequences:
-  indoor_flying1: {windows: TODO, crop: none}
-  indoor_flying2: {windows: TODO, crop: none}
-  indoor_flying3: {windows: TODO, crop: none}
+  indoor_flying1: {windows: {rule: all_in_gt_span}, region: center_256}
+  indoor_flying2: {windows: {rule: all_in_gt_span}, region: center_256}
+  indoor_flying3: {windows: {rule: all_in_gt_span}, region: center_256}
   outdoor_day1:
-    windows: TODO            # e.g. APS frame index range; cite the convention followed
-    crop: TODO               # rows excluded for the car hood, if any
-dt_frames: [1, 4]
+    windows:
+      rule: time_range
+      # Span of GT fields 4356-4705 of outdoor_day1_gt_flow_dist.npz, i.e. gt.timestamps[4356] ..
+      # gt.timestamps[4706] (222.97-240.47 s after the first event). The field indices are the
+      # ones in E-RAFT config/mvsec_20.json; the APS windows over this span are our construction
+      # (E-RAFT pairs the same fields with different event windows, see reproduction_eraft).
+      t_start_s: 1506118120.162041
+      t_end_s: 1506118137.667426
+      expected_n_windows: {dt1: 797, dt4: 794}   # APS frames 10164-10960 (dt1), 10164-10957 (dt4)
+    region: center_256_no_hood
+
+dt_frames: [1, 4]                 # window = [aps_ts[k], aps_ts[k+dt]]; never averaged across dt
+window_stride_frames: 1           # every APS frame k starts a window, for both dt
+# rule all_in_gt_span: aps_ts[k] >= gt.timestamps[0] and aps_ts[k+dt] <= gt.timestamps[-1]
+# rule time_range:     aps_ts[k] >= t_start_s and aps_ts[k+dt] <= t_end_s
+
 mask:
-  valid_gt: true
-  sparse_events_in_window: true   # MVSEC "sparse" convention
+  valid_gt: finite_and_nonzero    # GT finite and |GT| > 0 (after propagation), EV-FlowNet rule
+  sparse_events_in_window: true   # pixel has >= 1 event (either polarity) in the window
   dense_variant_also_reported: false
-pixel_space: TODO                 # raw (distorted) or undistorted — must match GT flow files
-gt_source: "*_gt_flow_dist.npz (keys: timestamps, x_flow_dist, y_flow_dist)"
-gt_interpolation: TODO            # how GT at APS timestamps is accumulated for dt=4
+averaging: per_window_mean_then_mean_over_windows   # windows with 0 valid px skipped and counted
+
+gt_interpolation: >-
+  EV-FlowNet propagation (io/mvsec.py: gt_flow_for_window). Each GT field i is the px displacement
+  from timestamps[i] to timestamps[i+1]. If the window is shorter than the GT interval containing
+  its start, GT = field * dt / gt_dt. Otherwise pixel positions are advanced through successive
+  fields (nearest-pixel lookup, cv2.remap INTER_NEAREST, border 0), the partial first and last
+  intervals scaled linearly; a pixel whose looked-up flow is exactly 0 (incl. leaving the image)
+  is invalid. Never x4 of dt=1.
+
+reproduction_eraft:               # used only for the Phase 4 E-RAFT reproduction gate (D-019)
+  # E-RAFT config/mvsec_20.json: outdoor_day1, filter range(4356, 4706), align_to: depth.
+  # In the released preprocessed data timestamps_depth[i] == timestamps_flow[i+1] (max diff
+  # 1.2e-6 s), so E-RAFT pairs GT field i with events over [depth_ts[i], depth_ts[i+1]]
+  # = [flow_ts[i+1], flow_ts[i+2]]: one GT interval later than gt_flow_for_window would.
+  sequence: outdoor_day1
+  indices: [4356, 4706]           # half-open, Python range
+  window: "[timestamps_depth[i], timestamps_depth[i+1]]"   # span 1506118120.212090-1506118137.717505
+  gt: "optical_flow/{i:06d}.npy as-is (== npz field i); no propagation, no rescale"
+  valid: "(u != 0) | (v != 0), full-image rows < 193"   # loader_mvsec_flow.py lines 147-150
+  hood_rows_from: 193
+  crop: center_256                # loader CenterCrop((256, 256))
+  mask: dense                     # loader hard-codes evaluation_type = 'dense' (line 30)
+  # The E-RAFT repo ships no metric code: "E-RAFT's own evaluation" for the Phase 4 1e-3 px check
+  # must be defined in Phase 4 (and whether the paper's MVSEC numbers are dense or sparse checked
+  # against the paper) before that gate is run.
