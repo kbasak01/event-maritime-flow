@@ -2,7 +2,7 @@
 
 | Phase | State | Gate file | Date |
 |---|---|---|---|
-| 0 | passed locally; CI pending | docs/gates/phase-0.md | 2026-10-08 |
+| 0 | PASS (CI green) | docs/gates/phase-0.md | 2026-10-08 |
 | 1 | not started | – | – |
 | 2 | not started | – | – |
 | 3 | not started | – | – |
