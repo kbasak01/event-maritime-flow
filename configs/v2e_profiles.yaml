@@ -1,0 +1,54 @@
+# v2e argument profiles. Frozen in Phase 2 (calibration on mvsec_tune ONLY).
+# Every run also gets: --no_preview --skip_video_output --dvs_h5 <out> --dvs_emulator_seed <seed>
+# and an explicit --input_frame_rate. Flag names verified against the v2e README on 2026-10-08.
+v2e_commit_file: configs/v2e_commit.txt
+calibration_json: results/v2e_calibration.json   # SHA written here when frozen
+calibration_sha256: TODO
+
+common:
+  - --no_preview
+  - --skip_video_output
+  - --overwrite
+
+profiles:
+  trial:                      # 5 s smoke, never used for data
+    args: [--dvs346, --stop_time, "5", --dvs_params, clean]
+
+  mvsec_cal:                  # TODO Phase 2: fill from argmin of calibration grid
+    size: [--dvs346]
+    args:
+      - --auto_timestamp_resolution
+      - "True"
+      - --timestamp_resolution
+      - "0.001"               # TODO Phase 2: cap chosen from throughput
+      - --pos_thres
+      - "TODO"
+      - --neg_thres
+      - "TODO"
+      - --sigma_thres
+      - "TODO"
+      - --cutoff_hz
+      - "TODO"
+      - --shot_noise_rate_hz
+      - "TODO"
+      - --leak_rate_hz
+      - "0"
+
+  mvsec_rand:                 # CT randomised per 60 s clip; range from calibration (tune only)
+    base: mvsec_cal
+    randomise:
+      thres_range: [TODO, TODO]   # pos_thres = neg_thres drawn log-uniform
+      sigma_range: [TODO, TODO]
+      corpora: 4
+
+  maritime_640x360:
+    base: mvsec_cal           # same pixel model, different size
+    size: [--output_width, "640", --output_height, "360"]
+    ct_variants: [0.67, 1.0, 1.5]   # multipliers on calibrated thresholds (clutter study)
+
+calibration_grid:             # Phase 2
+  pos_neg_thres: [0.15, 0.2, 0.3, 0.4]
+  sigma_thres: [0.02, 0.04]
+  cutoff_hz: [0, 60]
+  shot_noise_rate_hz: [0, 1.0]
+  objective: mean_wasserstein1_event_stats

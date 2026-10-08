@@ -1,0 +1,17 @@
+# MVSEC evaluation protocol. Fixed in Phase 1, quoted verbatim in the README.
+# The literature uses more than one outdoor_day1 window; record the one chosen and why.
+sequences:
+  indoor_flying1: {windows: TODO, crop: none}
+  indoor_flying2: {windows: TODO, crop: none}
+  indoor_flying3: {windows: TODO, crop: none}
+  outdoor_day1:
+    windows: TODO            # e.g. APS frame index range; cite the convention followed
+    crop: TODO               # rows excluded for the car hood, if any
+dt_frames: [1, 4]
+mask:
+  valid_gt: true
+  sparse_events_in_window: true   # MVSEC "sparse" convention
+  dense_variant_also_reported: false
+pixel_space: TODO                 # raw (distorted) or undistorted — must match GT flow files
+gt_source: "*_gt_flow_dist.npz (keys: timestamps, x_flow_dist, y_flow_dist)"
+gt_interpolation: TODO            # how GT at APS timestamps is accumulated for dt=4

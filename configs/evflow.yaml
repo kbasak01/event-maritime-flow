@@ -1,0 +1,61 @@
+# Global defaults for event-maritime-flow. Draft — values marked TODO are fixed at the phase noted.
+project: event-maritime-flow
+split_seed: 20261008
+seeds_core: [1337, 2026, 7]          # real_sup, v2e_fixed_sup, v2e_rand_sup
+seed_default: 1337
+
+event_store:
+  time_unit: us                       # int64
+  polarity: {off: 0, on: 1}
+  compression: blosc                  # via hdf5plugin
+
+windows:
+  mvsec: {dt_frames: [1, 4]}          # windows = APS frame intervals
+  dsec: {delta_t_ms: 100}             # DSEC-Flow convention
+  maritime: {dt_frames: [1]}          # LaRS: px per frame interval (rate-free)
+
+representations:
+  default: voxel
+  voxel: {bins: [5, 15], normalize: nonzero_mean_std}
+  timesurface: {tau_fraction_of_window: 0.333}
+  count: {}
+
+model_m1:
+  name: evflownet
+  base_channels: 32                   # TODO Phase 5: confirm param count 5–15 M
+  crop: [256, 256]
+  pad_multiple: 16
+
+train:
+  optimizer: adamw
+  lr: 3.0e-4
+  weight_decay: 1.0e-4
+  schedule: cosine
+  epochs: 40                          # TODO Phase 5: set from tune-curve plateau
+  batch_size: 16
+  precision: bf16
+  augment: {random_crop: true, hflip: true, polarity_flip: false}
+  selection_split: mvsec_tune         # never a test split
+
+losses:
+  supervised: {type: l1_epe, mask: valid_gt}
+  cm:
+    objective: iwe_variance           # contrast maximisation
+    reference_times: [0.0, 0.5, 1.0]  # multi-reference IWE (collapse guard)
+    smoothness_weight: 0.1            # TODO Phase 5 on tune only
+    divergence_penalty: 0.01          # collapse guard; TODO Phase 5
+
+metrics:
+  outlier: {abs_px: 3.0, rel: 0.05}   # %Out: EPE > 3 px AND > 5 % of |GT|
+  npe: [1, 2, 3]
+  fwl: {zero_flow_reference: true}
+  teacher:
+    model: raft_large
+    fb_consistency: {alpha1: 0.01, alpha2: 0.5}
+  bootstrap: {resamples: 1000, block_seconds: 1.0, ci: 0.95}
+
+latency:
+  warmup: 50
+  timed: 500
+  events_per_window: [10000, 100000, 1000000]
+  resolutions: [[256, 256], [260, 346], [480, 640]]

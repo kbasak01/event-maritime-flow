@@ -1,0 +1,13 @@
+data/
+external/
+dumps/
+runs/
+*.h5
+*.hdf5
+*.npz
+*.onnx
+*.pt
+*.engine
+configs/paths.local.yaml
+__pycache__/
+.venv/

@@ -1,0 +1,36 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(make lint)",
+      "Bash(make test)",
+      "Bash(make test-data)",
+      "Bash(make smoke)",
+      "Bash(make train-smoke)",
+      "Bash(make reproduce-tables)",
+      "Bash(pytest *)",
+      "Bash(ruff *)",
+      "Bash(h5ls *)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git ls-files *)",
+      "Bash(nvidia-smi *)"
+    ],
+    "deny": [
+      "Bash(git push --force *)",
+      "Bash(rm -rf data*)",
+      "Bash(rm -rf external*)",
+      "Bash(rm -rf results*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|NotebookEdit",
+        "hooks": [
+          { "type": "command", "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/guard_paths.sh" }
+        ]
+      }
+    ]
+  }
+}
