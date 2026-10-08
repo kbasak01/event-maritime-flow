@@ -16,4 +16,4 @@
 
 Pending GPU jobs: none (Claude may launch GPU jobs after `gpu-job` prep, D-006).
 
-Pending data: MVSEC `outdoor_day2_data.hdf5` (Google Drive quota; hourly retry by `scripts/fetch_data.py`, D-014). All other datasets present in `data/` (results/data_inventory.json). ffmpeg installed.
+Pending data: none. All datasets are present in `data/` (results/data_inventory.json). ffmpeg is installed.

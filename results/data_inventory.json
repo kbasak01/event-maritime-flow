@@ -1,5 +1,5 @@
 {
-  "created_at": "2026-10-08T21:59:43+00:00",
+  "created_at": "2026-10-08T22:30:00+00:00",
   "created_by": "scripts/check_data.py",
   "datasets": {
     "checkpoints.eraft_dsec": {
@@ -22001,14 +22001,19 @@
           "bytes": 12136423279,
           "rel": "outdoor_day/outdoor_day1_data.hdf5",
           "sha256": null
+        },
+        {
+          "bytes": 41506282485,
+          "rel": "outdoor_day/outdoor_day2_data.hdf5",
+          "sha256": null
         }
       ],
-      "files_listed": 4,
+      "files_listed": 5,
       "kind": "dir",
-      "n_files": 4,
+      "n_files": 5,
       "path": "~/projects_02/event-maritime-flow/data/mvsec/hdf5",
       "present": true,
-      "total_bytes": 18995355690
+      "total_bytes": 60501638175
     },
     "smd.onboard": {
       "files": [
@@ -22191,8 +22196,8 @@
       "total_bytes": 158447937
     }
   },
-  "git_dirty": true,
-  "git_sha": "023060e82f5344d2f0f94b5cf8b10d8b55e767a6",
+  "git_dirty": false,
+  "git_sha": "4a15461640a517636190790492239ec72aaf02dd",
   "kind": "data_inventory",
   "max_files_listed": 2000,
   "sha_max_bytes": 67108864,

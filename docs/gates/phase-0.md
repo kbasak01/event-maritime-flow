@@ -72,7 +72,7 @@ On your request, I downloaded the datasets into `<repo>/data/` (gitignored) with
 
 | Key | State |
 |---|---|
-| `mvsec.root` | 4 / 5 `*_data.hdf5` — `outdoor_day2_data.hdf5` (41.5 GB) **blocked by the Google Drive per-file quota**; retried hourly for 24 h (D-014). Needed from Phase 2 (`mvsec_train`/`mvsec_tune`), not Phase 1 |
+| `mvsec.root` | 5 / 5 `*_data.hdf5`. `outdoor_day2_data.hdf5` (41,506,282,485 B) first hit the Google Drive quota (D-014); the user downloaded it in a browser on 2026-10-08. Exact size matches Drive's Content-Range, it opens with h5py, and its last events read back |
 | `mvsec.gt_flow`, `mvsec.calib` | complete (5 GT-flow npz incl. `outdoor_day2`; indoor_flying + outdoor_day calib) |
 | `dsec.root` | `thun_00_a`, `zurich_city_02_a`, `zurich_city_11_a`: events_left, forward flow, timestamps, calibration (D-012) |
 | `eraft_mvsec_preprocessed`, `checkpoints.*` | complete |
