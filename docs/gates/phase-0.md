@@ -61,3 +61,23 @@ Ubuntu 26 from 2026-10-19 — revisit action versions if CI breaks.
 ## Overall verdict
 
 **PASS** — every criterion passes (1–11), repo-publication-reviewer SHIP, CI green.
+
+## Addendum — 2026-10-08: data acquisition (D-011..D-014)
+
+On your request, I downloaded the datasets into `<repo>/data/` (gitignored) with
+`scripts/fetch_data.py` from `configs/data_sources.yaml`. LaRS zips were moved to
+`data/lars/_archives/` and extracted; every extracted file matched its zip entry
+(5,611 / 4,009 / 53,301 files, sizes identical). `python scripts/check_data.py` →
+`results/data_inventory.json`: all 10 data keys present.
+
+| Key | State |
+|---|---|
+| `mvsec.root` | 4 / 5 `*_data.hdf5` — `outdoor_day2_data.hdf5` (41.5 GB) **blocked by the Google Drive per-file quota**; retried hourly for 24 h (D-014). Needed from Phase 2 (`mvsec_train`/`mvsec_tune`), not Phase 1 |
+| `mvsec.gt_flow`, `mvsec.calib` | complete (5 GT-flow npz incl. `outdoor_day2`; indoor_flying + outdoor_day calib) |
+| `dsec.root` | `thun_00_a`, `zurich_city_02_a`, `zurich_city_11_a`: events_left, forward flow, timestamps, calibration (D-012) |
+| `eraft_mvsec_preprocessed`, `checkpoints.*` | complete |
+| `smd.onboard` | 11 videos + ObjectGT/TrackGT/HorizonGT |
+| `lars.root` | train/val/test images, images_seq, annotations (+ zips in `_archives/`) |
+
+All hdf5/h5 files open with h5py, and every npz passes a CRC check (fetch log). The gate verdict
+above is unchanged.

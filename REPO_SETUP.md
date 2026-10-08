@@ -40,7 +40,7 @@ event-maritime-flow/
 ├── tests/         test_*.py  fixtures/  oracles/ (vendored MIT metric code; never imported by src)
 ├── results/       *.json (committed)  *.npz (ignored)  fidelity/ eval/ baselines/
 ├── docs/          STATUS.md DECISIONS.md CONVENTIONS.md LICENSES.md LIMITATIONS.md gates/
-├── data/          (gitignored) symlinks only, real paths in paths.local.yaml
+├── data/          (gitignored) dataset files fetched by scripts/fetch_data.py (D-011)
 └── external/      (gitignored) v2e checkout, E-RAFT checkout for the reproduction gate
 ```
 
@@ -98,6 +98,17 @@ uv pip freeze -p external/venvs/v2e > configs/v2e_requirements.lock
 | DSEC-Flow | 2–3 train sequences with flow GT: `events_left` (events.h5 + rectify_map.h5), `image_timestamps.txt`, flow PNGs + timestamps | DSEC download page | data CC BY-SA 4.0, code MIT (see `docs/LICENSES.md`); 640×480 events, flow at 10 Hz |
 | SMD | Visible On-Board (11 videos, 768 MB) | SMD page (Google Drive) | 1920×1080; no licence stated → no redistribution |
 | LaRS | Images v1.0.0 (966 MB), Annotations v1.0.0 (22.3 MB), Sequence images v1.0.0 (13.6 GB) | LaRS page (form + terms) | read terms before download; test annotations not public |
+
+`scripts/fetch_data.py` downloads, extracts and sanity-checks everything listed in
+`configs/data_sources.yaml` into `data/` (resumable `curl`; Google Drive via its direct `drive.usercontent` URL;
+LaRS zips are placed by hand in `data/lars/_archives/` after accepting its terms, then extracted by
+the same script). DSEC sequences: `thun_00_a`, `zurich_city_02_a`, `zurich_city_11_a` (D-012). MVSEC
+`*_gt.hdf5`/`_odom` are not fetched (D-013).
+
+```bash
+python -I scripts/fetch_data.py                 # or --only mvsec,dsec  /  --kind http
+python scripts/check_data.py                    # → results/data_inventory.json
+```
 
 `scripts/check_data.py` verifies presence, sizes and records SHA-256 of small files.
 

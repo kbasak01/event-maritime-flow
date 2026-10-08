@@ -11,8 +11,7 @@ runs/
 configs/paths.local.yaml
 __pycache__/
 .venv/
-# added in Phase 0 (D-009): raw downloads and tool caches never enter git
-LARS Dataset/
+# added in Phase 0 (D-011): raw downloads and tool caches never enter git
 *.zip
 *:Zone.Identifier
 *.aedat*

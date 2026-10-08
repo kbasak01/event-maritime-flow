@@ -1,22 +1,22 @@
 # Copy to configs/paths.local.yaml (gitignored) and fill in absolute paths.
 mvsec:
-  root: /data/mvsec                    # *_data.hdf5 files
-  gt_flow: /data/mvsec/gt_flow         # *_gt_flow_dist.npz
-  calib: /data/mvsec/calib
-eraft_mvsec_preprocessed: /data/eraft/mvsec_outdoor_day_1_20Hz
+  root: /home/USER/event-maritime-flow/data/mvsec/hdf5            # <scene>/<seq>_data.hdf5
+  gt_flow: /home/USER/event-maritime-flow/data/mvsec/gt_flow      # <scene>/<seq>_gt_flow_dist.npz
+  calib: /home/USER/event-maritime-flow/data/mvsec/calib          # <scene>/ (extracted calib zips)
+eraft_mvsec_preprocessed: /home/USER/event-maritime-flow/data/eraft/mvsec_outdoor_day_1_20Hz
 dsec:
-  root: /data/dsec                     # <seq>/events_left/{events.h5,rectify_map.h5}, flow/
+  root: /home/USER/event-maritime-flow/data/dsec                   # <seq>/events_left/{events.h5,rectify_map.h5}, flow/forward/, *_timestamps.txt, calibration/
 smd:
-  onboard: /data/smd/VIS_Onboard
+  onboard: /home/USER/event-maritime-flow/data/smd/VIS_Onboard
 lars:
-  root: /data/lars                     # images/, annotations/, sequences/
+  root: /home/USER/event-maritime-flow/data/lars                   # {train,val,test}/{images,images_seq,...}; zips in _archives/
 v2e:
   repo: /home/USER/event-maritime-flow/external/v2e
   python: /home/USER/event-maritime-flow/external/venvs/v2e/bin/python   # isolated uv venv (D-005)
   slomo_ckpt: /home/USER/event-maritime-flow/external/v2e/input/SuperSloMo39.ckpt
 checkpoints:
-  eraft_dsec: /data/eraft/checkpoints/dsec.tar
-  eraft_mvsec20: /data/eraft/checkpoints/mvsec_20.tar
+  eraft_dsec: /home/USER/event-maritime-flow/data/eraft/checkpoints/dsec.tar
+  eraft_mvsec20: /home/USER/event-maritime-flow/data/eraft/checkpoints/mvsec_20.tar
 outputs:
   events: /scratch/evflow/events       # converted + synthetic event stores
   runs: /scratch/evflow/runs

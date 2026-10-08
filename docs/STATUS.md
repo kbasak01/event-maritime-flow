@@ -16,4 +16,4 @@
 
 Pending GPU jobs: none (Claude may launch GPU jobs after `gpu-job` prep, D-006).
 
-Pending user actions: dataset downloads (MVSEC, DSEC-Flow, SMD, E-RAFT checkpoints, LaRS sequences); install ffmpeg before Phase 2.
+Pending data: MVSEC `outdoor_day2_data.hdf5` (Google Drive quota; hourly retry by `scripts/fetch_data.py`, D-014). All other datasets present in `data/` (results/data_inventory.json). ffmpeg installed.
