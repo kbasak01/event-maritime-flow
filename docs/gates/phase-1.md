@@ -23,7 +23,7 @@ Date: 2026-10-08 · Gate run by: Claude (`/phase-gate 1`) · Code commit: 1d1b78
 | 12 | Artefacts committed | PASS | `git ls-files` lists `src/evflow/{io,events,flow}/*`, `tests/{fixtures,oracles}/*`, `configs/eval_mvsec.yaml` (commit 1d1b782) |
 | 13 | Results JSON keys (event-conventions) | PASS | no new results JSON in Phase 1; only `results/data_inventory.json` (non-metric) |
 | 14 | G1 no GPL code / G2 no data in git | PASS | `tests/test_no_gpl_imports.py` green; staged files contain no `.h5/.hdf5/.npz/.png/.zip` or `data/` paths; largest file 20 KB (oracle) |
-| 15 | CI green on the pushed commit | see § CI | recorded after push |
+| 15 | CI green on the pushed commit | PASS | GitHub Actions `ci` run 37858459879 on d25b228: `ruff check` → `All checks passed!`, `pytest -q` → `162 passed, 4 deselected in 2.18s` |
 
 Checklist lines closed by this gate (VALIDATION_CHECKLIST.md): A1, A2, A4, A5, C1, C2. C3 and C4 are
 met for the code and config; the README quote of C4 is Phase 10.
@@ -87,6 +87,10 @@ Minor findings and their status:
 4. The layout tool is a stand-in for `h5ls`. **Accepted:** use the same tool for A3 in Phase 2.
 5. The polarity statistic of a test sequence must not feed Phase 2 calibration. **Carried forward** to
    Phase 2: the calibration manifest lists `mvsec_tune` sources only.
+
+## CI
+
+PASS — run 37858459879 (https://github.com/kbasak01/event-maritime-flow/actions/runs/37858459879), conclusion `success` on d25b228.
 
 ## Overall verdict
 
