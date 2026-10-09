@@ -35,6 +35,7 @@ import yaml
 from evflow.io.mvsec import read_aps_timestamps_us
 from evflow.io.store import EventSlicer, EventStore
 from evflow.sim import stats as S
+from evflow.sim.splits import LeakageError
 
 REPO = Path(__file__).resolve().parents[3]
 TUNE_SPLIT = REPO / "splits" / "mvsec_tune.json"
@@ -43,10 +44,6 @@ PATHS = REPO / "configs" / "paths.local.yaml"
 RESULT = REPO / "results" / "v2e_calibration.json"
 GRID_FLAGS = {"pos_neg_thres": ("--pos_thres", "--neg_thres"), "sigma_thres": ("--sigma_thres",),
               "cutoff_hz": ("--cutoff_hz",), "shot_noise_rate_hz": ("--shot_noise_rate_hz",)}
-
-
-class LeakageError(ValueError):
-    """A calibration range outside mvsec_tune."""
 
 
 # ---------------------------------------------------------------------------------------------
@@ -210,7 +207,8 @@ def cmd_cell(cell_id: str, work: Path, seed: int) -> dict:
     evs, units = [], []
     for j, (a, b) in enumerate(ctx["segs"]):
         unit = _unit_name(cell_id, j)
-        argv = ["mvsec", "--sequence", "outdoor_day2", "--aps", str(a), str(b),
+        argv = ["mvsec", "--sequence", "outdoor_day2", "--aps", str(a), str(b), "--split",
+                "mvsec_tune",
                 "--frames-cache", str(work / "aps_cache"), "--profile",
                 ctx["grid"]["profile"], "--unit", unit, "--out", str(work / "units"),
                 "--seed", str(seed)]

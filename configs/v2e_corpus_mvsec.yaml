@@ -1,0 +1,32 @@
+# Phase 3 matched-content MVSEC v2e(APS) corpus (IMPLEMENTATION_PLAN Phase 3 step 1).
+# Read only by src/evflow/sim/corpus.py, which turns it into an ordered unit list
+# (data/converted/v2e/mvsec/corpus_plan.json). Cuts: D-026. Seeds, chunking, draws: D-032.
+out_root: v2e/mvsec            # under paths.local.yaml outputs.events
+warmup_frames: 10              # first APS windows of a unit are v2e warm-up (D-027, D-032)
+max_unit_s: 60.0               # v2e float32 time precision (D-022)
+max_dt: 4                      # longest evaluation window, in APS frames (configs/eval_mvsec.yaml)
+
+cal:                           # one fixed simulated sensor for tune, test and train (D-032)
+  profile: mvsec_cal
+  seed: 1337                   # = calibration_grid.seed
+
+tune: {split: mvsec_tune}      # the whole 60 s slice, one unit
+test: {split: mvsec_test}      # every window of every sequence, chunked to <= max_unit_s
+
+train:                         # D-026: 4 x 60 s clips evenly spaced over ranges_us[1]
+  split: mvsec_train
+  range_index: 1
+  n_clips: 4
+  clip_s: 60.0
+
+rand:                          # v2e_rand_sup: K corpora, CT drawn per clip (plan Phase 3 step 1)
+  profile: mvsec_rand          # ranges and K from configs/v2e_profiles.yaml (frozen in Phase 2)
+  draw_seed: 20261008          # numpy default_rng; draws in (corpus, clip) order
+  seed_base: 2000              # emulator seed = seed_base + 100 * corpus + clip (a new sensor)
+
+trials:                        # <= 5 s at the randomisation extremes, before the corpus (D-026)
+  split: mvsec_tune
+  n_frames: 220                # ~5.0 s of outdoor_day2 APS from the start of the tune slice
+  # lo = lowest threshold with the widest sigma (most events), hi = highest threshold with the
+  # narrowest sigma; both read from mvsec_rand.randomise, never typed here
+  extremes: [lo, hi]

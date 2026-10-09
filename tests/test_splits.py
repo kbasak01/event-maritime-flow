@@ -85,3 +85,11 @@ def test_lars_clips_runs_and_keyframes(lars_dir):
     assert [(c["prefix"], c["first"], c["last"], c["n_frames"]) for c in clips] == [
         ("seqA", 0, 14, 15), ("seqA", 30, 39, 10), ("seqB", 5, 19, 15)]
     assert [c["keyframes"] for c in clips] == [["seqA_00009"], ["seqA_00039"], ["seqB_00014"]]
+
+
+def test_rehash_ignores_cache(monkeypatch, tmp_path):
+    f = tmp_path / "cache.json"
+    f.write_text('{"k": "stale"}')
+    monkeypatch.setattr(ms, "SHA_CACHE", f)
+    assert ms._load_cache() == {"k": "stale"}
+    assert ms._load_cache(rehash=True) == {}

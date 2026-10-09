@@ -1,0 +1,61 @@
+{
+ "kind": "gpu_job_manifest",
+ "job": "jobs/2026-10-09_v2e-mvsec.sh",
+ "plan_step": "Phase 3 step 1 (v2e(APS) for mvsec_train / mvsec_tune / mvsec_test with mvsec_cal; K = 4 randomised train corpora)",
+ "configs": [
+  "configs/v2e_corpus_mvsec.yaml",
+  "configs/v2e_profiles.yaml",
+  "configs/v2e_commit.txt",
+  "configs/eval_mvsec.yaml",
+  "configs/paths.local.yaml.example"
+ ],
+ "config_sha256": {
+  "configs/v2e_corpus_mvsec.yaml": "51d93d825a1c5bad1c299225df70fb84aac7d9044c3482a7c7e7c95a3d5e5b47",
+  "configs/v2e_profiles.yaml": "76846c5a7a0d6f418df71ccaa37135bc28f8f0286698d25dedc34793e0682fbf",
+  "configs/v2e_commit.txt": "ec39af09a501be1d2de71628dc2f1545f3776d8ce51fbaccef0aaa5233c3640b",
+  "configs/eval_mvsec.yaml": "1a9d2beed6839a4de1eb5330c5c4d10d3e901e41eac3c0c939617b0a7c48ba76",
+  "configs/paths.local.yaml.example": "0f135f8b75733e3be16bb7329bf1ee61b4d885a9a763d1e0d9bb0f13096cf1a6"
+ },
+ "inputs": {
+  "splits/mvsec_tune.json": {
+   "manifest_sha256": "9ea94aea246c4c9678b7ea22860574c22aa03fb57b25368bc19bc48861c5b9b5",
+   "file_sha256": "290a8f9b03388c5aaacef673d4ba495ed1f6d02c447a468d238c8f128975f0c7"
+  },
+  "splits/mvsec_train.json": {
+   "manifest_sha256": "bdf68aae9bfb3f8687a65b7df8e1aa9ffb62b731bbe6a65d533a61d24ca5d857",
+   "file_sha256": "5906d17b1d43a22030272dd1eabfe7607947458392d1c7f60a569a45db7e25fc"
+  },
+  "splits/mvsec_test.json": {
+   "manifest_sha256": "b45014a33bfc02740e3804061554ea4a14955d50468e87bfd154fbeef14a8e2e",
+   "file_sha256": "f69191ff48304c7febfacb2cacda033065c3d505b0f6e72efacc9417747bcfc2"
+  }
+ },
+ "units": {
+  "planned": 30,
+  "video_s": 1537.02,
+  "by_corpus": {
+   "trial": 2,
+   "tune": 1,
+   "test": 7,
+   "train_cal": 4,
+   "rand0": 4,
+   "rand1": 4,
+   "rand2": 4,
+   "rand3": 4
+  },
+  "plan_file": "data/converted/v2e/mvsec/corpus_plan.json (rebuilt and compared by `corpus summarise`)"
+ },
+ "expected_outputs": [
+  "data/converted/mvsec_{indoor_flying2,indoor_flying3,outdoor_day1}_left.{h5,json} (real stores, CPU)",
+  "data/converted/v2e/mvsec/{trial,tune,test,train_cal,rand0..3}/<unit>.{h5,json,v2e.json,log}",
+  "results/v2e_mvsec_corpus.json"
+ ],
+ "estimated_gpu_hours": 13.348,
+ "estimated_wall_hours_4way": 6.46,
+ "estimated_gpu_hours_basis": "results/v2e_throughput.json scenarios.chosen lines phase3_7_trials_mvsec_rand_extremes, mvsec_tune_cal, mvsec_test_cal, mvsec_train_cal_4x60s, mvsec_train_rand_x4_4x60s (sequential) x concurrency_factor 0.484",
+ "disk_estimate_gb": 15,
+ "disk_estimate_basis": "calibration unit c30_seg0: 11.7 MB per 4 s at the calibrated profile -> ~180 MB per 60 s, more for low-threshold rand draws; APS PNG cache ~0.3 GB per 60 s range",
+ "prepared_on_git_sha": "662a037f93af4bf02f833fe3c6a920fb34d94398",
+ "launch": "from a clean detached worktree of the commit that adds this job (D-031); unit manifests carry git_sha / git_dirty",
+ "created_at": "2026-10-09"
+}

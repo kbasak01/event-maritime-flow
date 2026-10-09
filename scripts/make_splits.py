@@ -5,7 +5,8 @@
 Seed 20261008 (configs/evflow.yaml ``split_seed``). Every manifest records its rule, the source
 files (size + SHA-256; large files hashed once and cached in ``data/_sha256_cache.json``), and its
 own content SHA-256 (``manifest_sha256``, over the canonical JSON without that key). ``--check``
-regenerates in memory and fails if any committed manifest differs.
+regenerates in memory and fails if any committed manifest differs. ``--rehash`` (implies
+``--check``; run at phase gates) ignores the SHA-256 cache and re-reads every source file.
 
 MVSEC times are absolute µs on the MVSEC clock (``round(unix_s * 1e6)``), the clock of
 ``EventSlicer`` on converted MVSEC stores.
@@ -44,7 +45,9 @@ DSEC_TEST = ["thun_00_a", "zurich_city_02_a", "zurich_city_11_a"]   # D-012
 # ---------------------------------------------------------------------------------------------
 # helpers
 
-def _load_cache() -> dict:
+def _load_cache(rehash: bool = False) -> dict:
+    if rehash:
+        return {}
     try:
         return json.loads(SHA_CACHE.read_text())
     except (OSError, json.JSONDecodeError):
@@ -278,10 +281,13 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--paths", type=Path, default=REPO / "configs/paths.local.yaml")
     ap.add_argument("--check", action="store_true", help="fail if splits/ differs")
+    ap.add_argument("--rehash", action="store_true",
+                    help="--check with every source SHA-256 recomputed (cache ignored)")
     args = ap.parse_args(argv)
+    args.check = args.check or args.rehash
     cfg = yaml.safe_load(args.paths.read_text())
     seed = int(yaml.safe_load((REPO / "configs/evflow.yaml").read_text())["split_seed"])
-    cache = _load_cache()
+    cache = _load_cache(args.rehash)
     docs = build(cfg, seed, cache)
     SHA_CACHE.parent.mkdir(parents=True, exist_ok=True)
     tmp = SHA_CACHE.with_suffix(".tmp")

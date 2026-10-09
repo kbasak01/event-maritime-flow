@@ -178,6 +178,11 @@ def sha256_frames(files: Sequence[Path]) -> str:
     return h.hexdigest()
 
 
+def mvsec_cache_dir(cache_root: str | PathLike, sequence: str, i0: int, i1: int) -> Path:
+    """Frame-cache folder of APS frames ``i0..i1`` of ``sequence`` (left camera)."""
+    return Path(cache_root) / f"{sequence}_left_aps_{i0:06d}_{i1:06d}"
+
+
 def export_mvsec_aps(src: str | PathLike, out_dir: str | PathLike, i0: int, i1: int,
                      cam: str = "left") -> dict:
     """Write APS frames ``i0..i1`` (inclusive) of an MVSEC ``*_data.hdf5`` as PNGs to
@@ -476,6 +481,10 @@ def main(argv: list[str] | None = None) -> int:
         if name == "mvsec":
             s.add_argument("--sequence", required=True)
             s.add_argument("--aps", type=int, nargs=2, required=True, metavar=("FIRST", "LAST"))
+            s.add_argument("--split", required=True,
+                           help="split manifest the APS range must lie in (sim/splits.py)")
+            s.add_argument("--lead-frames", type=int, default=0,
+                           help="frames before the split range (evaluation splits only, D-032)")
             s.add_argument("--frames-cache", type=Path, required=True)
         elif name == "smd":
             s.add_argument("--video", required=True)
@@ -496,14 +505,19 @@ def main(argv: list[str] | None = None) -> int:
 
     if a.source == "mvsec":
         from evflow.io.mvsec import HEIGHT, SENSOR, WIDTH
+        from evflow.sim.splits import check_aps_in_split, load_split
 
+        split = load_split(a.split)
+        check_aps_in_split(split, a.sequence, a.aps[0], a.aps[1], a.lead_frames)
         scene = re.sub(r"\d+$", "", a.sequence)
         src = Path(paths["mvsec"]["root"]) / scene / f"{a.sequence}_data.hdf5"
-        cache = a.frames_cache / f"{a.sequence}_left_aps_{a.aps[0]:06d}_{a.aps[1]:06d}"
+        cache = mvsec_cache_dir(a.frames_cache, a.sequence, a.aps[0], a.aps[1])
         ex = export_mvsec_aps(src, cache, a.aps[0], a.aps[1])
         files = sorted(Path(ex["frames_dir"]).glob("*.png"))
         ts = ex.pop("timestamps_us")
         desc = {"dataset": "mvsec", "sequence": a.sequence, "camera": "left",
+                "split": a.split, "split_manifest_sha256": split["manifest_sha256"],
+                "lead_frames": a.lead_frames,
                 "source_file": redact_home(str(src)), **{k: v for k, v in ex.items()
                                                          if k not in ("frames_dir",)}}
         desc["frames_dir"] = redact_home(ex["frames_dir"])
