@@ -75,9 +75,14 @@ def unit_row(m: dict, log_text: str) -> dict:
 def measured_item(item: dict) -> dict:
     """A budget line already run: GPU hours = sum of its units' wall times / their concurrency
     (units overlapped, so each unit's wall already includes the contention), read from the
-    committed results JSON that lists them (e.g. results/v2e_calibration.json)."""
+    committed results JSON that lists them (results/v2e_calibration.json: cells[].units[];
+    results/v2e_mvsec_corpus.json: units[], optionally only the corpora in ``corpora``)."""
     doc = json.loads((REPO / item["measured_from"]).read_text())
-    walls = [u["wall_time_s"] for c in doc["cells"] for u in c["units"]]
+    if "cells" in doc:
+        walls = [u["wall_time_s"] for c in doc["cells"] for u in c["units"]]
+    else:
+        keep = item.get("corpora")
+        walls = [u["wall_time_s"] for u in doc["units"] if keep is None or u["corpus"] in keep]
     n = int(item["concurrency"])
     return {**item, "units": len(walls), "sum_unit_wall_s": round(sum(walls), 1),
             "gpu_hours": round(sum(walls) / n / 3600, 3), "measured": True}

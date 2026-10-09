@@ -147,11 +147,15 @@ def slice_stats(e: dict, wins: np.ndarray, blocks: np.ndarray, width: int, heigh
 
 
 def count_ncc(real: dict, syn: dict, wins: np.ndarray, width: int, height: int,
-              blur_sigma: float = 1.0) -> np.ndarray:
+              blur_sigma: float = 1.0, syn_wins: np.ndarray | None = None) -> np.ndarray:
     """Per-window normalised cross-correlation of count images (both polarities), each blurred
-    with a Gaussian of ``blur_sigma`` px; NaN where either image is constant."""
+    with a Gaussian of ``blur_sigma`` px; NaN where either image is constant. ``syn_wins`` (same
+    length as ``wins``) pairs real window i with a different synthetic window (shift controls)."""
+    syn_wins = wins if syn_wins is None else syn_wins
+    if len(syn_wins) != len(wins):
+        raise ValueError("syn_wins must pair one-to-one with wins")
     lr, hr = _bounds(real["t"], wins)
-    ls, hs = _bounds(syn["t"], wins)
+    ls, hs = _bounds(syn["t"], syn_wins)
     out = np.full(len(wins), np.nan)
     for i in range(len(wins)):
         a = count_image(real, width, height, slice(lr[i], hr[i]))

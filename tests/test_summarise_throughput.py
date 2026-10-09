@@ -1,6 +1,7 @@
 """scripts/summarise_throughput.py: v2e log parsing, budget costing, concurrency factor."""
 
 import importlib.util
+import json
 from pathlib import Path
 
 import pytest
@@ -44,3 +45,16 @@ def test_concurrency_factor():
     assert st.concurrency_factor(conc, ROWS, 4, "a") == 0.5
     with pytest.raises(KeyError):
         st.concurrency_factor(conc, ROWS, 3, "a")
+
+
+def test_measured_item_from_corpus_units(tmp_path, monkeypatch):
+    doc = {"units": [{"corpus": "trial", "wall_time_s": 100.0},
+                     {"corpus": "tune", "wall_time_s": 7200.0},
+                     {"corpus": "rand0", "wall_time_s": 7200.0}]}
+    (tmp_path / "c.json").write_text(json.dumps(doc))
+    monkeypatch.setattr(st, "REPO", tmp_path)
+    one = st.measured_item({"measured_from": "c.json", "concurrency": 1, "corpora": ["trial"]})
+    assert one["units"] == 1 and one["gpu_hours"] == round(100 / 3600, 3)
+    four = st.measured_item({"measured_from": "c.json", "concurrency": 4,
+                             "corpora": ["tune", "rand0"]})
+    assert four["units"] == 2 and four["gpu_hours"] == 1.0
