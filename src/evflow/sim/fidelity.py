@@ -23,6 +23,7 @@ import numpy as np
 from evflow.sim import stats as S
 
 SHIFT_CONTROLS = (1, 5)
+LAG_FRACTIONS = (-0.5, -0.25, 0.0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 1.0)
 
 
 def owned_window_starts(unit: dict, dt: int = 1) -> np.ndarray:
@@ -106,6 +107,28 @@ def unit_ncc(real: dict, syn: dict, aps_us: np.ndarray, unit: dict, width: int, 
     mir = {**syn, "x": (width - 1 - syn["x"].astype(np.int64)).astype(syn["x"].dtype)}
     out["mirror"] = S.count_ncc(real, mir, wins, width, height, blur_sigma)
     return out
+
+
+def unit_lag_ncc(real: dict, syn: dict, aps_us: np.ndarray, unit: dict, width: int,
+                 height: int, blur_sigma: float,
+                 fractions=LAG_FRACTIONS) -> dict[float, np.ndarray]:
+    """Per-window NCC with the v2e window delayed by a fraction of each window's own APS
+    interval (positive = v2e window later): the peak locates a systematic v2e-vs-real lag."""
+    k = owned_window_starts(unit)
+    k = k[k + 2 <= int(unit["aps"][1])]                 # room for a delay of up to one frame
+    wins = windows(aps_us, k)
+    dt = wins[:, 1] - wins[:, 0]
+    return {f: S.count_ncc(real, syn, wins, width, height, blur_sigma,
+                           syn_wins=wins + np.round(f * dt).astype(np.int64)[:, None])
+            for f in fractions}
+
+
+def lag_summary(values: dict[float, list[np.ndarray]]) -> dict:
+    """Median NCC per lag fraction, pooled over units, and the lag of the peak."""
+    med = {f: float(np.nanmedian(np.concatenate(v))) for f, v in values.items()}
+    peak = max(med, key=lambda f: (med[f], -abs(f)))
+    return {"fractions_of_aps_interval": list(med), "median_ncc": list(med.values()),
+            "peak_lag_frames": peak, "ncc_at_zero": med.get(0.0)}
 
 
 def ncc_summary(values: dict[str, list[np.ndarray]], threshold: float) -> dict:

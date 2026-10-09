@@ -88,3 +88,14 @@ def test_ncc_summary_threshold_and_controls():
     assert not s["controls"]["shift1"]["below_threshold"]
     assert s["controls"]["mirror"]["below_threshold"]
     assert s["controls"]["shift5"]["aligned_minus_control"] == pytest.approx(0.45)
+
+
+def test_lag_profile_finds_known_delay():
+    e = _moving_edges()
+    half = {**e, "t": e["t"] + 12_500}            # v2e stream half an APS interval late
+    prof = F.lag_summary({f: [v] for f, v in F.unit_lag_ncc(e, half, APS, UNIT, W, H, 0.0)
+                          .items()})
+    assert prof["peak_lag_frames"] == 0.5
+    same = F.lag_summary({f: [v] for f, v in F.unit_lag_ncc(e, e, APS, UNIT, W, H, 0.0)
+                          .items()})
+    assert same["peak_lag_frames"] == 0.0

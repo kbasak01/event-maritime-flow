@@ -33,12 +33,15 @@ REPO = Path(__file__).resolve().parents[1]
 OUT = REPO / "results" / "v2e_alignment.json"
 CAL_GROUPS_PREFIX = ("tune_", "test_", "train_cal")
 SCOPE = [
-    "Detects: frame-timing or clock-map errors of one frame or more (shift controls), flipped "
-    "or transposed geometry (mirror control), grossly wrong pixel mapping, and missing or "
-    "displaced chunks.",
+    "Detects (threshold): timing errors of several APS frames (shift5 control), mirrored or "
+    "transposed geometry (mirror control), grossly wrong pixel mapping, missing or displaced "
+    "chunks.",
+    "Does not detect (threshold): timing errors of one APS frame or less; the shift1 control "
+    "stays above the threshold on these scenes. Sub-frame timing is measured by `lag`: the "
+    "median NCC with the v2e window delayed by fractions of the APS interval; a peak away from "
+    "0 is a systematic v2e-vs-real lag (decisions on mvsec_tune only; test values reported).",
     "Does not detect: contrast-threshold or noise mismatch (count magnitudes cancel in the "
-    "NCC), sub-frame timing errors much smaller than one APS interval, or v2e's timestamp "
-    "pyramid within a frame interval.",
+    "NCC), or v2e's timestamp pyramid within a frame interval.",
     "Scene dependence: the shift controls stay high when the scene moves slowly between frames "
     "(outdoor driving at low speed, D-029), so their margin below the aligned NCC is the "
     "evidence, not their absolute value; indoor flying scenes have sparser texture and faster "
@@ -76,6 +79,7 @@ def main(argv: list[str] | None = None) -> int:
                          "nothing written")
     aps: dict[str, np.ndarray] = {}
     vals: dict[str, dict[str, list]] = {}
+    lags: dict[str, dict[float, list]] = {}
     per_unit = []
     for u in plan["units"]:
         g = group_of(u)
@@ -90,16 +94,20 @@ def main(argv: list[str] | None = None) -> int:
             continue
         real = read_real(Path(paths["outputs"]["events"]) / f"mvsec_{seq}_left.h5",
                          int(a[u["aps"][0]]), int(a[u["aps"][1]]))
-        n = F.unit_ncc(real, read_syn(syn_store), a, u, WIDTH, HEIGHT, sigma)
+        syn = read_syn(syn_store)
+        n = F.unit_ncc(real, syn, a, u, WIDTH, HEIGHT, sigma)
         for k, v in n.items():
             vals.setdefault(g, {}).setdefault(k, []).append(v)
+        for f, v in F.unit_lag_ncc(real, syn, a, u, WIDTH, HEIGHT, sigma).items():
+            lags.setdefault(g, {}).setdefault(f, []).append(v)
         man = json.loads(syn_store.with_suffix(".json").read_text())
         per_unit.append({"key": u["key"], "group": g, "profile": u["profile"],
                          "v2e_store_sha256": man["store_sha256"],
                          **F.ncc_summary({k: [v] for k, v in n.items()}, thr)})
         print(json.dumps({"unit": u["key"], "median": per_unit[-1]["median"]}))
     groups = {g: {"profile": "mvsec_cal" if g.startswith(CAL_GROUPS_PREFIX) else "mvsec_rand",
-                  "gate": g.startswith(CAL_GROUPS_PREFIX), **F.ncc_summary(v, thr)}
+                  "gate": g.startswith(CAL_GROUPS_PREFIX), **F.ncc_summary(v, thr),
+                  "lag": F.lag_summary(lags[g])}
               for g, v in vals.items()}
     gate = {g: d["pass"] for g, d in groups.items() if d["gate"]}
     doc = {

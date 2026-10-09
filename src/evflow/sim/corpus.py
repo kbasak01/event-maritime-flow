@@ -20,7 +20,7 @@ from ``first + warmup_frames`` on (``stats_from``).
     python -m evflow.sim.corpus plan        # -> <events>/v2e/mvsec/corpus_plan.json
     python -m evflow.sim.corpus prepare     # export every APS range once (before parallel units)
     python -m evflow.sim.corpus units [--corpus trial]   # unit names, for xargs
-    python -m evflow.sim.corpus unit --name test_indoor_flying1_p0
+    python -m evflow.sim.corpus unit --key test/test_indoor_flying1_p0
     python -m evflow.sim.corpus summarise   # -> results/v2e_mvsec_corpus.json
 """
 
