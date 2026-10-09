@@ -1268,7 +1268,7 @@
   "Does not detect: contrast-threshold or noise mismatch (count magnitudes cancel in the NCC), sub-frame timing errors much smaller than one APS interval, or v2e's timestamp pyramid within a frame interval.",
   "Scene dependence: the shift controls stay high when the scene moves slowly between frames (outdoor driving at low speed, D-029), so their margin below the aligned NCC is the evidence, not their absolute value; indoor flying scenes have sparser texture and faster rotation, so their NCC level is not comparable with outdoor_day2 in absolute terms."
  ],
- "git_sha": "a8a0f16be7f513b1db7c7c73c475c903356587e0",
+ "git_sha": "c737c09df8eb9715a4c585c16f77a4ccedce368f",
  "created_by": "scripts/alignment_check.py",
- "created_at": "2026-10-09T13:20:12+00:00"
+ "created_at": "2026-10-09T13:34:13+00:00"
 }
