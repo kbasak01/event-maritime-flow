@@ -1,0 +1,123 @@
+{
+ "split": "dsec_test",
+ "dataset": "dsec",
+ "decision": "D-012",
+ "sequences": [
+  {
+   "sequence": "thun_00_a",
+   "files": [
+    {
+     "path": "~/projects_02/event-maritime-flow/data/dsec/thun_00_a/calibration/cam_to_cam.yaml",
+     "size_bytes": 6599,
+     "sha256": "dba82b9ae6f38e8cc75cda5fc045dd790ae395a3c07ddc0ea0692119b92b5d58"
+    },
+    {
+     "path": "~/projects_02/event-maritime-flow/data/dsec/thun_00_a/calibration/cam_to_lidar.yaml",
+     "size_bytes": 448,
+     "sha256": "0e44373b358f03c1e56511c598fd386b680486e63c16b9c9a04678f026fbde04"
+    },
+    {
+     "path": "~/projects_02/event-maritime-flow/data/dsec/thun_00_a/flow/forward_timestamps.txt",
+     "size_bytes": 1062,
+     "sha256": "27505c9e88e4245d5c52ef625cb57d983760b4af9291b687dac94f6a15852608"
+    },
+    {
+     "path": "~/projects_02/event-maritime-flow/data/dsec/thun_00_a/image_timestamps.txt",
+     "size_bytes": 2868,
+     "sha256": "47bab24137108f95005d00a1905d5dcb7c5328b01cf011d2128cb2be74bcd120"
+    },
+    {
+     "path": "~/projects_02/event-maritime-flow/data/dsec/thun_00_a/events_left/events.h5",
+     "size_bytes": 301147322,
+     "sha256": "ba2802de00445580c99f392dcc7e58708b97d5f91810343e3cfeb1686dabf066"
+    },
+    {
+     "path": "~/projects_02/event-maritime-flow/data/dsec/thun_00_a/events_left/rectify_map.h5",
+     "size_bytes": 2459648,
+     "sha256": "ffbd69a5981fe86f141cc45a84e8bfafad5e68a46683a456edab7c06447c294e"
+    }
+   ],
+   "flow_png_count": 41,
+   "flow_png_listing_sha256": "1087e5fbf3dc5986b2ba2df8f47febd71a293dd21a952a69ce49f81049be0487"
+  },
+  {
+   "sequence": "zurich_city_02_a",
+   "files": [
+    {
+     "path": "~/projects_02/event-maritime-flow/data/dsec/zurich_city_02_a/calibration/cam_to_cam.yaml",
+     "size_bytes": 6592,
+     "sha256": "827cac810ebd5fbd46d2c4812328175118d29dfe23378230ab72c3d10d08f673"
+    },
+    {
+     "path": "~/projects_02/event-maritime-flow/data/dsec/zurich_city_02_a/calibration/cam_to_lidar.yaml",
+     "size_bytes": 437,
+     "sha256": "1b29f85fc656de0bfed890eb35b1490937ad38cdc7c2965ab350f37fd7ec43d7"
+    },
+    {
+     "path": "~/projects_02/event-maritime-flow/data/dsec/zurich_city_02_a/flow/forward_timestamps.txt",
+     "size_bytes": 1637,
+     "sha256": "ddb02829d3aa6fc2e78c0aad1ca82c1c19bc030f8e5778fd5662f56549a32aff"
+    },
+    {
+     "path": "~/projects_02/event-maritime-flow/data/dsec/zurich_city_02_a/image_timestamps.txt",
+     "size_bytes": 2820,
+     "sha256": "30ee4fc57a3eda86bbf460229376dd1514dff819ae4a133ab2ccbbb607059671"
+    },
+    {
+     "path": "~/projects_02/event-maritime-flow/data/dsec/zurich_city_02_a/events_left/events.h5",
+     "size_bytes": 357029139,
+     "sha256": "985093935eb79918fe25d61cff3c01cfc0f4b49f92c929581668dbb94f31992b"
+    },
+    {
+     "path": "~/projects_02/event-maritime-flow/data/dsec/zurich_city_02_a/events_left/rectify_map.h5",
+     "size_bytes": 2459648,
+     "sha256": "7d3efd1c2745f8967a2d9e88e2f954ed56853b826ba488a7f6c3072c051d9038"
+    }
+   ],
+   "flow_png_count": 64,
+   "flow_png_listing_sha256": "498c2a58f2fa0497a140cb4199d31b097bba2f2dc15625fb9bd24c3a20d748ad"
+  },
+  {
+   "sequence": "zurich_city_11_a",
+   "files": [
+    {
+     "path": "~/projects_02/event-maritime-flow/data/dsec/zurich_city_11_a/calibration/cam_to_cam.yaml",
+     "size_bytes": 6601,
+     "sha256": "418ff1ca2293433fbbbd33b9ab4a2036286501ff63e8fb11064798452083b08c"
+    },
+    {
+     "path": "~/projects_02/event-maritime-flow/data/dsec/zurich_city_11_a/calibration/cam_to_lidar.yaml",
+     "size_bytes": 464,
+     "sha256": "f9ed41ddfa938e36d905ba2d31fd6ab55bf24279cecdaaa3c1dcc7a4c6efc834"
+    },
+    {
+     "path": "~/projects_02/event-maritime-flow/data/dsec/zurich_city_11_a/flow/forward_timestamps.txt",
+     "size_bytes": 5812,
+     "sha256": "e202718c537e7f1f517a078a96f5da4b3e508e0a9127772310419a1136890f7b"
+    },
+    {
+     "path": "~/projects_02/event-maritime-flow/data/dsec/zurich_city_11_a/image_timestamps.txt",
+     "size_bytes": 5580,
+     "sha256": "275f25f419fada580ca411ddcfed8d244451fbcccc19ff8ca626488021be1eb9"
+    },
+    {
+     "path": "~/projects_02/event-maritime-flow/data/dsec/zurich_city_11_a/events_left/events.h5",
+     "size_bytes": 338935412,
+     "sha256": "ab4b946fbb914a16eb47ed1f4dbf4b830244f78040a8da14888cd684cb0703c5"
+    },
+    {
+     "path": "~/projects_02/event-maritime-flow/data/dsec/zurich_city_11_a/events_left/rectify_map.h5",
+     "size_bytes": 2459648,
+     "sha256": "c75d51d0ac582e4c76249e7308a43bca84f1f29c7fdf4711bff1ff9a128ba4a3"
+    }
+   ],
+   "flow_png_count": 231,
+   "flow_png_listing_sha256": "3a1f1848c1cbd80b46f3699f354e8aec3e9b8336b9b0a26f0f9ad6f4fd7f45df"
+  }
+ ],
+ "used_for": [
+  "T1 generalisation evaluation only"
+ ],
+ "created_by": "scripts/make_splits.py",
+ "manifest_sha256": "5110b28785fc47d7959f5aad102c65eccf17430d74d55a851474348058f19c28"
+}

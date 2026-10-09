@@ -1,44 +1,59 @@
-# v2e argument profiles. Frozen in Phase 2 (calibration on mvsec_tune ONLY).
-# Every run also gets: --no_preview --skip_video_output --dvs_h5 <out> --dvs_emulator_seed <seed>
-# and an explicit --input_frame_rate. Flag names verified against the v2e README on 2026-10-08.
+# v2e argument profiles (IMPLEMENTATION_PLAN §1.7). Read only by src/evflow/sim/v2e_runner.py.
+# argv = common + profile size + profile args (+ grid overrides) + run flags set by the runner:
+#   --input --output_folder --dvs_h5 --dvs_emulator_seed --input_frame_rate [--start_time --stop_time]
+# args are {flag: value}; a null value is a flag without a value. A child profile (`base:`) replaces
+# `size` and updates `args`. Overrides may only change flags the profile already sets.
+# mvsec_cal / mvsec_rand are frozen in Phase 2 from results/v2e_calibration.json (mvsec_tune ONLY)
+# by scripts/freeze_profile.py — never edit those values by hand.
 v2e_commit_file: configs/v2e_commit.txt
-calibration_json: results/v2e_calibration.json   # SHA written here when frozen
-calibration_sha256: TODO
+calibration_json: results/v2e_calibration.json
+calibration_sha256: TODO      # written by scripts/freeze_profile.py
+# Phase 3 alignment check: count-image NCC median must exceed this (set on mvsec_tune, D-029)
+alignment_ncc_threshold: TODO   # written by scripts/freeze_profile.py
 
 common:
   - --no_preview
   - --skip_video_output
   - --overwrite
 
+lars:
+  assumed_fps: 30             # no frame rate is documented by LaRS (D-024)
+  assumed_fps_decision: "D-024: 30 fps assumed; LaRS median inter-frame motion 0.66 px vs SMD@30fps 1.24 px"
+
 profiles:
   trial:                      # 5 s smoke, never used for data
-    args: [--dvs346, --stop_time, "5", --dvs_params, clean]
-
-  mvsec_cal:                  # TODO Phase 2: fill from argmin of calibration grid
+    allow_dvs_params: true
     size: [--dvs346]
     args:
-      - --auto_timestamp_resolution
-      - "True"
-      - --timestamp_resolution
-      - "0.001"               # TODO Phase 2: cap chosen from throughput
-      - --pos_thres
-      - "TODO"
-      - --neg_thres
-      - "TODO"
-      - --sigma_thres
-      - "TODO"
-      - --cutoff_hz
-      - "TODO"
-      - --shot_noise_rate_hz
-      - "TODO"
-      - --leak_rate_hz
-      - "0"
+      --dvs_params: clean
+      --auto_timestamp_resolution: "True"
+      --timestamp_resolution: "0.001"
+
+  # Nominal pixel model for the throughput sweep and the calibration grid: the grid overrides the
+  # four calibrated flags; everything else is pinned here (v2e defaults written out explicitly).
+  mvsec_grid:
+    size: [--dvs346]
+    args:
+      --auto_timestamp_resolution: "True"
+      --timestamp_resolution: "0.00075"   # cap: coarsest passing the 60 Hz lowpass check (D-025)
+      --pos_thres: "0.2"
+      --neg_thres: "0.2"
+      --sigma_thres: "0.03"
+      --cutoff_hz: "60"
+      --shot_noise_rate_hz: "0"
+      --leak_rate_hz: "0"
+      --refractory_period: "0.0005"
+      --batch_size: "8"              # SuperSloMo batch (speed only; checked in the sweep)
+
+  mvsec_cal:                  # frozen from the calibration argmin (scripts/freeze_profile.py)
+    base: mvsec_grid
+    args: {}
 
   mvsec_rand:                 # CT randomised per 60 s clip; range from calibration (tune only)
     base: mvsec_cal
     randomise:
       thres_range: [TODO, TODO]   # pos_thres = neg_thres drawn log-uniform
-      sigma_range: [TODO, TODO]
+      sigma_range: [TODO, TODO]   # sigma_thres drawn uniform
       corpora: 4
 
   maritime_640x360:
@@ -46,9 +61,20 @@ profiles:
     size: [--output_width, "640", --output_height, "360"]
     ct_variants: [0.67, 1.0, 1.5]   # multipliers on calibrated thresholds (clutter study)
 
-calibration_grid:             # Phase 2
+  maritime_346x260:           # throughput comparison only
+    base: mvsec_cal
+    size: [--output_width, "346", --output_height, "260"]
+
+calibration_grid:             # Phase 2, on mvsec_tune only (src/evflow/sim/calibrate.py)
   pos_neg_thres: [0.15, 0.2, 0.3, 0.4]
   sigma_thres: [0.02, 0.04]
   cutoff_hz: [0, 60]
   shot_noise_rate_hz: [0, 1.0]
-  objective: mean_wasserstein1_event_stats
+  objective: mean_wasserstein1_event_stats   # mean over stats of W1 / std(real) (D-027)
+  profile: mvsec_grid
+  seed: 1337                  # same emulator seed in every cell (common random numbers)
+  segments: {n: 3, n_frames: 175}   # 3 x 4.0 s evenly spaced inside mvsec_tune (D-028)
+  warmup_frames: 10           # first APS windows of each segment excluded (v2e state settling)
+  block_ms: 500               # blocks for per-pixel rate and hot-pixel fraction
+  rand_rule: {factor: 1.5, min_halfwidth: 0.3}   # plan Phase 2 step 3
+  ncc_rule: {fraction: 0.75, blur_sigma_px: 1.0, control_shift_frames: 5}   # + x-mirror control (D-029)

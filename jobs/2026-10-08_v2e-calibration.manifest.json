@@ -1,0 +1,31 @@
+{
+ "kind": "gpu_job_manifest",
+ "job": "jobs/2026-10-08_v2e-calibration.sh",
+ "plan_step": "Phase 2 step 3 (calibration grid on mvsec_tune only)",
+ "configs": [
+  "configs/v2e_profiles.yaml",
+  "configs/v2e_commit.txt",
+  "configs/paths.local.yaml.example"
+ ],
+ "inputs": {
+  "splits/mvsec_tune.json": {
+   "manifest_sha256": "9ea94aea246c4c9678b7ea22860574c22aa03fb57b25368bc19bc48861c5b9b5",
+   "file_sha256": "290a8f9b03388c5aaacef673d4ba495ed1f6d02c447a468d238c8f128975f0c7"
+  }
+ },
+ "expected_outputs": [
+  "data/converted/v2e/calibration/units/c??_seg?.{h5,json,v2e.json,log}",
+  "data/converted/v2e/calibration/stats/{real,c??}.json",
+  "results/v2e_calibration.json"
+ ],
+ "estimated_gpu_hours": 1.69,
+ "estimated_gpu_hours_basis": "results/v2e_throughput.json scenarios.chosen calibration_grid_3x4s x concurrency_factor (4-way)",
+ "disk_estimate_gb": 10,
+ "git_sha": "ab557bceb253a2f73fb6274a310248c74844cf0f",
+ "created_at": "2026-10-08",
+ "config_sha256": {
+  "configs/v2e_profiles.yaml": "d5cde15431db2e35b6f8e176234ab5c696715094d9d78d530c21acbce4b6ac23",
+  "configs/v2e_commit.txt": "ec39af09a501be1d2de71628dc2f1545f3776d8ce51fbaccef0aaa5233c3640b",
+  "configs/paths.local.yaml.example": "0f135f8b75733e3be16bb7329bf1ee61b4d885a9a763d1e0d9bb0f13096cf1a6"
+ }
+}

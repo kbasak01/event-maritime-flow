@@ -1,0 +1,45 @@
+# v2e corpus budget (IMPLEMENTATION_PLAN Phase 2 step 2): "total v2e budget <= 12 GPU-hours for the
+# full plan; cut mvsec_train minutes and SMD minutes to fit, and write the cut into DECISIONS.md".
+# Costed by scripts/summarise_throughput.py into results/v2e_throughput.json:
+#   GPU-s = (video_s * marginal rate of `rate_from` + units * overhead) * multiplier   (frame inputs)
+#   GPU-s = clips * median wall per clip of `rate_from` * multiplier                    (LaRS clips)
+# then x concurrency_factor (measured wall of n overlapping MVSEC units / n sequential ones).
+# Video seconds: splits/*.json (mvsec_test 265.58 s, mvsec_train 489.98 s, SMD 147.6 s, LaRS
+# 2603 train / 197 val clips). Cap 0.75 ms everywhere (D-025). LaRS cost uses the cap-0.5 ms
+# clip measurements (conservative: no cap-0.75 ms LaRS unit was run). Decisions: D-025, D-026, D-028.
+limit_gpu_hours: 12
+concurrency_reference: mvsec_auto_ts750
+
+scenarios:
+  full_plan:
+    description: corpus exactly as written in the plan (no cuts), units run concurrently
+    concurrency: 4
+    items:
+      - {name: calibration_grid_3x4s, video_s: 381.9, units: 96, rate_from: mvsec_auto_ts750}
+      - {name: mvsec_tune_cal, video_s: 60.0, units: 1, rate_from: mvsec_auto_ts750}
+      - {name: mvsec_test_cal, video_s: 265.58, units: 7, rate_from: mvsec_auto_ts750}
+      - {name: mvsec_train_cal, video_s: 489.98, units: 10, rate_from: mvsec_auto_ts750}
+      - {name: mvsec_train_rand_x4, video_s: 489.98, units: 10, multiplier: 4, rate_from: mvsec_auto_ts750}
+      - {name: smd_all_640x360, video_s: 147.6, units: 11, rate_from: smd_640x360_ts750}
+      - {name: lars_train_all, clips: 2603, rate_from: "lars_640x360_ts500_.*"}
+      - {name: lars_eval_clutter_x3ct, clips: 197, multiplier: 3, rate_from: "lars_640x360_ts500_.*"}
+
+  chosen:
+    description: corpus after the Phase 2 cuts (D-026); calibration as measured (D-028)
+    concurrency: 4
+    items:
+      - {name: calibration_grid_3x4s_measured, measured_from: results/v2e_calibration.json, concurrency: 4}
+      - {name: mvsec_tune_cal, video_s: 60.0, units: 1, rate_from: mvsec_auto_ts750}
+      - {name: mvsec_test_cal, video_s: 265.58, units: 7, rate_from: mvsec_auto_ts750}
+      - {name: mvsec_train_cal_4x60s, video_s: 240.0, units: 4, rate_from: mvsec_auto_ts750}
+      - {name: mvsec_train_rand_x4_4x60s, video_s: 240.0, units: 4, multiplier: 4, rate_from: mvsec_auto_ts750}
+      - {name: smd_train_640x360_4x15s, video_s: 60.0, units: 4, rate_from: smd_640x360_ts750}
+      - {name: smd_test_640x360_3x10s, video_s: 30.0, units: 3, rate_from: smd_640x360_ts750}
+      - {name: lars_train_subset, clips: 200, rate_from: "lars_640x360_ts500_.*"}
+      - {name: lars_eval_clutter_x3ct, clips: 80, multiplier: 3, rate_from: "lars_640x360_ts500_.*"}
+
+  calibration_full_tune:
+    description: the 32-cell grid on the whole 60 s tune slice (alternative rejected in D-028)
+    concurrency: 4
+    items:
+      - {name: calibration_grid_full_60s, video_s: 1920.0, units: 32, rate_from: mvsec_auto_ts750}

@@ -1,0 +1,38 @@
+{
+ "kind": "gpu_job_manifest",
+ "job": "jobs/2026-10-08_v2e-throughput-concurrency.sh",
+ "plan_step": "Phase 2 step 2 (cap 0.75 ms, SMD re-run, concurrency)",
+ "configs": [
+  "configs/v2e_profiles.yaml",
+  "configs/v2e_commit.txt",
+  "configs/paths.local.yaml.example",
+  "configs/v2e_budget.yaml"
+ ],
+ "inputs": {
+  "splits/mvsec_tune.json": {
+   "manifest_sha256": "9ea94aea246c4c9678b7ea22860574c22aa03fb57b25368bc19bc48861c5b9b5",
+   "file_sha256": "290a8f9b03388c5aaacef673d4ba495ed1f6d02c447a468d238c8f128975f0c7"
+  },
+  "splits/smd_train.json": {
+   "manifest_sha256": "e994381f2fa4fb2ddece4b0dc4a01c09a69b04717db2af97b2f16c889425571e",
+   "file_sha256": "ddb65d517dac6405158381fe49f3438c22d33dedb9d6fb47e3f70bb099770a58"
+  }
+ },
+ "expected_outputs": [
+  "data/converted/v2e/throughput/*ts750*",
+  "data/converted/v2e/throughput/smd_*",
+  "data/converted/v2e/throughput/concurrency_*.batch.json",
+  "results/v2e_throughput.json"
+ ],
+ "estimated_gpu_hours": 0.75,
+ "estimated_gpu_hours_basis": "results/v2e_throughput.json units of the first sweep",
+ "disk_estimate_gb": 3,
+ "git_sha": "ab557bceb253a2f73fb6274a310248c74844cf0f",
+ "created_at": "2026-10-08",
+ "config_sha256": {
+  "configs/v2e_profiles.yaml": "d5cde15431db2e35b6f8e176234ab5c696715094d9d78d530c21acbce4b6ac23",
+  "configs/v2e_commit.txt": "ec39af09a501be1d2de71628dc2f1545f3776d8ce51fbaccef0aaa5233c3640b",
+  "configs/paths.local.yaml.example": "0f135f8b75733e3be16bb7329bf1ee61b4d885a9a763d1e0d9bb0f13096cf1a6",
+  "configs/v2e_budget.yaml": "3b5ebf4e2920eb3c25727824e5918f0f50576d3bc61684cf549bcf041ad0e9aa"
+ }
+}

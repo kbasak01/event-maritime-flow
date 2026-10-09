@@ -1,0 +1,67 @@
+{
+ "split": "mvsec_train",
+ "dataset": "mvsec",
+ "sequence": "outdoor_day2",
+ "camera": "left",
+ "clock": "absolute us, round(unix_s*1e6)",
+ "sources": [
+  {
+   "path": "~/projects_02/event-maritime-flow/data/mvsec/hdf5/outdoor_day/outdoor_day2_data.hdf5",
+   "size_bytes": 41506282485,
+   "sha256": "89cc65a27f68131d6282b83c55bf0e983ce44d2f26955b645447cc6404e9353c"
+  },
+  {
+   "path": "~/projects_02/event-maritime-flow/data/mvsec/gt_flow/outdoor_day/outdoor_day2_gt_flow_dist.npz",
+   "size_bytes": 17555972270,
+   "sha256": "458cba89fdf5e669e766bf26ee607bdce9167b14dd0bb52ac20832cbb0ca7c30"
+  }
+ ],
+ "gt_span_us": [
+  1506119819827594,
+  1506120429802729
+ ],
+ "seed": 20261008,
+ "rule": "GT span minus [tune_start - 30 s, tune_end + 30 s); windows must lie fully inside one range",
+ "ranges_us": [
+  [
+   1506119819827594,
+   1506119829827594
+  ],
+  [
+   1506119949827594,
+   1506120429802729
+  ]
+ ],
+ "ranges_s_from_first_aps": [
+  [
+   43.455,
+   53.455
+  ],
+  [
+   173.455,
+   653.43
+  ]
+ ],
+ "aps": [
+  {
+   "aps_first": 1901,
+   "aps_last": 2338,
+   "n_frames": 438,
+   "n_windows_dt1": 437,
+   "n_windows_dt4": 434
+  },
+  {
+   "aps_first": 7588,
+   "aps_last": 28582,
+   "n_frames": 20995,
+   "n_windows_dt1": 20994,
+   "n_windows_dt4": 20991
+  }
+ ],
+ "excluded_gap_us": 30000000,
+ "used_for": [
+  "training every MVSEC arm"
+ ],
+ "created_by": "scripts/make_splits.py",
+ "manifest_sha256": "bdf68aae9bfb3f8687a65b7df8e1aa9ffb62b731bbe6a65d533a61d24ca5d857"
+}

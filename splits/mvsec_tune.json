@@ -1,0 +1,61 @@
+{
+ "split": "mvsec_tune",
+ "dataset": "mvsec",
+ "sequence": "outdoor_day2",
+ "camera": "left",
+ "clock": "absolute us, round(unix_s*1e6)",
+ "sources": [
+  {
+   "path": "~/projects_02/event-maritime-flow/data/mvsec/hdf5/outdoor_day/outdoor_day2_data.hdf5",
+   "size_bytes": 41506282485,
+   "sha256": "89cc65a27f68131d6282b83c55bf0e983ce44d2f26955b645447cc6404e9353c"
+  },
+  {
+   "path": "~/projects_02/event-maritime-flow/data/mvsec/gt_flow/outdoor_day/outdoor_day2_gt_flow_dist.npz",
+   "size_bytes": 17555972270,
+   "sha256": "458cba89fdf5e669e766bf26ee607bdce9167b14dd0bb52ac20832cbb0ca7c30"
+  }
+ ],
+ "gt_span_us": [
+  1506119819827594,
+  1506120429802729
+ ],
+ "seed": 20261008,
+ "rule": "one contiguous 60 s slice, start drawn uniformly on a 1 s grid inside the GT span with numpy default_rng(20261008); redrawn while the median over 1 Hz-sampled GT fields of the per-field median |GT| < 0.1 px",
+ "ranges_us": [
+  [
+   1506119859827594,
+   1506119919827594
+  ]
+ ],
+ "ranges_s_from_first_aps": [
+  [
+   83.455,
+   143.455
+  ]
+ ],
+ "aps": [
+  {
+   "aps_first": 3651,
+   "aps_last": 6275,
+   "n_frames": 2625,
+   "n_windows_dt1": 2624,
+   "n_windows_dt4": 2621
+  }
+ ],
+ "draws": [
+  {
+   "grid_index": 40,
+   "t_start_us": 1506119859827594,
+   "median_gt_px": 0.6847,
+   "rejected_static": false
+  }
+ ],
+ "used_for": [
+  "v2e calibration",
+  "model/epoch selection",
+  "CT-randomisation range"
+ ],
+ "created_by": "scripts/make_splits.py",
+ "manifest_sha256": "9ea94aea246c4c9678b7ea22860574c22aa03fb57b25368bc19bc48861c5b9b5"
+}

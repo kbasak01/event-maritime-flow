@@ -1,0 +1,145 @@
+{
+ "split": "mvsec_test",
+ "dataset": "mvsec",
+ "protocol": "configs/eval_mvsec.yaml",
+ "clock": "absolute us, round(unix_s*1e6)",
+ "sequences": [
+  {
+   "sequence": "indoor_flying1",
+   "camera": "left",
+   "rule": "all_in_gt_span",
+   "range_us": [
+    1504645177711321,
+    1504645247621229
+   ],
+   "windows": {
+    "dt1": {
+     "aps_first": 9,
+     "aps_last": 2201,
+     "n_windows": 2193
+    },
+    "dt4": {
+     "aps_first": 9,
+     "aps_last": 2198,
+     "n_windows": 2190
+    }
+   },
+   "sources": [
+    {
+     "path": "~/projects_02/event-maritime-flow/data/mvsec/hdf5/indoor_flying/indoor_flying1_data.hdf5",
+     "size_bytes": 1700819167,
+     "sha256": "9e8315403758cf000c80e4884c0d1d898b4362d6026cdcf2ae668971c5160eab"
+    },
+    {
+     "path": "~/projects_02/event-maritime-flow/data/mvsec/gt_flow/indoor_flying/indoor_flying1_gt_flow_dist.npz",
+     "size_bytes": 2013676442,
+     "sha256": "09c2a14cfdeb6f60927ffcc12678ab215249076ccd539b8b70d31ff74f9c8e1e"
+    }
+   ]
+  },
+  {
+   "sequence": "indoor_flying2",
+   "camera": "left",
+   "rule": "all_in_gt_span",
+   "range_us": [
+    1504645268012208,
+    1504645352518834
+   ],
+   "windows": {
+    "dt1": {
+     "aps_first": 9,
+     "aps_last": 2660,
+     "n_windows": 2652
+    },
+    "dt4": {
+     "aps_first": 9,
+     "aps_last": 2657,
+     "n_windows": 2649
+    }
+   },
+   "sources": [
+    {
+     "path": "~/projects_02/event-maritime-flow/data/mvsec/hdf5/indoor_flying/indoor_flying2_data.hdf5",
+     "size_bytes": 2532552285,
+     "sha256": "a547babf4c20cbd558fd59d936cec588d3308761b8b2cb436a11e348ecc3d608"
+    },
+    {
+     "path": "~/projects_02/event-maritime-flow/data/mvsec/gt_flow/indoor_flying/indoor_flying2_gt_flow_dist.npz",
+     "size_bytes": 2433971974,
+     "sha256": "1508840c6aec2f976173a293e202519cdef695a6a7991b3ee00c9127d044adf5"
+    }
+   ]
+  },
+  {
+   "sequence": "indoor_flying3",
+   "camera": "left",
+   "rule": "all_in_gt_span",
+   "range_us": [
+    1504645443356814,
+    1504645537016036
+   ],
+   "windows": {
+    "dt1": {
+     "aps_first": 9,
+     "aps_last": 2947,
+     "n_windows": 2939
+    },
+    "dt4": {
+     "aps_first": 9,
+     "aps_last": 2944,
+     "n_windows": 2936
+    }
+   },
+   "sources": [
+    {
+     "path": "~/projects_02/event-maritime-flow/data/mvsec/hdf5/indoor_flying/indoor_flying3_data.hdf5",
+     "size_bytes": 2625560959,
+     "sha256": "9706cd43d95b7249f56f385af622524e2893514166af9b651711c924d24240e9"
+    },
+    {
+     "path": "~/projects_02/event-maritime-flow/data/mvsec/gt_flow/indoor_flying/indoor_flying3_gt_flow_dist.npz",
+     "size_bytes": 2697376318,
+     "sha256": "8fc3db0788d2d30ba1f6f747e3b7377058ccb104a30602226e9dac24a005af8b"
+    }
+   ]
+  },
+  {
+   "sequence": "outdoor_day1",
+   "camera": "left",
+   "rule": "time_range",
+   "range_us": [
+    1506118120162041,
+    1506118137667426
+   ],
+   "windows": {
+    "dt1": {
+     "aps_first": 10164,
+     "aps_last": 10960,
+     "n_windows": 797
+    },
+    "dt4": {
+     "aps_first": 10164,
+     "aps_last": 10957,
+     "n_windows": 794
+    }
+   },
+   "sources": [
+    {
+     "path": "~/projects_02/event-maritime-flow/data/mvsec/hdf5/outdoor_day/outdoor_day1_data.hdf5",
+     "size_bytes": 12136423279,
+     "sha256": "ff1d4db969b28aac219cb63efdf470a68c0bc1420b7a53fdaa0dab102887ce4d"
+    },
+    {
+     "path": "~/projects_02/event-maritime-flow/data/mvsec/gt_flow/outdoor_day/outdoor_day1_gt_flow_dist.npz",
+     "size_bytes": 7389716086,
+     "sha256": "702aa855415685f381e0dc3ac7d18e72e0ace422bbaf038f184abd7254c91fe4"
+    }
+   ]
+  }
+ ],
+ "used_for": [
+  "T1/T2 evaluation only"
+ ],
+ "created_by": "scripts/make_splits.py",
+ "manifest_sha256": "b45014a33bfc02740e3804061554ea4a14955d50468e87bfd154fbeef14a8e2e"
+}

@@ -1,0 +1,34 @@
+{
+ "split": "smd_test",
+ "dataset": "smd",
+ "subset": "VIS_Onboard",
+ "rule": "by video: numpy default_rng(20261008).permutation over the sorted VIS_Onboard AVIs; first 3 -> smd_test, rest -> smd_train",
+ "seed": 20261008,
+ "videos": [
+  "MVI_0789_VIS_OB",
+  "MVI_0790_VIS_OB",
+  "MVI_0799_VIS_OB"
+ ],
+ "files": [
+  {
+   "path": "~/projects_02/event-maritime-flow/data/smd/VIS_Onboard/Videos/MVI_0789_VIS_OB.avi",
+   "size_bytes": 45789348,
+   "sha256": "6c77b8278d29831d8b9ac1e2996214509e88d9b4592056033f7fb1d5cf21e766"
+  },
+  {
+   "path": "~/projects_02/event-maritime-flow/data/smd/VIS_Onboard/Videos/MVI_0790_VIS_OB.avi",
+   "size_bytes": 116553130,
+   "sha256": "e5e374a6f0c374a7ae82dd61701fc462aeec05602b7ecb5fb1ac5d3e86ea5aa3"
+  },
+  {
+   "path": "~/projects_02/event-maritime-flow/data/smd/VIS_Onboard/Videos/MVI_0799_VIS_OB.avi",
+   "size_bytes": 76675938,
+   "sha256": "6f46acab44e68cf1e6ce6d83076e2506c61af22ef999437501c76bf44bee58aa"
+  }
+ ],
+ "used_for": [
+  "T3 evaluation only"
+ ],
+ "created_by": "scripts/make_splits.py",
+ "manifest_sha256": "4883a16613ef6f5c4f3452036a1360165f4215052605ef43599fe0c71865a599"
+}

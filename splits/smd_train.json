@@ -1,0 +1,64 @@
+{
+ "split": "smd_train",
+ "dataset": "smd",
+ "subset": "VIS_Onboard",
+ "rule": "by video: numpy default_rng(20261008).permutation over the sorted VIS_Onboard AVIs; first 3 -> smd_test, rest -> smd_train",
+ "seed": 20261008,
+ "videos": [
+  "MVI_0788_VIS_OB",
+  "MVI_0792_VIS_OB",
+  "MVI_0794_VIS_OB",
+  "MVI_0795_VIS_OB",
+  "MVI_0796_VIS_OB",
+  "MVI_0797_VIS_OB",
+  "MVI_0801_VIS_OB",
+  "MVI_0804_VIS_OB"
+ ],
+ "files": [
+  {
+   "path": "~/projects_02/event-maritime-flow/data/smd/VIS_Onboard/Videos/MVI_0788_VIS_OB.avi",
+   "size_bytes": 72444920,
+   "sha256": "75a5b733561b03e75d939e8c34f463a00ed08a9fcc9b496cd56e1da12ca87351"
+  },
+  {
+   "path": "~/projects_02/event-maritime-flow/data/smd/VIS_Onboard/Videos/MVI_0792_VIS_OB.avi",
+   "size_bytes": 47669530,
+   "sha256": "4e5e65fb04e3bb5c5368aebb204a2f6bc64a292f1452519f0d59c73aecf6c1ae"
+  },
+  {
+   "path": "~/projects_02/event-maritime-flow/data/smd/VIS_Onboard/Videos/MVI_0794_VIS_OB.avi",
+   "size_bytes": 47283270,
+   "sha256": "10e8f27d25598314270e90e936d00247598b3735465b0bc9bfb6f79b31636910"
+  },
+  {
+   "path": "~/projects_02/event-maritime-flow/data/smd/VIS_Onboard/Videos/MVI_0795_VIS_OB.avi",
+   "size_bytes": 46096324,
+   "sha256": "86729c449ad91dcc3e9a25d1c2bacd07444e05963c361d4fbfdc45b655d5f821"
+  },
+  {
+   "path": "~/projects_02/event-maritime-flow/data/smd/VIS_Onboard/Videos/MVI_0796_VIS_OB.avi",
+   "size_bytes": 52634582,
+   "sha256": "ce68aadace10250c564aa53d73776f01bd33f9dbf2631c14438ea9a113dbe28d"
+  },
+  {
+   "path": "~/projects_02/event-maritime-flow/data/smd/VIS_Onboard/Videos/MVI_0797_VIS_OB.avi",
+   "size_bytes": 113705922,
+   "sha256": "c7ce446fc3a1cb30ae4070d0d1eaba59daf3a9ce0ab50b262025a890d9ddc07a"
+  },
+  {
+   "path": "~/projects_02/event-maritime-flow/data/smd/VIS_Onboard/Videos/MVI_0801_VIS_OB.avi",
+   "size_bytes": 117542060,
+   "sha256": "fa4fad2983f5653023f771711b2b955693b6780cd832275636d986072cf3abe1"
+  },
+  {
+   "path": "~/projects_02/event-maritime-flow/data/smd/VIS_Onboard/Videos/MVI_0804_VIS_OB.avi",
+   "size_bytes": 67257084,
+   "sha256": "f60801d784f263f6313100dbdd926d50226257606fb178c1dc058a6fd056c941"
+  }
+ ],
+ "used_for": [
+  "maritime training"
+ ],
+ "created_by": "scripts/make_splits.py",
+ "manifest_sha256": "e994381f2fa4fb2ddece4b0dc4a01c09a69b04717db2af97b2f16c889425571e"
+}
