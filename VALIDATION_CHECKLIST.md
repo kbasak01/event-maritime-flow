@@ -6,19 +6,19 @@ Phase 9 walks every line. Verdict ∈ {met, met-with-caveat, unmet} + evidence p
 ## A. Data integrity and conventions
 - [x] A1 (critical) Canonical store: `t` int64 µs monotonic, `p` ∈ {0,1}, `x<width`, `y<height`, `ms_to_idx` satisfies the DSEC definition — checked on every converted file (`event-data-auditor` report). — Phase 1 gate: `docs/gates/phase-1.md`.
 - [x] A2 (critical) MVSEC event column order, time units and polarity encoding were verified against the file and recorded in `docs/DECISIONS.md`. — Phase 1 gate: `docs/gates/phase-1.md`.
-- [ ] A3 v2e `--dvs_h5` layout verified with `h5ls -v` and recorded before the converter was written.
+- [x] A3 v2e `--dvs_h5` layout verified with `h5ls -v` and recorded before the converter was written. (`scripts/h5_layout.py` stands in for `h5ls`, not installed; D-022) — Phase 2 gate: `docs/gates/phase-2.md`.
 - [x] A4 DSEC events rectified with `rectify_map.h5`; flow PNG decode round-trips; valid mask honoured. — Phase 1 gate: `docs/gates/phase-1.md`.
 - [x] A5 MVSEC GT flow and events refer to the same (distorted/undistorted) pixel space; stated. — Phase 1 gate: `docs/gates/phase-1.md`.
-- [ ] A6 Split manifests regenerate byte-identically from the seed; SHA-256 committed.
+- [x] A6 Split manifests regenerate byte-identically from the seed; SHA-256 committed. — Phase 2 gate: `docs/gates/phase-2.md`.
 - [ ] A7 (critical) No test sequence used for calibration, CT range, epoch or model selection (grep of configs + run manifests).
 
 ## B. Simulator
-- [ ] B1 Every v2e output has a manifest (commit, argv, seed, input/output SHA, wall time).
-- [ ] B2 `--input_frame_rate` set explicitly for every input; source documented.
-- [ ] B3 Calibration used `mvsec_tune` only; objective and grid recorded; argmin reproducible.
+- [x] B1 Every v2e output has a manifest (commit, argv, seed, input/output SHA, wall time). — Phase 2 gate: `docs/gates/phase-2.md`.
+- [x] B2 `--input_frame_rate` set explicitly for every input; source documented. — Phase 2 gate: `docs/gates/phase-2.md`.
+- [x] B3 Calibration used `mvsec_tune` only; objective and grid recorded; argmin reproducible. — Phase 2 gate: `docs/gates/phase-2.md`.
 - [ ] B4 v2e↔real alignment cross-correlation reported per sequence; threshold set before looking at test.
 - [ ] B5 Fidelity report (event statistics, real vs v2e) present for every test sequence.
-- [ ] B6 Throughput measured and the corpus cuts it forced are documented.
+- [x] B6 Throughput measured and the corpus cuts it forced are documented. — Phase 2 gate: `docs/gates/phase-2.md`.
 
 ## C. Metrics
 - [x] C1 (critical) EPE/%Out/NPE/AE match hand-computed fixtures and the vendored MIT oracle to 1e-6. — Phase 1 gate: `docs/gates/phase-1.md`.
