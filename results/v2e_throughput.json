@@ -1051,6 +1051,24 @@
      "measured": true
     },
     {
+     "name": "phase3_7_trials_mvsec_rand_extremes",
+     "video_s": 10.0,
+     "units": 2,
+     "rate_from": "mvsec_auto_ts750",
+     "marginal_per_video_s": 31.16,
+     "overhead_s": 6.8,
+     "gpu_hours": 0.09
+    },
+    {
+     "name": "phase3_7_trial_maritime_640x360",
+     "video_s": 5.0,
+     "units": 1,
+     "rate_from": "smd_640x360_ts750",
+     "marginal_per_video_s": 56.2,
+     "overhead_s": 11.8,
+     "gpu_hours": 0.081
+    },
+    {
      "name": "mvsec_tune_cal",
      "video_s": 60.0,
      "units": 1,
@@ -1107,10 +1125,10 @@
     },
     {
      "name": "lars_train_subset",
-     "clips": 120,
+     "clips": 110,
      "rate_from": "lars_640x360_ts500_.*",
      "per_clip_wall_s": 36.394999999999996,
-     "gpu_hours": 1.213
+     "gpu_hours": 1.112
     },
     {
      "name": "lars_eval_clutter_x3ct",
@@ -1122,10 +1140,10 @@
     }
    ],
    "measured_gpu_hours": 3.75,
-   "sequential_gpu_hours": 16.87,
+   "sequential_gpu_hours": 16.94,
    "concurrency": 4,
    "concurrency_factor": 0.484,
-   "total_gpu_hours": 11.91,
+   "total_gpu_hours": 11.95,
    "within_limit": true
   },
   "calibration_full_tune": {
@@ -1149,7 +1167,7 @@
    "within_limit": true
   }
  },
- "git_sha": "d4d1cd22fc6a17d6932db773c5e549ee5ad3b5ea",
+ "git_sha": "4f28991d6fa584f6d0316aa4590a79a8b024b172",
  "created_by": "scripts/summarise_throughput.py",
- "created_at": "2026-10-09T03:54:39+00:00"
+ "created_at": "2026-10-09T04:06:20+00:00"
 }
