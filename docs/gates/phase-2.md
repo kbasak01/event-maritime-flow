@@ -25,7 +25,7 @@ fe1860e, 6c5d2cc (+ this gate commit)
 | 13 | Results JSON keys (event-conventions / rule 1) | PASS | `tests/test_results_have_tiers.py` green; calibration `tier T2`; throughput and LaRS fps `tier n/a` + `tier_note` (compute cost / input setting, not evidence) |
 | 14 | No HDR / latency / "realistic" claim from v2e (rule 2) | PASS | both auditors grepped docs, configs, jobs, `sim/`; none |
 | 15 | GPU jobs prepared with `gpu-job` (script + manifest, resumable, logs) | PASS | `jobs/2026-10-08_v2e-{throughput,throughput-concurrency,calibration}.{sh,manifest.json}` |
-| 16 | CI green on the pushed commit | see below | |
+| 16 | CI green on the pushed commit | PASS | GitHub Actions `ci` run 37882337106 on 7921940: `ruff check` → `All checks passed!`, `pytest -q` → `210 passed, 7 deselected` |
 
 Checklist lines closed by this gate (VALIDATION_CHECKLIST.md): A3, A6, B1, B2, B3, B6. B4 is half
 met (threshold fixed on tune before any test conversion); "reported per sequence" is Phase 3.
@@ -83,7 +83,7 @@ N4 SMD has no CT variants — all three addressed in D-026 / D-031.
 
 ## CI
 
-(recorded after push)
+PASS — run 37882337106 (https://github.com/kbasak01/event-maritime-flow/actions/runs/37882337106), conclusion `success` on 7921940.
 
 ## Overall verdict
 
