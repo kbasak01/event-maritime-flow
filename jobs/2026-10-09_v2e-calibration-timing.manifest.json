@@ -1,0 +1,33 @@
+{
+ "kind": "gpu_job_manifest",
+ "job": "jobs/2026-10-09_v2e-calibration-timing.sh",
+ "plan_step": "Phase 3 gate fix D-035: re-calibration on mvsec_tune only with a timing (lag) eligibility constraint",
+ "configs": [
+  "configs/v2e_profiles.yaml",
+  "configs/v2e_commit.txt",
+  "configs/paths.local.yaml.example"
+ ],
+ "config_sha256": {
+  "configs/v2e_profiles.yaml": "eef3357bc3d6c90cee1988c4a2312b16dc8cc68ed343358044ed7a1a054dedc0",
+  "configs/v2e_commit.txt": "ec39af09a501be1d2de71628dc2f1545f3776d8ce51fbaccef0aaa5233c3640b",
+  "configs/paths.local.yaml.example": "0f135f8b75733e3be16bb7329bf1ee61b4d885a9a763d1e0d9bb0f13096cf1a6"
+ },
+ "inputs": {
+  "splits/mvsec_tune.json": {
+   "manifest_sha256": "9ea94aea246c4c9678b7ea22860574c22aa03fb57b25368bc19bc48861c5b9b5",
+   "file_sha256": "290a8f9b03388c5aaacef673d4ba495ed1f6d02c447a468d238c8f128975f0c7"
+  },
+  "data/converted/v2e/calibration (Phase 2 grid units + stats, reused)": "results/v2e_calibration.json"
+ },
+ "expected_outputs": [
+  "data/converted/v2e/calibration_timing/units/t??_seg?.{h5,json,v2e.json,log}",
+  "data/converted/v2e/calibration_timing/stats/{real,t??}.json",
+  "results/v2e_calibration_timing.json"
+ ],
+ "estimated_gpu_hours": 0.8,
+ "estimated_gpu_hours_basis": "results/v2e_calibration.json: the 8 thres-0.4 cells cost 5333 s summed unit wall at 4-way -> 0.37 GPU-h; 16 cells -> 0.74, +10 % for cutoff 0 (more events)",
+ "disk_estimate_gb": 1.5,
+ "prepared_on_git_sha": "547bd34ca85e96e467e868ef012b1526469510d2",
+ "launch": "from a clean detached worktree of the commit that adds this job (D-031)",
+ "created_at": "2026-10-09"
+}

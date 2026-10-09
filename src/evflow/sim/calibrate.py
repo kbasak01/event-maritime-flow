@@ -15,6 +15,18 @@ control.
     python -m evflow.sim.calibrate real --work DIR               # real-event statistics
     python -m evflow.sim.calibrate summarise --work DIR      # -> results/v2e_calibration.json
 
+Timing re-calibration (Phase 3, D-035): grid ``calibration_grid_timing`` (inherits segments,
+seed and rules from ``calibration_grid``; cell ids ``t00``…) run with
+``--grid calibration_grid_timing``, then
+
+    python -m evflow.sim.calibrate summarise-timing --work DIR --base-work DIR0
+        # -> results/v2e_calibration_timing.json
+
+Every cell of both grids gets a count-image NCC-vs-lag profile against the real events of the
+same windows (``sim/fidelity.py``); only cells whose peak lies within
+``lag_rule.max_abs_peak_lag_frames``
+of zero are eligible, and the argmin of the same objective among them becomes ``mvsec_cal``.
+
 Guard: every segment and every window must lie inside ``splits/mvsec_tune.json``; any other
 range raises before v2e or a store is touched.
 """
@@ -34,6 +46,7 @@ import yaml
 
 from evflow.io.mvsec import read_aps_timestamps_us
 from evflow.io.store import EventSlicer, EventStore
+from evflow.sim import fidelity as F
 from evflow.sim import stats as S
 from evflow.sim.splits import LeakageError
 
@@ -42,6 +55,7 @@ TUNE_SPLIT = REPO / "splits" / "mvsec_tune.json"
 PROFILES = REPO / "configs" / "v2e_profiles.yaml"
 PATHS = REPO / "configs" / "paths.local.yaml"
 RESULT = REPO / "results" / "v2e_calibration.json"
+RESULT_TIMING = REPO / "results" / "v2e_calibration_timing.json"
 GRID_FLAGS = {"pos_neg_thres": ("--pos_thres", "--neg_thres"), "sigma_thres": ("--sigma_thres",),
               "cutoff_hz": ("--cutoff_hz",), "shot_noise_rate_hz": ("--shot_noise_rate_hz",)}
 
@@ -50,13 +64,27 @@ GRID_FLAGS = {"pos_neg_thres": ("--pos_thres", "--neg_thres"), "sigma_thres": ("
 # pure rules (unit-tested)
 
 def grid_cells(grid: dict) -> list[dict]:
-    """Cells in a fixed order: thres (slowest) × sigma × cutoff × shot noise (fastest)."""
+    """Cells in a fixed order: thres (slowest) × sigma × cutoff × shot noise (fastest); ids
+    ``<cell_prefix><i:02d>`` (prefix ``c`` unless the grid sets another)."""
     keys = list(GRID_FLAGS)
+    prefix = grid.get("cell_prefix", "c")
     cells = []
     for i, vals in enumerate(itertools.product(*(grid[k] for k in keys))):
-        cells.append({"cell": f"c{i:02d}", **{k: float(v) for k, v in zip(keys, vals,
-                                                                            strict=True)}})
+        cells.append({"cell": f"{prefix}{i:02d}", **{k: float(v) for k, v in zip(
+            keys, vals, strict=True)}})
     return cells
+
+
+def resolve_grid(prof: dict, key: str) -> dict:
+    """A grid section; ``base:`` inherits every key the grid does not set."""
+    g = dict(prof[key])
+    if "base" in g:
+        g = {**resolve_grid(prof, g.pop("base")), **g}
+    return g
+
+
+def lag_eligible(lag: dict, max_abs: float) -> bool:
+    return abs(float(lag["peak_lag_frames"])) <= max_abs
 
 
 def cell_overrides(cell: dict) -> dict[str, str]:
@@ -138,9 +166,9 @@ def _load(path: Path) -> dict:
         path.read_text())
 
 
-def _ctx() -> dict:
+def _ctx(grid_key: str = "calibration_grid") -> dict:
     prof = _load(PROFILES)
-    grid = prof["calibration_grid"]
+    grid = resolve_grid(prof, grid_key)
     tune = json.loads(TUNE_SPLIT.read_text())
     paths = _load(PATHS)
     segs = segments(tune, int(grid["segments"]["n"]), int(grid["segments"]["n_frames"]))
@@ -196,8 +224,9 @@ def _unit_name(cell: str, j: int) -> str:
 # ---------------------------------------------------------------------------------------------
 # commands
 
-def cmd_cell(cell_id: str, work: Path, seed: int) -> dict:
-    ctx = _ctx()
+def cmd_cell(cell_id: str, work: Path, seed: int,
+             grid_key: str = "calibration_grid") -> dict:
+    ctx = _ctx(grid_key)
     cells = {c["cell"]: c for c in grid_cells(ctx["grid"])}
     cell = cells[cell_id]
     out_json = work / "stats" / f"{cell_id}.json"
@@ -227,8 +256,8 @@ def cmd_cell(cell_id: str, work: Path, seed: int) -> dict:
     return doc
 
 
-def cmd_real(work: Path) -> dict:
-    ctx = _ctx()
+def cmd_real(work: Path, grid_key: str = "calibration_grid") -> dict:
+    ctx = _ctx(grid_key)
     out_json = work / "stats" / "real.json"
     aps = _aps_us(ctx["paths"])
     # export the segments' APS frames once, before cells run concurrently on the same cache
@@ -273,6 +302,102 @@ def _ncc(ctx: dict, aps: np.ndarray, work: Path, cell_id: str) -> dict:
         "control_below_threshold": bool(np.nanmedian(vs) < thr),
         "mirror_control_median": float(np.nanmedian(vm)),
         "mirror_control_below_threshold": bool(np.nanmedian(vm) < thr)}
+
+
+def _lag(ctx: dict, aps: np.ndarray, work: Path, cell_id: str, real: list[dict]) -> dict:
+    """NCC-vs-lag profile of one cell over the calibration windows of every segment."""
+    g = ctx["grid"]
+    vals: dict[float, list] = {}
+    for j, (a, b) in enumerate(ctx["segs"]):
+        syn = _store_events(work / "units" / f"{_unit_name(cell_id, j)}.h5")
+        unit = {"aps": [a, b], "owned_window_starts": [a, b - 1],
+                "stats_from_window": a + int(g["warmup_frames"])}
+        check_windows_inside_tune(ctx["tune"], F.windows(aps, F.owned_window_starts(unit)))
+        for f, v in F.unit_lag_ncc(real[j], syn, aps, unit, 346, 260,
+                                   float(g["ncc_rule"]["blur_sigma_px"])).items():
+            vals.setdefault(f, []).append(v)
+    return F.lag_summary(vals)
+
+
+def timing_choice(rows: list[dict], max_abs_lag: float, factor: float,
+                  min_halfwidth: float) -> dict:
+    """Argmin of the objective among lag-eligible cells, and the randomisation range from the
+    eligible cells only (plan Phase 2 rule applied to the eligible set, D-035)."""
+    elig = [r for r in rows if lag_eligible(r["lag"], max_abs_lag)]
+    if not elig:
+        raise RuntimeError("no calibration cell is lag-eligible")
+    objs = {r["cell"]: r["objective"] for r in elig}
+    argmin = min(objs, key=lambda k: (objs[k], k))
+    keys = ("cell",) + tuple(GRID_FLAGS)
+    cells = [{k: r[k] for k in keys} for r in elig]
+    return {"eligible": [r["cell"] for r in elig], "argmin": argmin,
+            "argmin_params": next(c for c in cells if c["cell"] == argmin),
+            "rand": rand_range(cells, objs, argmin, factor, min_halfwidth)}
+
+
+def cmd_summarise_timing(work: Path, base_work: Path, out: Path = RESULT_TIMING) -> dict:
+    """D-035: timing grid + the Phase 2 grid, each cell with a lag profile; choice among the
+    lag-eligible cells; NCC threshold re-derived on tune for the new argmin."""
+    ctx = _ctx("calibration_grid_timing")
+    base_ctx = _ctx()
+    g = ctx["grid"]
+    if ctx["segs"] != base_ctx["segs"] or g["seed"] != base_ctx["grid"]["seed"]:
+        raise RuntimeError("timing grid must use the Phase 2 segments and seed")
+    real = json.loads((work / "stats" / "real.json").read_text())
+    real0 = json.loads((base_work / "stats" / "real.json").read_text())
+    if real["hist"] != real0["hist"]:
+        raise RuntimeError("real-event statistics differ between the two work dirs")
+    rh = {k: np.asarray(v) for k, v in real["hist"].items()}
+    aps = _aps_us(ctx["paths"])
+    real_ev = _real_segment_events(ctx, aps)
+    rows = []
+    for grid_key, c_ctx, w in (("calibration_grid", base_ctx, base_work),
+                               ("calibration_grid_timing", ctx, work)):
+        for c in grid_cells(c_ctx["grid"]):
+            d = json.loads((w / "stats" / f"{c['cell']}.json").read_text())
+            obj, per = S.objective(rh, {k: np.asarray(v) for k, v in d["hist"].items()})
+            rows.append({**c, "grid": grid_key, "objective": obj, "w1_normalised": per,
+                         "n_events": d["n_events"], "units": d["units"], "hist": d["hist"],
+                         "lag": _lag(c_ctx, aps, w, c["cell"], real_ev)})
+    rule = g["lag_rule"]
+    choice = timing_choice(rows, float(rule["max_abs_peak_lag_frames"]),
+                           float(g["rand_rule"]["factor"]), float(g["rand_rule"]["min_halfwidth"]))
+    am = choice["argmin"]
+    am_work = work if am.startswith(g.get("cell_prefix", "c")) else base_work
+    sha = subprocess.run(["git", "rev-parse", "HEAD"], cwd=REPO, capture_output=True,
+                         text=True).stdout.strip()
+    tune = ctx["tune"]
+    doc = {
+        "kind": "v2e_calibration_timing", "tier": "T2",
+        "tier_note": "event statistics and count-image timing of v2e(MVSEC APS) vs real DVS of "
+                     "the same sensor on mvsec_tune; simulator fidelity, not flow accuracy",
+        "plan_step": "Phase 3, D-035 (re-calibration with a timing constraint, mvsec_tune only)",
+        "split": "mvsec_tune", "split_manifest_sha256": tune["manifest_sha256"],
+        "segments_aps": ctx["segs"], "seed": int(g["seed"]), "profile": g["profile"],
+        "grids": {"calibration_grid": {k: base_ctx["grid"][k] for k in GRID_FLAGS},
+                  "calibration_grid_timing": {k: g[k] for k in GRID_FLAGS}},
+        "lag_rule": rule, "lag_fractions_of_aps_interval": list(F.LAG_FRACTIONS),
+        "stat_definition": {"module": "src/evflow/sim/stats.py", "stats": list(S.STATS),
+                            "objective": "mean over stats of W1(real, syn) / std(real)",
+                            "warmup_frames": g["warmup_frames"], "block_ms": g["block_ms"]},
+        "real": {"n_events": real["n_events"], "hist": real["hist"]},
+        "cells": rows, **choice,
+        "ncc": _ncc(ctx, aps, am_work, am),
+        "git_sha": sha, "created_by": "src/evflow/sim/calibrate.py",
+        "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+    }
+    out.write_text(json.dumps(doc, indent=1) + "\n")
+    return doc
+
+
+def recompute_timing_argmin(doc: dict) -> str:
+    """Argmin re-derived from stored histograms and stored lag peaks (auditor check)."""
+    rh = {k: np.asarray(v) for k, v in doc["real"]["hist"].items()}
+    rows = [{**c, "objective": S.objective(rh, {k: np.asarray(v) for k, v in
+                                                 c["hist"].items()})[0]} for c in doc["cells"]]
+    lim = float(doc["lag_rule"]["max_abs_peak_lag_frames"])
+    elig = {r["cell"]: r["objective"] for r in rows if lag_eligible(r["lag"], lim)}
+    return min(elig, key=lambda k: (elig[k], k))
 
 
 def cmd_summarise(work: Path, out: Path = RESULT) -> dict:
@@ -357,19 +482,32 @@ def main(argv: list[str] | None = None) -> int:
     s = sub.add_parser("summarise")
     s.add_argument("--work", type=Path, required=True)
     s.add_argument("--out", type=Path, default=RESULT)
-    sub.add_parser("cells")
+    t = sub.add_parser("summarise-timing")
+    t.add_argument("--work", type=Path, required=True)
+    t.add_argument("--base-work", type=Path, required=True)
+    t.add_argument("--out", type=Path, default=RESULT_TIMING)
+    cl = sub.add_parser("cells")
+    for q in (c, r, cl):
+        q.add_argument("--grid", default="calibration_grid")
     a = ap.parse_args(argv)
     if a.cmd == "cells":
-        for cell in grid_cells(_load(PROFILES)["calibration_grid"]):
+        for cell in grid_cells(resolve_grid(_load(PROFILES), a.grid)):
             print(cell["cell"])
         return 0
     if a.cmd == "cell":
-        seed = int(_load(PROFILES)["calibration_grid"]["seed"])
-        d = cmd_cell(a.cell, a.work, seed)
+        seed = int(resolve_grid(_load(PROFILES), a.grid)["seed"])
+        d = cmd_cell(a.cell, a.work, seed, a.grid)
         print(json.dumps({"cell": a.cell, "n_events": d["n_events"]}))
     elif a.cmd == "real":
-        d = cmd_real(a.work)
+        d = cmd_real(a.work, a.grid)
         print(json.dumps({"real_n_events": d["n_events"]}))
+    elif a.cmd == "summarise-timing":
+        d = cmd_summarise_timing(a.work, a.base_work, a.out)
+        print(json.dumps({"argmin": d["argmin"], "eligible": d["eligible"],
+                          "argmin_params": d["argmin_params"],
+                          "rand": {k: d["rand"][k] for k in ("thres_range", "sigma_range")},
+                          "ncc": {k: d["ncc"][k] for k in ("median", "threshold",
+                                                           "control_median")}}))
     else:
         d = cmd_summarise(a.work, a.out)
         print(json.dumps({"argmin": d["argmin"], "objective": d["objectives"][d["argmin"]],

@@ -70,3 +70,45 @@ def test_rand_range_widened_when_alone():
     objs["c16"] = 1.0                                # thres 0.3, sigma 0.02
     r = C.rand_range(cells, objs, "c16", factor=1.5, min_halfwidth=0.3)
     assert r["thres_range"] == [0.21, 0.39] and r["sigma_range"] == [0.014, 0.026]
+
+
+def test_timing_grid_inherits_and_prefixes():
+    prof = {"calibration_grid": {**GRID, "seed": 1337, "segments": {"n": 3, "n_frames": 175}},
+            "calibration_grid_timing": {"base": "calibration_grid", "cell_prefix": "t",
+                                        "pos_neg_thres": [0.4, 0.5], "cutoff_hz": [0]}}
+    g = C.resolve_grid(prof, "calibration_grid_timing")
+    assert g["seed"] == 1337 and g["segments"]["n"] == 3 and "base" not in g
+    cells = C.grid_cells(g)
+    assert [c["cell"] for c in cells][:2] == ["t00", "t01"] and len(cells) == 2 * 2 * 1 * 2
+    assert all(c["cutoff_hz"] == 0.0 for c in cells)
+
+
+def _row(cell, thres, sigma, cutoff, obj, peak):
+    return {"cell": cell, "pos_neg_thres": thres, "sigma_thres": sigma, "cutoff_hz": cutoff,
+            "shot_noise_rate_hz": 0.0, "objective": obj, "lag": {"peak_lag_frames": peak}}
+
+
+def test_timing_choice_only_lag_eligible_cells():
+    rows = [_row("c30", 0.4, 0.04, 60.0, 0.37, 0.5),        # best objective but lagged
+            _row("t02", 0.4, 0.04, 0.0, 1.05, 0.0),
+            _row("t06", 0.5, 0.04, 0.0, 0.60, 0.125),
+            _row("t10", 0.6, 0.04, 0.0, 0.70, -0.125),
+            _row("t14", 0.7, 0.02, 0.0, 2.00, 0.0)]
+    ch = C.timing_choice(rows, 0.125, 1.5, 0.3)
+    assert ch["argmin"] == "t06" and "c30" not in ch["eligible"]
+    assert ch["rand"]["near_cells"] == ["t06", "t10"]          # within 1.5 x 0.60
+    assert ch["rand"]["thres_range"] == [0.35, 0.65]            # +-30 % around 0.5 beats 0.5-0.6
+    with pytest.raises(RuntimeError):
+        C.timing_choice([rows[0]], 0.125, 1.5, 0.3)
+
+
+def test_recompute_timing_argmin_from_hist():
+    edges = {k: C.S.EDGES[k] for k in C.S.STATS}
+    real = {k: np.bincount([5, 6, 7], minlength=len(edges[k]) - 1).tolist() for k in C.S.STATS}
+    near = {k: np.bincount([5, 6, 8], minlength=len(edges[k]) - 1).tolist() for k in C.S.STATS}
+    far = {k: np.bincount([5, 30, 60], minlength=len(edges[k]) - 1).tolist() for k in C.S.STATS}
+    doc = {"real": {"hist": real}, "lag_rule": {"max_abs_peak_lag_frames": 0.125},
+           "cells": [{"cell": "c30", "hist": real, "lag": {"peak_lag_frames": 0.5}},
+                     {"cell": "t01", "hist": far, "lag": {"peak_lag_frames": 0.0}},
+                     {"cell": "t02", "hist": near, "lag": {"peak_lag_frames": 0.0}}]}
+    assert C.recompute_timing_argmin(doc) == "t02"

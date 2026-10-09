@@ -1,11 +1,15 @@
-"""Freeze the calibrated v2e profile from results/v2e_calibration.json (Phase 2 exit gate).
+"""Freeze the calibrated v2e profile from a calibration JSON (Phase 2 exit gate; D-035).
 
-    python scripts/freeze_profile.py [--check]
+    python scripts/freeze_profile.py [--check] [--source results/v2e_calibration_timing.json]
 
-Re-derives the argmin from the stored histograms (must equal the JSON's), then writes into
+The source defaults to ``calibration_json`` in configs/v2e_profiles.yaml (Phase 2:
+results/v2e_calibration.json; since D-035: results/v2e_calibration_timing.json, whose argmin is
+taken among the lag-eligible cells). Re-derives the argmin from the stored histograms (and lag
+peaks) (must equal the JSON's), then writes into
 configs/v2e_profiles.yaml, preserving comments: ``mvsec_cal.args`` (the argmin's calibrated flags),
 ``mvsec_rand.randomise.{thres_range,sigma_range}``, ``alignment_ncc_threshold`` and
-``calibration_sha256`` (SHA-256 of the calibration JSON). ``--check`` verifies instead of writing.
+``calibration_json`` + ``calibration_sha256`` (path and SHA-256 of the source). ``--check`` verifies
+instead of writing.
 """
 
 from __future__ import annotations
@@ -20,7 +24,7 @@ from pathlib import Path
 import yaml
 
 from evflow.sim import v2e_runner
-from evflow.sim.calibrate import RESULT, cell_overrides, recompute_argmin
+from evflow.sim.calibrate import cell_overrides, recompute_argmin, recompute_timing_argmin
 
 REPO = Path(__file__).resolve().parents[1]
 PROFILES = REPO / "configs/v2e_profiles.yaml"
@@ -33,7 +37,7 @@ def frozen_values(doc: dict) -> dict:
             "ncc_threshold": round(float(doc["ncc"]["threshold"]), 6)}
 
 
-def render(text: str, vals: dict, sha: str) -> str:
+def render(text: str, vals: dict, sha: str, source: str | None = None) -> str:
     args = ", ".join(f'{k}: "{v}"' for k, v in vals["args"].items())
     subs = [
         (r"(\n  mvsec_cal:[^\n]*\n    base: mvsec_grid\n    args: )[^\n]*", rf"\g<1>{{{args}}}"),
@@ -42,6 +46,8 @@ def render(text: str, vals: dict, sha: str) -> str:
         (r"(\nalignment_ncc_threshold: )\S+", rf"\g<1>{vals['ncc_threshold']}"),
         (r"(\ncalibration_sha256: )\S+", rf"\g<1>{sha}"),
     ]
+    if source is not None:
+        subs.append((r"(\ncalibration_json: )\S+", rf"\g<1>{source}"))
     for pat, rep in subs:
         text, n = re.subn(pat, rep, text, count=1)
         if n != 1:
@@ -52,16 +58,20 @@ def render(text: str, vals: dict, sha: str) -> str:
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--check", action="store_true")
+    ap.add_argument("--source", help="calibration JSON (repo-relative)")
     a = ap.parse_args(argv)
-    raw = RESULT.read_bytes()
+    source = a.source or yaml.safe_load(PROFILES.read_text())["calibration_json"]
+    raw = (REPO / source).read_bytes()
     doc = json.loads(raw)
     sha = hashlib.sha256(raw).hexdigest()
-    if recompute_argmin(doc) != doc["argmin"]:
+    recompute = (recompute_timing_argmin if doc["kind"] == "v2e_calibration_timing"
+                 else recompute_argmin)
+    if recompute(doc) != doc["argmin"]:
         print("argmin does not reproduce from the stored histograms", file=sys.stderr)
         return 1
     vals = frozen_values(doc)
     text = PROFILES.read_text()
-    new = render(text, vals, sha)
+    new = render(text, vals, sha, source)
     if a.check:
         ok = new == text
         prof = yaml.safe_load(text)

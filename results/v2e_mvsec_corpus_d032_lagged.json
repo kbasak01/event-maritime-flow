@@ -1,0 +1,1578 @@
+{
+ "kind": "v2e_corpus",
+ "tier": "T2",
+ "tier_note": "v2e(MVSEC APS) event corpus for the matched-content arms; no metrics",
+ "plan_step": "Phase 3 step 1",
+ "config": "configs/v2e_corpus_mvsec.yaml",
+ "split_manifest_sha256": {
+  "mvsec_test": "b45014a33bfc02740e3804061554ea4a14955d50468e87bfd154fbeef14a8e2e",
+  "mvsec_train": "bdf68aae9bfb3f8687a65b7df8e1aa9ffb62b731bbe6a65d533a61d24ca5d857",
+  "mvsec_tune": "9ea94aea246c4c9678b7ea22860574c22aa03fb57b25368bc19bc48861c5b9b5"
+ },
+ "calibration_sha256": "633052b7428fd2b3c1f3fd3fce3c48bb905363a97c91ede7d57a9fe0e4270306",
+ "n_units_planned": 30,
+ "n_units_done": 30,
+ "missing": [],
+ "checks": {
+  "all_git_clean": true,
+  "undersampling_warnings": 0,
+  "any_allow_undersampling": false,
+  "max_clamped_fraction": 3.0492443274077233e-05,
+  "git_shas": [
+   "97210ab8cc43c3f01b411fdf895b2d8e173a1b32"
+  ]
+ },
+ "totals": {
+  "video_s": 1537.02,
+  "sum_unit_wall_s": 79645.8,
+  "job_span_h": 5.764,
+  "store_bytes": 3134289636
+ },
+ "units": [
+  {
+   "key": "trial/trial_rand_lo",
+   "corpus": "trial",
+   "name": "trial_rand_lo",
+   "split": "mvsec_tune",
+   "sequence": "outdoor_day2",
+   "aps": [
+    3651,
+    3870
+   ],
+   "owned_window_starts": [
+    3651,
+    3869
+   ],
+   "stats_from_window": 3661,
+   "lead_frames": 0,
+   "profile": "mvsec_rand",
+   "overrides": {
+    "--pos_thres": "0.28",
+    "--neg_thres": "0.28",
+    "--sigma_thres": "0.052"
+   },
+   "seed": 1337,
+   "video_s": 5.0062,
+   "store_sha256": "596798b0eed0156cc287e6d8d51482c78f09140e61921ecd01f5ee8a0df0018e",
+   "run_manifest_sha256": "9e39b96cdeeae527bed9dac3f6504fdfd20606bdd601b5d600cd91a8effc7b24",
+   "store_bytes": 23749661,
+   "n_events": 7247560,
+   "events_per_s": 1447823.25895076,
+   "on_fraction": 0.48309431036100425,
+   "n_events_beyond_clock_map": 0,
+   "clock_map": {
+    "kind": "piecewise_linear_v2e_uniform_to_aps",
+    "knots": 220,
+    "fps": 43.746445601294894,
+    "uniform_vs_real_max_abs_dev_us": 80.0,
+    "uniform_vs_real_rms_dev_us": 45.95026956098596
+   },
+   "input_frame_rate": 43.746445601294894,
+   "input_sha256": "9b38415ab9169a445d7eeb194224186f4fb1cfe21d3a6ce85c3c17f0ad5a20a9",
+   "wall_time_s": 156.52,
+   "warnings": {
+    "undersampling": [],
+    "nonmonotonic": 0,
+    "too_many_events": 0
+   },
+   "allow_undersampling": false,
+   "v2e_commit": "cac638444557a224ba6ee5c29260916f152c00bd",
+   "git_sha": "97210ab8cc43c3f01b411fdf895b2d8e173a1b32",
+   "git_dirty": false,
+   "gpu": "NVIDIA RTX A4000",
+   "created_at": "2026-10-09T07:06:42+00:00"
+  },
+  {
+   "key": "trial/trial_rand_hi",
+   "corpus": "trial",
+   "name": "trial_rand_hi",
+   "split": "mvsec_tune",
+   "sequence": "outdoor_day2",
+   "aps": [
+    3651,
+    3870
+   ],
+   "owned_window_starts": [
+    3651,
+    3869
+   ],
+   "stats_from_window": 3661,
+   "lead_frames": 0,
+   "profile": "mvsec_rand",
+   "overrides": {
+    "--pos_thres": "0.52",
+    "--neg_thres": "0.52",
+    "--sigma_thres": "0.02"
+   },
+   "seed": 1337,
+   "video_s": 5.0062,
+   "store_sha256": "dd839d08c9a082b4d13d2c72c18cf134a18168d52a7fdef8157aaccb84bf8dee",
+   "run_manifest_sha256": "0065a059052e69a5c4c1e82dc790a975f4f5f561a94411517485cd563953484c",
+   "store_bytes": 9695941,
+   "n_events": 2946938,
+   "events_per_s": 588657.5469103218,
+   "on_fraction": 0.4797915667041519,
+   "n_events_beyond_clock_map": 0,
+   "clock_map": {
+    "kind": "piecewise_linear_v2e_uniform_to_aps",
+    "knots": 220,
+    "fps": 43.746445601294894,
+    "uniform_vs_real_max_abs_dev_us": 80.0,
+    "uniform_vs_real_rms_dev_us": 45.95026956098596
+   },
+   "input_frame_rate": 43.746445601294894,
+   "input_sha256": "9b38415ab9169a445d7eeb194224186f4fb1cfe21d3a6ce85c3c17f0ad5a20a9",
+   "wall_time_s": 143.5,
+   "warnings": {
+    "undersampling": [],
+    "nonmonotonic": 0,
+    "too_many_events": 0
+   },
+   "allow_undersampling": false,
+   "v2e_commit": "cac638444557a224ba6ee5c29260916f152c00bd",
+   "git_sha": "97210ab8cc43c3f01b411fdf895b2d8e173a1b32",
+   "git_dirty": false,
+   "gpu": "NVIDIA RTX A4000",
+   "created_at": "2026-10-09T07:09:07+00:00"
+  },
+  {
+   "key": "tune/tune_outdoor_day2",
+   "corpus": "tune",
+   "name": "tune_outdoor_day2",
+   "split": "mvsec_tune",
+   "sequence": "outdoor_day2",
+   "aps": [
+    3651,
+    6275
+   ],
+   "owned_window_starts": [
+    3651,
+    6274
+   ],
+   "stats_from_window": 3661,
+   "lead_frames": 0,
+   "profile": "mvsec_cal",
+   "overrides": {},
+   "seed": 1337,
+   "video_s": 59.983,
+   "store_sha256": "d62ba5a78d9ee8e7666dcbac7baaba546bfcf522cecc80f44d05fca3bf913fe9",
+   "run_manifest_sha256": "21a98f9799d1285e12bb029e8efb080e5726a164d8e59f97de004329c86b8adb",
+   "store_bytes": 99231903,
+   "n_events": 30553720,
+   "events_per_s": 509373.2098045022,
+   "on_fraction": 0.5040702736033452,
+   "n_events_beyond_clock_map": 0,
+   "clock_map": {
+    "kind": "piecewise_linear_v2e_uniform_to_aps",
+    "knots": 2625,
+    "fps": 43.746445601294894,
+    "uniform_vs_real_max_abs_dev_us": 958.0,
+    "uniform_vs_real_rms_dev_us": 552.8697747295685
+   },
+   "input_frame_rate": 43.746445601294894,
+   "input_sha256": "4ca82353577b8b31320c35c61e5dcaab65917196829fb18e0c70a9da84c5a15e",
+   "wall_time_s": 3129.95,
+   "warnings": {
+    "undersampling": [],
+    "nonmonotonic": 0,
+    "too_many_events": 0
+   },
+   "allow_undersampling": false,
+   "v2e_commit": "cac638444557a224ba6ee5c29260916f152c00bd",
+   "git_sha": "97210ab8cc43c3f01b411fdf895b2d8e173a1b32",
+   "git_dirty": false,
+   "gpu": "NVIDIA RTX A4000",
+   "created_at": "2026-10-09T08:01:45+00:00"
+  },
+  {
+   "key": "test/test_indoor_flying1_p0",
+   "corpus": "test",
+   "name": "test_indoor_flying1_p0",
+   "split": "mvsec_test",
+   "sequence": "indoor_flying1",
+   "aps": [
+    0,
+    1108
+   ],
+   "owned_window_starts": [
+    9,
+    1104
+   ],
+   "stats_from_window": 10,
+   "lead_frames": 9,
+   "profile": "mvsec_cal",
+   "overrides": {},
+   "seed": 1337,
+   "video_s": 35.3002,
+   "store_sha256": "6c8f9552f09e59880933d10bb4a230654f0f6ea2197160459ca262ab92d4560a",
+   "run_manifest_sha256": "1ee4ae48b8691759c5fdd02c4856f8b3f76a5eaa68815cba5ab7e81239979109",
+   "store_bytes": 79525261,
+   "n_events": 24374068,
+   "events_per_s": 690480.0701276957,
+   "on_fraction": 0.5019672547069287,
+   "n_events_beyond_clock_map": 0,
+   "clock_map": {
+    "kind": "piecewise_linear_v2e_uniform_to_aps",
+    "knots": 1109,
+    "fps": 31.388304717662198,
+    "uniform_vs_real_max_abs_dev_us": 404.0,
+    "uniform_vs_real_rms_dev_us": 233.0369498985821
+   },
+   "input_frame_rate": 31.388304717662198,
+   "input_sha256": "8affd45bb29cd704d25ba7604f2bf6f7f910beec493c9599dc839ac96d8b5165",
+   "wall_time_s": 1923.45,
+   "warnings": {
+    "undersampling": [],
+    "nonmonotonic": 0,
+    "too_many_events": 0
+   },
+   "allow_undersampling": false,
+   "v2e_commit": "cac638444557a224ba6ee5c29260916f152c00bd",
+   "git_sha": "97210ab8cc43c3f01b411fdf895b2d8e173a1b32",
+   "git_dirty": false,
+   "gpu": "NVIDIA RTX A4000",
+   "created_at": "2026-10-09T07:41:38+00:00"
+  },
+  {
+   "key": "test/test_indoor_flying1_p1",
+   "corpus": "test",
+   "name": "test_indoor_flying1_p1",
+   "split": "mvsec_test",
+   "sequence": "indoor_flying1",
+   "aps": [
+    1095,
+    2202
+   ],
+   "owned_window_starts": [
+    1105,
+    2201
+   ],
+   "stats_from_window": 1105,
+   "lead_frames": 0,
+   "profile": "mvsec_cal",
+   "overrides": {},
+   "seed": 1337,
+   "video_s": 35.2683,
+   "store_sha256": "193eca5634ea5e9714e9d69a0deb8d00d24629a72a68527b36e81c2315206e0f",
+   "run_manifest_sha256": "53df3b4bc2421b1901a3a62f89cbfcfe50808302e1784b7e56d127461d927bab",
+   "store_bytes": 78472196,
+   "n_events": 23981274,
+   "events_per_s": 679966.5172558848,
+   "on_fraction": 0.4982373747116187,
+   "n_events_beyond_clock_map": 0,
+   "clock_map": {
+    "kind": "piecewise_linear_v2e_uniform_to_aps",
+    "knots": 1108,
+    "fps": 31.388304717662198,
+    "uniform_vs_real_max_abs_dev_us": 404.0,
+    "uniform_vs_real_rms_dev_us": 233.48589154881836
+   },
+   "input_frame_rate": 31.388304717662198,
+   "input_sha256": "34a467eb4cb54eea8592e9ecfe5a42d9f08b341420b4ada74089b88155157c21",
+   "wall_time_s": 1948.95,
+   "warnings": {
+    "undersampling": [],
+    "nonmonotonic": 0,
+    "too_many_events": 0
+   },
+   "allow_undersampling": false,
+   "v2e_commit": "cac638444557a224ba6ee5c29260916f152c00bd",
+   "git_sha": "97210ab8cc43c3f01b411fdf895b2d8e173a1b32",
+   "git_dirty": false,
+   "gpu": "NVIDIA RTX A4000",
+   "created_at": "2026-10-09T07:42:03+00:00"
+  },
+  {
+   "key": "test/test_indoor_flying2_p0",
+   "corpus": "test",
+   "name": "test_indoor_flying2_p0",
+   "split": "mvsec_test",
+   "sequence": "indoor_flying2",
+   "aps": [
+    0,
+    1338
+   ],
+   "owned_window_starts": [
+    9,
+    1334
+   ],
+   "stats_from_window": 10,
+   "lead_frames": 9,
+   "profile": "mvsec_cal",
+   "overrides": {},
+   "seed": 1337,
+   "video_s": 42.6278,
+   "store_sha256": "974e8f9d1ba1826ab94f693b5389beb070fc2b27dda980b80f4b622baa6b6cf5",
+   "run_manifest_sha256": "4a0c46c6c6c8992c28cdb8a86f74f50297e4460efd77300482fdaffc7f111b50",
+   "store_bytes": 112371137,
+   "n_events": 34074016,
+   "events_per_s": 799337.334318918,
+   "on_fraction": 0.5018196563621969,
+   "n_events_beyond_clock_map": 1039,
+   "clock_map": {
+    "kind": "piecewise_linear_v2e_uniform_to_aps",
+    "knots": 1339,
+    "fps": 31.388304717662198,
+    "uniform_vs_real_max_abs_dev_us": 488.0,
+    "uniform_vs_real_rms_dev_us": 282.0633194978106
+   },
+   "input_frame_rate": 31.388304717662198,
+   "input_sha256": "8cfc61a5c6cbbca16e34e77f608225c65e3a7b1cca8fd0a9dfae1f4e8b801739",
+   "wall_time_s": 2275.48,
+   "warnings": {
+    "undersampling": [],
+    "nonmonotonic": 0,
+    "too_many_events": 0
+   },
+   "allow_undersampling": false,
+   "v2e_commit": "cac638444557a224ba6ee5c29260916f152c00bd",
+   "git_sha": "97210ab8cc43c3f01b411fdf895b2d8e173a1b32",
+   "git_dirty": false,
+   "gpu": "NVIDIA RTX A4000",
+   "created_at": "2026-10-09T07:47:30+00:00"
+  },
+  {
+   "key": "test/test_indoor_flying2_p1",
+   "corpus": "test",
+   "name": "test_indoor_flying2_p1",
+   "split": "mvsec_test",
+   "sequence": "indoor_flying2",
+   "aps": [
+    1325,
+    2661
+   ],
+   "owned_window_starts": [
+    1335,
+    2660
+   ],
+   "stats_from_window": 1335,
+   "lead_frames": 0,
+   "profile": "mvsec_cal",
+   "overrides": {},
+   "seed": 1337,
+   "video_s": 42.5641,
+   "store_sha256": "446f23a8f0ea9c3a033a97fdc6da6e502870106adef62e1ee4fb9d46b729712c",
+   "run_manifest_sha256": "d6e5357e75800e01f60f810637bdec502595cba02bda41cb0b178cec79e5aef8",
+   "store_bytes": 135892091,
+   "n_events": 41313430,
+   "events_per_s": 970616.5137428452,
+   "on_fraction": 0.499088746686005,
+   "n_events_beyond_clock_map": 0,
+   "clock_map": {
+    "kind": "piecewise_linear_v2e_uniform_to_aps",
+    "knots": 1337,
+    "fps": 31.388304717662198,
+    "uniform_vs_real_max_abs_dev_us": 488.0,
+    "uniform_vs_real_rms_dev_us": 281.4156142490255
+   },
+   "input_frame_rate": 31.388304717662198,
+   "input_sha256": "9558d62d65606285803a92150fd7c588dbcc33e8c7a9a0cf85b6be6c7efae871",
+   "wall_time_s": 2225.23,
+   "warnings": {
+    "undersampling": [],
+    "nonmonotonic": 0,
+    "too_many_events": 0
+   },
+   "allow_undersampling": false,
+   "v2e_commit": "cac638444557a224ba6ee5c29260916f152c00bd",
+   "git_sha": "97210ab8cc43c3f01b411fdf895b2d8e173a1b32",
+   "git_dirty": false,
+   "gpu": "NVIDIA RTX A4000",
+   "created_at": "2026-10-09T08:18:49+00:00"
+  },
+  {
+   "key": "test/test_indoor_flying3_p0",
+   "corpus": "test",
+   "name": "test_indoor_flying3_p0",
+   "split": "mvsec_test",
+   "sequence": "indoor_flying3",
+   "aps": [
+    0,
+    1482
+   ],
+   "owned_window_starts": [
+    9,
+    1478
+   ],
+   "stats_from_window": 10,
+   "lead_frames": 9,
+   "profile": "mvsec_cal",
+   "overrides": {},
+   "seed": 1337,
+   "video_s": 47.2156,
+   "store_sha256": "641dee75e5abb413860b523bd23a9369e3030fed0b8a3db7d736ffa7b9ac90aa",
+   "run_manifest_sha256": "a638f424cb5494917830b5736d540fb2f5479630c6ac51c1d115db8813f182c0",
+   "store_bytes": 123366902,
+   "n_events": 37908214,
+   "events_per_s": 802875.1272964375,
+   "on_fraction": 0.5006104745530876,
+   "n_events_beyond_clock_map": 470,
+   "clock_map": {
+    "kind": "piecewise_linear_v2e_uniform_to_aps",
+    "knots": 1483,
+    "fps": 31.388304717662198,
+    "uniform_vs_real_max_abs_dev_us": 542.0,
+    "uniform_vs_real_rms_dev_us": 312.75972349272337
+   },
+   "input_frame_rate": 31.388304717662198,
+   "input_sha256": "27437a876efb0620d6c4614a5d67037f1820873e7f50658e820404d1ed00a029",
+   "wall_time_s": 2416.18,
+   "warnings": {
+    "undersampling": [],
+    "nonmonotonic": 0,
+    "too_many_events": 0
+   },
+   "allow_undersampling": false,
+   "v2e_commit": "cac638444557a224ba6ee5c29260916f152c00bd",
+   "git_sha": "97210ab8cc43c3f01b411fdf895b2d8e173a1b32",
+   "git_dirty": false,
+   "gpu": "NVIDIA RTX A4000",
+   "created_at": "2026-10-09T08:22:25+00:00"
+  },
+  {
+   "key": "test/test_indoor_flying3_p1",
+   "corpus": "test",
+   "name": "test_indoor_flying3_p1",
+   "split": "mvsec_test",
+   "sequence": "indoor_flying3",
+   "aps": [
+    1469,
+    2948
+   ],
+   "owned_window_starts": [
+    1479,
+    2947
+   ],
+   "stats_from_window": 1479,
+   "lead_frames": 0,
+   "profile": "mvsec_cal",
+   "overrides": {},
+   "seed": 1337,
+   "video_s": 47.12,
+   "store_sha256": "291317000746b9eceffb4c4b5c1d91ae641700c4f7b1b8ac1a9f7f4d5e231147",
+   "run_manifest_sha256": "251250674dba67a37fc5946798373e0f7c980cdc9a293d68dd70e042f34b27df",
+   "store_bytes": 138656826,
+   "n_events": 41803057,
+   "events_per_s": 887161.6511035655,
+   "on_fraction": 0.49907139566371905,
+   "n_events_beyond_clock_map": 0,
+   "clock_map": {
+    "kind": "piecewise_linear_v2e_uniform_to_aps",
+    "knots": 1480,
+    "fps": 31.388304717662198,
+    "uniform_vs_real_max_abs_dev_us": 540.0,
+    "uniform_vs_real_rms_dev_us": 311.5260628548402
+   },
+   "input_frame_rate": 31.388304717662198,
+   "input_sha256": "3ba27d2ba85447462509be8697fd8167d1346da0e02a9366955fefe7672244a0",
+   "wall_time_s": 2468.35,
+   "warnings": {
+    "undersampling": [],
+    "nonmonotonic": 0,
+    "too_many_events": 0
+   },
+   "allow_undersampling": false,
+   "v2e_commit": "cac638444557a224ba6ee5c29260916f152c00bd",
+   "git_sha": "97210ab8cc43c3f01b411fdf895b2d8e173a1b32",
+   "git_dirty": false,
+   "gpu": "NVIDIA RTX A4000",
+   "created_at": "2026-10-09T08:28:45+00:00"
+  },
+  {
+   "key": "test/test_outdoor_day1_p0",
+   "corpus": "test",
+   "name": "test_outdoor_day1_p0",
+   "split": "mvsec_test",
+   "sequence": "outdoor_day1",
+   "aps": [
+    10154,
+    10961
+   ],
+   "owned_window_starts": [
+    10164,
+    10960
+   ],
+   "stats_from_window": 10164,
+   "lead_frames": 10,
+   "profile": "mvsec_cal",
+   "overrides": {},
+   "seed": 1337,
+   "video_s": 17.7212,
+   "store_sha256": "0de99716e5393accdd2f5b34b7b878cd352bfaa96a82e141d0435ef7f62b55ea",
+   "run_manifest_sha256": "545136a894d2afc86e658b1ec33488b4f8ff254290c626901f8a432ec92b86d6",
+   "store_bytes": 21721737,
+   "n_events": 6613287,
+   "events_per_s": 373184.88671878347,
+   "on_fraction": 0.512817604921728,
+   "n_events_beyond_clock_map": 0,
+   "clock_map": {
+    "kind": "piecewise_linear_v2e_uniform_to_aps",
+    "knots": 808,
+    "fps": 45.537340619307834,
+    "uniform_vs_real_max_abs_dev_us": 512.0,
+    "uniform_vs_real_rms_dev_us": 295.1356040068281
+   },
+   "input_frame_rate": 45.537340619307834,
+   "input_sha256": "74c645b31f5ca7c9e10c4f96ea4a277ea43ef8f1854f67ab76de9f478f53de56",
+   "wall_time_s": 946.73,
+   "warnings": {
+    "undersampling": [],
+    "nonmonotonic": 0,
+    "too_many_events": 0
+   },
+   "allow_undersampling": false,
+   "v2e_commit": "cac638444557a224ba6ee5c29260916f152c00bd",
+   "git_sha": "97210ab8cc43c3f01b411fdf895b2d8e173a1b32",
+   "git_dirty": false,
+   "gpu": "NVIDIA RTX A4000",
+   "created_at": "2026-10-09T08:17:37+00:00"
+  },
+  {
+   "key": "train_cal/train_clip0",
+   "corpus": "train_cal",
+   "name": "train_clip0",
+   "split": "mvsec_train",
+   "sequence": "outdoor_day2",
+   "aps": [
+    7588,
+    10212
+   ],
+   "owned_window_starts": [
+    7588,
+    10211
+   ],
+   "stats_from_window": 7598,
+   "lead_frames": 0,
+   "profile": "mvsec_cal",
+   "overrides": {},
+   "seed": 1337,
+   "video_s": 59.983,
+   "store_sha256": "c056a74071650748a577e33d0ad81002188d545cd88fdc647d4ba250c7ec7379",
+   "run_manifest_sha256": "94836f5bec6b47ccf110f655142b9b14c50d8fe68364a1e198abafdf39036750",
+   "store_bytes": 133003009,
+   "n_events": 41260156,
+   "events_per_s": 687864.4596715061,
+   "on_fraction": 0.49895313047289497,
+   "n_events_beyond_clock_map": 0,
+   "clock_map": {
+    "kind": "piecewise_linear_v2e_uniform_to_aps",
+    "knots": 2625,
+    "fps": 43.746445601294894,
+    "uniform_vs_real_max_abs_dev_us": 958.0,
+    "uniform_vs_real_rms_dev_us": 553.1448810470648
+   },
+   "input_frame_rate": 43.746445601294894,
+   "input_sha256": "1ab5a67bbc8c06f490eaed7edfe9c45f6955ce4cf1b7f369f083c91632d7c8a6",
+   "wall_time_s": 3168.59,
+   "warnings": {
+    "undersampling": [],
+    "nonmonotonic": 0,
+    "too_many_events": 0
+   },
+   "allow_undersampling": false,
+   "v2e_commit": "cac638444557a224ba6ee5c29260916f152c00bd",
+   "git_sha": "97210ab8cc43c3f01b411fdf895b2d8e173a1b32",
+   "git_dirty": false,
+   "gpu": "NVIDIA RTX A4000",
+   "created_at": "2026-10-09T09:10:28+00:00"
+  },
+  {
+   "key": "train_cal/train_clip1",
+   "corpus": "train_cal",
+   "name": "train_clip1",
+   "split": "mvsec_train",
+   "sequence": "outdoor_day2",
+   "aps": [
+    13712,
+    16336
+   ],
+   "owned_window_starts": [
+    13712,
+    16335
+   ],
+   "stats_from_window": 13722,
+   "lead_frames": 0,
+   "profile": "mvsec_cal",
+   "overrides": {},
+   "seed": 1337,
+   "video_s": 59.983,
+   "store_sha256": "0a24640a7f5737b9591a49f3dfb40e601951f75b81fe476989e1ea33f6976580",
+   "run_manifest_sha256": "051a2e43b691a8d62ba528f0514bfa6d02c38be0a6531ae222900909e823ed77",
+   "store_bytes": 85799925,
+   "n_events": 27099700,
+   "events_per_s": 451789.8695719889,
+   "on_fraction": 0.4996739447300155,
+   "n_events_beyond_clock_map": 0,
+   "clock_map": {
+    "kind": "piecewise_linear_v2e_uniform_to_aps",
+    "knots": 2625,
+    "fps": 43.746445601294894,
+    "uniform_vs_real_max_abs_dev_us": 958.0,
+    "uniform_vs_real_rms_dev_us": 552.9236120495351
+   },
+   "input_frame_rate": 43.746445601294894,
+   "input_sha256": "96f591e7241c57548d9eabb68417b8adf9a7d8b571fd138bbf49b456c4365688",
+   "wall_time_s": 3109.77,
+   "warnings": {
+    "undersampling": [],
+    "nonmonotonic": 0,
+    "too_many_events": 0
+   },
+   "allow_undersampling": false,
+   "v2e_commit": "cac638444557a224ba6ee5c29260916f152c00bd",
+   "git_sha": "97210ab8cc43c3f01b411fdf895b2d8e173a1b32",
+   "git_dirty": false,
+   "gpu": "NVIDIA RTX A4000",
+   "created_at": "2026-10-09T09:10:46+00:00"
+  },
+  {
+   "key": "train_cal/train_clip2",
+   "corpus": "train_cal",
+   "name": "train_clip2",
+   "split": "mvsec_train",
+   "sequence": "outdoor_day2",
+   "aps": [
+    19837,
+    22460
+   ],
+   "owned_window_starts": [
+    19837,
+    22459
+   ],
+   "stats_from_window": 19847,
+   "lead_frames": 0,
+   "profile": "mvsec_cal",
+   "overrides": {},
+   "seed": 1337,
+   "video_s": 59.9601,
+   "store_sha256": "a29b91865790da457672a5a7daf9830abc4eb556616830ab0792d7c457da1aaf",
+   "run_manifest_sha256": "579a5a57e66154c529fc7d36924872e4733309083a60ebafa621d7d3ae6a6515",
+   "store_bytes": 136053134,
+   "n_events": 42955836,
+   "events_per_s": 716406.8433892571,
+   "on_fraction": 0.4998270316517644,
+   "n_events_beyond_clock_map": 0,
+   "clock_map": {
+    "kind": "piecewise_linear_v2e_uniform_to_aps",
+    "knots": 2624,
+    "fps": 43.746445601294894,
+    "uniform_vs_real_max_abs_dev_us": 958.0,
+    "uniform_vs_real_rms_dev_us": 552.8144301728357
+   },
+   "input_frame_rate": 43.746445601294894,
+   "input_sha256": "1bfbf6936c2565b68f04436f38ae8b31a0dc6535efd7b7d4e84fac1bf639d2cc",
+   "wall_time_s": 3015.23,
+   "warnings": {
+    "undersampling": [],
+    "nonmonotonic": 0,
+    "too_many_events": 0
+   },
+   "allow_undersampling": false,
+   "v2e_commit": "cac638444557a224ba6ee5c29260916f152c00bd",
+   "git_sha": "97210ab8cc43c3f01b411fdf895b2d8e173a1b32",
+   "git_dirty": false,
+   "gpu": "NVIDIA RTX A4000",
+   "created_at": "2026-10-09T09:12:48+00:00"
+  },
+  {
+   "key": "train_cal/train_clip3",
+   "corpus": "train_cal",
+   "name": "train_clip3",
+   "split": "mvsec_train",
+   "sequence": "outdoor_day2",
+   "aps": [
+    25961,
+    28582
+   ],
+   "owned_window_starts": [
+    25961,
+    28581
+   ],
+   "stats_from_window": 25971,
+   "lead_frames": 0,
+   "profile": "mvsec_cal",
+   "overrides": {},
+   "seed": 1337,
+   "video_s": 59.9144,
+   "store_sha256": "ae488f3947cd3638fab5ac2ceff813fdb2ea78f1bbb0222a1276e46354016658",
+   "run_manifest_sha256": "28d47023cb3e7d27b2f37cb0f8ff401facfcbaf1321d24401b6f72e4c5a5f46f",
+   "store_bytes": 93582207,
+   "n_events": 28984381,
+   "events_per_s": 483763.21777490666,
+   "on_fraction": 0.503246972912756,
+   "n_events_beyond_clock_map": 6,
+   "clock_map": {
+    "kind": "piecewise_linear_v2e_uniform_to_aps",
+    "knots": 2622,
+    "fps": 43.746445601294894,
+    "uniform_vs_real_max_abs_dev_us": 957.0,
+    "uniform_vs_real_rms_dev_us": 552.1670718267828
+   },
+   "input_frame_rate": 43.746445601294894,
+   "input_sha256": "fc3e0c53e0822f76daa0f5369a594cc7eb35ca11e3f697a438880e75edd61d97",
+   "wall_time_s": 3237.79,
+   "warnings": {
+    "undersampling": [],
+    "nonmonotonic": 0,
+    "too_many_events": 0
+   },
+   "allow_undersampling": false,
+   "v2e_commit": "cac638444557a224ba6ee5c29260916f152c00bd",
+   "git_sha": "97210ab8cc43c3f01b411fdf895b2d8e173a1b32",
+   "git_dirty": false,
+   "gpu": "NVIDIA RTX A4000",
+   "created_at": "2026-10-09T09:22:50+00:00"
+  },
+  {
+   "key": "rand0/train_clip0",
+   "corpus": "rand0",
+   "name": "train_clip0",
+   "split": "mvsec_train",
+   "sequence": "outdoor_day2",
+   "aps": [
+    7588,
+    10212
+   ],
+   "owned_window_starts": [
+    7588,
+    10211
+   ],
+   "stats_from_window": 7598,
+   "lead_frames": 0,
+   "profile": "mvsec_rand",
+   "overrides": {
+    "--pos_thres": "0.302646",
+    "--neg_thres": "0.302646",
+    "--sigma_thres": "0.05106"
+   },
+   "seed": 2000,
+   "video_s": 59.983,
+   "store_sha256": "62ce9053e859349265244febfb1d84602c123aa6cef8839ab1450681389dd1fe",
+   "run_manifest_sha256": "609b9d00449c1401954c4f304e833cd6ad1a635dc53f8b97e5be27ec725a98ba",
+   "store_bytes": 197681147,
+   "n_events": 61402622,
+   "events_per_s": 1023667.5160521384,
+   "on_fraction": 0.49829758084272036,
+   "n_events_beyond_clock_map": 0,
+   "clock_map": {
+    "kind": "piecewise_linear_v2e_uniform_to_aps",
+    "knots": 2625,
+    "fps": 43.746445601294894,
+    "uniform_vs_real_max_abs_dev_us": 958.0,
+    "uniform_vs_real_rms_dev_us": 553.1448810470648
+   },
+   "input_frame_rate": 43.746445601294894,
+   "input_sha256": "1ab5a67bbc8c06f490eaed7edfe9c45f6955ce4cf1b7f369f083c91632d7c8a6",
+   "wall_time_s": 3252.42,
+   "warnings": {
+    "undersampling": [],
+    "nonmonotonic": 0,
+    "too_many_events": 0
+   },
+   "allow_undersampling": false,
+   "v2e_commit": "cac638444557a224ba6ee5c29260916f152c00bd",
+   "git_sha": "97210ab8cc43c3f01b411fdf895b2d8e173a1b32",
+   "git_dirty": false,
+   "gpu": "NVIDIA RTX A4000",
+   "created_at": "2026-10-09T10:04:49+00:00"
+  },
+  {
+   "key": "rand0/train_clip1",
+   "corpus": "rand0",
+   "name": "train_clip1",
+   "split": "mvsec_train",
+   "sequence": "outdoor_day2",
+   "aps": [
+    13712,
+    16336
+   ],
+   "owned_window_starts": [
+    13712,
+    16335
+   ],
+   "stats_from_window": 13722,
+   "lead_frames": 0,
+   "profile": "mvsec_rand",
+   "overrides": {
+    "--pos_thres": "0.517239",
+    "--neg_thres": "0.517239",
+    "--sigma_thres": "0.032692"
+   },
+   "seed": 2001,
+   "video_s": 59.983,
+   "store_sha256": "3632680d2e2fedb91a0fb92229fcc67facae68e710494559e922e0f79e80b948",
+   "run_manifest_sha256": "c4ab4d668e0c5d21e4f6e4106e3d4f3a17071b3d9758d8d9130a5ae2eaeb33b7",
+   "store_bytes": 59809124,
+   "n_events": 18833466,
+   "events_per_s": 313980.1971139344,
+   "on_fraction": 0.4995505341396002,
+   "n_events_beyond_clock_map": 0,
+   "clock_map": {
+    "kind": "piecewise_linear_v2e_uniform_to_aps",
+    "knots": 2625,
+    "fps": 43.746445601294894,
+    "uniform_vs_real_max_abs_dev_us": 958.0,
+    "uniform_vs_real_rms_dev_us": 552.9236120495351
+   },
+   "input_frame_rate": 43.746445601294894,
+   "input_sha256": "96f591e7241c57548d9eabb68417b8adf9a7d8b571fd138bbf49b456c4365688",
+   "wall_time_s": 3091.71,
+   "warnings": {
+    "undersampling": [],
+    "nonmonotonic": 0,
+    "too_many_events": 0
+   },
+   "allow_undersampling": false,
+   "v2e_commit": "cac638444557a224ba6ee5c29260916f152c00bd",
+   "git_sha": "97210ab8cc43c3f01b411fdf895b2d8e173a1b32",
+   "git_dirty": false,
+   "gpu": "NVIDIA RTX A4000",
+   "created_at": "2026-10-09T10:02:24+00:00"
+  },
+  {
+   "key": "rand0/train_clip2",
+   "corpus": "rand0",
+   "name": "train_clip2",
+   "split": "mvsec_train",
+   "sequence": "outdoor_day2",
+   "aps": [
+    19837,
+    22460
+   ],
+   "owned_window_starts": [
+    19837,
+    22459
+   ],
+   "stats_from_window": 19847,
+   "lead_frames": 0,
+   "profile": "mvsec_rand",
+   "overrides": {
+    "--pos_thres": "0.448768",
+    "--neg_thres": "0.448768",
+    "--sigma_thres": "0.023494"
+   },
+   "seed": 2002,
+   "video_s": 59.9601,
+   "store_sha256": "1ab6135def243822cb046bf5cd065c09dd85975b8d5626d54c5eb525f6191b2a",
+   "run_manifest_sha256": "97f682fb6bb47b7de34a59aa68c31b64b4e6312542078bd94e7581cfb43cefed",
+   "store_bytes": 115126010,
+   "n_events": 36318518,
+   "events_per_s": 605711.2900085547,
+   "on_fraction": 0.4997852610615885,
+   "n_events_beyond_clock_map": 0,
+   "clock_map": {
+    "kind": "piecewise_linear_v2e_uniform_to_aps",
+    "knots": 2624,
+    "fps": 43.746445601294894,
+    "uniform_vs_real_max_abs_dev_us": 958.0,
+    "uniform_vs_real_rms_dev_us": 552.8144301728357
+   },
+   "input_frame_rate": 43.746445601294894,
+   "input_sha256": "1bfbf6936c2565b68f04436f38ae8b31a0dc6535efd7b7d4e84fac1bf639d2cc",
+   "wall_time_s": 2996.55,
+   "warnings": {
+    "undersampling": [],
+    "nonmonotonic": 0,
+    "too_many_events": 0
+   },
+   "allow_undersampling": false,
+   "v2e_commit": "cac638444557a224ba6ee5c29260916f152c00bd",
+   "git_sha": "97210ab8cc43c3f01b411fdf895b2d8e173a1b32",
+   "git_dirty": false,
+   "gpu": "NVIDIA RTX A4000",
+   "created_at": "2026-10-09T10:02:52+00:00"
+  },
+  {
+   "key": "rand0/train_clip3",
+   "corpus": "rand0",
+   "name": "train_clip3",
+   "split": "mvsec_train",
+   "sequence": "outdoor_day2",
+   "aps": [
+    25961,
+    28582
+   ],
+   "owned_window_starts": [
+    25961,
+    28581
+   ],
+   "stats_from_window": 25971,
+   "lead_frames": 0,
+   "profile": "mvsec_rand",
+   "overrides": {
+    "--pos_thres": "0.344892",
+    "--neg_thres": "0.344892",
+    "--sigma_thres": "0.025752"
+   },
+   "seed": 2003,
+   "video_s": 59.9144,
+   "store_sha256": "5b10855de98ae48356cd4784a5cb571625db209837dc90b4804c2eec052e1ad0",
+   "run_manifest_sha256": "7d0bf324f4869bd0e9358a93f13f4167d320c3fa071025f4e9891b55bca072a2",
+   "store_bytes": 113488300,
+   "n_events": 35207433,
+   "events_per_s": 587628.9397960383,
+   "on_fraction": 0.5031165436003244,
+   "n_events_beyond_clock_map": 8,
+   "clock_map": {
+    "kind": "piecewise_linear_v2e_uniform_to_aps",
+    "knots": 2622,
+    "fps": 43.746445601294894,
+    "uniform_vs_real_max_abs_dev_us": 957.0,
+    "uniform_vs_real_rms_dev_us": 552.1670718267828
+   },
+   "input_frame_rate": 43.746445601294894,
+   "input_sha256": "fc3e0c53e0822f76daa0f5369a594cc7eb35ca11e3f697a438880e75edd61d97",
+   "wall_time_s": 3240.23,
+   "warnings": {
+    "undersampling": [],
+    "nonmonotonic": 0,
+    "too_many_events": 0
+   },
+   "allow_undersampling": false,
+   "v2e_commit": "cac638444557a224ba6ee5c29260916f152c00bd",
+   "git_sha": "97210ab8cc43c3f01b411fdf895b2d8e173a1b32",
+   "git_dirty": false,
+   "gpu": "NVIDIA RTX A4000",
+   "created_at": "2026-10-09T10:16:56+00:00"
+  },
+  {
+   "key": "rand1/train_clip0",
+   "corpus": "rand1",
+   "name": "train_clip0",
+   "split": "mvsec_train",
+   "sequence": "outdoor_day2",
+   "aps": [
+    7588,
+    10212
+   ],
+   "owned_window_starts": [
+    7588,
+    10211
+   ],
+   "stats_from_window": 7598,
+   "lead_frames": 0,
+   "profile": "mvsec_rand",
+   "overrides": {
+    "--pos_thres": "0.500172",
+    "--neg_thres": "0.500172",
+    "--sigma_thres": "0.04524"
+   },
+   "seed": 2100,
+   "video_s": 59.983,
+   "store_sha256": "1bfc0b4856b385096f31576c961b5775a313a7491a0ad8d1c442477e22dc65d6",
+   "run_manifest_sha256": "04174952dad699336ca13c8b76a5e366756fce50ac244ac8484d5a31d621534f",
+   "store_bytes": 97400976,
+   "n_events": 30151449,
+   "events_per_s": 502666.7900794649,
+   "on_fraction": 0.4990284878182803,
+   "n_events_beyond_clock_map": 0,
+   "clock_map": {
+    "kind": "piecewise_linear_v2e_uniform_to_aps",
+    "knots": 2625,
+    "fps": 43.746445601294894,
+    "uniform_vs_real_max_abs_dev_us": 958.0,
+    "uniform_vs_real_rms_dev_us": 553.1448810470648
+   },
+   "input_frame_rate": 43.746445601294894,
+   "input_sha256": "1ab5a67bbc8c06f490eaed7edfe9c45f6955ce4cf1b7f369f083c91632d7c8a6",
+   "wall_time_s": 3132.12,
+   "warnings": {
+    "undersampling": [],
+    "nonmonotonic": 0,
+    "too_many_events": 0
+   },
+   "allow_undersampling": false,
+   "v2e_commit": "cac638444557a224ba6ee5c29260916f152c00bd",
+   "git_sha": "97210ab8cc43c3f01b411fdf895b2d8e173a1b32",
+   "git_dirty": false,
+   "gpu": "NVIDIA RTX A4000",
+   "created_at": "2026-10-09T10:54:41+00:00"
+  },
+  {
+   "key": "rand1/train_clip1",
+   "corpus": "rand1",
+   "name": "train_clip1",
+   "split": "mvsec_train",
+   "sequence": "outdoor_day2",
+   "aps": [
+    13712,
+    16336
+   ],
+   "owned_window_starts": [
+    13712,
+    16335
+   ],
+   "stats_from_window": 13722,
+   "lead_frames": 0,
+   "profile": "mvsec_rand",
+   "overrides": {
+    "--pos_thres": "0.504204",
+    "--neg_thres": "0.504204",
+    "--sigma_thres": "0.036731"
+   },
+   "seed": 2101,
+   "video_s": 59.983,
+   "store_sha256": "c1981e7f993bec4f3a1dd7f5c004c721575637df5d56aac1d08f5582bb9e46ad",
+   "run_manifest_sha256": "a1178b3277662c1747295e329a942c9510af7819fda52c1155f76139477c0f01",
+   "store_bytes": 62064572,
+   "n_events": 19552642,
+   "events_per_s": 325969.8660489892,
+   "on_fraction": 0.4996230176975572,
+   "n_events_beyond_clock_map": 0,
+   "clock_map": {
+    "kind": "piecewise_linear_v2e_uniform_to_aps",
+    "knots": 2625,
+    "fps": 43.746445601294894,
+    "uniform_vs_real_max_abs_dev_us": 958.0,
+    "uniform_vs_real_rms_dev_us": 552.9236120495351
+   },
+   "input_frame_rate": 43.746445601294894,
+   "input_sha256": "96f591e7241c57548d9eabb68417b8adf9a7d8b571fd138bbf49b456c4365688",
+   "wall_time_s": 3083.57,
+   "warnings": {
+    "undersampling": [],
+    "nonmonotonic": 0,
+    "too_many_events": 0
+   },
+   "allow_undersampling": false,
+   "v2e_commit": "cac638444557a224ba6ee5c29260916f152c00bd",
+   "git_sha": "97210ab8cc43c3f01b411fdf895b2d8e173a1b32",
+   "git_dirty": false,
+   "gpu": "NVIDIA RTX A4000",
+   "created_at": "2026-10-09T10:54:23+00:00"
+  },
+  {
+   "key": "rand1/train_clip2",
+   "corpus": "rand1",
+   "name": "train_clip2",
+   "split": "mvsec_train",
+   "sequence": "outdoor_day2",
+   "aps": [
+    19837,
+    22460
+   ],
+   "owned_window_starts": [
+    19837,
+    22459
+   ],
+   "stats_from_window": 19847,
+   "lead_frames": 0,
+   "profile": "mvsec_rand",
+   "overrides": {
+    "--pos_thres": "0.354378",
+    "--neg_thres": "0.354378",
+    "--sigma_thres": "0.022995"
+   },
+   "seed": 2102,
+   "video_s": 59.9601,
+   "store_sha256": "291ff63c1e6633921820c03f97d2ce093382a9f4906d93c1c48b65dfa93e173a",
+   "run_manifest_sha256": "e851ff735d7bdb545330b5fbc0b549c79fe3354561234b053880f2bfdfdb13e8",
+   "store_bytes": 158972947,
+   "n_events": 50232325,
+   "events_per_s": 837762.3331403272,
+   "on_fraction": 0.4995825695903982,
+   "n_events_beyond_clock_map": 0,
+   "clock_map": {
+    "kind": "piecewise_linear_v2e_uniform_to_aps",
+    "knots": 2624,
+    "fps": 43.746445601294894,
+    "uniform_vs_real_max_abs_dev_us": 958.0,
+    "uniform_vs_real_rms_dev_us": 552.8144301728357
+   },
+   "input_frame_rate": 43.746445601294894,
+   "input_sha256": "1bfbf6936c2565b68f04436f38ae8b31a0dc6535efd7b7d4e84fac1bf639d2cc",
+   "wall_time_s": 2999.27,
+   "warnings": {
+    "undersampling": [],
+    "nonmonotonic": 0,
+    "too_many_events": 0
+   },
+   "allow_undersampling": false,
+   "v2e_commit": "cac638444557a224ba6ee5c29260916f152c00bd",
+   "git_sha": "97210ab8cc43c3f01b411fdf895b2d8e173a1b32",
+   "git_dirty": false,
+   "gpu": "NVIDIA RTX A4000",
+   "created_at": "2026-10-09T10:55:00+00:00"
+  },
+  {
+   "key": "rand1/train_clip3",
+   "corpus": "rand1",
+   "name": "train_clip3",
+   "split": "mvsec_train",
+   "sequence": "outdoor_day2",
+   "aps": [
+    25961,
+    28582
+   ],
+   "owned_window_starts": [
+    25961,
+    28581
+   ],
+   "stats_from_window": 25971,
+   "lead_frames": 0,
+   "profile": "mvsec_rand",
+   "overrides": {
+    "--pos_thres": "0.33926",
+    "--neg_thres": "0.33926",
+    "--sigma_thres": "0.027851"
+   },
+   "seed": 2103,
+   "video_s": 59.9144,
+   "store_sha256": "d6bbb344d4283d261e18936b0159f8c075f4e872cb18ee599ce18c0439e68364",
+   "run_manifest_sha256": "a97d9a39e4872beeaf7bc92f9ab97bd15e4736804e7b03736664abbd3b839d09",
+   "store_bytes": 116154145,
+   "n_events": 36043819,
+   "events_per_s": 601588.6232083521,
+   "on_fraction": 0.5031004345016825,
+   "n_events_beyond_clock_map": 7,
+   "clock_map": {
+    "kind": "piecewise_linear_v2e_uniform_to_aps",
+    "knots": 2622,
+    "fps": 43.746445601294894,
+    "uniform_vs_real_max_abs_dev_us": 957.0,
+    "uniform_vs_real_rms_dev_us": 552.1670718267828
+   },
+   "input_frame_rate": 43.746445601294894,
+   "input_sha256": "fc3e0c53e0822f76daa0f5369a594cc7eb35ca11e3f697a438880e75edd61d97",
+   "wall_time_s": 3270.14,
+   "warnings": {
+    "undersampling": [],
+    "nonmonotonic": 0,
+    "too_many_events": 0
+   },
+   "allow_undersampling": false,
+   "v2e_commit": "cac638444557a224ba6ee5c29260916f152c00bd",
+   "git_sha": "97210ab8cc43c3f01b411fdf895b2d8e173a1b32",
+   "git_dirty": false,
+   "gpu": "NVIDIA RTX A4000",
+   "created_at": "2026-10-09T11:11:33+00:00"
+  },
+  {
+   "key": "rand2/train_clip0",
+   "corpus": "rand2",
+   "name": "train_clip0",
+   "split": "mvsec_train",
+   "sequence": "outdoor_day2",
+   "aps": [
+    7588,
+    10212
+   ],
+   "owned_window_starts": [
+    7588,
+    10211
+   ],
+   "stats_from_window": 7598,
+   "lead_frames": 0,
+   "profile": "mvsec_rand",
+   "overrides": {
+    "--pos_thres": "0.380967",
+    "--neg_thres": "0.380967",
+    "--sigma_thres": "0.021954"
+   },
+   "seed": 2200,
+   "video_s": 59.983,
+   "store_sha256": "da05df340e7432f03bde1cfad2f31e691ecbf27d3a2eeccbf07d616bda81e941",
+   "run_manifest_sha256": "e7ad42a15c5161cc4fc5b71b021fc8d756f65c64ade6a4281c321797bd2c79c8",
+   "store_bytes": 140924985,
+   "n_events": 43729506,
+   "events_per_s": 729031.9749734317,
+   "on_fraction": 0.49882287716673496,
+   "n_events_beyond_clock_map": 0,
+   "clock_map": {
+    "kind": "piecewise_linear_v2e_uniform_to_aps",
+    "knots": 2625,
+    "fps": 43.746445601294894,
+    "uniform_vs_real_max_abs_dev_us": 958.0,
+    "uniform_vs_real_rms_dev_us": 553.1448810470648
+   },
+   "input_frame_rate": 43.746445601294894,
+   "input_sha256": "1ab5a67bbc8c06f490eaed7edfe9c45f6955ce4cf1b7f369f083c91632d7c8a6",
+   "wall_time_s": 3149.28,
+   "warnings": {
+    "undersampling": [],
+    "nonmonotonic": 0,
+    "too_many_events": 0
+   },
+   "allow_undersampling": false,
+   "v2e_commit": "cac638444557a224ba6ee5c29260916f152c00bd",
+   "git_sha": "97210ab8cc43c3f01b411fdf895b2d8e173a1b32",
+   "git_dirty": false,
+   "gpu": "NVIDIA RTX A4000",
+   "created_at": "2026-10-09T11:46:58+00:00"
+  },
+  {
+   "key": "rand2/train_clip1",
+   "corpus": "rand2",
+   "name": "train_clip1",
+   "split": "mvsec_train",
+   "sequence": "outdoor_day2",
+   "aps": [
+    13712,
+    16336
+   ],
+   "owned_window_starts": [
+    13712,
+    16335
+   ],
+   "stats_from_window": 13722,
+   "lead_frames": 0,
+   "profile": "mvsec_rand",
+   "overrides": {
+    "--pos_thres": "0.42281",
+    "--neg_thres": "0.42281",
+    "--sigma_thres": "0.039072"
+   },
+   "seed": 2201,
+   "video_s": 59.983,
+   "store_sha256": "add873e4ae8887330a865d75727878f4c9f0e75765e380494ac825cca3eba9e7",
+   "run_manifest_sha256": "9e1c064b2734d754d17c166f2d0703965342fc340cc415c0067926acd75a688c",
+   "store_bytes": 79515533,
+   "n_events": 25104602,
+   "events_per_s": 418528.7978552047,
+   "on_fraction": 0.49944787015544,
+   "n_events_beyond_clock_map": 0,
+   "clock_map": {
+    "kind": "piecewise_linear_v2e_uniform_to_aps",
+    "knots": 2625,
+    "fps": 43.746445601294894,
+    "uniform_vs_real_max_abs_dev_us": 958.0,
+    "uniform_vs_real_rms_dev_us": 552.9236120495351
+   },
+   "input_frame_rate": 43.746445601294894,
+   "input_sha256": "96f591e7241c57548d9eabb68417b8adf9a7d8b571fd138bbf49b456c4365688",
+   "wall_time_s": 3094.29,
+   "warnings": {
+    "undersampling": [],
+    "nonmonotonic": 0,
+    "too_many_events": 0
+   },
+   "allow_undersampling": false,
+   "v2e_commit": "cac638444557a224ba6ee5c29260916f152c00bd",
+   "git_sha": "97210ab8cc43c3f01b411fdf895b2d8e173a1b32",
+   "git_dirty": false,
+   "gpu": "NVIDIA RTX A4000",
+   "created_at": "2026-10-09T11:46:22+00:00"
+  },
+  {
+   "key": "rand2/train_clip2",
+   "corpus": "rand2",
+   "name": "train_clip2",
+   "split": "mvsec_train",
+   "sequence": "outdoor_day2",
+   "aps": [
+    19837,
+    22460
+   ],
+   "owned_window_starts": [
+    19837,
+    22459
+   ],
+   "stats_from_window": 19847,
+   "lead_frames": 0,
+   "profile": "mvsec_rand",
+   "overrides": {
+    "--pos_thres": "0.371238",
+    "--neg_thres": "0.371238",
+    "--sigma_thres": "0.047234"
+   },
+   "seed": 2202,
+   "video_s": 59.9601,
+   "store_sha256": "00ae65bbf65f0a3204ba468b597c2041531f9159eec480d4419f92ecef1e69b0",
+   "run_manifest_sha256": "677cf26e5da2473ae7960c92fb1a78e87706aa02c19fc336afb59cd84d3bf2b3",
+   "store_bytes": 151620546,
+   "n_events": 47902793,
+   "events_per_s": 798910.9727176303,
+   "on_fraction": 0.4995144228855299,
+   "n_events_beyond_clock_map": 0,
+   "clock_map": {
+    "kind": "piecewise_linear_v2e_uniform_to_aps",
+    "knots": 2624,
+    "fps": 43.746445601294894,
+    "uniform_vs_real_max_abs_dev_us": 958.0,
+    "uniform_vs_real_rms_dev_us": 552.8144301728357
+   },
+   "input_frame_rate": 43.746445601294894,
+   "input_sha256": "1bfbf6936c2565b68f04436f38ae8b31a0dc6535efd7b7d4e84fac1bf639d2cc",
+   "wall_time_s": 3024.19,
+   "warnings": {
+    "undersampling": [],
+    "nonmonotonic": 0,
+    "too_many_events": 0
+   },
+   "allow_undersampling": false,
+   "v2e_commit": "cac638444557a224ba6ee5c29260916f152c00bd",
+   "git_sha": "97210ab8cc43c3f01b411fdf895b2d8e173a1b32",
+   "git_dirty": false,
+   "gpu": "NVIDIA RTX A4000",
+   "created_at": "2026-10-09T11:45:33+00:00"
+  },
+  {
+   "key": "rand2/train_clip3",
+   "corpus": "rand2",
+   "name": "train_clip3",
+   "split": "mvsec_train",
+   "sequence": "outdoor_day2",
+   "aps": [
+    25961,
+    28582
+   ],
+   "owned_window_starts": [
+    25961,
+    28581
+   ],
+   "stats_from_window": 25971,
+   "lead_frames": 0,
+   "profile": "mvsec_rand",
+   "overrides": {
+    "--pos_thres": "0.298489",
+    "--neg_thres": "0.298489",
+    "--sigma_thres": "0.026073"
+   },
+   "seed": 2203,
+   "video_s": 59.9144,
+   "store_sha256": "267a22d632bab9e6c13c123b86ea140c3a46094c9855225904ed0efec16e9d8a",
+   "run_manifest_sha256": "8967fcd3f2a2035ad67226b367a763cf7851788ce2f03d3df1ff102eb1169bca",
+   "store_bytes": 137347585,
+   "n_events": 42657137,
+   "events_per_s": 711968.0719138018,
+   "on_fraction": 0.5029355345624813,
+   "n_events_beyond_clock_map": 6,
+   "clock_map": {
+    "kind": "piecewise_linear_v2e_uniform_to_aps",
+    "knots": 2622,
+    "fps": 43.746445601294894,
+    "uniform_vs_real_max_abs_dev_us": 957.0,
+    "uniform_vs_real_rms_dev_us": 552.1670718267828
+   },
+   "input_frame_rate": 43.746445601294894,
+   "input_sha256": "fc3e0c53e0822f76daa0f5369a594cc7eb35ca11e3f697a438880e75edd61d97",
+   "wall_time_s": 3269.82,
+   "warnings": {
+    "undersampling": [],
+    "nonmonotonic": 0,
+    "too_many_events": 0
+   },
+   "allow_undersampling": false,
+   "v2e_commit": "cac638444557a224ba6ee5c29260916f152c00bd",
+   "git_sha": "97210ab8cc43c3f01b411fdf895b2d8e173a1b32",
+   "git_dirty": false,
+   "gpu": "NVIDIA RTX A4000",
+   "created_at": "2026-10-09T12:06:11+00:00"
+  },
+  {
+   "key": "rand3/train_clip0",
+   "corpus": "rand3",
+   "name": "train_clip0",
+   "split": "mvsec_train",
+   "sequence": "outdoor_day2",
+   "aps": [
+    7588,
+    10212
+   ],
+   "owned_window_starts": [
+    7588,
+    10211
+   ],
+   "stats_from_window": 7598,
+   "lead_frames": 0,
+   "profile": "mvsec_rand",
+   "overrides": {
+    "--pos_thres": "0.392775",
+    "--neg_thres": "0.392775",
+    "--sigma_thres": "0.021844"
+   },
+   "seed": 2300,
+   "video_s": 59.983,
+   "store_sha256": "2236f3abac896f7439bb69cdf82c30379a9ca771310d2f8c0f9201cfc4bd6a1c",
+   "run_manifest_sha256": "91b62290f6afe30a842b3ea79761552e5f4c5fc37a006460eddb5d21ba506756",
+   "store_bytes": 135219681,
+   "n_events": 41950210,
+   "events_per_s": 699368.6241699186,
+   "on_fraction": 0.49876920759157106,
+   "n_events_beyond_clock_map": 0,
+   "clock_map": {
+    "kind": "piecewise_linear_v2e_uniform_to_aps",
+    "knots": 2625,
+    "fps": 43.746445601294894,
+    "uniform_vs_real_max_abs_dev_us": 958.0,
+    "uniform_vs_real_rms_dev_us": 553.1448810470648
+   },
+   "input_frame_rate": 43.746445601294894,
+   "input_sha256": "1ab5a67bbc8c06f490eaed7edfe9c45f6955ce4cf1b7f369f083c91632d7c8a6",
+   "wall_time_s": 3144.83,
+   "warnings": {
+    "undersampling": [],
+    "nonmonotonic": 0,
+    "too_many_events": 0
+   },
+   "allow_undersampling": false,
+   "v2e_commit": "cac638444557a224ba6ee5c29260916f152c00bd",
+   "git_sha": "97210ab8cc43c3f01b411fdf895b2d8e173a1b32",
+   "git_dirty": false,
+   "gpu": "NVIDIA RTX A4000",
+   "created_at": "2026-10-09T12:38:07+00:00"
+  },
+  {
+   "key": "rand3/train_clip1",
+   "corpus": "rand3",
+   "name": "train_clip1",
+   "split": "mvsec_train",
+   "sequence": "outdoor_day2",
+   "aps": [
+    13712,
+    16336
+   ],
+   "owned_window_starts": [
+    13712,
+    16335
+   ],
+   "stats_from_window": 13722,
+   "lead_frames": 0,
+   "profile": "mvsec_rand",
+   "overrides": {
+    "--pos_thres": "0.320626",
+    "--neg_thres": "0.320626",
+    "--sigma_thres": "0.044785"
+   },
+   "seed": 2301,
+   "video_s": 59.983,
+   "store_sha256": "e43727b7bd51e3e545dee43f2a4a772d2f2c38b5bedfea16e1fd73b5e638d56e",
+   "run_manifest_sha256": "0f91e33782beec8576675c6c9914592fd9681047847127160a6a3c779d6115eb",
+   "store_bytes": 116355326,
+   "n_events": 36812263,
+   "events_per_s": 613711.86763764,
+   "on_fraction": 0.4993492521771889,
+   "n_events_beyond_clock_map": 0,
+   "clock_map": {
+    "kind": "piecewise_linear_v2e_uniform_to_aps",
+    "knots": 2625,
+    "fps": 43.746445601294894,
+    "uniform_vs_real_max_abs_dev_us": 958.0,
+    "uniform_vs_real_rms_dev_us": 552.9236120495351
+   },
+   "input_frame_rate": 43.746445601294894,
+   "input_sha256": "96f591e7241c57548d9eabb68417b8adf9a7d8b571fd138bbf49b456c4365688",
+   "wall_time_s": 3119.21,
+   "warnings": {
+    "undersampling": [],
+    "nonmonotonic": 0,
+    "too_many_events": 0
+   },
+   "allow_undersampling": false,
+   "v2e_commit": "cac638444557a224ba6ee5c29260916f152c00bd",
+   "git_sha": "97210ab8cc43c3f01b411fdf895b2d8e173a1b32",
+   "git_dirty": false,
+   "gpu": "NVIDIA RTX A4000",
+   "created_at": "2026-10-09T12:38:26+00:00"
+  },
+  {
+   "key": "rand3/train_clip2",
+   "corpus": "rand3",
+   "name": "train_clip2",
+   "split": "mvsec_train",
+   "sequence": "outdoor_day2",
+   "aps": [
+    19837,
+    22460
+   ],
+   "owned_window_starts": [
+    19837,
+    22459
+   ],
+   "stats_from_window": 19847,
+   "lead_frames": 0,
+   "profile": "mvsec_rand",
+   "overrides": {
+    "--pos_thres": "0.517568",
+    "--neg_thres": "0.517568",
+    "--sigma_thres": "0.042542"
+   },
+   "seed": 2302,
+   "video_s": 59.9601,
+   "store_sha256": "21f4cd638567c094d81137111a0d64a85c0f1e7bc10ec698c331026923c6a6d9",
+   "run_manifest_sha256": "aeffef1a31de567e8c359f76dca9827dbc7d5313e52b0f67c49e4ddae1b8f225",
+   "store_bytes": 94719277,
+   "n_events": 29837602,
+   "events_per_s": 497624.1706278277,
+   "on_fraction": 0.49977474731380894,
+   "n_events_beyond_clock_map": 0,
+   "clock_map": {
+    "kind": "piecewise_linear_v2e_uniform_to_aps",
+    "knots": 2624,
+    "fps": 43.746445601294894,
+    "uniform_vs_real_max_abs_dev_us": 958.0,
+    "uniform_vs_real_rms_dev_us": 552.8144301728357
+   },
+   "input_frame_rate": 43.746445601294894,
+   "input_sha256": "1bfbf6936c2565b68f04436f38ae8b31a0dc6535efd7b7d4e84fac1bf639d2cc",
+   "wall_time_s": 2995.01,
+   "warnings": {
+    "undersampling": [],
+    "nonmonotonic": 0,
+    "too_many_events": 0
+   },
+   "allow_undersampling": false,
+   "v2e_commit": "cac638444557a224ba6ee5c29260916f152c00bd",
+   "git_sha": "97210ab8cc43c3f01b411fdf895b2d8e173a1b32",
+   "git_dirty": false,
+   "gpu": "NVIDIA RTX A4000",
+   "created_at": "2026-10-09T12:37:01+00:00"
+  },
+  {
+   "key": "rand3/train_clip3",
+   "corpus": "rand3",
+   "name": "train_clip3",
+   "split": "mvsec_train",
+   "sequence": "outdoor_day2",
+   "aps": [
+    25961,
+    28582
+   ],
+   "owned_window_starts": [
+    25961,
+    28581
+   ],
+   "stats_from_window": 25971,
+   "lead_frames": 0,
+   "profile": "mvsec_rand",
+   "overrides": {
+    "--pos_thres": "0.420526",
+    "--neg_thres": "0.420526",
+    "--sigma_thres": "0.025611"
+   },
+   "seed": 2303,
+   "video_s": 59.9144,
+   "store_sha256": "c12608e1b9db8e8b3474ff1b6336d34162f11b92cf63e3ff83390a8b8a9dcfd7",
+   "run_manifest_sha256": "492510c8aa8b736b9ebe25c7f2d4a3b22f18805335721325c5ad7adb2a9eab92",
+   "store_bytes": 86767552,
+   "n_events": 26857742,
+   "events_per_s": 448268.5930773632,
+   "on_fraction": 0.5031192123299122,
+   "n_events_beyond_clock_map": 7,
+   "clock_map": {
+    "kind": "piecewise_linear_v2e_uniform_to_aps",
+    "knots": 2622,
+    "fps": 43.746445601294894,
+    "uniform_vs_real_max_abs_dev_us": 957.0,
+    "uniform_vs_real_rms_dev_us": 552.1670718267828
+   },
+   "input_frame_rate": 43.746445601294894,
+   "input_sha256": "fc3e0c53e0822f76daa0f5369a594cc7eb35ca11e3f697a438880e75edd61d97",
+   "wall_time_s": 2617.47,
+   "warnings": {
+    "undersampling": [],
+    "nonmonotonic": 0,
+    "too_many_events": 0
+   },
+   "allow_undersampling": false,
+   "v2e_commit": "cac638444557a224ba6ee5c29260916f152c00bd",
+   "git_sha": "97210ab8cc43c3f01b411fdf895b2d8e173a1b32",
+   "git_dirty": false,
+   "gpu": "NVIDIA RTX A4000",
+   "created_at": "2026-10-09T12:49:56+00:00"
+  }
+ ],
+ "git_sha": "547bd34ca85e96e467e868ef012b1526469510d2",
+ "created_by": "src/evflow/sim/corpus.py",
+ "created_at": "2026-10-09T13:55:47+00:00"
+}

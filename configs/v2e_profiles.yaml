@@ -78,3 +78,13 @@ calibration_grid:             # Phase 2, on mvsec_tune only (src/evflow/sim/cali
   block_ms: 500               # blocks for per-pixel rate and hot-pixel fraction
   rand_rule: {factor: 1.5, min_halfwidth: 0.3}   # plan Phase 2 step 3
   ncc_rule: {fraction: 0.75, blur_sigma_px: 1.0, control_shift_frames: 5}   # + x-mirror control (D-029)
+
+calibration_grid_timing:      # Phase 3 re-calibration (D-035), on mvsec_tune only
+  base: calibration_grid      # same segments, seed, warm-up, blocks, objective, rand/ncc rules
+  cell_prefix: t
+  pos_neg_thres: [0.4, 0.5, 0.6, 0.7]
+  sigma_thres: [0.02, 0.04]
+  cutoff_hz: [0]              # lowpass off: at the 0.75 ms cap only cutoff <= ~64 Hz passes v2e's
+                              # check, and every such cutoff delays events (60 Hz: +0.5 frame)
+  shot_noise_rate_hz: [0, 1.0]
+  lag_rule: {max_abs_peak_lag_frames: 0.125}   # eligible: tune NCC-vs-lag peak within 1/8 frame
