@@ -28,15 +28,16 @@ scenarios:
     description: corpus after the Phase 2 cuts (D-026); calibration as measured (D-028)
     concurrency: 4
     items:
+      - {name: phase2_throughput_sweep_and_trial_measured, measured_sweep: true, trial_manifest: data/converted/v2e/trial/trial.json}
       - {name: calibration_grid_3x4s_measured, measured_from: results/v2e_calibration.json, concurrency: 4}
       - {name: mvsec_tune_cal, video_s: 60.0, units: 1, rate_from: mvsec_auto_ts750}
       - {name: mvsec_test_cal, video_s: 265.58, units: 7, rate_from: mvsec_auto_ts750}
       - {name: mvsec_train_cal_4x60s, video_s: 240.0, units: 4, rate_from: mvsec_auto_ts750}
       - {name: mvsec_train_rand_x4_4x60s, video_s: 240.0, units: 4, multiplier: 4, rate_from: mvsec_auto_ts750}
-      - {name: smd_train_640x360_4x15s, video_s: 60.0, units: 4, rate_from: smd_640x360_ts750}
+      - {name: smd_train_640x360_3x15s, video_s: 45.0, units: 3, rate_from: smd_640x360_ts750}
       - {name: smd_test_640x360_3x10s, video_s: 30.0, units: 3, rate_from: smd_640x360_ts750}
-      - {name: lars_train_subset, clips: 200, rate_from: "lars_640x360_ts500_.*"}
-      - {name: lars_eval_clutter_x3ct, clips: 80, multiplier: 3, rate_from: "lars_640x360_ts500_.*"}
+      - {name: lars_train_subset, clips: 120, rate_from: "lars_640x360_ts500_.*"}
+      - {name: lars_eval_clutter_x3ct, clips: 40, multiplier: 3, rate_from: "lars_640x360_ts500_.*"}
 
   calibration_full_tune:
     description: the 32-cell grid on the whole 60 s tune slice (alternative rejected in D-028)

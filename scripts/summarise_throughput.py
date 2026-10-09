@@ -83,10 +83,25 @@ def measured_item(item: dict) -> dict:
             "gpu_hours": round(sum(walls) / n / 3600, 3), "measured": True}
 
 
-def cost_item(item: dict, rows: dict[str, dict]) -> dict:
+def sweep_item(item: dict, rows: dict[str, dict], conc: list[dict]) -> dict:
+    """The throughput sweep itself (already spent): sequential units at their wall time,
+    concurrent batches at their batch wall time, plus the trial run's manifest if present."""
+    par = {u for c in conc for u in c["units"]}
+    seq = sum(r["wall_s"] for k, r in rows.items() if k not in par)
+    batches = sum(c["batch_wall_s"] for c in conc)
+    trial = REPO / item.get("trial_manifest", "")
+    trial_s = json.loads(trial.read_text())["wall_time_s"] if trial.is_file() else 0.0
+    return {**item, "sequential_units_wall_s": round(seq, 1),
+            "concurrent_batches_wall_s": round(batches, 1), "trial_wall_s": trial_s,
+            "gpu_hours": round((seq + batches + trial_s) / 3600, 3), "measured": True}
+
+
+def cost_item(item: dict, rows: dict[str, dict], conc: list[dict] | None = None) -> dict:
     """GPU-seconds of one budget line, from the rate of a measured unit (or group of units)."""
     if "measured_from" in item:
         return measured_item(item)
+    if item.get("measured_sweep"):
+        return sweep_item(item, rows, conc or [])
     ref = item["rate_from"]
     refs = [r for k, r in rows.items() if re.fullmatch(ref, k)]
     if not refs:
@@ -143,6 +158,8 @@ def main(argv: list[str] | None = None) -> int:
                     if p.stem not in rows and not p.stem.startswith("job"))
     doc = {
         "kind": "v2e_throughput",
+        "tier": "n/a",
+        "tier_note": "compute cost of the simulator, not an evidence-tier result",
         "plan_step": "Phase 2 step 2",
         "note": "compute cost of v2e on this workstation; not an evidence-tier metric",
         "units": list(rows.values()),
@@ -174,7 +191,7 @@ def main(argv: list[str] | None = None) -> int:
         doc["budget_limit_gpu_hours"] = bud["limit_gpu_hours"]
         doc["scenarios"] = {}
         for name, sc in bud["scenarios"].items():
-            items = [cost_item(it, rows) for it in sc["items"]]
+            items = [cost_item(it, rows, conc) for it in sc["items"]]
             done = sum(i["gpu_hours"] for i in items if i.get("measured"))
             seq = sum(i["gpu_hours"] for i in items if not i.get("measured"))
             n = int(sc.get("concurrency", 1))

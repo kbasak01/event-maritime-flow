@@ -335,10 +335,12 @@ def git_sha() -> str:
 
 
 def git_dirty() -> bool:
+    """True if tracked files changed or untracked files exist under the code/config paths."""
     try:
-        return bool(subprocess.run(["git", "status", "--porcelain", "--untracked-files=no"],
-                                   cwd=REPO, capture_output=True, text=True,
-                                   check=True).stdout.strip())
+        return bool(subprocess.run(
+            ["git", "status", "--porcelain", "--untracked-files=all", "--", "src", "scripts",
+             "configs", "jobs", "splits"],
+            cwd=REPO, capture_output=True, text=True, check=True).stdout.strip())
     except (OSError, subprocess.CalledProcessError):
         return True
 
@@ -413,7 +415,8 @@ def run_unit(
         "v2e_h5_sha256": sha256_file(raw), "v2e_h5_bytes": raw.stat().st_size,
         "wall_time_s": res["wall_time_s"], "gpu": gpu_name(),
         "gpu_mem_used_peak_mib": res["gpu_mem_used_peak_mib"],
-        "warnings": warn, "git_sha": git_sha(), "git_dirty": git_dirty(),
+        "warnings": warn, "allow_undersampling": bool(allow_undersampling),
+        "git_sha": git_sha(), "git_dirty": git_dirty(),
         "created_by": "src/evflow/sim/v2e_runner.py",
         "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         **(extra or {}),

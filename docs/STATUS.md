@@ -14,10 +14,10 @@
 | 9 | not started | – | – |
 | 10 | not started | – | – |
 
-Pending GPU jobs (Claude may launch GPU jobs after `gpu-job` prep, D-006):
-- `jobs/2026-10-08_v2e-calibration.sh` — running (32 cells × 3 segments, 4 in parallel, est. 1.7 GPU-h).
+Pending GPU jobs: none (Claude may launch GPU jobs after `gpu-job` prep, D-006).
 
-Done GPU jobs:
+Done GPU jobs (Phase 2):
 - `jobs/2026-10-08_v2e-throughput.sh` + `jobs/2026-10-08_v2e-throughput-concurrency.sh` → `results/v2e_throughput.json`.
+- `jobs/2026-10-08_v2e-calibration.sh` → `results/v2e_calibration.json` (measured GPU time in `results/v2e_throughput.json`, `scenarios.chosen`).
 
 Pending data: none. All datasets are present in `data/` (results/data_inventory.json). ffmpeg is installed.

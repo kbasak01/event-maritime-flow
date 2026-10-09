@@ -52,7 +52,8 @@ def main() -> int:
                                            cv2.cvtColor(im2, cv2.COLOR_BGR2GRAY)))
     sha = subprocess.run(["git", "rev-parse", "HEAD"], cwd=REPO, capture_output=True,
                          text=True).stdout.strip()
-    doc = {"kind": "lars_fps_check", "decision": "D-024",
+    doc = {"kind": "lars_fps_check", "decision": "D-024", "tier": "n/a",
+           "tier_note": "frame-rate heuristic for a v2e input setting, not an evidence-tier result",
            "lars_pairs": len(lars), "smd_pairs": len(smd),
            "lars_median_px_per_frame": float(np.median(lars)),
            "lars_iqr": [float(np.percentile(lars, 25)), float(np.percentile(lars, 75))],

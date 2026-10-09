@@ -17,5 +17,6 @@ Written in Phase 9: one row per VALIDATION_CHECKLIST.md line.
 - **Calibration slice (Phase 2, D-028).** The 32-cell calibration uses 3 × 4 s of `mvsec_tune`, not
   the full 60 s, for compute reasons.
 - **Reduced corpus (Phase 2, D-026).** MVSEC arms train on 240 s of `outdoor_day2` (all arms the
-  same windows); SMD and LaRS maritime corpora are subsets.
+  same windows); SMD (45 s train, 30 s test), LaRS (120 train clips) and the clutter study (40 val
+  clips) are subsets.
 - **LaRS frame rate assumed (Phase 2, D-024).** v2e time constants for LaRS use an assumed 30 fps.
