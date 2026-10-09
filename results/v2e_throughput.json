@@ -1,0 +1,1143 @@
+{
+ "kind": "v2e_throughput",
+ "plan_step": "Phase 2 step 2",
+ "note": "compute cost of v2e on this workstation; not an evidence-tier metric",
+ "units": [
+  {
+   "unit": "lars_640x360_ts500_00",
+   "dataset": "lars",
+   "profile": "maritime_640x360",
+   "overrides": {
+    "--timestamp_resolution": "0.0005"
+   },
+   "video_s": 0.4667,
+   "wall_s": 46.17,
+   "slomo_s": 34,
+   "dvs_s": 5,
+   "overhead_s": 7.2,
+   "upsampling_factor": 67.0,
+   "wall_per_video_s": 98.94,
+   "marginal_per_video_s": 83.57,
+   "n_events": 853020,
+   "events_per_video_s": 1827900,
+   "on_fraction": 0.47668518909287005,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 4132,
+   "store_bytes": 3158871
+  },
+  {
+   "unit": "lars_640x360_ts500_01",
+   "dataset": "lars",
+   "profile": "maritime_640x360",
+   "overrides": {
+    "--timestamp_resolution": "0.0005"
+   },
+   "video_s": 0.4667,
+   "wall_s": 49.65,
+   "slomo_s": 37,
+   "dvs_s": 6,
+   "overhead_s": 6.6,
+   "upsampling_factor": 67.0,
+   "wall_per_video_s": 106.39,
+   "marginal_per_video_s": 92.14,
+   "n_events": 1143973,
+   "events_per_video_s": 2451371,
+   "on_fraction": 0.4958325065364305,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 4127,
+   "store_bytes": 4463279
+  },
+  {
+   "unit": "lars_640x360_ts500_02",
+   "dataset": "lars",
+   "profile": "maritime_640x360",
+   "overrides": {
+    "--timestamp_resolution": "0.0005"
+   },
+   "video_s": 0.4667,
+   "wall_s": 48.29,
+   "slomo_s": 37,
+   "dvs_s": 5,
+   "overhead_s": 6.3,
+   "upsampling_factor": 67.0,
+   "wall_per_video_s": 103.48,
+   "marginal_per_video_s": 90.0,
+   "n_events": 970830,
+   "events_per_video_s": 2080350,
+   "on_fraction": 0.4965915762800902,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 4091,
+   "store_bytes": 3724681
+  },
+  {
+   "unit": "lars_640x360_ts500_03",
+   "dataset": "lars",
+   "profile": "maritime_640x360",
+   "overrides": {
+    "--timestamp_resolution": "0.0005"
+   },
+   "video_s": 0.4667,
+   "wall_s": 47.51,
+   "slomo_s": 35,
+   "dvs_s": 6,
+   "overhead_s": 6.5,
+   "upsampling_factor": 67.0,
+   "wall_per_video_s": 101.81,
+   "marginal_per_video_s": 87.86,
+   "n_events": 1197397,
+   "events_per_video_s": 2565851,
+   "on_fraction": 0.5156051000628864,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 4091,
+   "store_bytes": 4692498
+  },
+  {
+   "unit": "lars_640x360_ts500_04",
+   "dataset": "lars",
+   "profile": "maritime_640x360",
+   "overrides": {
+    "--timestamp_resolution": "0.0005"
+   },
+   "video_s": 0.4667,
+   "wall_s": 48.79,
+   "slomo_s": 37,
+   "dvs_s": 5,
+   "overhead_s": 6.8,
+   "upsampling_factor": 67.0,
+   "wall_per_video_s": 104.55,
+   "marginal_per_video_s": 90.0,
+   "n_events": 171188,
+   "events_per_video_s": 366831,
+   "on_fraction": 0.5256968946421479,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 4091,
+   "store_bytes": 697525
+  },
+  {
+   "unit": "lars_640x360_ts500_05",
+   "dataset": "lars",
+   "profile": "maritime_640x360",
+   "overrides": {
+    "--timestamp_resolution": "0.0005"
+   },
+   "video_s": 0.4667,
+   "wall_s": 47.26,
+   "slomo_s": 35,
+   "dvs_s": 5,
+   "overhead_s": 7.3,
+   "upsampling_factor": 67.0,
+   "wall_per_video_s": 101.27,
+   "marginal_per_video_s": 85.71,
+   "n_events": 264183,
+   "events_per_video_s": 566106,
+   "on_fraction": 0.469897760264665,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 4091,
+   "store_bytes": 1041107
+  },
+  {
+   "unit": "lars_640x360_ts500_06",
+   "dataset": "lars",
+   "profile": "maritime_640x360",
+   "overrides": {
+    "--timestamp_resolution": "0.0005"
+   },
+   "video_s": 0.3,
+   "wall_s": 32.04,
+   "slomo_s": 23,
+   "dvs_s": 3,
+   "overhead_s": 6.0,
+   "upsampling_factor": 67.0,
+   "wall_per_video_s": 106.8,
+   "marginal_per_video_s": 86.67,
+   "n_events": 312047,
+   "events_per_video_s": 1040157,
+   "on_fraction": 0.4584822158200528,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 4091,
+   "store_bytes": 1184092
+  },
+  {
+   "unit": "lars_640x360_ts500_07",
+   "dataset": "lars",
+   "profile": "maritime_640x360",
+   "overrides": {
+    "--timestamp_resolution": "0.0005"
+   },
+   "video_s": 0.3,
+   "wall_s": 29.96,
+   "slomo_s": 21,
+   "dvs_s": 3,
+   "overhead_s": 6.0,
+   "upsampling_factor": 67.0,
+   "wall_per_video_s": 99.87,
+   "marginal_per_video_s": 80.0,
+   "n_events": 7637,
+   "events_per_video_s": 25457,
+   "on_fraction": 0.45410501505826895,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 4091,
+   "store_bytes": 54506
+  },
+  {
+   "unit": "lars_640x360_ts500_08",
+   "dataset": "lars",
+   "profile": "maritime_640x360",
+   "overrides": {
+    "--timestamp_resolution": "0.0005"
+   },
+   "video_s": 0.3,
+   "wall_s": 30.6,
+   "slomo_s": 21,
+   "dvs_s": 3,
+   "overhead_s": 6.6,
+   "upsampling_factor": 67.0,
+   "wall_per_video_s": 102.0,
+   "marginal_per_video_s": 80.0,
+   "n_events": 43753,
+   "events_per_video_s": 145843,
+   "on_fraction": 0.48762370580303066,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 4089,
+   "store_bytes": 177193
+  },
+  {
+   "unit": "lars_640x360_ts500_09",
+   "dataset": "lars",
+   "profile": "maritime_640x360",
+   "overrides": {
+    "--timestamp_resolution": "0.0005"
+   },
+   "video_s": 0.3,
+   "wall_s": 32.95,
+   "slomo_s": 24,
+   "dvs_s": 3,
+   "overhead_s": 6.0,
+   "upsampling_factor": 67.0,
+   "wall_per_video_s": 109.83,
+   "marginal_per_video_s": 90.0,
+   "n_events": 159076,
+   "events_per_video_s": 530253,
+   "on_fraction": 0.5624418516935301,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 4089,
+   "store_bytes": 626605
+  },
+  {
+   "unit": "lars_640x360_ts500_10",
+   "dataset": "lars",
+   "profile": "maritime_640x360",
+   "overrides": {
+    "--timestamp_resolution": "0.0005"
+   },
+   "video_s": 0.3,
+   "wall_s": 32.31,
+   "slomo_s": 23,
+   "dvs_s": 3,
+   "overhead_s": 6.3,
+   "upsampling_factor": 67.0,
+   "wall_per_video_s": 107.7,
+   "marginal_per_video_s": 86.67,
+   "n_events": 398361,
+   "events_per_video_s": 1327870,
+   "on_fraction": 0.5208968749450875,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 4093,
+   "store_bytes": 1524073
+  },
+  {
+   "unit": "lars_640x360_ts500_11",
+   "dataset": "lars",
+   "profile": "maritime_640x360",
+   "overrides": {
+    "--timestamp_resolution": "0.0005"
+   },
+   "video_s": 0.3,
+   "wall_s": 34.51,
+   "slomo_s": 25,
+   "dvs_s": 3,
+   "overhead_s": 6.5,
+   "upsampling_factor": 67.0,
+   "wall_per_video_s": 115.03,
+   "marginal_per_video_s": 93.33,
+   "n_events": 231151,
+   "events_per_video_s": 770503,
+   "on_fraction": 0.5175448083720166,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 4089,
+   "store_bytes": 923669
+  },
+  {
+   "unit": "lars_640x360_ts500_12",
+   "dataset": "lars",
+   "profile": "maritime_640x360",
+   "overrides": {
+    "--timestamp_resolution": "0.0005"
+   },
+   "video_s": 0.3,
+   "wall_s": 32.29,
+   "slomo_s": 24,
+   "dvs_s": 3,
+   "overhead_s": 5.3,
+   "upsampling_factor": 67.0,
+   "wall_per_video_s": 107.63,
+   "marginal_per_video_s": 90.0,
+   "n_events": 45628,
+   "events_per_video_s": 152093,
+   "on_fraction": 0.5148592969229421,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 4089,
+   "store_bytes": 202766
+  },
+  {
+   "unit": "lars_640x360_ts500_13",
+   "dataset": "lars",
+   "profile": "maritime_640x360",
+   "overrides": {
+    "--timestamp_resolution": "0.0005"
+   },
+   "video_s": 0.3,
+   "wall_s": 33.73,
+   "slomo_s": 26,
+   "dvs_s": 3,
+   "overhead_s": 4.7,
+   "upsampling_factor": 67.0,
+   "wall_per_video_s": 112.43,
+   "marginal_per_video_s": 96.67,
+   "n_events": 444591,
+   "events_per_video_s": 1481970,
+   "on_fraction": 0.37995820878065456,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 4090,
+   "store_bytes": 1706231
+  },
+  {
+   "unit": "lars_640x360_ts500_14",
+   "dataset": "lars",
+   "profile": "maritime_640x360",
+   "overrides": {
+    "--timestamp_resolution": "0.0005"
+   },
+   "video_s": 0.3,
+   "wall_s": 32.33,
+   "slomo_s": 24,
+   "dvs_s": 2,
+   "overhead_s": 6.3,
+   "upsampling_factor": 67.0,
+   "wall_per_video_s": 107.77,
+   "marginal_per_video_s": 86.67,
+   "n_events": 172813,
+   "events_per_video_s": 576043,
+   "on_fraction": 0.5092614560247204,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 4090,
+   "store_bytes": 683609
+  },
+  {
+   "unit": "lars_640x360_ts500_15",
+   "dataset": "lars",
+   "profile": "maritime_640x360",
+   "overrides": {
+    "--timestamp_resolution": "0.0005"
+   },
+   "video_s": 0.3,
+   "wall_s": 31.21,
+   "slomo_s": 23,
+   "dvs_s": 2,
+   "overhead_s": 6.2,
+   "upsampling_factor": 67.0,
+   "wall_per_video_s": 104.03,
+   "marginal_per_video_s": 83.33,
+   "n_events": 14034,
+   "events_per_video_s": 46780,
+   "on_fraction": 0.4659398603391763,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 4090,
+   "store_bytes": 75443
+  },
+  {
+   "unit": "lars_640x360_ts500_16",
+   "dataset": "lars",
+   "profile": "maritime_640x360",
+   "overrides": {
+    "--timestamp_resolution": "0.0005"
+   },
+   "video_s": 0.4667,
+   "wall_s": 44.26,
+   "slomo_s": 31,
+   "dvs_s": 7,
+   "overhead_s": 6.3,
+   "upsampling_factor": 67.0,
+   "wall_per_video_s": 94.84,
+   "marginal_per_video_s": 81.43,
+   "n_events": 1554143,
+   "events_per_video_s": 3330306,
+   "on_fraction": 0.5041794738322021,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 4090,
+   "store_bytes": 5635082
+  },
+  {
+   "unit": "lars_640x360_ts500_17",
+   "dataset": "lars",
+   "profile": "maritime_640x360",
+   "overrides": {
+    "--timestamp_resolution": "0.0005"
+   },
+   "video_s": 0.4,
+   "wall_s": 38.28,
+   "slomo_s": 27,
+   "dvs_s": 5,
+   "overhead_s": 6.3,
+   "upsampling_factor": 67.0,
+   "wall_per_video_s": 95.7,
+   "marginal_per_video_s": 80.0,
+   "n_events": 1095347,
+   "events_per_video_s": 2738368,
+   "on_fraction": 0.5041352192501555,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 4090,
+   "store_bytes": 4181533
+  },
+  {
+   "unit": "lars_640x360_ts500_18",
+   "dataset": "lars",
+   "profile": "maritime_640x360",
+   "overrides": {
+    "--timestamp_resolution": "0.0005"
+   },
+   "video_s": 0.4667,
+   "wall_s": 45.36,
+   "slomo_s": 32,
+   "dvs_s": 7,
+   "overhead_s": 6.4,
+   "upsampling_factor": 67.0,
+   "wall_per_video_s": 97.2,
+   "marginal_per_video_s": 83.57,
+   "n_events": 1571349,
+   "events_per_video_s": 3367176,
+   "on_fraction": 0.5072100469087389,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 4090,
+   "store_bytes": 6137332
+  },
+  {
+   "unit": "lars_640x360_ts500_19",
+   "dataset": "lars",
+   "profile": "maritime_640x360",
+   "overrides": {
+    "--timestamp_resolution": "0.0005"
+   },
+   "video_s": 0.4667,
+   "wall_s": 43.76,
+   "slomo_s": 32,
+   "dvs_s": 6,
+   "overhead_s": 5.8,
+   "upsampling_factor": 67.0,
+   "wall_per_video_s": 93.77,
+   "marginal_per_video_s": 81.43,
+   "n_events": 442309,
+   "events_per_video_s": 947805,
+   "on_fraction": 0.5162476910937829,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 4118,
+   "store_bytes": 1602131
+  },
+  {
+   "unit": "mvsec_auto_ts1000",
+   "dataset": "mvsec",
+   "profile": "mvsec_grid",
+   "overrides": {
+    "--timestamp_resolution": "0.001"
+   },
+   "video_s": 5.0061,
+   "wall_s": 129.81,
+   "slomo_s": 75,
+   "dvs_s": 48,
+   "overhead_s": 6.8,
+   "upsampling_factor": 23.0,
+   "wall_per_video_s": 25.93,
+   "marginal_per_video_s": 24.57,
+   "n_events": 10970307,
+   "events_per_video_s": 2191379,
+   "on_fraction": 0.4843664812662034,
+   "undersampling_warnings": 1,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 3737,
+   "store_bytes": 35939264
+  },
+  {
+   "unit": "mvsec_auto_ts250",
+   "dataset": "mvsec",
+   "profile": "mvsec_grid",
+   "overrides": {
+    "--timestamp_resolution": "0.00025"
+   },
+   "video_s": 5.0061,
+   "wall_s": 443.13,
+   "slomo_s": 298,
+   "dvs_s": 138,
+   "overhead_s": 7.1,
+   "upsampling_factor": 92.0,
+   "wall_per_video_s": 88.52,
+   "marginal_per_video_s": 87.09,
+   "n_events": 10861839,
+   "events_per_video_s": 2169712,
+   "on_fraction": 0.48420566719871283,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 3735,
+   "store_bytes": 35680211
+  },
+  {
+   "unit": "mvsec_auto_ts500",
+   "dataset": "mvsec",
+   "profile": "mvsec_grid",
+   "overrides": {
+    "--timestamp_resolution": "0.0005"
+   },
+   "video_s": 5.0061,
+   "wall_s": 237.17,
+   "slomo_s": 149,
+   "dvs_s": 81,
+   "overhead_s": 7.2,
+   "upsampling_factor": 46.0,
+   "wall_per_video_s": 47.38,
+   "marginal_per_video_s": 45.94,
+   "n_events": 10897777,
+   "events_per_video_s": 2176890,
+   "on_fraction": 0.4842609644150362,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 3825,
+   "store_bytes": 35737953
+  },
+  {
+   "unit": "mvsec_auto_ts500_b32",
+   "dataset": "mvsec",
+   "profile": "mvsec_grid",
+   "overrides": {
+    "--timestamp_resolution": "0.0005",
+    "--batch_size": "32"
+   },
+   "video_s": 5.0061,
+   "wall_s": 237.74,
+   "slomo_s": 150,
+   "dvs_s": 81,
+   "overhead_s": 6.7,
+   "upsampling_factor": 46.0,
+   "wall_per_video_s": 47.49,
+   "marginal_per_video_s": 46.14,
+   "n_events": 10897655,
+   "events_per_video_s": 2176866,
+   "on_fraction": 0.4842607882154463,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 6284,
+   "store_bytes": 35737113
+  },
+  {
+   "unit": "mvsec_auto_ts750",
+   "dataset": "mvsec",
+   "profile": "mvsec_grid",
+   "overrides": {
+    "--timestamp_resolution": "0.00075"
+   },
+   "video_s": 5.0061,
+   "wall_s": 162.78,
+   "slomo_s": 100,
+   "dvs_s": 56,
+   "overhead_s": 6.8,
+   "upsampling_factor": 31.0,
+   "wall_per_video_s": 32.52,
+   "marginal_per_video_s": 31.16,
+   "n_events": 10932504,
+   "events_per_video_s": 2183827,
+   "on_fraction": 0.4843093585879319,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 3731,
+   "store_bytes": 35794585
+  },
+  {
+   "unit": "mvsec_auto_ts750_par2_0",
+   "dataset": "mvsec",
+   "profile": "mvsec_grid",
+   "overrides": {
+    "--timestamp_resolution": "0.00075"
+   },
+   "video_s": 5.0061,
+   "wall_s": 175.06,
+   "slomo_s": 107,
+   "dvs_s": 61,
+   "overhead_s": 7.1,
+   "upsampling_factor": 31.0,
+   "wall_per_video_s": 34.97,
+   "marginal_per_video_s": 33.56,
+   "n_events": 10932504,
+   "events_per_video_s": 2183827,
+   "on_fraction": 0.4843093585879319,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 4889,
+   "store_bytes": 35794585
+  },
+  {
+   "unit": "mvsec_auto_ts750_par2_1",
+   "dataset": "mvsec",
+   "profile": "mvsec_grid",
+   "overrides": {
+    "--timestamp_resolution": "0.00075"
+   },
+   "video_s": 5.0061,
+   "wall_s": 175.06,
+   "slomo_s": 107,
+   "dvs_s": 61,
+   "overhead_s": 7.1,
+   "upsampling_factor": 31.0,
+   "wall_per_video_s": 34.97,
+   "marginal_per_video_s": 33.56,
+   "n_events": 10932504,
+   "events_per_video_s": 2183827,
+   "on_fraction": 0.4843093585879319,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 4889,
+   "store_bytes": 35794585
+  },
+  {
+   "unit": "mvsec_auto_ts750_par3_0",
+   "dataset": "mvsec",
+   "profile": "mvsec_grid",
+   "overrides": {
+    "--timestamp_resolution": "0.00075"
+   },
+   "video_s": 5.0061,
+   "wall_s": 254.5,
+   "slomo_s": 177,
+   "dvs_s": 70,
+   "overhead_s": 7.5,
+   "upsampling_factor": 31.0,
+   "wall_per_video_s": 50.84,
+   "marginal_per_video_s": 49.34,
+   "n_events": 10932504,
+   "events_per_video_s": 2183827,
+   "on_fraction": 0.4843093585879319,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 6052,
+   "store_bytes": 35794585
+  },
+  {
+   "unit": "mvsec_auto_ts750_par3_1",
+   "dataset": "mvsec",
+   "profile": "mvsec_grid",
+   "overrides": {
+    "--timestamp_resolution": "0.00075"
+   },
+   "video_s": 5.0061,
+   "wall_s": 254.53,
+   "slomo_s": 178,
+   "dvs_s": 70,
+   "overhead_s": 6.5,
+   "upsampling_factor": 31.0,
+   "wall_per_video_s": 50.84,
+   "marginal_per_video_s": 49.54,
+   "n_events": 10932504,
+   "events_per_video_s": 2183827,
+   "on_fraction": 0.4843093585879319,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 6052,
+   "store_bytes": 35794585
+  },
+  {
+   "unit": "mvsec_auto_ts750_par3_2",
+   "dataset": "mvsec",
+   "profile": "mvsec_grid",
+   "overrides": {
+    "--timestamp_resolution": "0.00075"
+   },
+   "video_s": 5.0061,
+   "wall_s": 256.72,
+   "slomo_s": 181,
+   "dvs_s": 69,
+   "overhead_s": 6.7,
+   "upsampling_factor": 31.0,
+   "wall_per_video_s": 51.28,
+   "marginal_per_video_s": 49.94,
+   "n_events": 10932504,
+   "events_per_video_s": 2183827,
+   "on_fraction": 0.4843093585879319,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 6052,
+   "store_bytes": 35794585
+  },
+  {
+   "unit": "mvsec_auto_ts750_par4_0",
+   "dataset": "mvsec",
+   "profile": "mvsec_grid",
+   "overrides": {
+    "--timestamp_resolution": "0.00075"
+   },
+   "video_s": 5.0061,
+   "wall_s": 312.88,
+   "slomo_s": 223,
+   "dvs_s": 83,
+   "overhead_s": 6.9,
+   "upsampling_factor": 31.0,
+   "wall_per_video_s": 62.5,
+   "marginal_per_video_s": 61.13,
+   "n_events": 10932504,
+   "events_per_video_s": 2183827,
+   "on_fraction": 0.4843093585879319,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 7305,
+   "store_bytes": 35794585
+  },
+  {
+   "unit": "mvsec_auto_ts750_par4_1",
+   "dataset": "mvsec",
+   "profile": "mvsec_grid",
+   "overrides": {
+    "--timestamp_resolution": "0.00075"
+   },
+   "video_s": 5.0061,
+   "wall_s": 310.68,
+   "slomo_s": 219,
+   "dvs_s": 84,
+   "overhead_s": 7.7,
+   "upsampling_factor": 31.0,
+   "wall_per_video_s": 62.06,
+   "marginal_per_video_s": 60.53,
+   "n_events": 10932504,
+   "events_per_video_s": 2183827,
+   "on_fraction": 0.4843093585879319,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 7305,
+   "store_bytes": 35794585
+  },
+  {
+   "unit": "mvsec_auto_ts750_par4_2",
+   "dataset": "mvsec",
+   "profile": "mvsec_grid",
+   "overrides": {
+    "--timestamp_resolution": "0.00075"
+   },
+   "video_s": 5.0061,
+   "wall_s": 312.14,
+   "slomo_s": 222,
+   "dvs_s": 83,
+   "overhead_s": 7.1,
+   "upsampling_factor": 31.0,
+   "wall_per_video_s": 62.35,
+   "marginal_per_video_s": 60.93,
+   "n_events": 10932504,
+   "events_per_video_s": 2183827,
+   "on_fraction": 0.4843093585879319,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 7305,
+   "store_bytes": 35794585
+  },
+  {
+   "unit": "mvsec_auto_ts750_par4_3",
+   "dataset": "mvsec",
+   "profile": "mvsec_grid",
+   "overrides": {
+    "--timestamp_resolution": "0.00075"
+   },
+   "video_s": 5.0061,
+   "wall_s": 313.11,
+   "slomo_s": 224,
+   "dvs_s": 82,
+   "overhead_s": 7.1,
+   "upsampling_factor": 31.0,
+   "wall_per_video_s": 62.55,
+   "marginal_per_video_s": 61.13,
+   "n_events": 10932504,
+   "events_per_video_s": 2183827,
+   "on_fraction": 0.4843093585879319,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 7305,
+   "store_bytes": 35794585
+  },
+  {
+   "unit": "mvsec_fixed_ts500",
+   "dataset": "mvsec",
+   "profile": "mvsec_grid",
+   "overrides": {
+    "--timestamp_resolution": "0.0005",
+    "--auto_timestamp_resolution": "False"
+   },
+   "video_s": 5.0061,
+   "wall_s": 236.27,
+   "slomo_s": 149,
+   "dvs_s": 81,
+   "overhead_s": 6.3,
+   "upsampling_factor": 46.0,
+   "wall_per_video_s": 47.2,
+   "marginal_per_video_s": 45.94,
+   "n_events": 10897777,
+   "events_per_video_s": 2176890,
+   "on_fraction": 0.4842609644150362,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 3701,
+   "store_bytes": 35737953
+  },
+  {
+   "unit": "smd_346x260_ts500",
+   "dataset": "smd",
+   "profile": "maritime_346x260",
+   "overrides": {
+    "--timestamp_resolution": "0.000500"
+   },
+   "video_s": 5.0,
+   "wall_s": 198.44,
+   "slomo_s": 132,
+   "dvs_s": 55,
+   "overhead_s": 11.4,
+   "upsampling_factor": 67.0,
+   "wall_per_video_s": 39.69,
+   "marginal_per_video_s": 37.4,
+   "n_events": 3962315,
+   "events_per_video_s": 792463,
+   "on_fraction": 0.5003229172844663,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 3702,
+   "store_bytes": 13374643
+  },
+  {
+   "unit": "smd_346x260_ts750",
+   "dataset": "smd",
+   "profile": "maritime_346x260",
+   "overrides": {
+    "--timestamp_resolution": "0.000750"
+   },
+   "video_s": 5.0,
+   "wall_s": 136.56,
+   "slomo_s": 89,
+   "dvs_s": 36,
+   "overhead_s": 11.6,
+   "upsampling_factor": 45.0,
+   "wall_per_video_s": 27.31,
+   "marginal_per_video_s": 25.0,
+   "n_events": 4004506,
+   "events_per_video_s": 800901,
+   "on_fraction": 0.5003173924573967,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 3696,
+   "store_bytes": 13489232
+  },
+  {
+   "unit": "smd_640x360_ts500",
+   "dataset": "smd",
+   "profile": "maritime_640x360",
+   "overrides": {
+    "--timestamp_resolution": "0.000500"
+   },
+   "video_s": 5.0,
+   "wall_s": 423.08,
+   "slomo_s": 344,
+   "dvs_s": 67,
+   "overhead_s": 12.1,
+   "upsampling_factor": 67.0,
+   "wall_per_video_s": 84.62,
+   "marginal_per_video_s": 82.2,
+   "n_events": 13955128,
+   "events_per_video_s": 2791026,
+   "on_fraction": 0.5001527037229612,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 5524,
+   "store_bytes": 53903133
+  },
+  {
+   "unit": "smd_640x360_ts750",
+   "dataset": "smd",
+   "profile": "maritime_640x360",
+   "overrides": {
+    "--timestamp_resolution": "0.000750"
+   },
+   "video_s": 5.0,
+   "wall_s": 292.83,
+   "slomo_s": 234,
+   "dvs_s": 47,
+   "overhead_s": 11.8,
+   "upsampling_factor": 45.05,
+   "wall_per_video_s": 58.57,
+   "marginal_per_video_s": 56.2,
+   "n_events": 14130084,
+   "events_per_video_s": 2826017,
+   "on_fraction": 0.500146849799336,
+   "undersampling_warnings": 0,
+   "gpu": "NVIDIA RTX A4000",
+   "gpu_mem_used_peak_mib": 5561,
+   "store_bytes": 54550736
+  }
+ ],
+ "failed_units": [],
+ "lars_clips_summary": {
+  "n": 20,
+  "wall_s_median": 36.394999999999996,
+  "wall_s_p90": 48.34,
+  "video_s_median": 0.35
+ },
+ "concurrency": [
+  {
+   "concurrency": 2,
+   "units": [
+    "mvsec_auto_ts750_par2_0",
+    "mvsec_auto_ts750_par2_1"
+   ],
+   "batch_wall_s": 177.1,
+   "effective_gpu_s_per_video_s": 17.69
+  },
+  {
+   "concurrency": 3,
+   "units": [
+    "mvsec_auto_ts750_par3_0",
+    "mvsec_auto_ts750_par3_1",
+    "mvsec_auto_ts750_par3_2"
+   ],
+   "batch_wall_s": 258.8,
+   "effective_gpu_s_per_video_s": 17.23
+  },
+  {
+   "concurrency": 4,
+   "units": [
+    "mvsec_auto_ts750_par4_0",
+    "mvsec_auto_ts750_par4_1",
+    "mvsec_auto_ts750_par4_2",
+    "mvsec_auto_ts750_par4_3"
+   ],
+   "batch_wall_s": 315.2,
+   "effective_gpu_s_per_video_s": 15.74
+  }
+ ],
+ "budget_config": "configs/v2e_budget.yaml",
+ "budget_limit_gpu_hours": 12,
+ "scenarios": {
+  "full_plan": {
+   "description": "corpus exactly as written in the plan (no cuts), units run concurrently",
+   "items": [
+    {
+     "name": "calibration_grid_3x4s",
+     "video_s": 381.9,
+     "units": 96,
+     "rate_from": "mvsec_auto_ts750",
+     "marginal_per_video_s": 31.16,
+     "overhead_s": 6.8,
+     "gpu_hours": 3.487
+    },
+    {
+     "name": "mvsec_tune_cal",
+     "video_s": 60.0,
+     "units": 1,
+     "rate_from": "mvsec_auto_ts750",
+     "marginal_per_video_s": 31.16,
+     "overhead_s": 6.8,
+     "gpu_hours": 0.521
+    },
+    {
+     "name": "mvsec_test_cal",
+     "video_s": 265.58,
+     "units": 7,
+     "rate_from": "mvsec_auto_ts750",
+     "marginal_per_video_s": 31.16,
+     "overhead_s": 6.8,
+     "gpu_hours": 2.312
+    },
+    {
+     "name": "mvsec_train_cal",
+     "video_s": 489.98,
+     "units": 10,
+     "rate_from": "mvsec_auto_ts750",
+     "marginal_per_video_s": 31.16,
+     "overhead_s": 6.8,
+     "gpu_hours": 4.26
+    },
+    {
+     "name": "mvsec_train_rand_x4",
+     "video_s": 489.98,
+     "units": 10,
+     "multiplier": 4,
+     "rate_from": "mvsec_auto_ts750",
+     "marginal_per_video_s": 31.16,
+     "overhead_s": 6.8,
+     "gpu_hours": 17.04
+    },
+    {
+     "name": "smd_all_640x360",
+     "video_s": 147.6,
+     "units": 11,
+     "rate_from": "smd_640x360_ts750",
+     "marginal_per_video_s": 56.2,
+     "overhead_s": 11.8,
+     "gpu_hours": 2.34
+    },
+    {
+     "name": "lars_train_all",
+     "clips": 2603,
+     "rate_from": "lars_640x360_ts500_.*",
+     "per_clip_wall_s": 36.394999999999996,
+     "gpu_hours": 26.316
+    },
+    {
+     "name": "lars_eval_clutter_x3ct",
+     "clips": 197,
+     "multiplier": 3,
+     "rate_from": "lars_640x360_ts500_.*",
+     "per_clip_wall_s": 36.394999999999996,
+     "gpu_hours": 5.975
+    }
+   ],
+   "measured_gpu_hours": 0,
+   "sequential_gpu_hours": 62.25,
+   "concurrency": 4,
+   "concurrency_factor": 0.484,
+   "total_gpu_hours": 30.13,
+   "within_limit": false
+  },
+  "chosen": {
+   "description": "corpus after the Phase 2 cuts (D-026); calibration as measured (D-028)",
+   "items": [
+    {
+     "name": "calibration_grid_3x4s_measured",
+     "measured_from": "results/v2e_calibration.json",
+     "concurrency": 4,
+     "units": 96,
+     "sum_unit_wall_s": 37298.4,
+     "gpu_hours": 2.59,
+     "measured": true
+    },
+    {
+     "name": "mvsec_tune_cal",
+     "video_s": 60.0,
+     "units": 1,
+     "rate_from": "mvsec_auto_ts750",
+     "marginal_per_video_s": 31.16,
+     "overhead_s": 6.8,
+     "gpu_hours": 0.521
+    },
+    {
+     "name": "mvsec_test_cal",
+     "video_s": 265.58,
+     "units": 7,
+     "rate_from": "mvsec_auto_ts750",
+     "marginal_per_video_s": 31.16,
+     "overhead_s": 6.8,
+     "gpu_hours": 2.312
+    },
+    {
+     "name": "mvsec_train_cal_4x60s",
+     "video_s": 240.0,
+     "units": 4,
+     "rate_from": "mvsec_auto_ts750",
+     "marginal_per_video_s": 31.16,
+     "overhead_s": 6.8,
+     "gpu_hours": 2.085
+    },
+    {
+     "name": "mvsec_train_rand_x4_4x60s",
+     "video_s": 240.0,
+     "units": 4,
+     "multiplier": 4,
+     "rate_from": "mvsec_auto_ts750",
+     "marginal_per_video_s": 31.16,
+     "overhead_s": 6.8,
+     "gpu_hours": 8.34
+    },
+    {
+     "name": "smd_train_640x360_4x15s",
+     "video_s": 60.0,
+     "units": 4,
+     "rate_from": "smd_640x360_ts750",
+     "marginal_per_video_s": 56.2,
+     "overhead_s": 11.8,
+     "gpu_hours": 0.95
+    },
+    {
+     "name": "smd_test_640x360_3x10s",
+     "video_s": 30.0,
+     "units": 3,
+     "rate_from": "smd_640x360_ts750",
+     "marginal_per_video_s": 56.2,
+     "overhead_s": 11.8,
+     "gpu_hours": 0.478
+    },
+    {
+     "name": "lars_train_subset",
+     "clips": 200,
+     "rate_from": "lars_640x360_ts500_.*",
+     "per_clip_wall_s": 36.394999999999996,
+     "gpu_hours": 2.022
+    },
+    {
+     "name": "lars_eval_clutter_x3ct",
+     "clips": 80,
+     "multiplier": 3,
+     "rate_from": "lars_640x360_ts500_.*",
+     "per_clip_wall_s": 36.394999999999996,
+     "gpu_hours": 2.426
+    }
+   ],
+   "measured_gpu_hours": 2.59,
+   "sequential_gpu_hours": 19.13,
+   "concurrency": 4,
+   "concurrency_factor": 0.484,
+   "total_gpu_hours": 11.85,
+   "within_limit": true
+  },
+  "calibration_full_tune": {
+   "description": "the 32-cell grid on the whole 60 s tune slice (alternative rejected in D-028)",
+   "items": [
+    {
+     "name": "calibration_grid_full_60s",
+     "video_s": 1920.0,
+     "units": 32,
+     "rate_from": "mvsec_auto_ts750",
+     "marginal_per_video_s": 31.16,
+     "overhead_s": 6.8,
+     "gpu_hours": 16.679
+    }
+   ],
+   "measured_gpu_hours": 0,
+   "sequential_gpu_hours": 16.68,
+   "concurrency": 4,
+   "concurrency_factor": 0.484,
+   "total_gpu_hours": 8.07,
+   "within_limit": true
+  }
+ },
+ "git_sha": "fbc216dba37659fc3c18eda9af01033cd085b643",
+ "created_by": "scripts/summarise_throughput.py",
+ "created_at": "2026-10-09T03:36:32+00:00"
+}

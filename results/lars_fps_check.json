@@ -1,0 +1,19 @@
+{
+ "kind": "lars_fps_check",
+ "decision": "D-024",
+ "lars_pairs": 120,
+ "smd_pairs": 32,
+ "lars_median_px_per_frame": 0.6586390137672424,
+ "lars_iqr": [
+  0.11013091914355755,
+  1.949947565793991
+ ],
+ "smd30fps_median_px_per_frame": 1.242756873369217,
+ "smd30fps_iqr": [
+  0.01395391533151269,
+  5.224157333374023
+ ],
+ "git_sha": "fbc216dba37659fc3c18eda9af01033cd085b643",
+ "created_by": "scripts/lars_fps_check.py",
+ "created_at": "2026-10-09T03:36:43+00:00"
+}
