@@ -30,9 +30,13 @@ scenarios:
     items:
       - {name: phase2_throughput_sweep_and_trial_measured, measured_sweep: true, trial_manifest: data/converted/v2e/trial/trial.json}
       - {name: calibration_grid_3x4s_measured, measured_from: results/v2e_calibration.json, concurrency: 4}
-      # Phase 3 corpus as run (jobs/2026-10-09_v2e-mvsec.sh, D-032): trials sequential, the rest 4-way
-      - {name: phase3_trials_mvsec_rand_extremes_measured, measured_from: results/v2e_mvsec_corpus.json, corpora: [trial], concurrency: 1}
-      - {name: phase3_mvsec_corpus_measured, measured_from: results/v2e_mvsec_corpus.json, corpora: [tune, test, train_cal, rand0, rand1, rand2, rand3], concurrency: 4}
+      # Phase 3 first corpus (jobs/2026-10-09_v2e-mvsec.sh, D-032; lagged, superseded by D-035)
+      - {name: phase3_d032_trials_measured, measured_from: results/v2e_mvsec_corpus_d032_lagged.json, corpora: [trial], concurrency: 1}
+      - {name: phase3_d032_corpus_measured, measured_from: results/v2e_mvsec_corpus_d032_lagged.json, corpora: [tune, test, train_cal, rand0, rand1, rand2, rand3], concurrency: 4}
+      # D-035 timing re-calibration (16 cells, 4-way) and the corpus re-run (trials sequential, rest 4-way)
+      - {name: phase3_d035_calibration_timing_measured, measured_from: results/v2e_calibration_timing.json, grid: calibration_grid_timing, concurrency: 4}
+      - {name: phase3_d035_trials_measured, measured_from: results/v2e_mvsec_corpus.json, corpora: [trial], concurrency: 1}
+      - {name: phase3_d035_corpus_measured, measured_from: results/v2e_mvsec_corpus.json, corpora: [tune, test, train_cal, rand0, rand1, rand2, rand3], concurrency: 4}
       - {name: phase7_trial_maritime_640x360, video_s: 5.0, units: 1, rate_from: smd_640x360_ts750}
       - {name: smd_train_640x360_3x15s, video_s: 45.0, units: 3, rate_from: smd_640x360_ts750}
       - {name: smd_test_640x360_3x10s, video_s: 30.0, units: 3, rate_from: smd_640x360_ts750}

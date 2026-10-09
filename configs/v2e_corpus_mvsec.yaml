@@ -1,7 +1,7 @@
 # Phase 3 matched-content MVSEC v2e(APS) corpus (IMPLEMENTATION_PLAN Phase 3 step 1).
 # Read only by src/evflow/sim/corpus.py, which turns it into an ordered unit list
-# (data/converted/v2e/mvsec/corpus_plan.json). Cuts: D-026. Seeds, chunking, draws: D-032.
-out_root: v2e/mvsec            # under paths.local.yaml outputs.events
+# (<out_root>/corpus_plan.json). Cuts: D-026. Seeds, chunking, draws: D-032. Profile: D-035.
+out_root: v2e/mvsec_d035       # under paths.local.yaml outputs.events; D-035 re-run (first corpus: v2e/mvsec)
 warmup_frames: 10              # first APS windows of a unit are v2e warm-up (D-027, D-032)
 max_unit_s: 60.0               # v2e float32 time precision (D-022)
 max_dt: 4                      # longest evaluation window, in APS frames (configs/eval_mvsec.yaml)

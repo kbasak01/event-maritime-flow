@@ -58,3 +58,13 @@ def test_measured_item_from_corpus_units(tmp_path, monkeypatch):
     four = st.measured_item({"measured_from": "c.json", "concurrency": 4,
                              "corpora": ["tune", "rand0"]})
     assert four["units"] == 2 and four["gpu_hours"] == 1.0
+
+
+def test_measured_item_grid_filter(tmp_path, monkeypatch):
+    doc = {"cells": [{"grid": "calibration_grid", "units": [{"wall_time_s": 3600.0}]},
+                     {"grid": "calibration_grid_timing", "units": [{"wall_time_s": 7200.0}]}]}
+    (tmp_path / "t.json").write_text(json.dumps(doc))
+    monkeypatch.setattr(st, "REPO", tmp_path)
+    it = st.measured_item({"measured_from": "t.json", "concurrency": 1,
+                           "grid": "calibration_grid_timing"})
+    assert it["units"] == 1 and it["gpu_hours"] == 2.0

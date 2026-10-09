@@ -3,13 +3,14 @@
 #   --input --output_folder --dvs_h5 --dvs_emulator_seed --input_frame_rate [--start_time --stop_time]
 # args are {flag: value}; a null value is a flag without a value. A child profile (`base:`) replaces
 # `size` and updates `args`. Overrides may only change flags the profile already sets.
-# mvsec_cal / mvsec_rand are frozen in Phase 2 from results/v2e_calibration.json (mvsec_tune ONLY)
+# mvsec_cal / mvsec_rand are frozen from calibration_json (mvsec_tune ONLY; Phase 2, re-frozen D-035)
 # by scripts/freeze_profile.py — never edit those values by hand.
 v2e_commit_file: configs/v2e_commit.txt
-calibration_json: results/v2e_calibration.json
-calibration_sha256: 633052b7428fd2b3c1f3fd3fce3c48bb905363a97c91ede7d57a9fe0e4270306      # written by scripts/freeze_profile.py
-# Phase 3 alignment check: count-image NCC median must exceed this (set on mvsec_tune, D-029)
-alignment_ncc_threshold: 0.440719   # written by scripts/freeze_profile.py
+calibration_json: results/v2e_calibration_timing.json
+calibration_sha256: 095d9d858b51679b9b9c0cf8693881bd68876bfe7c737531dac0e2e0400b6fb4      # written by scripts/freeze_profile.py
+# Phase 3 alignment check: count-image NCC median must exceed this (rule D-029, re-derived on
+# mvsec_tune for the timing-constrained profile, D-035)
+alignment_ncc_threshold: 0.491063   # written by scripts/freeze_profile.py
 
 common:
   - --no_preview
@@ -47,12 +48,12 @@ profiles:
 
   mvsec_cal:                  # frozen from the calibration argmin (scripts/freeze_profile.py)
     base: mvsec_grid
-    args: {--pos_thres: "0.4", --neg_thres: "0.4", --sigma_thres: "0.04", --cutoff_hz: "60.0", --shot_noise_rate_hz: "0.0"}
+    args: {--pos_thres: "0.6", --neg_thres: "0.6", --sigma_thres: "0.04", --cutoff_hz: "0.0", --shot_noise_rate_hz: "0.0"}
 
   mvsec_rand:                 # CT randomised per 60 s clip; range from calibration (tune only)
     base: mvsec_cal
     randomise:
-      thres_range: [0.28, 0.52]   # pos_thres = neg_thres drawn log-uniform
+      thres_range: [0.4, 0.78]   # pos_thres = neg_thres drawn log-uniform
       sigma_range: [0.02, 0.052]   # sigma_thres drawn uniform
       corpora: 4
 

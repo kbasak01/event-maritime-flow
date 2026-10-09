@@ -78,8 +78,9 @@ def measured_item(item: dict) -> dict:
     committed results JSON that lists them (results/v2e_calibration.json: cells[].units[];
     results/v2e_mvsec_corpus.json: units[], optionally only the corpora in ``corpora``)."""
     doc = json.loads((REPO / item["measured_from"]).read_text())
-    if "cells" in doc:
-        walls = [u["wall_time_s"] for c in doc["cells"] for u in c["units"]]
+    if "cells" in doc:      # optionally only one grid's cells (the timing JSON lists both)
+        walls = [u["wall_time_s"] for c in doc["cells"]
+                 if item.get("grid") is None or c.get("grid") == item["grid"] for u in c["units"]]
     else:
         keep = item.get("corpora")
         walls = [u["wall_time_s"] for u in doc["units"] if keep is None or u["corpus"] in keep]
