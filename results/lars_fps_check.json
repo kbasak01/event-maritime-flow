@@ -1,6 +1,8 @@
 {
  "kind": "lars_fps_check",
  "decision": "D-024",
+ "tier": "n/a",
+ "tier_note": "frame-rate heuristic for a v2e input setting, not an evidence-tier result",
  "lars_pairs": 120,
  "smd_pairs": 32,
  "lars_median_px_per_frame": 0.6586390137672424,
@@ -13,7 +15,7 @@
   0.01395391533151269,
   5.224157333374023
  ],
- "git_sha": "fbc216dba37659fc3c18eda9af01033cd085b643",
+ "git_sha": "d4d1cd22fc6a17d6932db773c5e549ee5ad3b5ea",
  "created_by": "scripts/lars_fps_check.py",
- "created_at": "2026-10-09T03:36:43+00:00"
+ "created_at": "2026-10-09T03:54:50+00:00"
 }
