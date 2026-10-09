@@ -122,3 +122,36 @@ def test_export_video_frames_range(tmp_path):
     assert first.shape == (24, 32, 3) and abs(int(first.mean()) - 40) <= 3   # frame 2
     with pytest.raises(ValueError):
         r.export_video_frames(vid, tmp_path / "bad", 8, 12)
+
+
+def test_run_unit_fails_on_clamped_events(tmp_path, monkeypatch):
+    import evflow.io.v2e_reader as rd
+
+    def fake_run(argv, *, v2e_python, v2e_repo, log_path):
+        folder = Path(argv[argv.index("--output_folder") + 1])
+        (folder / argv[argv.index("--dvs_h5") + 1]).write_bytes(b"x")
+        log_path.write_text("ok\n")
+        return {"returncode": 0, "wall_time_s": 1.0, "gpu_mem_used_peak_mib": None}
+
+    monkeypatch.setattr(r, "run_v2e", fake_run)
+    monkeypatch.setattr(r, "gpu_name", lambda: "test")
+    monkeypatch.setattr(rd, "convert_v2e_h5", lambda *a, **k: {
+        "n_events": 1000, "n_events_beyond_clock_map": 5})
+    doc = {**DOC, "v2e_commit_file": "configs/v2e_commit.txt"}
+    with pytest.raises(r.V2EFailed, match="clamped"):
+        r.run_unit(unit="u", out_dir=tmp_path, profile="grid", seed=1, input_path=tmp_path,
+                   input_sha256="0" * 64, input_desc={}, input_frame_rate=40.0,
+                   frame_rate_source="test", width=346, height=260, source="s", sensor="s",
+                   clock_real_ts_us=np.arange(5, dtype=np.int64) * 25_000,
+                   profiles_doc=doc, paths={"v2e": {"python": "py", "repo": "repo"}})
+
+
+def test_git_dirty_sees_untracked_code(tmp_path, monkeypatch):
+    import subprocess
+
+    subprocess.run(["git", "init", "-q", str(tmp_path)], check=True)
+    monkeypatch.setattr(r, "REPO", tmp_path)
+    assert r.git_dirty() is False
+    (tmp_path / "src").mkdir()
+    (tmp_path / "src" / "new.py").write_text("x = 1\n")
+    assert r.git_dirty() is True

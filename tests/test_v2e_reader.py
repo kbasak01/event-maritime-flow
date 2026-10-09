@@ -116,3 +116,11 @@ def test_fallback_across_chunk_boundary(tmp_path):
     with EventStore(tmp_path / "s.h5") as st:
         np.testing.assert_array_equal(st.events["t"][:], [0, 5, 10, 15])
         np.testing.assert_array_equal(st.events["x"][:], [1, 3, 2, 4])
+
+
+def test_rejects_coordinates_that_would_wrap(tmp_path):
+    src = tmp_path / "w.h5"
+    write_fake_v2e(src, [[0, 65541, 0, 1]])
+    with pytest.raises(ValueError, match="outside"):
+        convert_v2e_h5(src, tmp_path / "o.h5", width=346, height=260, source="v", sensor="v",
+                       simulator_manifest_sha256="0" * 64)

@@ -24,6 +24,12 @@ from evflow.io.store import StoreWriter
 COLUMNS = ("t", "x", "y", "p")
 
 
+def _check_raw(a: np.ndarray, src) -> None:
+    """Reject x/y that would wrap when cast to uint16 (bounds are checked again per sensor)."""
+    if a.size and (a[:, 1].max() > 65535 or a[:, 2].max() > 65535):
+        raise ValueError(f"{src}: events outside the uint16 pixel range")
+
+
 def read_v2e_events(src: str | PathLike) -> dict[str, np.ndarray]:
     """All events of a v2e h5 as {t int64 µs, x uint16, y uint16, p int8}; raises on surprises."""
     with h5py.File(src, "r") as f:
@@ -33,6 +39,7 @@ def read_v2e_events(src: str | PathLike) -> dict[str, np.ndarray]:
         if ev.ndim != 2 or ev.shape[1] != 4 or ev.dtype != np.uint32:
             raise ValueError(f"{src}: expected (N, 4) uint32 events, got {ev.shape} {ev.dtype}")
         a = ev[:]
+    _check_raw(a, src)
     p = a[:, 3]
     if not np.all((p == 0) | (p == 1)):
         raise ValueError(f"{src}: polarity outside {{0, 1}}")
@@ -47,6 +54,7 @@ def _iter_chunks(src: str | PathLike, chunk: int):
             raise ValueError(f"{src}: expected (N, 4) uint32 events, got {ev.shape} {ev.dtype}")
         for lo in range(0, ev.shape[0], chunk):
             a = ev[lo : lo + chunk]
+            _check_raw(a, src)
             p = a[:, 3]
             if not np.all((p == 0) | (p == 1)):
                 raise ValueError(f"{src}: polarity outside {{0, 1}}")
