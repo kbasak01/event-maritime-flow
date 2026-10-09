@@ -87,3 +87,4 @@ def test_ncc_summary_threshold_and_controls():
     assert s["pass"] and s["n_nan"] == 1 and s["median"] == pytest.approx(0.65)
     assert not s["controls"]["shift1"]["below_threshold"]
     assert s["controls"]["mirror"]["below_threshold"]
+    assert s["controls"]["shift5"]["aligned_minus_control"] == pytest.approx(0.45)

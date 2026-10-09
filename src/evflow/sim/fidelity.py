@@ -121,5 +121,6 @@ def ncc_summary(values: dict[str, list[np.ndarray]], threshold: float) -> dict:
         c = np.concatenate(arrs)
         med = float(np.nanmedian(c))
         out["controls"][name] = {"median": med, "below_threshold": bool(med < threshold),
+                                 "aligned_minus_control": out["median"] - med,
                                  "n_windows": int(np.isfinite(c).sum())}
     return out

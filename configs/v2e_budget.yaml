@@ -6,7 +6,7 @@
 # then x concurrency_factor (measured wall of n overlapping MVSEC units / n sequential ones).
 # Video seconds: splits/*.json (mvsec_test 265.58 s, mvsec_train 489.98 s, SMD 147.6 s, LaRS
 # 2603 train / 197 val clips). Cap 0.75 ms everywhere (D-025). LaRS cost uses the cap-0.5 ms
-# clip measurements (conservative: no cap-0.75 ms LaRS unit was run). Decisions: D-025, D-026, D-028.
+# clip measurements (conservative: no cap-0.75 ms LaRS unit was run). Decisions: D-025, D-026, D-028, D-032 (Phase 3 lines measured).
 limit_gpu_hours: 12
 concurrency_reference: mvsec_auto_ts750
 
@@ -30,12 +30,10 @@ scenarios:
     items:
       - {name: phase2_throughput_sweep_and_trial_measured, measured_sweep: true, trial_manifest: data/converted/v2e/trial/trial.json}
       - {name: calibration_grid_3x4s_measured, measured_from: results/v2e_calibration.json, concurrency: 4}
-      - {name: phase3_7_trials_mvsec_rand_extremes, video_s: 10.0, units: 2, rate_from: mvsec_auto_ts750}
-      - {name: phase3_7_trial_maritime_640x360, video_s: 5.0, units: 1, rate_from: smd_640x360_ts750}
-      - {name: mvsec_tune_cal, video_s: 60.0, units: 1, rate_from: mvsec_auto_ts750}
-      - {name: mvsec_test_cal, video_s: 265.58, units: 7, rate_from: mvsec_auto_ts750}
-      - {name: mvsec_train_cal_4x60s, video_s: 240.0, units: 4, rate_from: mvsec_auto_ts750}
-      - {name: mvsec_train_rand_x4_4x60s, video_s: 240.0, units: 4, multiplier: 4, rate_from: mvsec_auto_ts750}
+      # Phase 3 corpus as run (jobs/2026-10-09_v2e-mvsec.sh, D-032): trials sequential, the rest 4-way
+      - {name: phase3_trials_mvsec_rand_extremes_measured, measured_from: results/v2e_mvsec_corpus.json, corpora: [trial], concurrency: 1}
+      - {name: phase3_mvsec_corpus_measured, measured_from: results/v2e_mvsec_corpus.json, corpora: [tune, test, train_cal, rand0, rand1, rand2, rand3], concurrency: 4}
+      - {name: phase7_trial_maritime_640x360, video_s: 5.0, units: 1, rate_from: smd_640x360_ts750}
       - {name: smd_train_640x360_3x15s, video_s: 45.0, units: 3, rate_from: smd_640x360_ts750}
       - {name: smd_test_640x360_3x10s, video_s: 30.0, units: 3, rate_from: smd_640x360_ts750}
       - {name: lars_train_subset, clips: 110, rate_from: "lars_640x360_ts500_.*"}

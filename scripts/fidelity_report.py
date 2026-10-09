@@ -141,6 +141,8 @@ def run_group(name: str, units: list[dict], ctx: dict) -> tuple[dict, dict]:
                                         "max(std(real), bin width) (D-027)"},
         "n_windows": pooled["n_windows"], "n_blocks": pooled["n_blocks"],
         "span_s": pooled["span_s"], "real": jsonable["real"], "v2e": jsonable["v2e"],
+        "events_per_s_ratio_v2e_over_real": (pooled["v2e"]["events_per_s"]
+                                             / pooled["real"]["events_per_s"]),
         "distances": dist, "units": rows, "notes": NOTES,
         "git_sha": ctx["git_sha"], "created_by": "scripts/fidelity_report.py",
         "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
@@ -256,6 +258,8 @@ def main(argv: list[str] | None = None) -> int:
         row = {"group": name, "file": f"results/fidelity/{name}.json",
                "n_windows": doc["n_windows"],
                "events_per_s": {k: doc[k]["events_per_s"] for k in ("real", "v2e")},
+               "events_per_s_ratio_v2e_over_real": doc["events_per_s_ratio_v2e_over_real"],
+               "on_fraction_mean": {k: doc[k]["mean"]["on_fraction"] for k in ("real", "v2e")},
                "mean_w1_normalised": doc["distances"]["mean_w1_normalised"],
                "w1_normalised": doc["distances"]["w1_normalised"]}
         summary.append(row)

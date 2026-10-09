@@ -1051,59 +1051,43 @@
      "measured": true
     },
     {
-     "name": "phase3_7_trials_mvsec_rand_extremes",
-     "video_s": 10.0,
+     "name": "phase3_trials_mvsec_rand_extremes_measured",
+     "measured_from": "results/v2e_mvsec_corpus.json",
+     "corpora": [
+      "trial"
+     ],
+     "concurrency": 1,
      "units": 2,
-     "rate_from": "mvsec_auto_ts750",
-     "marginal_per_video_s": 31.16,
-     "overhead_s": 6.8,
-     "gpu_hours": 0.09
+     "sum_unit_wall_s": 300.0,
+     "gpu_hours": 0.083,
+     "measured": true
     },
     {
-     "name": "phase3_7_trial_maritime_640x360",
+     "name": "phase3_mvsec_corpus_measured",
+     "measured_from": "results/v2e_mvsec_corpus.json",
+     "corpora": [
+      "tune",
+      "test",
+      "train_cal",
+      "rand0",
+      "rand1",
+      "rand2",
+      "rand3"
+     ],
+     "concurrency": 4,
+     "units": 28,
+     "sum_unit_wall_s": 79345.8,
+     "gpu_hours": 5.51,
+     "measured": true
+    },
+    {
+     "name": "phase7_trial_maritime_640x360",
      "video_s": 5.0,
      "units": 1,
      "rate_from": "smd_640x360_ts750",
      "marginal_per_video_s": 56.2,
      "overhead_s": 11.8,
      "gpu_hours": 0.081
-    },
-    {
-     "name": "mvsec_tune_cal",
-     "video_s": 60.0,
-     "units": 1,
-     "rate_from": "mvsec_auto_ts750",
-     "marginal_per_video_s": 31.16,
-     "overhead_s": 6.8,
-     "gpu_hours": 0.521
-    },
-    {
-     "name": "mvsec_test_cal",
-     "video_s": 265.58,
-     "units": 7,
-     "rate_from": "mvsec_auto_ts750",
-     "marginal_per_video_s": 31.16,
-     "overhead_s": 6.8,
-     "gpu_hours": 2.312
-    },
-    {
-     "name": "mvsec_train_cal_4x60s",
-     "video_s": 240.0,
-     "units": 4,
-     "rate_from": "mvsec_auto_ts750",
-     "marginal_per_video_s": 31.16,
-     "overhead_s": 6.8,
-     "gpu_hours": 2.085
-    },
-    {
-     "name": "mvsec_train_rand_x4_4x60s",
-     "video_s": 240.0,
-     "units": 4,
-     "multiplier": 4,
-     "rate_from": "mvsec_auto_ts750",
-     "marginal_per_video_s": 31.16,
-     "overhead_s": 6.8,
-     "gpu_hours": 8.34
     },
     {
      "name": "smd_train_640x360_3x15s",
@@ -1139,11 +1123,11 @@
      "gpu_hours": 1.213
     }
    ],
-   "measured_gpu_hours": 3.75,
-   "sequential_gpu_hours": 16.94,
+   "measured_gpu_hours": 9.34,
+   "sequential_gpu_hours": 3.6,
    "concurrency": 4,
    "concurrency_factor": 0.484,
-   "total_gpu_hours": 11.95,
+   "total_gpu_hours": 11.08,
    "within_limit": true
   },
   "calibration_full_tune": {
@@ -1167,7 +1151,7 @@
    "within_limit": true
   }
  },
- "git_sha": "4f28991d6fa584f6d0316aa4590a79a8b024b172",
+ "git_sha": "a8a0f16be7f513b1db7c7c73c475c903356587e0",
  "created_by": "scripts/summarise_throughput.py",
- "created_at": "2026-10-09T04:06:20+00:00"
+ "created_at": "2026-10-09T13:00:26+00:00"
 }
