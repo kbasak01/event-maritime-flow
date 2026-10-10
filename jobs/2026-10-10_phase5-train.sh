@@ -24,7 +24,7 @@ cd "$(dirname "$0")/.."
 PY=${EVFLOW_PY:-$PWD/.venv/bin/python}
 export PYTHONPATH=$PWD/src
 LOGS=${LOGS:-$PWD/runs/phase5-train}
-CONCURRENCY=${CONCURRENCY:-2}       # one run uses ~50 % of the A4000 and ~5 GB
+CONCURRENCY=${CONCURRENCY:-1}       # D-045: 2-way gave ~1.1x and preceded a CUDA fault
 GATE_EPE=${GATE_EPE:-2.0}           # D-043: 2 x the upper literature value (~1.0 px)
 export CUBLAS_WORKSPACE_CONFIG=:4096:8
 mkdir -p "$LOGS"
@@ -80,7 +80,7 @@ done
 echo "[$(date -Is)] stage 1: real_sup s1337 (+ v2e_fixed_sup s1337), then the gate unit"
 printf '%s\n' "train real_sup_${REP}_s1337 --config configs/train_real_sup.yaml --seed 1337" \
               "train v2e_fixed_sup_${REP}_s1337 --config configs/train_v2e_fixed_sup.yaml --seed 1337" \
-  | xargs -P "$CONCURRENCY" -I{} bash -c 'unit {}'
+  | xargs -P "$CONCURRENCY" -I{} bash -c 'unit {}' || true
 eval_unit "real_sup_${REP}_s1337" indoor_flying1 1
 GATE_JSON=results/eval/real_sup/1337/mvsec_indoor_flying1_dt1.json
 EPE=$($PY -c "import json; print(json.load(open('$GATE_JSON'))['metrics']['epe'])")
@@ -93,7 +93,7 @@ fi
 echo "[$(date -Is)] stage 2: CM weight sweep"
 SWEEP_EPOCHS=$($PY -c "import yaml; print(yaml.safe_load(open('configs/evflow.yaml'))['losses']['cm']['sweep']['epochs'])")
 export SWEEP_EPOCHS
-$PY - <<'EOF' | xargs -P "$CONCURRENCY" -I{} bash -c 'unit {}'
+$PY - <<'EOF' | xargs -P "$CONCURRENCY" -I{} bash -c 'unit {}' || true
 import yaml
 s = yaml.safe_load(open("configs/evflow.yaml"))["losses"]["cm"]["sweep"]
 for arm in ("real_selfsup", "v2e_selfsup"):
@@ -123,7 +123,7 @@ echo "[$(date -Is)] stage 3: remaining runs, $CONCURRENCY at a time"
       echo "train ${arm}_${rep}_s1337 --config configs/train_$arm.yaml --seed 1337 --representation $rep"
     done
   done
-} | xargs -P "$CONCURRENCY" -I{} bash -c 'unit {}'
+} | xargs -P "$CONCURRENCY" -I{} bash -c 'unit {}' || true
 
 echo "[$(date -Is)] stage 4: gate units for the other real_sup seeds, summary"
 for seed in $SEEDS_EXTRA; do eval_unit "real_sup_${REP}_s$seed" indoor_flying1 1; done

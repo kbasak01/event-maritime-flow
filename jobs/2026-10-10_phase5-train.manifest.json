@@ -66,11 +66,15 @@
    "ablation x6": 8.6,
    "total": 31.8
   },
-  "wall_hours_at_concurrency_2": "~20-24 (2-way assumed 1.3-1.5x throughput)"
+  "wall_hours_at_concurrency_2": "measured 1.1x throughput over sequential (epochs 213-240 s vs 115-148 s alone); superseded by concurrency 1 (D-045)",
+  "wall_hours_concurrency_1": "~30 remaining after the stage-1 restart (sequential GPU-h)"
  },
  "disk": {
   "checkpoints": "25 runs x (best.pt 53 MB + last.pt 160 MB) ~ 5.3 GB under runs/",
   "gt_cache": "20 GB under data/converted/gt_cache"
  },
- "guards": "split guard (train/data.py guard_split, LeakageError); selection split checked in train/loop.py validate(); test units read frozen best.pt verified against selection.json SHA-256"
+ "guards": "split guard (train/data.py guard_split, LeakageError); selection split checked in train/loop.py validate(); test units read frozen best.pt verified against selection.json SHA-256",
+ "incidents": [
+  "2026-10-10 07:58: real_sup s1337 died at epoch 24 with 'CUDA error: unspecified launch failure' while 2 runs shared the GPU; driver wedged until ~08:45; v2e_fixed_sup s1337 completed unaffected; real_sup resumes from last.pt (epoch 23) after a resume-path fix (D-045)"
+ ]
 }

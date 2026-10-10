@@ -261,7 +261,8 @@ def run_training(cfg: dict, run_dir: Path, train_ds, tune_ds: dict, *, device,
     start_epoch, best = 0, {"epoch": None, "value": None}
     last = run_dir / "last.pt"
     if last.exists():
-        st = torch.load(last, map_location=device, weights_only=False)
+        # CPU: the RNG state must stay a CPU ByteTensor; load_state_dict moves the rest
+        st = torch.load(last, map_location="cpu", weights_only=False)
         model.load_state_dict(st["model"])
         opt.load_state_dict(st["opt"])
         sched.load_state_dict(st["sched"])
