@@ -11,7 +11,10 @@ for any choice (CLAUDE.md rule 4).
 Per sequence (dt = 1):
 - from the committed units' per-window arrays: fraction of windows where R1's EPE < zero flow's,
   median EPE of both;
-- on 200 evenly spaced windows, re-running R1 with and without warm start: least-squares scale
+- from the dt = 1 and dt = 4 units: the same, plus R1/zero mean-EPE ratio per motion band (bands of
+  the window's zero-flow EPE = mean |GT| over the mask), so near-static windows cannot hide a gap;
+- on 200 evenly spaced dt = 1 windows, re-running R1 warm (each pick preceded by its WARMUP
+  consecutive predecessors, run as a chain and not scored) and cold: least-squares scale
   of predicted on GT flow (sum p.g / sum g.g; a sign error gives < 0, a units error != ~1), median
   per-pixel cosine between predicted and GT flow, EPE with the same masks as the units, and the
   same three after swapping the predicted u/v channels (an axis swap would improve them).
@@ -40,6 +43,8 @@ NPZ = REPO / "runs" / "phase4-baselines" / "npz"
 OUT = REPO / "results" / "baselines" / "r1_mvsec_diagnostic.json"
 SEQS = ["indoor_flying1", "indoor_flying2", "indoor_flying3", "outdoor_day1"]
 N_SAMPLE = 200
+WARMUP = 10          # predecessors run before each warm-start pick
+BANDS = [0.0, 0.5, 1.0, 2.0, 4.0, 8.0, float("inf")]   # zero-flow EPE bands (px)
 
 
 def direction_stats(pairs: list[tuple[np.ndarray, np.ndarray]]) -> dict:
@@ -65,14 +70,23 @@ def main() -> int:
     crop = (r["rows"][0], r["rows"][1], r["cols"][0], r["cols"][1])
     rows = {}
     for seq in SEQS:
-        a = np.load(NPZ / "eraft_mvsec20" / f"mvsec_{seq}_dt1.npz")
-        z = np.load(NPZ / "zero_flow" / f"mvsec_{seq}_dt1.npz")
-        ok = np.isfinite(a["epe"]) & np.isfinite(z["epe"])
-        row = {"from_units": {
-            "frac_windows_r1_better_than_zero": float(np.mean(a["epe"][ok] < z["epe"][ok])),
-            "median_epe_r1": float(np.median(a["epe"][ok])),
-            "median_epe_zero": float(np.median(z["epe"][ok])),
-            "n_windows": int(ok.sum())}}
+        row = {"from_units": {}}
+        for dt in (1, 4):
+            a = np.load(NPZ / "eraft_mvsec20" / f"mvsec_{seq}_dt{dt}.npz")
+            z = np.load(NPZ / "zero_flow" / f"mvsec_{seq}_dt{dt}.npz")
+            ok = np.isfinite(a["epe"]) & np.isfinite(z["epe"])
+            ea, ez = a["epe"][ok], z["epe"][ok]
+            bands = []
+            for lo, hi in zip(BANDS[:-1], BANDS[1:], strict=True):
+                m = (ez >= lo) & (ez < hi)
+                if m.sum() >= 20:
+                    bands.append({"zero_epe_band_px": [lo, hi], "n_windows": int(m.sum()),
+                                  "r1_over_zero_mean_epe": float(ea[m].mean() / ez[m].mean())})
+            row["from_units"][f"dt{dt}"] = {
+                "frac_windows_r1_better_than_zero": float(np.mean(ea < ez)),
+                "mean_epe_r1": float(ea.mean()), "mean_epe_zero": float(ez.mean()),
+                "median_epe_r1": float(np.median(ea)), "median_epe_zero": float(np.median(ez)),
+                "n_windows": int(ok.sum()), "by_motion_band": bands}
         reg = ev_cfg["regions"][ev_cfg["sequences"][seq]["region"]]
         windows, data, _ = mvsec_unit(paths, seq, 1, split="mvsec_test", region=reg)
         pick = np.unique(np.linspace(0, len(windows) - 1, N_SAMPLE).round().astype(int))
@@ -84,8 +98,13 @@ def main() -> int:
             pairs, swapped = [], []
             for k in pick:
                 w = windows[k]
-                if not warm:
-                    pred._state.clear()
+                pred._state.clear()
+                if warm:  # run the chain of predecessors so the pick is really warm-started
+                    for j in range(max(0, k - WARMUP), k):
+                        wj = windows[j]
+                        pred(wj, data.slicer.get_events(wj.t_start_us, wj.t_end_us))
+                    if k > 0 and windows[k - 1].t_end_us != w.t_start_us:
+                        raise RuntimeError("dt=1 windows must be contiguous for warm start")
                 ev = data.slicer.get_events(w.t_start_us, w.t_end_us)
                 f = pred(w, ev)
                 g, v = data.gt(w)
@@ -95,9 +114,12 @@ def main() -> int:
                     swapped.append((f[::-1][:, m], g[:, m]))
             row["warm_start" if warm else "cold_start"] = {
                 **direction_stats(pairs), "uv_swapped": direction_stats(swapped),
-                "n_windows": len(pairs)}
+                "n_windows": len(pairs), **({"warmup_predecessors": WARMUP} if warm else {})}
         rows[seq] = row
-        print(seq, json.dumps(row["from_units"]), json.dumps(row["warm_start"]), flush=True)
+        print(seq, json.dumps({k: v["mean_epe_r1"] for k, v in row["from_units"].items()}),
+              "warm", json.dumps({k: row["warm_start"][k] for k in ("epe", "ls_scale")}),
+              "cold", json.dumps({k: row["cold_start"][k] for k in ("epe", "ls_scale")}),
+              flush=True)
 
     doc = {
         "tier": "T1",
@@ -107,19 +129,22 @@ def main() -> int:
         "checkpoint_sha256": ck["sha256"],
         "dataset": "mvsec",
         "sequence": "mvsec_test (indoor_flying1-3, outdoor_day1)",
-        "dt": 1,
+        "dt": "1 (re-runs); 1 and 4 (from_units)",
         "representation": f"voxel{er['num_bins']} (E-RAFT convention)",
         "tags": ["reference_external", "diagnostic"],
         "purpose": "pipeline-error vs generalisation check of R1 on mvsec_test; reported only, "
                    "never used for a choice",
-        "metrics": {s: rows[s]["warm_start"] for s in SEQS},
+        "metrics": {s: {"warm_start": rows[s]["warm_start"], "cold_start": rows[s]["cold_start"]}
+                    for s in SEQS},
         "ci95": None,
         "n_windows": {s: rows[s]["warm_start"]["n_windows"] for s in SEQS},
         "per_sequence": rows,
-        "sample": f"{N_SAMPLE} evenly spaced dt=1 windows per sequence; masks as the units",
-        "inputs": {s: {"r1_npz_sha256": sha256_file(NPZ / "eraft_mvsec20" / f"mvsec_{s}_dt1.npz"),
-                       "zero_npz_sha256": sha256_file(NPZ / "zero_flow" / f"mvsec_{s}_dt1.npz")}
-                   for s in SEQS},
+        "sample": f"{N_SAMPLE} evenly spaced dt=1 windows per sequence; masks as the units; warm "
+                  f"arm: {WARMUP} unscored predecessors per pick",
+        "inputs": {f"{s}_dt{dt}": {
+            "r1_npz_sha256": sha256_file(NPZ / "eraft_mvsec20" / f"mvsec_{s}_dt{dt}.npz"),
+            "zero_npz_sha256": sha256_file(NPZ / "zero_flow" / f"mvsec_{s}_dt{dt}.npz")}
+            for s in SEQS for dt in (1, 4)},
         "git_sha": git_sha(),
         "git_dirty": git_dirty(),
         "created_by": "scripts/diagnose_r1_mvsec.py",
