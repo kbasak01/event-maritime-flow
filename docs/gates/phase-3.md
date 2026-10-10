@@ -36,7 +36,7 @@ was not loosened, and no test data entered the choice.
 | 13 | Splits re-verified from a cold hash cache (A6) | PASS | `python scripts/make_splits.py --rehash` → `splits OK`; repeated by the event-data-auditor (cache redirected) |
 | 14 | Budget re-costed | PASS | `results/v2e_throughput.json` `scenarios.chosen` within the new 19 GPU-h limit (user, D-035): Phase 2 measured lines + first corpus + timing calibration + D-035 corpus + the 78 unit-minutes lost at the pause (D-036). Auditor note: job wall spans exceed summed unit wall / 4 because of single-unit tails, so Phase 7 headroom is smaller than the figure suggests; re-cost before Phase 7 |
 | 15 | Artefacts committed; results JSON keys | PASS | `git ls-files` lists the results above, `configs/v2e_corpus_mvsec.yaml`, `configs/v2e_profiles.yaml`, all four Phase 3 jobs; `tests/test_results_have_tiers.py` green (metric-free files: `kind` + tier, D-036) |
-| 16 | CI green on the pushed commit | see below | |
+| 16 | CI green on the pushed commit | PASS | GitHub Actions `ci` run 38011834737 on bd2f89f: `ruff check` → `All checks passed!`, `pytest -q` → `232 passed, 8 deselected` |
 
 Checklist lines closed (VALIDATION_CHECKLIST.md): B4, B5. A7 evidence for Phase 3 recorded (line stays
 open until Phase 5 selection).
