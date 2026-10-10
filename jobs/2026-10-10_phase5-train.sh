@@ -19,6 +19,8 @@
 # Launch from a clean commit in the main tree (code paths must stay unchanged while it runs):
 #   nohup bash jobs/2026-10-10_phase5-train.sh > runs/phase5-train/job.log 2>&1 &
 #   SMOKE=1 bash jobs/2026-10-10_phase5-train.sh   # 1 epoch, 40 train / 40 tune windows, runs/ only
+#   SKIP_CM=1 ...: supervised units only (no CM sweep, no self-supervised runs; D-047)
+# Unit logs are appended to (a relaunch keeps earlier attempts).
 set -euo pipefail
 cd "$(dirname "$0")/.."
 PY=${EVFLOW_PY:-$PWD/.venv/bin/python}
@@ -45,7 +47,7 @@ fi
 
 train_unit() {   # name, then loop args
   local name="$1"; shift
-  if $PY -m evflow.train.loop "$@" > "$LOGS/train_$name.log" 2>&1; then
+  if $PY -m evflow.train.loop "$@" >> "$LOGS/train_$name.log" 2>&1; then
     echo "[$(date -Is)] $name: $(tail -n 1 "$LOGS/train_$name.log")"
   else
     echo "[$(date -Is)] $name FAILED (see $LOGS/train_$name.log)"
@@ -54,7 +56,7 @@ train_unit() {   # name, then loop args
 eval_unit() {    # run_id sequence dt
   local name="eval_$1_$2_dt$3"
   if $PY scripts/run_eval.py --run-dir "$RUNS/train/$1" --dataset mvsec --sequence "$2" \
-       --dt "$3" > "$LOGS/$name.log" 2>&1; then
+       --dt "$3" >> "$LOGS/$name.log" 2>&1; then
     echo "[$(date -Is)] $(tail -n 1 "$LOGS/$name.log")"
   else
     echo "[$(date -Is)] $name FAILED (see $LOGS/$name.log)"
@@ -90,6 +92,9 @@ if ! $PY -c "import sys; sys.exit(0 if $EPE <= $GATE_EPE else 1)"; then
   exit 3
 fi
 
+if [ "${SKIP_CM:-0}" = 1 ]; then
+  echo "[$(date -Is)] stage 2: skipped (SKIP_CM=1, D-047)"
+else
 echo "[$(date -Is)] stage 2: CM weight sweep"
 SWEEP_EPOCHS=$($PY -c "import yaml; print(yaml.safe_load(open('configs/evflow.yaml'))['losses']['cm']['sweep']['epochs'])")
 export SWEEP_EPOCHS
@@ -103,11 +108,13 @@ for arm in ("real_selfsup", "v2e_selfsup"):
 EOF
 $PY scripts/freeze_cm_sweep.py > "$LOGS/cm_sweep.log" 2>&1 || echo "[$(date -Is)] CM sweep: no eligible cell for an arm (see $LOGS/cm_sweep.log)"
 cat "$LOGS/cm_sweep.log"
+fi
 
 echo "[$(date -Is)] stage 3: remaining runs, $CONCURRENCY at a time"
 {
   echo "train v2e_rand_sup_${REP}_s1337 --config configs/train_v2e_rand_sup.yaml --seed 1337"
   for arm in real_selfsup v2e_selfsup; do
+    [ "${SKIP_CM:-0}" = 1 ] && continue
     CW=$($PY -c "import json; c=json.load(open('results/train/cm_sweep.json'))['arms']['$arm']['chosen']; print('' if c is None else f\"--cm-smoothness {c['smoothness_weight']} --cm-divergence {c['divergence_penalty']}\")")
     if [ -n "$CW" ]; then
       echo "train ${arm}_${REP}_s1337 --config configs/train_$arm.yaml --seed 1337 $CW"
