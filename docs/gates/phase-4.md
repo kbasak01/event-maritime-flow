@@ -87,3 +87,7 @@ D-042 with the gate. → Done in this gate commit.
 
 None blocking. Pending GPU jobs: none. Next: Phase 5 (not started; Claude does not start it
 without the user).
+
+## CI
+
+Gate commit e58e6d9 pushed to `main`; GitHub Actions run 38041591150 (`ci`): completed, success.
