@@ -57,6 +57,15 @@ reproduction_eraft:               # used only for the Phase 4 E-RAFT reproductio
   hood_rows_from: 193
   crop: center_256                # loader CenterCrop((256, 256))
   mask: dense                     # loader hard-codes evaluation_type = 'dense' (line 30)
-  # The E-RAFT repo ships no metric code: "E-RAFT's own evaluation" for the Phase 4 1e-3 px check
-  # must be defined in Phase 4 (and whether the paper's MVSEC numbers are dense or sparse checked
-  # against the paper) before that gate is run.
+  # The E-RAFT repo ships no metric code. "E-RAFT's own evaluation" (Phase 4, user decision
+  # 2026-10-09, D-039) = E-RAFT's own pipeline (pinned clone, its loader/voxels/test loop, warm
+  # start) scored with RAFT's validate_kitti formula (per-sample masked mean EPE, then mean);
+  # scripts/eraft_reference_run.py. Our metric code must match it to 1e-3 px on the same flows.
+  match_tolerance_px: 1.0e-3
+  paper:                          # Gehrig et al., "E-RAFT", 3DV 2021, arXiv:2108.10552v2, Table 3
+    source: "arXiv:2108.10552v2 Table 3, 'MVSEC results at original ground truth rate of 20 Hz.', row 'Ours'"
+    checked_on: "2026-10-09"      # read from the arXiv HTML; Table 5 repeats dense 0.47 / 9.2 (WS)
+    dense: {epe: 0.47, npe_1: 9.2, npe_3: 0.24}
+    sparse: {epe: 0.46, npe_1: 7.5, npe_3: 0.49}
+    gate_metric: dense.epe        # the loader hard-codes dense; sparse reported beside it
+    epe_tolerance_rel: 0.10       # plan Phase 4 step 3: within 10 % of the paper

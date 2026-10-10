@@ -1,0 +1,23 @@
+# M0b: per-window patch-wise contrast maximisation (src/evflow/models/cm_baseline.py, Phase 4).
+# Fixed parameters below; the grid is searched on mvsec_tune ONLY (scripts/tune_cm_baseline.py ->
+# results/baselines/cm_tune.json). Test units read the argmin cell from that JSON (never typed by
+# hand) and refuse to run if it is missing (D-038).
+base:
+  sigmas: [3.0, 1.5, 1.0]        # Gaussian IWE blur, coarse to fine (px)
+  iters_global: 60               # stage 1: one global translation
+  iters_tiles: 90                # stage 2: tile vectors
+  lr: 0.3                        # Adam, px per step
+  t_refs: [0.0, 0.5, 1.0]        # multi-reference IWE (collapse guard)
+  max_events: 200000             # evenly spaced subsample above this (DSEC 100 ms windows)
+  pad_px: 64                     # IWE canvas margin (events warped off-sensor still count)
+grid:                            # searched on mvsec_tune (D-038: 16 px tiles / TV 0.003 collapsed
+  tile_px: [32, 64, 128]         # in the 8-window smoke grid: EPE ~10 px at FWL 2.7)
+  tv_weight: [0.01, 0.03, 0.1]
+tune:
+  split: mvsec_tune
+  sequence: outdoor_day2
+  dt: 1
+  n_windows: 200                 # evenly spaced over the tune slice's dt=1 windows
+  region: center_256_no_hood     # outdoor rule of configs/eval_mvsec.yaml
+  objective: epe                 # mean EPE (sparse mask), lower is better
+  tie_break: [epe, fwl_desc]

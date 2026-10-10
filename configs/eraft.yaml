@@ -1,0 +1,12 @@
+# Reference model R1 = E-RAFT (uzh-rpg/E-RAFT @ c58ce0524ea0ebfa9849991caafb547f44fe9bfd, MIT),
+# vendored for inference only in src/evflow/models/eraft_ref (Phase 4, D-037).
+source_commit: c58ce0524ea0ebfa9849991caafb547f44fe9bfd
+iters: 12                    # ERAFT.forward default; E-RAFT's test.py passes none
+num_bins: 15                 # config/{dsec_warm_start,mvsec_20}.json
+subtype: warm_start          # both released test configs; flow_init = forward_interpolate(low-res flow)
+checkpoints:                 # paths in configs/paths.local.yaml (checkpoints.eraft_*)
+  eraft_dsec: {key: eraft_dsec, sha256: 82dc19a46f7a3b21121be7e99079ff6a6d14b1525ca74264be86ca93285bae49}
+  eraft_mvsec20: {key: eraft_mvsec20, sha256: d9845c0b85a1e5b2d5b664f27706e9a86270afcff42cb16457aeb9c2cbdb9ba2}
+mvsec_input_crop: center_256  # E-RAFT's MVSEC loader centre-crops 256x256 (configs/eval_mvsec.yaml)
+dsec:
+  delta_t_ms: 100             # loader_dsec.py: old = [t-100ms, t), new = [t, t+100ms), rectified x/y
