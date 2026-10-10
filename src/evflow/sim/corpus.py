@@ -17,7 +17,7 @@ the runner's lead-frame rule) and ends ``max_dt`` frames past its last owned sta
 and dt=4 window of the test split is owned by exactly one unit. Statistics use owned windows
 from ``first + warmup_frames`` on (``stats_from``).
 
-    python -m evflow.sim.corpus plan        # -> <events>/v2e/mvsec/corpus_plan.json
+    python -m evflow.sim.corpus plan        # -> <events>/<out_root>/corpus_plan.json
     python -m evflow.sim.corpus prepare     # export every APS range once (before parallel units)
     python -m evflow.sim.corpus units [--corpus trial]   # unit names, for xargs
     python -m evflow.sim.corpus unit --key test/test_indoor_flying1_p0

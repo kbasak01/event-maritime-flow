@@ -37,6 +37,9 @@ scenarios:
       - {name: phase3_d035_calibration_timing_measured, measured_from: results/v2e_calibration_timing.json, grid: calibration_grid_timing, concurrency: 4}
       - {name: phase3_d035_trials_measured, measured_from: results/v2e_mvsec_corpus.json, corpora: [trial], concurrency: 1}
       - {name: phase3_d035_corpus_measured, measured_from: results/v2e_mvsec_corpus.json, corpora: [tune, test, train_cal, rand0, rand1, rand2, rand3], concurrency: 4}
+      # units killed by the user-requested pause and re-run (runs/v2e-mvsec-d035/paused_at.txt: elapsed
+      # times of tune 47, indoor_flying2_p1 15, indoor_flying3_p0 8, indoor_flying3_p1 8 min; ps at the pause)
+      - {name: phase3_d035_pause_lost, lost_unit_minutes: 78, concurrency: 4}
       - {name: phase7_trial_maritime_640x360, video_s: 5.0, units: 1, rate_from: smd_640x360_ts750}
       - {name: smd_train_640x360_3x15s, video_s: 45.0, units: 3, rate_from: smd_640x360_ts750}
       - {name: smd_test_640x360_3x10s, video_s: 30.0, units: 3, rate_from: smd_640x360_ts750}

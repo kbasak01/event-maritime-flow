@@ -116,7 +116,8 @@ def main(argv: list[str] | None = None) -> int:
                      "pipeline check, not flow accuracy",
         "plan_step": "Phase 3 step 3", "dataset": "mvsec", "used_for_choice": False,
         "threshold": thr, "threshold_source": "configs/v2e_profiles.yaml "
-                      "alignment_ncc_threshold (mvsec_tune, Phase 2, D-029)",
+                      "alignment_ncc_threshold (rule D-029, re-derived on mvsec_tune for the "
+                      "D-035 profile; results/v2e_calibration_timing.json ncc.threshold)",
         "calibration_sha256": prof["calibration_sha256"], "blur_sigma_px": sigma,
         "controls": {"shift1": "v2e window 1 APS frame later", "shift5": "v2e window 5 APS "
                      "frames later", "mirror": "v2e x mirrored (x -> W-1-x)"},

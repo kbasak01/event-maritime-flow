@@ -68,3 +68,8 @@ def test_measured_item_grid_filter(tmp_path, monkeypatch):
     it = st.measured_item({"measured_from": "t.json", "concurrency": 1,
                            "grid": "calibration_grid_timing"})
     assert it["units"] == 1 and it["gpu_hours"] == 2.0
+
+
+def test_lost_unit_minutes_item():
+    it = st.cost_item({"name": "x", "lost_unit_minutes": 120, "concurrency": 4}, {})
+    assert it["gpu_hours"] == 0.5 and it["measured"]

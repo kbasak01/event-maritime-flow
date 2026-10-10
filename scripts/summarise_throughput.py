@@ -106,6 +106,10 @@ def cost_item(item: dict, rows: dict[str, dict], conc: list[dict] | None = None)
     """GPU-seconds of one budget line, from the rate of a measured unit (or group of units)."""
     if "measured_from" in item:
         return measured_item(item)
+    if "lost_unit_minutes" in item:      # GPU time spent on units that were killed and re-run
+        n = int(item["concurrency"])
+        return {**item, "gpu_hours": round(float(item["lost_unit_minutes"]) / 60 / n, 3),
+                "measured": True}
     if item.get("measured_sweep"):
         return sweep_item(item, rows, conc or [])
     ref = item["rate_from"]
