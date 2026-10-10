@@ -1121,6 +1121,13 @@
      "measured": true
     },
     {
+     "name": "phase3_d035_pause_lost",
+     "lost_unit_minutes": 78,
+     "concurrency": 4,
+     "gpu_hours": 0.325,
+     "measured": true
+    },
+    {
      "name": "phase7_trial_maritime_640x360",
      "video_s": 5.0,
      "units": 1,
@@ -1163,11 +1170,11 @@
      "gpu_hours": 1.213
     }
    ],
-   "measured_gpu_hours": 16.23,
+   "measured_gpu_hours": 16.55,
    "sequential_gpu_hours": 3.6,
    "concurrency": 4,
    "concurrency_factor": 0.484,
-   "total_gpu_hours": 17.97,
+   "total_gpu_hours": 18.29,
    "within_limit": true
   },
   "calibration_full_tune": {
@@ -1191,7 +1198,7 @@
    "within_limit": true
   }
  },
- "git_sha": "b6853e691de1b9546dac0e77774301660393ea89",
+ "git_sha": "944d8709f1cc6d23ac03834a79ad72fff3a47496",
  "created_by": "scripts/summarise_throughput.py",
- "created_at": "2026-10-09T23:55:46+00:00"
+ "created_at": "2026-10-10T00:38:00+00:00"
 }

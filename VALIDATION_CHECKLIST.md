@@ -16,8 +16,8 @@ Phase 9 walks every line. Verdict ∈ {met, met-with-caveat, unmet} + evidence p
 - [x] B1 Every v2e output has a manifest (commit, argv, seed, input/output SHA, wall time). — Phase 2 gate: `docs/gates/phase-2.md`.
 - [x] B2 `--input_frame_rate` set explicitly for every input; source documented. — Phase 2 gate: `docs/gates/phase-2.md`.
 - [x] B3 Calibration used `mvsec_tune` only; objective and grid recorded; argmin reproducible. — Phase 2 gate: `docs/gates/phase-2.md`.
-- [ ] B4 v2e↔real alignment cross-correlation reported per sequence; threshold set before looking at test.
-- [ ] B5 Fidelity report (event statistics, real vs v2e) present for every test sequence.
+- [x] B4 v2e↔real alignment cross-correlation reported per sequence; threshold set before looking at test. — Phase 3 gate: `docs/gates/phase-3.md` (threshold re-derived on tune for the D-035 profile).
+- [x] B5 Fidelity report (event statistics, real vs v2e) present for every test sequence. — Phase 3 gate: `docs/gates/phase-3.md`.
 - [x] B6 Throughput measured and the corpus cuts it forced are documented. — Phase 2 gate: `docs/gates/phase-2.md`.
 
 ## C. Metrics

@@ -1931,7 +1931,7 @@
   "Both streams use identical windows, blocks and spans; real DVS hot pixels and noise are kept (no filtering of either stream).",
   "v2e inherits the APS frames' dynamic range, blur and frame rate; nothing here measures HDR or latency behaviour."
  ],
- "git_sha": "b6853e691de1b9546dac0e77774301660393ea89",
+ "git_sha": "944d8709f1cc6d23ac03834a79ad72fff3a47496",
  "created_by": "scripts/fidelity_report.py",
- "created_at": "2026-10-09T23:58:22+00:00"
+ "created_at": "2026-10-10T00:40:34+00:00"
 }
