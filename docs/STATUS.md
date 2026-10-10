@@ -15,7 +15,7 @@
 | 10 | not started | – | – |
 
 Pending GPU jobs (Claude may launch GPU jobs after `gpu-job` prep, D-006):
-- `jobs/2026-10-10_phase5-train.sh` → `runs/train/` (17 runs), `runs/train-sweep/` (8 CM cells), `results/train/{cm_sweep,summary}.json`, `results/eval/real_sup/*/mvsec_indoor_flying1_dt1.json` (Phase 5, D-043; est. ~32 sequential GPU-h, ~20–24 h wall at 2-way).
+- `jobs/2026-10-10_phase5-train.sh` → `runs/train/` (17 runs), `runs/train-sweep/` (8 CM cells), `results/train/{cm_sweep,summary}.json`, `results/eval/real_sup/*/mvsec_indoor_flying1_dt1.json` (Phase 5, D-043; restarted at 28f84d4 after D-045/D-047/D-048, one CUDA process at a time; ~26 h remaining).
 
 Done GPU jobs (Phase 4):
 - `jobs/2026-10-09_phase4-baselines.sh` → `results/baselines/` (reproduction gate, M0b selection on `mvsec_tune`, 33 baseline units; at 0da94b3, wall time in `runs/phase4-baselines/job.log`).
