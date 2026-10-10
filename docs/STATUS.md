@@ -7,14 +7,15 @@
 | 2 | PASS (CI green) | docs/gates/phase-2.md | 2026-10-09 |
 | 3 | PASS (CI green) | docs/gates/phase-3.md | 2026-10-09 |
 | 4 | PASS (CI green) | docs/gates/phase-4.md | 2026-10-10 |
-| 5 | not started | – | – |
+| 5 | in progress (training job running) | – | – |
 | 6 | not started | – | – |
 | 7 | not started | – | – |
 | 8 | not started | – | – |
 | 9 | not started | – | – |
 | 10 | not started | – | – |
 
-Pending GPU jobs: none (Claude may launch GPU jobs after `gpu-job` prep, D-006).
+Pending GPU jobs (Claude may launch GPU jobs after `gpu-job` prep, D-006):
+- `jobs/2026-10-10_phase5-train.sh` → `runs/train/` (17 runs), `runs/train-sweep/` (8 CM cells), `results/train/{cm_sweep,summary}.json`, `results/eval/real_sup/*/mvsec_indoor_flying1_dt1.json` (Phase 5, D-043; est. ~32 sequential GPU-h, ~20–24 h wall at 2-way).
 
 Done GPU jobs (Phase 4):
 - `jobs/2026-10-09_phase4-baselines.sh` → `results/baselines/` (reproduction gate, M0b selection on `mvsec_tune`, 33 baseline units; at 0da94b3, wall time in `runs/phase4-baselines/job.log`).

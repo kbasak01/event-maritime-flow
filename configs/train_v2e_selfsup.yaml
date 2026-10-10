@@ -1,0 +1,10 @@
+# Phase 5 training arm `v2e_selfsup` (IMPLEMENTATION_PLAN §1.4): v2e(APS) calibrated, contrast-maximisation loss, no GT.
+# Every MVSEC arm trains on the same mvsec_train windows (D-026 clips, D-032c warm-up drop, D-043).
+inherit: configs/evflow.yaml
+arm: v2e_selfsup
+events:
+  train: train_cal          # real | train_cal | rand (src/evflow/train/data.py)
+  tune_select: v2e          # tune stream that selects the epoch (mvsec_tune only; D-043)
+  tune_log: [real]          # logged for the diagnostician, never used for a choice
+loss: cm
+selection: {split: mvsec_tune, metric: fwl, mode: max, dt: 1}

@@ -74,7 +74,7 @@ def tiles_to_flow(tiles: torch.Tensor, *, height: int, width: int, tile_px: int)
     return up[0, :, :height, :width]
 
 
-def _gauss_blur(imgs: torch.Tensor, sigma: float) -> torch.Tensor:
+def gauss_blur(imgs: torch.Tensor, sigma: float) -> torch.Tensor:
     """Separable Gaussian blur of (R, H, W) images, zero padding."""
     r = max(1, int(math.ceil(3.0 * sigma)))
     k = torch.arange(-r, r + 1, dtype=imgs.dtype, device=imgs.device)
@@ -118,7 +118,7 @@ def _contrast(x, y, tau, flow, *, t_refs, sigma, height, width, pad) -> torch.Te
     # The IWE canvas extends ``pad`` px beyond the sensor on every side: events warped off the
     # sensor still count, otherwise flows that push fewer events out would be favoured.
     imgs = iwe_stack(x, y, tau, flow, t_refs=t_refs, height=height, width=width, pad=pad)
-    return _gauss_blur(imgs, sigma).flatten(1).var(dim=1).mean()
+    return gauss_blur(imgs, sigma).flatten(1).var(dim=1).mean()
 
 
 def _tv(tiles: torch.Tensor) -> torch.Tensor:

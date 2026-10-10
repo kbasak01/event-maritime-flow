@@ -22,7 +22,7 @@ representations:
 
 model_m1:
   name: evflownet
-  base_channels: 32                   # TODO Phase 5: confirm param count 5–15 M
+  base_channels: 32                   # 13.3 M params (tests/test_evflownet.py, D-043)
   crop: [256, 256]
   pad_multiple: 16
 
@@ -31,19 +31,34 @@ train:
   lr: 3.0e-4
   weight_decay: 1.0e-4
   schedule: cosine
-  epochs: 40                          # TODO Phase 5: set from tune-curve plateau
+  epochs: 40                          # selection = best tune epoch, so no plateau hand-pick (D-043)
   batch_size: 16
   precision: bf16
+  grad_clip: 1.0
+  num_workers: 6
   augment: {random_crop: true, hflip: true, polarity_flip: false}
   selection_split: mvsec_tune         # never a test split
+  dts: [1, 4]                         # one model for both MVSEC window lengths (D-043)
+  dt_fractions: {1: 0.5, 4: 0.5}
+  epoch_samples: dt1_windows          # one epoch = as many samples as dt=1 train windows
+  warmup_windows: 10                  # first windows of each clip dropped, every arm (D-032c)
+  hood_row: 192                       # rows >= 192 (outdoor car hood): no supervision, no CM events
+  representation: voxel5              # main arms; ablation adds voxel15, timesurface, count
+  tune_diag_windows: 200              # evenly spaced tune dt=1 windows for collapse diagnostics
+  tune_region: center_256_no_hood     # configs/eval_mvsec.yaml regions (outdoor protocol)
+  smoke: {n_windows: 8, max_steps: 4000, check_every: 50, target_epe: 0.1, lr: 1.0e-3}
 
 losses:
-  supervised: {type: l1_epe, mask: valid_gt}
+  supervised: {type: l1_epe, mask: valid_gt, scale_weights: [0.125, 0.25, 0.5, 1.0]}  # coarse→fine
   cm:
     objective: iwe_variance           # contrast maximisation
     reference_times: [0.0, 0.5, 1.0]  # multi-reference IWE (collapse guard)
-    smoothness_weight: 0.1            # TODO Phase 5 on tune only
-    divergence_penalty: 0.01          # collapse guard; TODO Phase 5
+    smoothness_weight: 0.1            # default; chosen on tune by the CM sweep (D-044)
+    divergence_penalty: 1.0           # collapse guard; >= 0.3 needed on the fixture (D-043); sweep D-044
+    blur_sigma: 1.0
+    pad_px: 64
+    max_events: 100000
+    sweep: {smoothness_weight: [0.1, 0.5], divergence_penalty: [0.3, 1.0], epochs: 10}
 
 metrics:
   outlier: {abs_px: 3.0, rel: 0.05}   # %Out: EPE > 3 px AND > 5 % of |GT|
