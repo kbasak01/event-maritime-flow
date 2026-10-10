@@ -1,0 +1,82 @@
+{
+ "tier": "T1",
+ "arm": "zero_flow",
+ "model": "M0a",
+ "seed": null,
+ "checkpoint_sha256": null,
+ "dataset": "dsec",
+ "sequence": "zurich_city_02_a",
+ "window_ms": 100,
+ "representation": null,
+ "tags": [],
+ "metrics": {
+  "epe": 16.270222450081068,
+  "outlier_pct": 89.91820989154299,
+  "npe_1": 97.97142561965944,
+  "npe_2": 94.3171455706578,
+  "npe_3": 89.91820989154299,
+  "ae_deg": 82.2301773803216,
+  "fwl": 1.0
+ },
+ "ci95": {
+  "epe": [
+   11.524325561892114,
+   22.88239363221345
+  ],
+  "outlier_pct": [
+   83.38342028535693,
+   97.39828194573693
+  ],
+  "npe_1": [
+   96.80081264143021,
+   99.59156528811957
+  ],
+  "npe_2": [
+   90.93053222042886,
+   98.60577059172253
+  ],
+  "npe_3": [
+   83.38342028535693,
+   97.39828194573693
+  ],
+  "ae_deg": [
+   79.10115323532291,
+   85.94102587501489
+  ],
+  "fwl": [
+   1.0,
+   1.0
+  ]
+ },
+ "n_windows": 64,
+ "n_windows_total": 64,
+ "n_windows_skipped_no_valid_px": 0,
+ "bootstrap": {
+  "method": "moving_block",
+  "block_windows": 10,
+  "block_seconds": 1.0,
+  "resamples": 1000,
+  "ci": 0.95,
+  "seed": 0
+ },
+ "mean_valid_px_per_window": 65505.296875,
+ "mean_events_per_window": 1609495.078125,
+ "mean_pred_s_per_window": 0.016044385608665834,
+ "protocol": {
+  "split": "dsec_test",
+  "split_manifest_sha256": "5110b28785fc47d7959f5aad102c65eccf17430d74d55a851474348058f19c28",
+  "store": "dsec_zurich_city_02_a_left.h5",
+  "mask": "valid_gt (PNG channel 3), full 640x480 rectified frame",
+  "gt": "DSEC forward flow PNG"
+ },
+ "fwl_protocol": "interpolation=round, t_ref=1 (window end), events in the eval region",
+ "per_window_npz": "~/projects_02/event-maritime-flow/runs/phase4-baselines/npz/zero_flow/dsec_zurich_city_02_a_100ms.npz",
+ "per_window_npz_sha256": "4308fa6a21b3c049377544bdacabd1b729faa08f5344e41c8f627a40329d853b",
+ "device": "NVIDIA RTX A4000",
+ "wall_time_s": 96.2,
+ "smoke": false,
+ "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad",
+ "git_dirty": false,
+ "created_by": "scripts/run_baselines.py",
+ "created_at": "2026-10-10T08:18:12+00:00"
+}

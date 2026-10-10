@@ -25,7 +25,7 @@ Phase 9 walks every line. Verdict ∈ {met, met-with-caveat, unmet} + evidence p
 - [x] C2 (critical) FWL = 1 for zero flow exactly; correct flow > wrong-sign flow on analytic fixtures. — Phase 1 gate: `docs/gates/phase-1.md`.
 - [ ] C3 Flow units = pixels over the window, forward; dt=1 and dt=4 never mixed in one mean.
 - [ ] C4 MVSEC eval windows, sparse mask, crop rule written in `configs/eval_mvsec.yaml` and quoted in README.
-- [ ] C5 Phase 4 reproduction gate met (our metrics on E-RAFT flows = E-RAFT's own, ≤ 1e-3 px; EPE within 10 % of paper) or miss documented.
+- [x] C5 Phase 4 reproduction gate met (our metrics on E-RAFT flows = E-RAFT's own, ≤ 1e-3 px; EPE within 10 % of paper) or miss documented. — Phase 4 gate: `docs/gates/phase-4.md` (`results/baselines/eraft_reproduction.json`).
 - [ ] C6 Bootstrap CIs use moving blocks of 1 s; paired bootstrap for arm differences.
 
 ## D. Training

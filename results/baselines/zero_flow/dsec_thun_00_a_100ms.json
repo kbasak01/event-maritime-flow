@@ -1,0 +1,82 @@
+{
+ "tier": "T1",
+ "arm": "zero_flow",
+ "model": "M0a",
+ "seed": null,
+ "checkpoint_sha256": null,
+ "dataset": "dsec",
+ "sequence": "thun_00_a",
+ "window_ms": 100,
+ "representation": null,
+ "tags": [],
+ "metrics": {
+  "epe": 9.118935402689017,
+  "outlier_pct": 78.9626605752496,
+  "npe_1": 97.96715893491883,
+  "npe_2": 89.62991109989665,
+  "npe_3": 78.9626605752496,
+  "ae_deg": 77.45852851124677,
+  "fwl": 1.0
+ },
+ "ci95": {
+  "epe": [
+   8.088462515720769,
+   10.02138260370073
+  ],
+  "outlier_pct": [
+   73.42412925295201,
+   81.32042335011971
+  ],
+  "npe_1": [
+   97.66691405935914,
+   98.14878610912545
+  ],
+  "npe_2": [
+   86.76236276120618,
+   91.19782859530143
+  ],
+  "npe_3": [
+   73.42412925295201,
+   81.32042335011971
+  ],
+  "ae_deg": [
+   76.2773894064271,
+   78.06608239177451
+  ],
+  "fwl": [
+   1.0,
+   1.0
+  ]
+ },
+ "n_windows": 41,
+ "n_windows_total": 41,
+ "n_windows_skipped_no_valid_px": 0,
+ "bootstrap": {
+  "method": "moving_block",
+  "block_windows": 10,
+  "block_seconds": 1.0,
+  "resamples": 1000,
+  "ci": 0.95,
+  "seed": 0
+ },
+ "mean_valid_px_per_window": 64006.19512195122,
+ "mean_events_per_window": 957723.1463414634,
+ "mean_pred_s_per_window": 0.024647088464074086,
+ "protocol": {
+  "split": "dsec_test",
+  "split_manifest_sha256": "5110b28785fc47d7959f5aad102c65eccf17430d74d55a851474348058f19c28",
+  "store": "dsec_thun_00_a_left.h5",
+  "mask": "valid_gt (PNG channel 3), full 640x480 rectified frame",
+  "gt": "DSEC forward flow PNG"
+ },
+ "fwl_protocol": "interpolation=round, t_ref=1 (window end), events in the eval region",
+ "per_window_npz": "~/projects_02/event-maritime-flow/runs/phase4-baselines/npz/zero_flow/dsec_thun_00_a_100ms.npz",
+ "per_window_npz_sha256": "65aeea06a5a4c6d277d2c7109973164f4f4a1bd519cf75848e64cc8ee64a953f",
+ "device": "NVIDIA RTX A4000",
+ "wall_time_s": 57.9,
+ "smoke": false,
+ "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad",
+ "git_dirty": false,
+ "created_by": "scripts/run_baselines.py",
+ "created_at": "2026-10-10T08:19:14+00:00"
+}

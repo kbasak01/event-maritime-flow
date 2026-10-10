@@ -1,0 +1,82 @@
+{
+ "tier": "T1",
+ "arm": "zero_flow",
+ "model": "M0a",
+ "seed": null,
+ "checkpoint_sha256": null,
+ "dataset": "dsec",
+ "sequence": "zurich_city_11_a",
+ "window_ms": 100,
+ "representation": null,
+ "tags": [],
+ "metrics": {
+  "epe": 7.7820906802670855,
+  "outlier_pct": 76.67611514460306,
+  "npe_1": 96.4409584625566,
+  "npe_2": 87.10083074623788,
+  "npe_3": 76.67611514460306,
+  "ae_deg": 76.08135431635296,
+  "fwl": 1.0
+ },
+ "ci95": {
+  "epe": [
+   7.131404812862568,
+   8.42445901312588
+  ],
+  "outlier_pct": [
+   74.35246529824806,
+   78.69144870296678
+  ],
+  "npe_1": [
+   95.82500133968814,
+   96.9674043413478
+  ],
+  "npe_2": [
+   85.49662229044014,
+   88.47647665295479
+  ],
+  "npe_3": [
+   74.35246529824806,
+   78.69144870296678
+  ],
+  "ae_deg": [
+   75.18628264842994,
+   76.87957381646495
+  ],
+  "fwl": [
+   1.0,
+   1.0
+  ]
+ },
+ "n_windows": 231,
+ "n_windows_total": 231,
+ "n_windows_skipped_no_valid_px": 0,
+ "bootstrap": {
+  "method": "moving_block",
+  "block_windows": 10,
+  "block_seconds": 1.0,
+  "resamples": 1000,
+  "ci": 0.95,
+  "seed": 0
+ },
+ "mean_valid_px_per_window": 81817.64069264069,
+ "mean_events_per_window": 554694.1861471861,
+ "mean_pred_s_per_window": 0.004579427307161696,
+ "protocol": {
+  "split": "dsec_test",
+  "split_manifest_sha256": "5110b28785fc47d7959f5aad102c65eccf17430d74d55a851474348058f19c28",
+  "store": "dsec_zurich_city_11_a_left.h5",
+  "mask": "valid_gt (PNG channel 3), full 640x480 rectified frame",
+  "gt": "DSEC forward flow PNG"
+ },
+ "fwl_protocol": "interpolation=round, t_ref=1 (window end), events in the eval region",
+ "per_window_npz": "~/projects_02/event-maritime-flow/runs/phase4-baselines/npz/zero_flow/dsec_zurich_city_11_a_100ms.npz",
+ "per_window_npz_sha256": "0112e964f6b7a8cd1ddad5e2c0d103bc02ad05cadf79a947e5afda38377d3a32",
+ "device": "NVIDIA RTX A4000",
+ "wall_time_s": 254.0,
+ "smoke": false,
+ "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad",
+ "git_dirty": false,
+ "created_by": "scripts/run_baselines.py",
+ "created_at": "2026-10-10T08:20:20+00:00"
+}

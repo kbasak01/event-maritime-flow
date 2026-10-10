@@ -1,0 +1,821 @@
+{
+ "kind": "baselines_index",
+ "phase": 4,
+ "note": "T1 rows only (real events, real GT); R1 rows carry reference_external, and reference_seen_data on dsec_test.",
+ "units": [
+  {
+   "file": "results/baselines/zero_flow/mvsec_indoor_flying1_dt1.json",
+   "sha256": "92d5d70683b39728415ef221f93d7129474a7f0f1ea12710eef9a38e5e300e4c",
+   "tier": "T1",
+   "arm": "zero_flow",
+   "model": "M0a",
+   "tags": [],
+   "dataset": "mvsec",
+   "sequence": "indoor_flying1",
+   "dt": 1,
+   "window_ms": null,
+   "epe": 1.278562793778724,
+   "epe_ci95": [
+    1.1504009719838615,
+    1.4423373711065772
+   ],
+   "outlier_pct": 4.473748534433634,
+   "npe_3": 4.473748534433634,
+   "fwl": 1.0,
+   "n_windows": 2193,
+   "n_windows_skipped_no_valid_px": 0,
+   "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad"
+  },
+  {
+   "file": "results/baselines/zero_flow/mvsec_indoor_flying1_dt4.json",
+   "sha256": "2428b52d9806b7308d9d738a8d8f004120b9e607c2d5bc3beb664dfbc9234705",
+   "tier": "T1",
+   "arm": "zero_flow",
+   "model": "M0a",
+   "tags": [],
+   "dataset": "mvsec",
+   "sequence": "indoor_flying1",
+   "dt": 4,
+   "window_ms": null,
+   "epe": 4.8506770940314805,
+   "epe_ci95": [
+    4.3771988644025575,
+    5.436563204067303
+   ],
+   "outlier_pct": 68.01049828159292,
+   "npe_3": 68.01049828159292,
+   "fwl": 1.0,
+   "n_windows": 2190,
+   "n_windows_skipped_no_valid_px": 0,
+   "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad"
+  },
+  {
+   "file": "results/baselines/zero_flow/mvsec_indoor_flying2_dt1.json",
+   "sha256": "cc3a03930911e7711de70f524844223372d6e70c0da2eeb5e55606e64e8286be",
+   "tier": "T1",
+   "arm": "zero_flow",
+   "model": "M0a",
+   "tags": [],
+   "dataset": "mvsec",
+   "sequence": "indoor_flying2",
+   "dt": 1,
+   "window_ms": null,
+   "epe": 2.1185725641449746,
+   "epe_ci95": [
+    1.8720677418868712,
+    2.399642853143389
+   ],
+   "outlier_pct": 23.060965862235285,
+   "npe_3": 23.060965862235285,
+   "fwl": 1.0,
+   "n_windows": 2652,
+   "n_windows_skipped_no_valid_px": 0,
+   "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad"
+  },
+  {
+   "file": "results/baselines/zero_flow/mvsec_indoor_flying2_dt4.json",
+   "sha256": "59332c65392d55e3a992fd2b25f29fe8598489f0abce3d0aaf52acfdff7ce3de",
+   "tier": "T1",
+   "arm": "zero_flow",
+   "model": "M0a",
+   "tags": [],
+   "dataset": "mvsec",
+   "sequence": "indoor_flying2",
+   "dt": 4,
+   "window_ms": null,
+   "epe": 7.512688244899786,
+   "epe_ci95": [
+    6.740171026208693,
+    8.357829804415422
+   ],
+   "outlier_pct": 77.65490924128072,
+   "npe_3": 77.65490924128072,
+   "fwl": 1.0,
+   "n_windows": 2649,
+   "n_windows_skipped_no_valid_px": 0,
+   "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad"
+  },
+  {
+   "file": "results/baselines/zero_flow/mvsec_indoor_flying3_dt1.json",
+   "sha256": "14b89461d5bf8c7bf40e26458557d167b0be31ec2909019efc1247e22713beff",
+   "tier": "T1",
+   "arm": "zero_flow",
+   "model": "M0a",
+   "tags": [],
+   "dataset": "mvsec",
+   "sequence": "indoor_flying3",
+   "dt": 1,
+   "window_ms": null,
+   "epe": 1.8719217009662403,
+   "epe_ci95": [
+    1.689307613287041,
+    2.0842080601405972
+   ],
+   "outlier_pct": 17.210013329784175,
+   "npe_3": 17.210013329784175,
+   "fwl": 1.0,
+   "n_windows": 2939,
+   "n_windows_skipped_no_valid_px": 0,
+   "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad"
+  },
+  {
+   "file": "results/baselines/zero_flow/mvsec_indoor_flying3_dt4.json",
+   "sha256": "4d0234178bd8ff5cd7e02427e849e0b057f232e187b9c7d53a1e92375e7c0c32",
+   "tier": "T1",
+   "arm": "zero_flow",
+   "model": "M0a",
+   "tags": [],
+   "dataset": "mvsec",
+   "sequence": "indoor_flying3",
+   "dt": 4,
+   "window_ms": null,
+   "epe": 6.635120956602158,
+   "epe_ci95": [
+    6.039860959682455,
+    7.340286714075233
+   ],
+   "outlier_pct": 75.59583355140543,
+   "npe_3": 75.59583355140543,
+   "fwl": 1.0,
+   "n_windows": 2936,
+   "n_windows_skipped_no_valid_px": 0,
+   "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad"
+  },
+  {
+   "file": "results/baselines/zero_flow/mvsec_outdoor_day1_dt1.json",
+   "sha256": "fb1df2592d5d34c4b6b156b4bd5141076ebba898cbb425442713bb7c8ce25f63",
+   "tier": "T1",
+   "arm": "zero_flow",
+   "model": "M0a",
+   "tags": [],
+   "dataset": "mvsec",
+   "sequence": "outdoor_day1",
+   "dt": 1,
+   "window_ms": null,
+   "epe": 0.8903737199009016,
+   "epe_ci95": [
+    0.7996668238522839,
+    1.0036300972742729
+   ],
+   "outlier_pct": 0.5982554739412783,
+   "npe_3": 0.5982554739412783,
+   "fwl": 1.0,
+   "n_windows": 797,
+   "n_windows_skipped_no_valid_px": 0,
+   "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad"
+  },
+  {
+   "file": "results/baselines/zero_flow/mvsec_outdoor_day1_dt4.json",
+   "sha256": "f99e38ca51d943b7b9ad2a808d9d25621a48a53843727959489bdc928369792e",
+   "tier": "T1",
+   "arm": "zero_flow",
+   "model": "M0a",
+   "tags": [],
+   "dataset": "mvsec",
+   "sequence": "outdoor_day1",
+   "dt": 4,
+   "window_ms": null,
+   "epe": 3.4582636445180466,
+   "epe_ci95": [
+    3.135266639334079,
+    3.867754264586757
+   ],
+   "outlier_pct": 54.79313367830893,
+   "npe_3": 54.79313367830893,
+   "fwl": 1.0,
+   "n_windows": 794,
+   "n_windows_skipped_no_valid_px": 0,
+   "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad"
+  },
+  {
+   "file": "results/baselines/zero_flow/dsec_thun_00_a_100ms.json",
+   "sha256": "6cde524d3fb111eb0f47b09cc6ea7cefe504909a834d0ff6d6330854417a2f39",
+   "tier": "T1",
+   "arm": "zero_flow",
+   "model": "M0a",
+   "tags": [],
+   "dataset": "dsec",
+   "sequence": "thun_00_a",
+   "dt": null,
+   "window_ms": 100,
+   "epe": 9.118935402689017,
+   "epe_ci95": [
+    8.088462515720769,
+    10.02138260370073
+   ],
+   "outlier_pct": 78.9626605752496,
+   "npe_3": 78.9626605752496,
+   "fwl": 1.0,
+   "n_windows": 41,
+   "n_windows_skipped_no_valid_px": 0,
+   "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad"
+  },
+  {
+   "file": "results/baselines/zero_flow/dsec_zurich_city_02_a_100ms.json",
+   "sha256": "34f9dcf20bf234593b83b86fc21b2eef7c6a0e97a4778bdfe949fc9d8c4ed0ca",
+   "tier": "T1",
+   "arm": "zero_flow",
+   "model": "M0a",
+   "tags": [],
+   "dataset": "dsec",
+   "sequence": "zurich_city_02_a",
+   "dt": null,
+   "window_ms": 100,
+   "epe": 16.270222450081068,
+   "epe_ci95": [
+    11.524325561892114,
+    22.88239363221345
+   ],
+   "outlier_pct": 89.91820989154299,
+   "npe_3": 89.91820989154299,
+   "fwl": 1.0,
+   "n_windows": 64,
+   "n_windows_skipped_no_valid_px": 0,
+   "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad"
+  },
+  {
+   "file": "results/baselines/zero_flow/dsec_zurich_city_11_a_100ms.json",
+   "sha256": "a728d1a738092249ef20ea1aae86b83eb379bef6128d3ee6128f2ffd5cdfb0a9",
+   "tier": "T1",
+   "arm": "zero_flow",
+   "model": "M0a",
+   "tags": [],
+   "dataset": "dsec",
+   "sequence": "zurich_city_11_a",
+   "dt": null,
+   "window_ms": 100,
+   "epe": 7.7820906802670855,
+   "epe_ci95": [
+    7.131404812862568,
+    8.42445901312588
+   ],
+   "outlier_pct": 76.67611514460306,
+   "npe_3": 76.67611514460306,
+   "fwl": 1.0,
+   "n_windows": 231,
+   "n_windows_skipped_no_valid_px": 0,
+   "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad"
+  },
+  {
+   "file": "results/baselines/cm_baseline/mvsec_indoor_flying1_dt1.json",
+   "sha256": "3fcbd175b7865ec02ce72c93152b00a11d9587001ae49313b9bab16636c5cffd",
+   "tier": "T1",
+   "arm": "cm_baseline",
+   "model": "M0b",
+   "tags": [],
+   "dataset": "mvsec",
+   "sequence": "indoor_flying1",
+   "dt": 1,
+   "window_ms": null,
+   "epe": 1.037251002499678,
+   "epe_ci95": [
+    0.964758170909076,
+    1.1203517033637238
+   ],
+   "outlier_pct": 0.646321644515662,
+   "npe_3": 0.646321644515662,
+   "fwl": 1.1341994521871006,
+   "n_windows": 2193,
+   "n_windows_skipped_no_valid_px": 0,
+   "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad"
+  },
+  {
+   "file": "results/baselines/cm_baseline/mvsec_indoor_flying1_dt4.json",
+   "sha256": "11c8519c0232ebfd946e4359188de6c63c26e3cafead7baa05f5a4a339bf2679",
+   "tier": "T1",
+   "arm": "cm_baseline",
+   "model": "M0b",
+   "tags": [],
+   "dataset": "mvsec",
+   "sequence": "indoor_flying1",
+   "dt": 4,
+   "window_ms": null,
+   "epe": 1.721914763963794,
+   "epe_ci95": [
+    1.5499215571192841,
+    1.93416795206039
+   ],
+   "outlier_pct": 12.334214391452658,
+   "npe_3": 12.334214391452658,
+   "fwl": 1.570925010775034,
+   "n_windows": 2190,
+   "n_windows_skipped_no_valid_px": 0,
+   "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad"
+  },
+  {
+   "file": "results/baselines/cm_baseline/mvsec_indoor_flying2_dt1.json",
+   "sha256": "8690fdd82ef2f136ac3c2583b037e1c96e11063094dd364a788b402df74425f5",
+   "tier": "T1",
+   "arm": "cm_baseline",
+   "model": "M0b",
+   "tags": [],
+   "dataset": "mvsec",
+   "sequence": "indoor_flying2",
+   "dt": 1,
+   "window_ms": null,
+   "epe": 1.1735814603206731,
+   "epe_ci95": [
+    1.0709282564015923,
+    1.287398413271606
+   ],
+   "outlier_pct": 2.8750529432257586,
+   "npe_3": 2.8750529432257586,
+   "fwl": 1.4779413579959981,
+   "n_windows": 2652,
+   "n_windows_skipped_no_valid_px": 0,
+   "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad"
+  },
+  {
+   "file": "results/baselines/cm_baseline/mvsec_indoor_flying2_dt4.json",
+   "sha256": "506dd69b2c1176c3e6cc19df88a43c209820bde860ad212e159af2dbaa1e8ffb",
+   "tier": "T1",
+   "arm": "cm_baseline",
+   "model": "M0b",
+   "tags": [],
+   "dataset": "mvsec",
+   "sequence": "indoor_flying2",
+   "dt": 4,
+   "window_ms": null,
+   "epe": 2.801715511929458,
+   "epe_ci95": [
+    2.3644520377426494,
+    3.257963889734398
+   ],
+   "outlier_pct": 27.69982373718517,
+   "npe_3": 27.69982373718517,
+   "fwl": 1.84599410575734,
+   "n_windows": 2649,
+   "n_windows_skipped_no_valid_px": 0,
+   "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad"
+  },
+  {
+   "file": "results/baselines/cm_baseline/mvsec_indoor_flying3_dt1.json",
+   "sha256": "326c5da576eb9d22d970677c6cabc32d05f0626b0f2f8de2ffa93fd0572224cb",
+   "tier": "T1",
+   "arm": "cm_baseline",
+   "model": "M0b",
+   "tags": [],
+   "dataset": "mvsec",
+   "sequence": "indoor_flying3",
+   "dt": 1,
+   "window_ms": null,
+   "epe": 1.0933605300124505,
+   "epe_ci95": [
+    0.9971213943205054,
+    1.218591071636219
+   ],
+   "outlier_pct": 2.6854874530511257,
+   "npe_3": 2.6854874530511257,
+   "fwl": 1.3681489126481772,
+   "n_windows": 2939,
+   "n_windows_skipped_no_valid_px": 0,
+   "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad"
+  },
+  {
+   "file": "results/baselines/cm_baseline/mvsec_indoor_flying3_dt4.json",
+   "sha256": "3025aecc84b239507668b7c6ed49b70e49f906ef28ffa7563cfa56029b8d7080",
+   "tier": "T1",
+   "arm": "cm_baseline",
+   "model": "M0b",
+   "tags": [],
+   "dataset": "mvsec",
+   "sequence": "indoor_flying3",
+   "dt": 4,
+   "window_ms": null,
+   "epe": 2.2500369283316703,
+   "epe_ci95": [
+    1.8971672831564956,
+    2.6632604887700126
+   ],
+   "outlier_pct": 19.567130552494202,
+   "npe_3": 19.567130552494202,
+   "fwl": 1.77373033712787,
+   "n_windows": 2936,
+   "n_windows_skipped_no_valid_px": 0,
+   "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad"
+  },
+  {
+   "file": "results/baselines/cm_baseline/mvsec_outdoor_day1_dt1.json",
+   "sha256": "1222fd49579a5242abf539b42deffb85422d0efa91698696f2d37beb620ad0eb",
+   "tier": "T1",
+   "arm": "cm_baseline",
+   "model": "M0b",
+   "tags": [],
+   "dataset": "mvsec",
+   "sequence": "outdoor_day1",
+   "dt": 1,
+   "window_ms": null,
+   "epe": 0.8845373690636036,
+   "epe_ci95": [
+    0.7788086104751115,
+    0.9987182784545723
+   ],
+   "outlier_pct": 0.8102303503574473,
+   "npe_3": 0.8102303503574473,
+   "fwl": 1.0184438960713993,
+   "n_windows": 797,
+   "n_windows_skipped_no_valid_px": 0,
+   "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad"
+  },
+  {
+   "file": "results/baselines/cm_baseline/mvsec_outdoor_day1_dt4.json",
+   "sha256": "1c084100670c33b900ee25f5089f40751e08618777e79b11c69bca52fe2854b4",
+   "tier": "T1",
+   "arm": "cm_baseline",
+   "model": "M0b",
+   "tags": [],
+   "dataset": "mvsec",
+   "sequence": "outdoor_day1",
+   "dt": 4,
+   "window_ms": null,
+   "epe": 1.554437661308595,
+   "epe_ci95": [
+    1.2690993859598891,
+    1.6463496705185385
+   ],
+   "outlier_pct": 12.063478578617783,
+   "npe_3": 12.063478578617783,
+   "fwl": 1.3662323455423484,
+   "n_windows": 794,
+   "n_windows_skipped_no_valid_px": 0,
+   "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad"
+  },
+  {
+   "file": "results/baselines/cm_baseline/dsec_thun_00_a_100ms.json",
+   "sha256": "6daf3ca79277aec5371d8848c2275b36455f82505cd96299cf8a71a59b19a4ac",
+   "tier": "T1",
+   "arm": "cm_baseline",
+   "model": "M0b",
+   "tags": [],
+   "dataset": "dsec",
+   "sequence": "thun_00_a",
+   "dt": null,
+   "window_ms": 100,
+   "epe": 7.062874824440284,
+   "epe_ci95": [
+    6.015359279872425,
+    8.557619932529686
+   ],
+   "outlier_pct": 62.18391917073055,
+   "npe_3": 62.18391917073055,
+   "fwl": 1.2964793466469555,
+   "n_windows": 41,
+   "n_windows_skipped_no_valid_px": 0,
+   "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad"
+  },
+  {
+   "file": "results/baselines/cm_baseline/dsec_zurich_city_02_a_100ms.json",
+   "sha256": "68770734a920ca732386c92cdff63782f79ba100748bf5fc96134ca35be7391f",
+   "tier": "T1",
+   "arm": "cm_baseline",
+   "model": "M0b",
+   "tags": [],
+   "dataset": "dsec",
+   "sequence": "zurich_city_02_a",
+   "dt": null,
+   "window_ms": 100,
+   "epe": 5.736276727656895,
+   "epe_ci95": [
+    4.103018422596266,
+    7.465556709152444
+   ],
+   "outlier_pct": 49.81685604593835,
+   "npe_3": 49.81685604593835,
+   "fwl": 1.3410943547550125,
+   "n_windows": 64,
+   "n_windows_skipped_no_valid_px": 0,
+   "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad"
+  },
+  {
+   "file": "results/baselines/cm_baseline/dsec_zurich_city_11_a_100ms.json",
+   "sha256": "8b31664d651f878837040688b937ade3ffb37b8f93ad19947ff26cb8cfe47a0a",
+   "tier": "T1",
+   "arm": "cm_baseline",
+   "model": "M0b",
+   "tags": [],
+   "dataset": "dsec",
+   "sequence": "zurich_city_11_a",
+   "dt": null,
+   "window_ms": 100,
+   "epe": 8.922945424857517,
+   "epe_ci95": [
+    7.3878652930750315,
+    10.599664789816174
+   ],
+   "outlier_pct": 66.23972834356474,
+   "npe_3": 66.23972834356474,
+   "fwl": 1.542833346361987,
+   "n_windows": 231,
+   "n_windows_skipped_no_valid_px": 0,
+   "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad"
+  },
+  {
+   "file": "results/baselines/eraft_mvsec20/mvsec_indoor_flying1_dt1.json",
+   "sha256": "e2fa148a706cd97110710aa8dbc84dcf39e9b721c4608f3f5e386c59ee69bd1b",
+   "tier": "T1",
+   "arm": "eraft_mvsec20",
+   "model": "R1",
+   "tags": [
+    "reference_external"
+   ],
+   "dataset": "mvsec",
+   "sequence": "indoor_flying1",
+   "dt": 1,
+   "window_ms": null,
+   "epe": 1.8786717042660845,
+   "epe_ci95": [
+    1.662719433762541,
+    2.1413632121011874
+   ],
+   "outlier_pct": 21.93566071150355,
+   "npe_3": 21.93566071150355,
+   "fwl": 1.0884307969127485,
+   "n_windows": 2193,
+   "n_windows_skipped_no_valid_px": 0,
+   "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad"
+  },
+  {
+   "file": "results/baselines/eraft_mvsec20/mvsec_indoor_flying1_dt4.json",
+   "sha256": "7652e48e6be3e59c062c44a2c8fc720c19b105c8423c9a76f3ae467899220812",
+   "tier": "T1",
+   "arm": "eraft_mvsec20",
+   "model": "R1",
+   "tags": [
+    "reference_external"
+   ],
+   "dataset": "mvsec",
+   "sequence": "indoor_flying1",
+   "dt": 4,
+   "window_ms": null,
+   "epe": 3.332497692937538,
+   "epe_ci95": [
+    2.9171683591815123,
+    3.8262846326650286
+   ],
+   "outlier_pct": 38.66625514211261,
+   "npe_3": 38.66625514211261,
+   "fwl": 1.1109675060059467,
+   "n_windows": 2190,
+   "n_windows_skipped_no_valid_px": 0,
+   "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad"
+  },
+  {
+   "file": "results/baselines/eraft_mvsec20/mvsec_indoor_flying2_dt1.json",
+   "sha256": "c15b092d8d0fbffd679da258d64f367ad59290c9475f23fdb45349e537b733b5",
+   "tier": "T1",
+   "arm": "eraft_mvsec20",
+   "model": "R1",
+   "tags": [
+    "reference_external"
+   ],
+   "dataset": "mvsec",
+   "sequence": "indoor_flying2",
+   "dt": 1,
+   "window_ms": null,
+   "epe": 2.655837778681424,
+   "epe_ci95": [
+    2.323911409064652,
+    3.0440764401025255
+   ],
+   "outlier_pct": 32.55647264542045,
+   "npe_3": 32.55647264542045,
+   "fwl": 1.1556556777636353,
+   "n_windows": 2652,
+   "n_windows_skipped_no_valid_px": 0,
+   "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad"
+  },
+  {
+   "file": "results/baselines/eraft_mvsec20/mvsec_indoor_flying2_dt4.json",
+   "sha256": "a984b72555d86916f71399ec603547858bc1d67dbb24448f94880a0ad47682ea",
+   "tier": "T1",
+   "arm": "eraft_mvsec20",
+   "model": "R1",
+   "tags": [
+    "reference_external"
+   ],
+   "dataset": "mvsec",
+   "sequence": "indoor_flying2",
+   "dt": 4,
+   "window_ms": null,
+   "epe": 5.50153922465793,
+   "epe_ci95": [
+    4.7819897987242745,
+    6.31672676210376
+   ],
+   "outlier_pct": 57.316353935570504,
+   "npe_3": 57.316353935570504,
+   "fwl": 1.1072663026657232,
+   "n_windows": 2649,
+   "n_windows_skipped_no_valid_px": 0,
+   "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad"
+  },
+  {
+   "file": "results/baselines/eraft_mvsec20/mvsec_indoor_flying3_dt1.json",
+   "sha256": "b9e77381bcfa4c08f05ae7a288b643507b43bb1a4f3e4adb822549d281f1c443",
+   "tier": "T1",
+   "arm": "eraft_mvsec20",
+   "model": "R1",
+   "tags": [
+    "reference_external"
+   ],
+   "dataset": "mvsec",
+   "sequence": "indoor_flying3",
+   "dt": 1,
+   "window_ms": null,
+   "epe": 2.0666615541082067,
+   "epe_ci95": [
+    1.803357437700487,
+    2.3725341402483915
+   ],
+   "outlier_pct": 23.84220126353647,
+   "npe_3": 23.84220126353647,
+   "fwl": 1.12861881959047,
+   "n_windows": 2939,
+   "n_windows_skipped_no_valid_px": 0,
+   "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad"
+  },
+  {
+   "file": "results/baselines/eraft_mvsec20/mvsec_indoor_flying3_dt4.json",
+   "sha256": "6ec7ccc621bcf0f50173a0a77c31dddcb436b8c46b12d0a7b807305eac5c1312",
+   "tier": "T1",
+   "arm": "eraft_mvsec20",
+   "model": "R1",
+   "tags": [
+    "reference_external"
+   ],
+   "dataset": "mvsec",
+   "sequence": "indoor_flying3",
+   "dt": 4,
+   "window_ms": null,
+   "epe": 4.382142193531022,
+   "epe_ci95": [
+    3.7610632434774973,
+    5.077712922234205
+   ],
+   "outlier_pct": 49.97244482090141,
+   "npe_3": 49.97244482090141,
+   "fwl": 1.1161085704251983,
+   "n_windows": 2936,
+   "n_windows_skipped_no_valid_px": 0,
+   "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad"
+  },
+  {
+   "file": "results/baselines/eraft_mvsec20/mvsec_outdoor_day1_dt1.json",
+   "sha256": "e0dd33881940ada7171d11cf831963d0801a72cff99e1470562f38db4e3791e1",
+   "tier": "T1",
+   "arm": "eraft_mvsec20",
+   "model": "R1",
+   "tags": [
+    "reference_external"
+   ],
+   "dataset": "mvsec",
+   "sequence": "outdoor_day1",
+   "dt": 1,
+   "window_ms": null,
+   "epe": 0.33387146473847656,
+   "epe_ci95": [
+    0.28742976094984707,
+    0.38439334130093844
+   ],
+   "outlier_pct": 0.016032461265399586,
+   "npe_3": 0.016032461265399586,
+   "fwl": 1.0346454654902926,
+   "n_windows": 797,
+   "n_windows_skipped_no_valid_px": 0,
+   "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad"
+  },
+  {
+   "file": "results/baselines/eraft_mvsec20/mvsec_outdoor_day1_dt4.json",
+   "sha256": "49b092fb52bbae4db5c74b9aa03902fbb931f0424a11f13038bd7ddf2fb2e243",
+   "tier": "T1",
+   "arm": "eraft_mvsec20",
+   "model": "R1",
+   "tags": [
+    "reference_external"
+   ],
+   "dataset": "mvsec",
+   "sequence": "outdoor_day1",
+   "dt": 4,
+   "window_ms": null,
+   "epe": 0.8788674270476311,
+   "epe_ci95": [
+    0.7041152773416536,
+    1.0815778708188077
+   ],
+   "outlier_pct": 3.7536654018535556,
+   "npe_3": 3.7536654018535556,
+   "fwl": 1.329614757538973,
+   "n_windows": 794,
+   "n_windows_skipped_no_valid_px": 0,
+   "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad"
+  },
+  {
+   "file": "results/baselines/eraft_dsec/dsec_thun_00_a_100ms.json",
+   "sha256": "8578abfae419da5a2e8227d15a7749a910cefc4bb128da89200412bf232b74ff",
+   "tier": "T1",
+   "arm": "eraft_dsec",
+   "model": "R1",
+   "tags": [
+    "reference_external",
+    "reference_seen_data"
+   ],
+   "dataset": "dsec",
+   "sequence": "thun_00_a",
+   "dt": null,
+   "window_ms": 100,
+   "epe": 0.4094698022457662,
+   "epe_ci95": [
+    0.32561047558627915,
+    0.4956479728590011
+   ],
+   "outlier_pct": 1.1046133954116621,
+   "npe_3": 1.1046133954116621,
+   "fwl": 1.3228477016296476,
+   "n_windows": 41,
+   "n_windows_skipped_no_valid_px": 0,
+   "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad"
+  },
+  {
+   "file": "results/baselines/eraft_dsec/dsec_zurich_city_02_a_100ms.json",
+   "sha256": "46c50ff896d48a215edc39772246da81910b283b91ae04782fa90bf8a18a334a",
+   "tier": "T1",
+   "arm": "eraft_dsec",
+   "model": "R1",
+   "tags": [
+    "reference_external",
+    "reference_seen_data"
+   ],
+   "dataset": "dsec",
+   "sequence": "zurich_city_02_a",
+   "dt": null,
+   "window_ms": 100,
+   "epe": 0.46564803793153886,
+   "epe_ci95": [
+    0.4187867557123803,
+    0.5180829014588978
+   ],
+   "outlier_pct": 0.5049912744066661,
+   "npe_3": 0.5056916689055345,
+   "fwl": 1.338320301774472,
+   "n_windows": 64,
+   "n_windows_skipped_no_valid_px": 0,
+   "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad"
+  },
+  {
+   "file": "results/baselines/eraft_dsec/dsec_zurich_city_11_a_100ms.json",
+   "sha256": "36051f21d08142037a29d105878328c2f92761694cee31b5c4042be8e5b972f9",
+   "tier": "T1",
+   "arm": "eraft_dsec",
+   "model": "R1",
+   "tags": [
+    "reference_external",
+    "reference_seen_data"
+   ],
+   "dataset": "dsec",
+   "sequence": "zurich_city_11_a",
+   "dt": null,
+   "window_ms": 100,
+   "epe": 0.2965810311391864,
+   "epe_ci95": [
+    0.27666746148581145,
+    0.31552112499045537
+   ],
+   "outlier_pct": 0.472061967588357,
+   "npe_3": 0.472061967588357,
+   "fwl": 1.626405097933738,
+   "n_windows": 231,
+   "n_windows_skipped_no_valid_px": 0,
+   "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad"
+  }
+ ],
+ "n_planned": 33,
+ "n_present": 33,
+ "selection_and_gate": {
+  "cm_tune.json": {
+   "sha256": "0514e2f19cde584e67122d9ceca3f1cf6d40a0088097028da0f8328676b0054a",
+   "tier": "T1",
+   "arm": "cm_baseline_tune",
+   "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad",
+   "argmin": {
+    "tile_px": 64,
+    "tv_weight": 0.01
+   }
+  },
+  "eraft_reproduction.json": {
+   "sha256": "9b7d7c4d90be3b585c5c6e38cdea0163c3d4085018822c5de020f7b8f57a86f4",
+   "tier": "T1",
+   "arm": "eraft_mvsec20",
+   "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad",
+   "gate": {
+    "metric_parity_1e-3px": true,
+    "epe_within_10pct_of_paper": true,
+    "pass": true
+   }
+  }
+ },
+ "problems": [],
+ "git_sha": "366368415bc9e98e9b8a049ebf52f19f844049f1",
+ "git_dirty": false,
+ "created_by": "scripts/summarise_baselines.py",
+ "created_at": "2026-10-10T08:59:33+00:00"
+}

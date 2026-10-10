@@ -1,0 +1,109 @@
+{
+ "tier": "T1",
+ "arm": "cm_baseline",
+ "model": "M0b",
+ "seed": 0,
+ "checkpoint_sha256": null,
+ "dataset": "dsec",
+ "sequence": "zurich_city_11_a",
+ "window_ms": 100,
+ "representation": "events (IWE)",
+ "tags": [],
+ "metrics": {
+  "epe": 8.922945424857517,
+  "outlier_pct": 66.23972834356474,
+  "npe_1": 84.96198809001991,
+  "npe_2": 73.4839754195794,
+  "npe_3": 66.23972834356474,
+  "ae_deg": 53.61475340761452,
+  "fwl": 1.542833346361987
+ },
+ "ci95": {
+  "epe": [
+   7.3878652930750315,
+   10.599664789816174
+  ],
+  "outlier_pct": [
+   57.51114588840051,
+   74.89431502827057
+  ],
+  "npe_1": [
+   79.58911583430884,
+   90.4868894736548
+  ],
+  "npe_2": [
+   65.7961761671408,
+   81.11582756306942
+  ],
+  "npe_3": [
+   57.51114588840051,
+   74.89431502827057
+  ],
+  "ae_deg": [
+   45.94379825582753,
+   62.3331779181598
+  ],
+  "fwl": [
+   1.4240709087450962,
+   1.6207694590146904
+  ]
+ },
+ "n_windows": 231,
+ "n_windows_total": 231,
+ "n_windows_skipped_no_valid_px": 0,
+ "bootstrap": {
+  "method": "moving_block",
+  "block_windows": 10,
+  "block_seconds": 1.0,
+  "resamples": 1000,
+  "ci": 0.95,
+  "seed": 0
+ },
+ "mean_valid_px_per_window": 81817.64069264069,
+ "mean_events_per_window": 554694.1861471861,
+ "mean_pred_s_per_window": 4.807126224086908,
+ "protocol": {
+  "split": "dsec_test",
+  "split_manifest_sha256": "5110b28785fc47d7959f5aad102c65eccf17430d74d55a851474348058f19c28",
+  "store": "dsec_zurich_city_11_a_left.h5",
+  "mask": "valid_gt (PNG channel 3), full 640x480 rectified frame",
+  "gt": "DSEC forward flow PNG"
+ },
+ "params": {
+  "tile_px": 64,
+  "sigmas": [
+   3.0,
+   1.5,
+   1.0
+  ],
+  "iters_global": 60,
+  "iters_tiles": 90,
+  "lr": 0.3,
+  "tv_weight": 0.01,
+  "t_refs": [
+   0.0,
+   0.5,
+   1.0
+  ],
+  "max_events": 200000,
+  "pad_px": 64
+ },
+ "params_provenance": {
+  "source": "results/baselines/cm_tune.json",
+  "sha256": "0514e2f19cde584e67122d9ceca3f1cf6d40a0088097028da0f8328676b0054a",
+  "argmin_cell": {
+   "tile_px": 64,
+   "tv_weight": 0.01
+  }
+ },
+ "fwl_protocol": "interpolation=round, t_ref=1 (window end), events in the eval region",
+ "per_window_npz": "~/projects_02/event-maritime-flow/runs/phase4-baselines/npz/cm_baseline/dsec_zurich_city_11_a_100ms.npz",
+ "per_window_npz_sha256": "c9ea0dfbbfc5f60afc0e70555d8e8275e1e31dd01b83ba527082408e575abc6b",
+ "device": "NVIDIA RTX A4000",
+ "wall_time_s": 1154.5,
+ "smoke": false,
+ "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad",
+ "git_dirty": false,
+ "created_by": "scripts/run_baselines.py",
+ "created_at": "2026-10-10T07:28:48+00:00"
+}

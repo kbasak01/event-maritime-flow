@@ -1,0 +1,122 @@
+{
+ "tier": "T1",
+ "arm": "cm_baseline",
+ "model": "M0b",
+ "seed": 0,
+ "checkpoint_sha256": null,
+ "dataset": "mvsec",
+ "sequence": "outdoor_day1",
+ "dt": 4,
+ "representation": "events (IWE)",
+ "tags": [],
+ "metrics": {
+  "epe": 1.554437661308595,
+  "outlier_pct": 12.063478578617783,
+  "npe_1": 52.038338152831145,
+  "npe_2": 21.399112998235637,
+  "npe_3": 12.063478578617783,
+  "ae_deg": 21.479441355550936,
+  "fwl": 1.3662323455423484
+ },
+ "ci95": {
+  "epe": [
+   1.2690993859598891,
+   1.6463496705185385
+  ],
+  "outlier_pct": [
+   6.08878897684028,
+   13.506292563914858
+  ],
+  "npe_1": [
+   44.162358669544915,
+   56.14732209331
+  ],
+  "npe_2": [
+   13.652042655151392,
+   24.129218809415242
+  ],
+  "npe_3": [
+   6.08878897684028,
+   13.506292563914858
+  ],
+  "ae_deg": [
+   17.03764197376536,
+   23.62702062237565
+  ],
+  "fwl": [
+   1.3111903870808888,
+   1.4209718738916761
+  ]
+ },
+ "n_windows": 794,
+ "n_windows_total": 794,
+ "n_windows_skipped_no_valid_px": 0,
+ "bootstrap": {
+  "method": "moving_block",
+  "block_windows": 46,
+  "block_seconds": 1.0,
+  "resamples": 1000,
+  "ci": 0.95,
+  "seed": 0
+ },
+ "mean_valid_px_per_window": 4086.3690176322416,
+ "mean_events_per_window": 33702.05289672544,
+ "mean_pred_s_per_window": 4.021720989013633,
+ "protocol": {
+  "split": "mvsec_test",
+  "split_manifest_sha256": "b45014a33bfc02740e3804061554ea4a14955d50468e87bfd154fbeef14a8e2e",
+  "aps_first": 10164,
+  "aps_last": 10957,
+  "store": "mvsec_outdoor_day1_left.h5",
+  "region_name": "center_256_no_hood",
+  "region": {
+   "rows": [
+    2,
+    192
+   ],
+   "cols": [
+    45,
+    301
+   ]
+  },
+  "mask": "valid_gt AND events_in_window (sparse) AND region",
+  "gt": "EV-FlowNet propagation of *_gt_flow_dist.npz (D-019)"
+ },
+ "params": {
+  "tile_px": 64,
+  "sigmas": [
+   3.0,
+   1.5,
+   1.0
+  ],
+  "iters_global": 60,
+  "iters_tiles": 90,
+  "lr": 0.3,
+  "tv_weight": 0.01,
+  "t_refs": [
+   0.0,
+   0.5,
+   1.0
+  ],
+  "max_events": 200000,
+  "pad_px": 64
+ },
+ "params_provenance": {
+  "source": "results/baselines/cm_tune.json",
+  "sha256": "0514e2f19cde584e67122d9ceca3f1cf6d40a0088097028da0f8328676b0054a",
+  "argmin_cell": {
+   "tile_px": 64,
+   "tv_weight": 0.01
+  }
+ },
+ "fwl_protocol": "interpolation=round, t_ref=1 (window end), events in the eval region",
+ "per_window_npz": "~/projects_02/event-maritime-flow/runs/phase4-baselines/npz/cm_baseline/mvsec_outdoor_day1_dt4.npz",
+ "per_window_npz_sha256": "ab3a70b5ffa028234c68e73d668c041b926423a1a1bd718b9de293268b23bb6e",
+ "device": "NVIDIA RTX A4000",
+ "wall_time_s": 3277.3,
+ "smoke": false,
+ "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad",
+ "git_dirty": false,
+ "created_by": "scripts/run_baselines.py",
+ "created_at": "2026-10-10T07:37:01+00:00"
+}

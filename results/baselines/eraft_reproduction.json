@@ -1,0 +1,101 @@
+{
+ "tier": "T1",
+ "arm": "eraft_mvsec20",
+ "model": "R1",
+ "seed": null,
+ "checkpoint_sha256": "d9845c0b85a1e5b2d5b664f27706e9a86270afcff42cb16457aeb9c2cbdb9ba2",
+ "dataset": "mvsec",
+ "sequence": "outdoor_day1",
+ "window_ms": null,
+ "window": "E-RAFT 20 Hz: [timestamps_depth[i], timestamps_depth[i+1]], i in range(4356, 4706) (configs/eval_mvsec.yaml reproduction_eraft)",
+ "representation": "voxel15 (E-RAFT convention)",
+ "tags": [
+  "reference_external",
+  "reproduction_gate"
+ ],
+ "metrics": {
+  "epe": 0.46736470770352884,
+  "npe_1": 8.903215835511745,
+  "npe_3": 0.21855137604576555,
+  "epe_sparse": 0.4573662757228034
+ },
+ "metrics_source": "E-RAFT's own pipeline + evaluation (scripts/eraft_reference_run.py), dense mask, per-sample mean then mean over samples",
+ "ci95": null,
+ "n_windows": 350,
+ "parity": {
+  "dense": {
+   "eraft_own_evaluation": {
+    "epe": 0.46736470770352884,
+    "npe_1": 8.903215835511745,
+    "npe_3": 0.21855137604576555,
+    "epe_pooled": 0.46327256843736864,
+    "n_samples": 350
+   },
+   "our_metrics_on_eraft_flows": {
+    "epe": 0.4673647076932418,
+    "npe_1": 8.903215835511745,
+    "npe_3": 0.21855137604576555
+   },
+   "max_abs_diff_per_sample_epe_px": 1.3829904998985398e-09,
+   "abs_diff_mean_epe_px": 1.0287048990420544e-11,
+   "max_abs_diff_npe_pct": 0.0,
+   "mask_pixels_differing_from_eraft": 0,
+   "metric_parity_pass": true,
+   "our_pipeline_epe": 0.46735983679257115,
+   "our_pipeline_minus_eraft_epe_px": -4.870910957688324e-06
+  },
+  "sparse": {
+   "eraft_own_evaluation": {
+    "epe": 0.4573662757228034,
+    "npe_1": 7.305506548345672,
+    "npe_3": 0.4710797917122685,
+    "epe_pooled": 0.48071329913283384,
+    "n_samples": 350
+   },
+   "our_metrics_on_eraft_flows": {
+    "epe": 0.4573662756882358,
+    "npe_1": 7.305506548345672,
+    "npe_3": 0.4710797917122685
+   },
+   "max_abs_diff_per_sample_epe_px": 2.517194896967112e-09,
+   "abs_diff_mean_epe_px": 3.456762653897272e-11,
+   "max_abs_diff_npe_pct": 0.0,
+   "mask_pixels_differing_from_eraft": 0,
+   "metric_parity_pass": true,
+   "our_pipeline_epe": 0.457359798277363,
+   "our_pipeline_minus_eraft_epe_px": -6.477445440411511e-06
+  }
+ },
+ "our_pipeline_flow_diff_px": {
+  "max_abs": 0.008922576904296875,
+  "mean_abs": 0.00012316571562371833
+ },
+ "paper": {
+  "source": "arXiv:2108.10552v2 Table 3, 'MVSEC results at original ground truth rate of 20 Hz.', row 'Ours'",
+  "dense_epe": 0.47,
+  "sparse_epe": 0.46,
+  "rel_diff_dense_epe": -0.005607004886108801,
+  "tolerance_rel": 0.1,
+  "within_tolerance": true
+ },
+ "gate": {
+  "metric_parity_1e-3px": true,
+  "epe_within_10pct_of_paper": true,
+  "pass": true
+ },
+ "reference_run": {
+  "json": "~/projects_02/event-maritime-flow/runs/phase4-baselines/repro/reference.json",
+  "json_sha256": "c15776192f9252dbb399164238fcaafce26379838a010b55f8b29059900d9fb2",
+  "npz_sha256": "f883163d5a6e71f625fe64f70f99e4255a116b7c24408d4ad066f6f2aff896f4",
+  "eraft_commit": "c58ce0524ea0ebfa9849991caafb547f44fe9bfd",
+  "resets_logged": 0,
+  "wall_time_s": 33.7,
+  "torch": "2.6.0+cu124",
+  "device": "NVIDIA RTX A4000"
+ },
+ "eraft_venv_lock": "configs/eraft_requirements.lock",
+ "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad",
+ "git_dirty": false,
+ "created_by": "scripts/eraft_reproduce.py",
+ "created_at": "2026-10-10T04:01:19+00:00"
+}

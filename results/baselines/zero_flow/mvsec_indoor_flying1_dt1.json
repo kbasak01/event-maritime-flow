@@ -1,0 +1,95 @@
+{
+ "tier": "T1",
+ "arm": "zero_flow",
+ "model": "M0a",
+ "seed": null,
+ "checkpoint_sha256": null,
+ "dataset": "mvsec",
+ "sequence": "indoor_flying1",
+ "dt": 1,
+ "representation": null,
+ "tags": [],
+ "metrics": {
+  "epe": 1.278562793778724,
+  "outlier_pct": 4.473748534433634,
+  "npe_1": 55.6488290891314,
+  "npe_2": 18.454158586792705,
+  "npe_3": 4.473748534433634,
+  "ae_deg": 45.552973461851956,
+  "fwl": 1.0
+ },
+ "ci95": {
+  "epe": [
+   1.1504009719838615,
+   1.4423373711065772
+  ],
+  "outlier_pct": [
+   2.199612686478138,
+   7.48615302222123
+  ],
+  "npe_1": [
+   48.81609710813673,
+   63.49539487509313
+  ],
+  "npe_2": [
+   13.563009247873259,
+   24.444336963432782
+  ],
+  "npe_3": [
+   2.199612686478138,
+   7.48615302222123
+  ],
+  "ae_deg": [
+   42.6001523294272,
+   49.00356714957188
+  ],
+  "fwl": [
+   1.0,
+   1.0
+  ]
+ },
+ "n_windows": 2193,
+ "n_windows_total": 2193,
+ "n_windows_skipped_no_valid_px": 0,
+ "bootstrap": {
+  "method": "moving_block",
+  "block_windows": 31,
+  "block_seconds": 1.0,
+  "resamples": 1000,
+  "ci": 0.95,
+  "seed": 0
+ },
+ "mean_valid_px_per_window": 3763.4418604651164,
+ "mean_events_per_window": 6415.391700866393,
+ "mean_pred_s_per_window": 0.0006610284776824883,
+ "protocol": {
+  "split": "mvsec_test",
+  "split_manifest_sha256": "b45014a33bfc02740e3804061554ea4a14955d50468e87bfd154fbeef14a8e2e",
+  "aps_first": 9,
+  "aps_last": 2201,
+  "store": "mvsec_indoor_flying1_left.h5",
+  "region_name": "center_256",
+  "region": {
+   "rows": [
+    2,
+    258
+   ],
+   "cols": [
+    45,
+    301
+   ]
+  },
+  "mask": "valid_gt AND events_in_window (sparse) AND region",
+  "gt": "EV-FlowNet propagation of *_gt_flow_dist.npz (D-019)"
+ },
+ "fwl_protocol": "interpolation=round, t_ref=1 (window end), events in the eval region",
+ "per_window_npz": "~/projects_02/event-maritime-flow/runs/phase4-baselines/npz/zero_flow/mvsec_indoor_flying1_dt1.npz",
+ "per_window_npz_sha256": "15f34285e9e2a90f47ccad460410273cf081588c4a2b1e4f6581d9ca73c77cc6",
+ "device": "NVIDIA RTX A4000",
+ "wall_time_s": 1024.1,
+ "smoke": false,
+ "git_sha": "0da94b33371f02e1ac2bc37e5f4f974ad94948ad",
+ "git_dirty": false,
+ "created_by": "scripts/run_baselines.py",
+ "created_at": "2026-10-10T08:12:25+00:00"
+}
