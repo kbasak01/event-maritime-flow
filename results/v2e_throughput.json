@@ -945,7 +945,7 @@
   }
  ],
  "budget_config": "configs/v2e_budget.yaml",
- "budget_limit_gpu_hours": 12,
+ "budget_limit_gpu_hours": 19,
  "scenarios": {
   "full_plan": {
    "description": "corpus exactly as written in the plan (no cuts), units run concurrently",
@@ -1051,8 +1051,8 @@
      "measured": true
     },
     {
-     "name": "phase3_trials_mvsec_rand_extremes_measured",
-     "measured_from": "results/v2e_mvsec_corpus.json",
+     "name": "phase3_d032_trials_measured",
+     "measured_from": "results/v2e_mvsec_corpus_d032_lagged.json",
      "corpora": [
       "trial"
      ],
@@ -1063,8 +1063,8 @@
      "measured": true
     },
     {
-     "name": "phase3_mvsec_corpus_measured",
-     "measured_from": "results/v2e_mvsec_corpus.json",
+     "name": "phase3_d032_corpus_measured",
+     "measured_from": "results/v2e_mvsec_corpus_d032_lagged.json",
      "corpora": [
       "tune",
       "test",
@@ -1078,6 +1078,46 @@
      "units": 28,
      "sum_unit_wall_s": 79345.8,
      "gpu_hours": 5.51,
+     "measured": true
+    },
+    {
+     "name": "phase3_d035_calibration_timing_measured",
+     "measured_from": "results/v2e_calibration_timing.json",
+     "grid": "calibration_grid_timing",
+     "concurrency": 4,
+     "units": 48,
+     "sum_unit_wall_s": 11132.5,
+     "gpu_hours": 0.773,
+     "measured": true
+    },
+    {
+     "name": "phase3_d035_trials_measured",
+     "measured_from": "results/v2e_mvsec_corpus.json",
+     "corpora": [
+      "trial"
+     ],
+     "concurrency": 1,
+     "units": 2,
+     "sum_unit_wall_s": 311.8,
+     "gpu_hours": 0.087,
+     "measured": true
+    },
+    {
+     "name": "phase3_d035_corpus_measured",
+     "measured_from": "results/v2e_mvsec_corpus.json",
+     "corpora": [
+      "tune",
+      "test",
+      "train_cal",
+      "rand0",
+      "rand1",
+      "rand2",
+      "rand3"
+     ],
+     "concurrency": 4,
+     "units": 28,
+     "sum_unit_wall_s": 86775.4,
+     "gpu_hours": 6.026,
      "measured": true
     },
     {
@@ -1123,11 +1163,11 @@
      "gpu_hours": 1.213
     }
    ],
-   "measured_gpu_hours": 9.34,
+   "measured_gpu_hours": 16.23,
    "sequential_gpu_hours": 3.6,
    "concurrency": 4,
    "concurrency_factor": 0.484,
-   "total_gpu_hours": 11.08,
+   "total_gpu_hours": 17.97,
    "within_limit": true
   },
   "calibration_full_tune": {
@@ -1151,7 +1191,7 @@
    "within_limit": true
   }
  },
- "git_sha": "c737c09df8eb9715a4c585c16f77a4ccedce368f",
+ "git_sha": "b6853e691de1b9546dac0e77774301660393ea89",
  "created_by": "scripts/summarise_throughput.py",
- "created_at": "2026-10-09T13:20:33+00:00"
+ "created_at": "2026-10-09T23:55:46+00:00"
 }

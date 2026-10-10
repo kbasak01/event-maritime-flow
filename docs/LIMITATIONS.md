@@ -20,21 +20,31 @@ Written in Phase 9: one row per VALIDATION_CHECKLIST.md line.
   same windows); SMD (45 s train, 30 s test), LaRS (110 train clips) and the clutter study (40 val
   clips) are subsets.
 - **LaRS frame rate assumed (Phase 2, D-024).** v2e time constants for LaRS use an assumed 30 fps.
+- **Timing-constrained v2e profile: correct event timing at a cost in event statistics (Phase 3,
+  T2, D-035).** With the Phase 2 argmin (cutoff_hz 60) v2e events lagged the real events by half an
+  APS frame on `mvsec_tune` (count-image NCC-vs-lag peak at +0.5 frame for cell c30,
+  `results/v2e_calibration_timing.json`). The frozen profile is now the best lag-free cell, t10
+  (thres 0.6, sigma 0.04, cutoff_hz 0): lag peak 0, tune objective (mean normalised W1) 0.701
+  against 0.369 for c30 (same file). Turning the photoreceptor lowpass off is what removes the
+  lag, so v2e here models no photoreceptor bandwidth; the distribution mismatch it brings is
+  accepted and measured, not hidden.
 - **The tune-calibrated v2e profile does not reproduce the test recordings' event statistics
   (Phase 3, T2, D-033).** Mean normalised W1 over the six §1.6 statistics, real vs v2e
-  (`mvsec_cal`): 0.26 on `mvsec_tune` and 0.30 on the four train clips, but 1.47 (outdoor_day1) to
-  1.94 (indoor_flying1) on the test sequences (`results/fidelity/summary.json`). On the indoor
-  sequences v2e emits 2.98–3.42× the real event rate and its windows are about half ON (0.49–0.50)
-  where the real DAVIS windows are 0.71–0.74 ON; on outdoor_day1 the rates agree (ratio 0.98) but
-  the ON fraction (real 0.39, v2e 0.51) and the hot-pixel statistic (normalised W1 4.11, real
-  sensor hot pixels that v2e does not model) differ (`results/fidelity/test_*.json`). These are
-  measured statistics only; they were not used for any choice. Consequence for Phase 6: the
-  T2 gap on test sequences includes this threshold/noise mismatch, which the CT-randomised arm is
-  meant to address.
-- **What the alignment check can show (Phase 3, T2, D-034).** Every `mvsec_cal` group passes the
-  frozen NCC threshold, and the 5-frame-shift and x-mirror controls fall below it in every group
-  (`results/v2e_alignment.json`). The 1-frame-shift control does not: its median stays within 0.05
-  of the aligned median in every group, so the check cannot detect a timing error of a single APS
-  frame on these scenes. Windows in which the vehicle stands still (a stretch late in the tune
-  slice, found by inspection at the Phase 3 gate) contain mostly noise events and have near-zero
-  NCC; they lower the tune p10, not the median.
+  (`mvsec_cal`): 0.49 on `mvsec_tune` and 0.48 on the four train clips, but 1.47 (outdoor_day1) to
+  2.49 (indoor_flying3) on the test sequences (`results/fidelity/summary.json`). On the indoor
+  sequences v2e emits 2.72–2.89× the real event rate and its windows are half ON (0.50) where the
+  real DAVIS windows are 0.71–0.74 ON; on outdoor_day1 v2e emits 0.82× the real rate, and the ON
+  fraction (real 0.39, v2e 0.51) and the hot-pixel statistic (normalised W1 4.26; real sensor hot
+  pixels, which v2e does not model) differ (`results/fidelity/test_*.json`). These are measured
+  statistics only; they were not used for any choice. Consequence for Phase 6: the T2 gap on test
+  sequences includes this threshold/noise mismatch, which the CT-randomised arm is meant to
+  address. Inter-event intervals of v2e carry the timestamp-pyramid artefact (above).
+- **What the alignment check can show (Phase 3, T2, D-034, D-035).** Every `mvsec_cal` group
+  passes the NCC threshold re-derived on tune (0.491063); indoor_flying2 by the smallest margin
+  (median 0.498). The 5-frame-shift and x-mirror controls fall below it in every group
+  (`results/v2e_alignment.json`). The 1-frame-shift control falls below it on tune and the three
+  indoor sequences but not on outdoor_day1 or the train clips, so single-frame timing errors are
+  not reliably caught by the threshold; the per-group NCC-vs-lag profile (`lag`) measures timing
+  directly: its peak lies within 1/8 frame of zero on tune, train and the indoor sequences, and at
+  +0.375 frame on outdoor_day1 (test sequence, reported only; its profile is flat between 0 and
+  +0.5).

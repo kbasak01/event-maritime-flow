@@ -10,21 +10,21 @@
    "n_windows": 2614,
    "events_per_s": {
     "real": 605078.0109327884,
-    "v2e": 508097.57363229984
+    "v2e": 557125.4265022007
    },
-   "events_per_s_ratio_v2e_over_real": 0.8397224233103704,
+   "events_per_s_ratio_v2e_over_real": 0.9207497486866792,
    "on_fraction_mean": {
     "real": 0.5251347456993715,
-    "v2e": 0.47972961609521125
+    "v2e": 0.4975832532817199
    },
-   "mean_w1_normalised": 0.2615957034708309,
+   "mean_w1_normalised": 0.4861759741192546,
    "w1_normalised": {
-    "rate_per_window": 0.24238987956562075,
-    "on_fraction": 0.6552810927859717,
-    "pixel_rate": 0.12743198084851906,
-    "iei": 0.1701408384958005,
-    "autocorr": 0.2512564008255872,
-    "hot_fraction": 0.12307402830348607
+    "rate_per_window": 0.10187320842330387,
+    "on_fraction": 0.6874029948914415,
+    "pixel_rate": 0.07499584376818795,
+    "iei": 0.1847293525149819,
+    "autocorr": 0.3713154557494132,
+    "hot_fraction": 1.4967389893681993
    }
   },
   {
@@ -33,21 +33,21 @@
    "n_windows": 2192,
    "events_per_s": {
     "real": 201455.2064238523,
-    "v2e": 689835.1371091887
+    "v2e": 558974.2545534859
    },
-   "events_per_s_ratio_v2e_over_real": 3.424260655035184,
+   "events_per_s_ratio_v2e_over_real": 2.7746825930992833,
    "on_fraction_mean": {
     "real": 0.7115075984928468,
-    "v2e": 0.4981797505723605
+    "v2e": 0.49837339397298047
    },
-   "mean_w1_normalised": 1.944986190054352,
+   "mean_w1_normalised": 2.294015941445384,
    "w1_normalised": {
-    "rate_per_window": 1.385260254702527,
-    "on_fraction": 5.133112604324491,
-    "pixel_rate": 1.014604466949732,
-    "iei": 1.0355570818195876,
-    "autocorr": 2.934716065863106,
-    "hot_fraction": 0.16666666666666663
+    "rate_per_window": 1.0909259819695973,
+    "on_fraction": 5.120505113198582,
+    "pixel_rate": 0.8322141947024924,
+    "iei": 1.0785159907335347,
+    "autocorr": 2.7651227738651976,
+    "hot_fraction": 2.8768115942028993
    }
   },
   {
@@ -56,21 +56,21 @@
    "n_windows": 2651,
    "events_per_s": {
     "real": 296487.44978890807,
-    "v2e": 884375.3829142805
+    "v2e": 805802.3819010217
    },
-   "events_per_s_ratio_v2e_over_real": 2.9828425572277495,
+   "events_per_s_ratio_v2e_over_real": 2.717829650039938,
    "on_fraction_mean": {
     "real": 0.7378091862158647,
-    "v2e": 0.49120555560187906
+    "v2e": 0.49890866415384966
    },
-   "mean_w1_normalised": 1.6514453851671071,
+   "mean_w1_normalised": 2.389344430003717,
    "w1_normalised": {
-    "rate_per_window": 1.0506136126955008,
-    "on_fraction": 4.583128513374841,
-    "pixel_rate": 0.9206687663707082,
-    "iei": 1.0729918135581653,
-    "autocorr": 2.1384124621462868,
-    "hot_fraction": 0.1428571428571429
+    "rate_per_window": 0.7768673377203582,
+    "on_fraction": 4.39335811405182,
+    "pixel_rate": 0.8192695571245852,
+    "iei": 1.251505162179331,
+    "autocorr": 2.166494980374776,
+    "hot_fraction": 4.92857142857143
    }
   },
   {
@@ -79,21 +79,21 @@
    "n_windows": 2938,
    "events_per_s": {
     "real": 256421.48689652124,
-    "v2e": 848616.2729187151
+    "v2e": 742276.5757632396
    },
-   "events_per_s_ratio_v2e_over_real": 3.3094585137522965,
+   "events_per_s_ratio_v2e_over_real": 2.8947518585397836,
    "on_fraction_mean": {
     "real": 0.7384301890646467,
-    "v2e": 0.5015245359222007
+    "v2e": 0.5007212389970346
    },
-   "mean_w1_normalised": 1.7862115289903857,
+   "mean_w1_normalised": 2.4898720672988297,
    "w1_normalised": {
-    "rate_per_window": 1.2258306871650828,
-    "on_fraction": 4.860386036446106,
-    "pixel_rate": 0.9592134709462586,
-    "iei": 1.0534343459283209,
-    "autocorr": 2.4463616227038583,
-    "hot_fraction": 0.17204301075268813
+    "rate_per_window": 0.9970771111687199,
+    "on_fraction": 4.840671942955554,
+    "pixel_rate": 0.8166464403488214,
+    "iei": 1.183021786425584,
+    "autocorr": 2.4243957680555908,
+    "hot_fraction": 4.677419354838709
    }
   },
   {
@@ -102,21 +102,21 @@
    "n_windows": 797,
    "events_per_s": {
     "real": 383607.8203987358,
-    "v2e": 374034.36048812413
+    "v2e": 315211.8998853477
    },
-   "events_per_s_ratio_v2e_over_real": 0.975043626846135,
+   "events_per_s_ratio_v2e_over_real": 0.8217035292912044,
    "on_fraction_mean": {
     "real": 0.387501134999607,
-    "v2e": 0.5121166327863461
+    "v2e": 0.5086944428437014
    },
-   "mean_w1_normalised": 1.4737402121967371,
+   "mean_w1_normalised": 1.4666079974861184,
    "w1_normalised": {
-    "rate_per_window": 0.31119865247053863,
-    "on_fraction": 3.391615658933777,
-    "pixel_rate": 0.1631343884083154,
-    "iei": 0.24329954438123977,
-    "autocorr": 0.6189073147008366,
-    "hot_fraction": 4.114285714285715
+    "rate_per_window": 0.45415074282954154,
+    "on_fraction": 3.295336655932034,
+    "pixel_rate": 0.2225802309784365,
+    "iei": 0.21149366615242732,
+    "autocorr": 0.35894383188141477,
+    "hot_fraction": 4.257142857142857
    }
   },
   {
@@ -125,21 +125,21 @@
    "n_windows": 10452,
    "events_per_s": {
     "real": 738233.9312176818,
-    "v2e": 584332.8282887153
+    "v2e": 642542.9437727572
    },
-   "events_per_s_ratio_v2e_over_real": 0.7915280015982008,
+   "events_per_s_ratio_v2e_over_real": 0.870378502804542,
    "on_fraction_mean": {
     "real": 0.44694040607581326,
-    "v2e": 0.4889560801836426
+    "v2e": 0.4987948341398594
    },
-   "mean_w1_normalised": 0.2999288876975857,
+   "mean_w1_normalised": 0.48221292593002046,
    "w1_normalised": {
-    "rate_per_window": 0.20782879338710614,
-    "on_fraction": 0.7295325656748607,
-    "pixel_rate": 0.14174864997268305,
-    "iei": 0.15389862089974374,
-    "autocorr": 0.3252218667285169,
-    "hot_fraction": 0.2413428295226035
+    "rate_per_window": 0.09094474808959217,
+    "on_fraction": 0.7548789209611189,
+    "pixel_rate": 0.07395394291396613,
+    "iei": 0.1962204020804983,
+    "autocorr": 0.4484223765415877,
+    "hot_fraction": 1.3288571649933596
    }
   }
  ],
@@ -150,7 +150,7 @@
   "Both streams use identical windows, blocks and spans; real DVS hot pixels and noise are kept (no filtering of either stream).",
   "v2e inherits the APS frames' dynamic range, blur and frame rate; nothing here measures HDR or latency behaviour."
  ],
- "git_sha": "c737c09df8eb9715a4c585c16f77a4ccedce368f",
+ "git_sha": "b6853e691de1b9546dac0e77774301660393ea89",
  "created_by": "scripts/fidelity_report.py",
- "created_at": "2026-10-09T13:28:10+00:00"
+ "created_at": "2026-10-10T00:03:15+00:00"
 }
