@@ -143,13 +143,13 @@ def batch_loss(model, batch: dict, cfg: dict, device, amp_dtype, cm_params: CMLo
                                      list(cfg["losses"]["supervised"]["scale_weights"]))
         stats.update({f"epe_s{i}": v for i, v in enumerate(parts)})
     else:
-        x, y, t, _, b = cat_events(batch, device)
+        x, y, t, pol, b = cat_events(batch, device)
         keep = batch["ev_cm_keep"].to(device)
         tau = t.double() / batch["duration_us"].to(device)[b].double()
         evs = []
         for i in range(int(batch["n_events"].numel())):
             sel = keep & (b == i)
-            evs.append(WindowEvents(x[sel], y[sel], tau[sel].float()))
+            evs.append(WindowEvents(x[sel], y[sel], tau[sel].float(), pol[sel]))
         loss, parts = cm_loss(preds[-1], evs, cm_params)
         stats.update(parts)
     return loss, stats
@@ -284,7 +284,8 @@ def run_training(cfg: dict, run_dir: Path, train_ds, tune_ds: dict, *, device,
             "tune_windows": {s: d.dt_sizes for s, d in tune_ds.items()},
             "data": provenance or {}, "git_sha": git_sha(), "git_dirty": git_dirty(),
             "torch": torch.__version__, "cuda": torch.version.cuda,
-            "gpu": torch.cuda.get_device_name(0) if torch.cuda.is_available() else None,
+            "gpu": (torch.cuda.get_device_name(0) if torch.device(device).type == "cuda"
+                    else None),
             "argv": sys.argv, "created_by": "src/evflow/train/loop.py",
             "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds")}
         manifest_path.write_text(json.dumps(manifest, indent=1, default=str) + "\n")

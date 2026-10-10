@@ -51,7 +51,7 @@ train:
 losses:
   supervised: {type: l1_epe, mask: valid_gt, scale_weights: [0.125, 0.25, 0.5, 1.0]}  # coarse→fine
   cm:
-    objective: iwe_variance           # contrast maximisation
+    objective: average_timestamp      # D-047 (iwe_variance collapsed on real MVSEC)
     reference_times: [0.0, 0.5, 1.0]  # multi-reference IWE (collapse guard)
     smoothness_weight: 0.1            # default; chosen on tune by the CM sweep (D-044)
     divergence_penalty: 1.0           # collapse guard; >= 0.3 needed on the fixture (D-043); sweep D-044

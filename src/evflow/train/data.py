@@ -109,6 +109,7 @@ class EventArrays:
     t: np.ndarray
     p: np.ndarray
     source: str = ""
+    end_clamped_us: int = 0
 
     def window(self, t0: int, t1: int) -> dict[str, np.ndarray]:
         if t0 < int(self.t[0]) - 10_000 or t1 > int(self.t[-1]) + 10_000:
@@ -117,13 +118,26 @@ class EventArrays:
         return {"x": self.x[a:b], "y": self.y[a:b], "t": self.t[a:b], "p": self.p[a:b]}
 
     @classmethod
-    def from_store(cls, path: str | os.PathLike, t0: int, t1: int) -> EventArrays:
+    def from_store(cls, path: str | os.PathLike, t0: int, t1: int,
+                   max_end_shortfall_us: int = 1000) -> EventArrays:
+        """Events in [t0, t1). A v2e store whose last event lies just before the clip's last
+        APS frame has an ``ms_to_idx`` ending short of t1, and the slicer then refuses the
+        range; if the shortfall is at most ``max_end_shortfall_us`` the range is clamped to the
+        store's covered end (no events exist past it) and ``end_clamped_us`` records it (D-048)."""
         from evflow.io.store import EventSlicer
+        clamp = 0
         with EventSlicer(path) as s:
             ev = s.get_events(int(t0), int(t1), rectify=False)
+            if ev is None:
+                covered = s.store.t_offset + (s.store.ms_to_idx.size - 1) * 1000
+                if 0 < t1 - covered <= max_end_shortfall_us and s.t_final_us < covered:
+                    clamp = int(t1 - covered)
+                    ev = s.get_events(int(t0), int(covered), rectify=False)
         if ev is None:
             raise ValueError(f"{path}: [{t0}, {t1}) not covered")
-        return cls(ev["x"], ev["y"], ev["t"], ev["p"].astype(np.int8), source=str(path))
+        out = cls(ev["x"], ev["y"], ev["t"], ev["p"].astype(np.int8), source=str(path))
+        out.end_clamped_us = clamp
+        return out
 
 
 # ---------------------------------------------------------------------------------------------
@@ -489,7 +503,12 @@ def load_mvsec(*, train_source: str | None, tune_streams: list[str], dts, warmup
                 raise ValueError(f"unknown train source {train_source!r}")
             for s in stores:
                 store_entry(s)
-            data.append(ClipData(c, [EventArrays.from_store(s, t0, t1) for s in stores]))
+            arrays = [EventArrays.from_store(s, t0, t1) for s in stores]
+            for s_, a_ in zip(stores, arrays, strict=True):
+                if a_.end_clamped_us:
+                    prov.setdefault("end_clamped_us", {})[
+                        str(s_.relative_to(events_root))] = a_.end_clamped_us
+            data.append(ClipData(c, arrays))
         gts = gt_for("mvsec_train")
         windows = build_windows(data, aps, dts, warmup, gts)
         windows = thin(windows, max_train_windows)

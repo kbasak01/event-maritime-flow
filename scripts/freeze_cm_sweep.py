@@ -3,10 +3,12 @@
 
 Each cell (smoothness_weight × divergence_penalty) is a short run on the arm's own training
 events, selected on the arm's own tune stream (``mvsec_tune`` only; FWL, dt = 1). No GT enters
-the choice. A cell is eligible only if it passes two label-free collapse checks on its tune
-diagnostics (``losses.cm.cm_diagnostics``, D-043):
+the choice. A cell is eligible only if it passes three label-free collapse checks on its tune
+diagnostics (``losses.cm.cm_diagnostics``; D-048 after the D-047 collapse):
   (a) at its best epoch, the non-empty IWE pixel fraction is >= ``MIN_NONEMPTY`` of zero flow's;
-  (b) the final-epoch tune flow magnitude is <= ``MAX_MAG_GROWTH`` x the median over its epochs.
+  (b) at its best epoch, the mean |divergence| of the flow is <= ``MAX_ABS_DIV`` (a window of at
+      most 4 APS frames of driving cannot expand or contract the image by ~10 % per pixel);
+  (c) the final-epoch tune flow magnitude is <= ``MAX_MAG_GROWTH`` x the median over its epochs.
 Choice = argmax best-epoch tune FWL among eligible cells.
 
     python scripts/freeze_cm_sweep.py --sweep-root runs/train-sweep
@@ -29,7 +31,8 @@ from evflow.sim.v2e_runner import git_dirty, git_sha
 REPO = Path(__file__).resolve().parents[1]
 OUT = REPO / "results" / "train" / "cm_sweep.json"
 ARMS = ("real_selfsup", "v2e_selfsup")
-MIN_NONEMPTY = 0.5
+MIN_NONEMPTY = 0.8
+MAX_ABS_DIV = 0.1
 MAX_MAG_GROWTH = 2.0
 
 
@@ -47,7 +50,7 @@ def main(argv: list[str] | None = None) -> int:
     rep = yaml.safe_load((REPO / "configs" / "evflow.yaml").read_text())["train"]["representation"]
     doc = {"kind": "cm_weight_sweep", "phase": 5, "split": "mvsec_tune", "grid": sweep,
            "rule": {"metric": "own-stream tune dt1 FWL at the cell's best epoch, max",
-                    "min_iwe_nonempty_ratio": MIN_NONEMPTY,
+                    "min_iwe_nonempty_ratio": MIN_NONEMPTY, "max_abs_div": MAX_ABS_DIV,
                     "max_final_flow_mag_over_median": MAX_MAG_GROWTH},
            "arms": {}}
     ok = True
@@ -69,12 +72,14 @@ def main(argv: list[str] | None = None) -> int:
                 best = next(r for r in rows if int(r["epoch"]) == sel["selected_epoch"])
                 mags = [float(r[f"{stream}_dt1_flow_mag"]) for r in rows]
                 nonempty = float(best[f"{stream}_dt1_diag_iwe_nonempty_ratio"])
+                abs_div = float(best[f"{stream}_dt1_diag_abs_div"])
                 growth = mags[-1] / max(statistics.median(mags), 1e-9)
                 cell.update(status="done", stream=stream, selected_epoch=sel["selected_epoch"],
-                            tune_fwl=sel["value"], iwe_nonempty_ratio=nonempty,
+                            tune_fwl=sel["value"], iwe_nonempty_ratio=nonempty, abs_div=abs_div,
                             final_flow_mag_over_median=growth,
                             checkpoint_sha256=sel["checkpoint_sha256"],
-                            eligible=nonempty >= MIN_NONEMPTY and growth <= MAX_MAG_GROWTH)
+                            eligible=(nonempty >= MIN_NONEMPTY and abs_div <= MAX_ABS_DIV
+                                      and growth <= MAX_MAG_GROWTH))
                 cells.append(cell)
         elig = [c for c in cells if c.get("eligible")]
         chosen = max(elig, key=lambda c: c["tune_fwl"]) if elig else None

@@ -1,4 +1,5 @@
-"""Contrast-maximisation loss and its event-collapse guards, on analytic fixtures."""
+"""Self-supervised motion-compensation losses and their event-collapse guards, on analytic
+fixtures: the average-timestamp objective (D-047) and the superseded IWE-variance one (D-043)."""
 
 import numpy as np
 import pytest
@@ -18,13 +19,16 @@ from fixtures.moving_edge import moving_edges
 
 H, W = 48, 64
 FLOW = (6.0, -4.0)
-GUARDED = CMLossParams(divergence_penalty=1.0)
-UNGUARDED = CMLossParams(reference_times=(1.0,), smoothness_weight=0.0, divergence_penalty=0.0)
+GUARDED = CMLossParams(objective="iwe_variance", divergence_penalty=1.0)
+UNGUARDED = CMLossParams(objective="iwe_variance", reference_times=(1.0,), smoothness_weight=0.0,
+                         divergence_penalty=0.0)
+AT = CMLossParams(objective="average_timestamp", smoothness_weight=0.1, divergence_penalty=0.3)
 
 
 def _dots(seed):
     x, y, t, _ = moving_dots(height=H, width=W, flow_px=FLOW, seed=seed)
-    return WindowEvents(x, y, (t.double() / 20_000).float())
+    p = torch.from_numpy(np.random.default_rng(seed).integers(0, 2, x.numel()))
+    return WindowEvents(x, y, (t.double() / 20_000).float(), p)
 
 
 def _const(u, v):
@@ -107,6 +111,7 @@ def test_subsample_bounded_and_deterministic():
     a, b = subsample(ev, 100), subsample(ev, 100)
     assert a.tau.numel() == 100 and torch.equal(a.x, b.x)
     assert subsample(ev, 10**9) is ev
+    assert a.p is not None and a.p.numel() == 100
 
 
 def test_diagnostics_flag_collapse():
@@ -118,3 +123,51 @@ def test_diagnostics_flag_collapse():
     zero = cm_diagnostics(_const(0, 0)[0], ev)
     assert zero["iwe_nonempty_ratio"] == pytest.approx(1.0)
     assert zero["iwe_var_ratio"] == pytest.approx(1.0)
+
+
+# --- average timestamp (D-047) -------------------------------------------------------------
+
+@pytest.mark.parametrize("seed", [0, 1, 2])
+def test_at_true_flow_beats_zero_beats_reverse(seed):
+    ev = _dots(seed)
+    assert _loss(_const(*FLOW), ev, AT) < _loss(_const(0, 0), ev, AT) \
+        < _loss(_const(-FLOW[0], -FLOW[1]), ev, AT)
+
+
+@pytest.mark.parametrize("seed", [0, 1, 2])
+def test_at_guarded_rejects_collapse(seed):
+    ev = _dots(seed)
+    true = _loss(_const(*FLOW), ev, AT)
+    for a in np.linspace(-3, 3, 49):
+        if abs(a) > 1e-9:
+            assert _loss(_contracting(float(a)), ev, AT) > true, a
+
+
+def test_at_images_conserve_events_and_weights():
+    from evflow.losses.cm import average_timestamp_images
+    ev = _dots(0)
+    cnt, ts = average_timestamp_images(ev, _const(*FLOW)[0], t_ref=1.0, weights=ev.tau, pad=64)
+    assert float(cnt.sum()) == pytest.approx(ev.tau.numel(), rel=1e-5)   # padded canvas keeps all
+    assert float(ts.sum()) == pytest.approx(float(ev.tau.sum()), rel=1e-5)
+    for pol in (0, 1):
+        assert float(cnt[pol].sum()) == pytest.approx(float((ev.p == pol).sum()), rel=1e-5)
+
+
+def test_at_needs_polarity_and_objective_validated():
+    from evflow.losses.cm import average_timestamp_loss
+    ev = _dots(0)
+    with pytest.raises(ValueError):
+        average_timestamp_loss(WindowEvents(ev.x, ev.y, ev.tau), _const(*FLOW)[0], 64)
+    with pytest.raises(ValueError):
+        CMLossParams(objective="contrast")
+
+
+def test_at_minimum_at_true_flow_on_grid():
+    """Global minimum of the data term over a 1 px grid of constant flows is the true flow.
+    (The basin is narrow on this sparse fixture: from half the true flow the gradient need not
+    point at it, so no gradient-direction test is made for this objective.)"""
+    from evflow.losses.cm import average_timestamp_loss
+    ev = _dots(0)
+    grid = [(u, v) for u in range(0, 10) for v in range(-7, 2)]
+    vals = [float(average_timestamp_loss(ev, _const(u, v)[0], 64)) for u, v in grid]
+    assert grid[int(np.argmin(vals))] == (6, -4)

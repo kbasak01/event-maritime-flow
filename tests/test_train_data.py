@@ -194,3 +194,21 @@ def test_batch_inputs_equal_per_sample(rep):
                        for it in items])
     assert got.shape == ref.shape
     assert torch.allclose(got, ref, atol=1e-5, rtol=1e-5)
+
+
+def test_from_store_clamps_short_end(tmp_path):
+    """A store whose last event lies < 1 ms before the requested end is loaded up to its covered
+    end (D-048); a larger shortfall still raises."""
+    from evflow.io.store import write_store
+    t = np.arange(0, 5_630, 10, dtype=np.int64)          # last event at 5.62 ms
+    n = t.size
+    path = tmp_path / "s.h5"
+    write_store(path, x=np.zeros(n, np.uint16), y=np.zeros(n, np.uint16), t=t,
+                p=np.ones(n, np.int8), width=4, height=4, source="test", sensor="test",
+                distortion="raw", t_offset=1_000_000)
+    ok = EventArrays.from_store(path, 1_000_000, 1_000_000 + 6_500)
+    assert ok.end_clamped_us == 500 and ok.t.size == n
+    full = EventArrays.from_store(path, 1_000_000, 1_000_000 + 5_000)
+    assert full.end_clamped_us == 0
+    with pytest.raises(ValueError):
+        EventArrays.from_store(path, 1_000_000, 1_000_000 + 8_000)
