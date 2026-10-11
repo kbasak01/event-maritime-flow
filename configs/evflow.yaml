@@ -74,3 +74,18 @@ latency:
   timed: 500
   events_per_window: [10000, 100000, 1000000]
   resolutions: [[256, 256], [260, 346], [480, 640]]
+
+figures:                              # scripts/make_figures.py (Phase 6 step 3, D-051)
+  # Flow panels: windows fixed by position in each test unit's window list, chosen before any
+  # prediction was viewed (no cherry-picking); dt = 1; models = seed-1337 runs of these arms.
+  panel_windows:
+    - {sequence: indoor_flying1, position: 0.5}
+    - {sequence: indoor_flying2, position: 0.5}
+    - {sequence: indoor_flying3, position: 0.5}
+    - {sequence: outdoor_day1, position: 0.25}
+    - {sequence: outdoor_day1, position: 0.5}
+    - {sequence: outdoor_day1, position: 0.75}
+  panel_dt: 1
+  panel_runs: [real_sup_voxel5_s1337, v2e_fixed_sup_voxel5_s1337]
+  attribution: >-
+    MVSEC (Zhu et al., RA-L 2018), CC BY-SA 4.0; derived panels are shared under the same licence.

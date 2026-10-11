@@ -8,10 +8,14 @@ The checkpoint is the run's ``best.pt`` as recorded in ``selection.json`` (selec
 checkpoint: nothing is chosen here. Protocol, metrics and CIs as the Phase 4 baselines
 (``eval/run.evaluate_windows``, ``eval/summary.summarise``; configs/eval_mvsec.yaml, D-019, D-041).
 Input: the run's representation of the window's events on the full frame (zero-padded to a
-multiple of 16, flow cropped back). Tier T1 (real events, real GT).
+multiple of 16, flow cropped back). Tier T1 (real events, real GT); ``--events v2e`` (MVSEC only)
+evaluates the same windows, GT and masks on the calibrated v2e(APS) test corpus instead: tier T2
+(D-051), stem suffix ``_v2e``, each corpus store verified against its SHA-256 in
+``results/v2e_mvsec_corpus.json``. ``--out-dir`` writes the JSON elsewhere (the job's
+reproduction check, never results/).
 
-Writes ``results/eval/<arm>/<seed>/<dataset>_<sequence>_dt<k>[_<rep>].json`` (the suffix only
-for non-default representations, i.e. the ablation) and the per-window arrays to
+Writes ``results/eval/<arm>/<seed>/<dataset>_<sequence>_dt<k>[_<rep>][_v2e].json`` (the rep
+suffix only for non-default representations, i.e. the ablation) and the per-window arrays to
 ``runs/eval/npz/`` (gitignored). Skips an existing JSON unless ``--force``; ``--max-windows`` is a
 smoke run written under ``runs/eval/smoke/`` only.
 """
@@ -30,7 +34,7 @@ import torch
 import yaml
 from check_data import redact_home, sha256_file
 
-from evflow.eval.datasets import dsec_unit, load_yaml, mvsec_unit
+from evflow.eval.datasets import dsec_unit, load_yaml, mvsec_unit, verify_v2e_stores
 from evflow.eval.run import evaluate_windows
 from evflow.eval.summary import summarise
 from evflow.eval.windows import Window
@@ -87,21 +91,30 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--dataset", choices=["mvsec", "dsec"], required=True)
     ap.add_argument("--sequence", required=True)
     ap.add_argument("--dt", type=int, choices=[1, 4])
+    ap.add_argument("--events", choices=["real", "v2e"], default="real")
+    ap.add_argument("--out-dir", help="write the JSON here instead of results/eval (repro check)")
     ap.add_argument("--max-windows", type=int)
     ap.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
     ap.add_argument("--force", action="store_true")
     args = ap.parse_args(argv)
     if (args.dataset == "mvsec") != (args.dt is not None):
         ap.error("--dt is required for mvsec and not allowed for dsec")
+    if args.events == "v2e" and args.dataset != "mvsec":
+        ap.error("--events v2e exists for mvsec only (T2)")
 
     run_dir = Path(args.run_dir)
     model, sel, man = load_run(run_dir, args.device)
     rep, arm, seed = man["representation"], man["arm"], man["seed"]
     default_rep = load_yaml("configs/evflow.yaml")["train"]["representation"]
     tag = f"dt{args.dt}" if args.dataset == "mvsec" else "100ms"
-    stem = f"{args.dataset}_{args.sequence}_{tag}" + ("" if rep == default_rep else f"_{rep}")
+    stem = (f"{args.dataset}_{args.sequence}_{tag}" + ("" if rep == default_rep else f"_{rep}")
+            + ("_v2e" if args.events == "v2e" else ""))
     smoke = args.max_windows is not None
     out_dir = (RUNS / "smoke" / arm / str(seed)) if smoke else (RESULTS / arm / str(seed))
+    if args.out_dir:
+        out_dir = Path(args.out_dir)
+        if out_dir.resolve().is_relative_to((REPO / "results").resolve()):
+            ap.error("--out-dir must not lie under results/")
     out = out_dir / f"{stem}.json"
     if out.exists() and not args.force:
         print(f"skip: {out} exists")
@@ -117,7 +130,8 @@ def main(argv: list[str] | None = None) -> int:
         seq_cfg = ev_cfg["sequences"][args.sequence]
         region = ev_cfg["regions"][seq_cfg["region"]]
         windows, data, meta = mvsec_unit(paths, args.sequence, args.dt, split="mvsec_test",
-                                         region=region)
+                                         region=region, events=args.events)
+        verify_v2e_stores(meta)
         meta.update(region_name=seq_cfg["region"], region=region,
                     mask="valid_gt AND events_in_window (sparse) AND region",
                     gt="EV-FlowNet propagation of *_gt_flow_dist.npz (D-019)")
@@ -136,12 +150,13 @@ def main(argv: list[str] | None = None) -> int:
     wall = time.time() - t0
     summary = summarise(pw, block_seconds=float(boot["block_seconds"]),
                         resamples=int(boot["resamples"]), ci=float(boot["ci"]), seed=0)
-    npz_dir = RUNS / ("smoke" if smoke else "npz") / arm / str(seed)
+    npz_dir = (RUNS / ("smoke" if smoke else "npz") / arm / str(seed)) if not args.out_dir \
+        else out_dir
     npz_dir.mkdir(parents=True, exist_ok=True)
     npz = npz_dir / f"{stem}.npz"
     np.savez_compressed(npz, **pw)
     doc = {
-        "tier": "T1",
+        "tier": "T2" if args.events == "v2e" else "T1",
         "arm": arm,
         "model": "M1",
         "seed": seed,

@@ -124,3 +124,25 @@ def test_skipped_windows_are_counted():
     assert s["n_windows"] == 0 and s["n_windows_skipped_no_valid_px"] == 4
     assert s["metrics"]["epe"] is None
     assert torch.isfinite(torch.tensor(s["metrics"]["fwl"]))
+
+
+class _FakeSlicer:
+    def __init__(self, name, t_lo, t_hi):
+        self.name, self.t_lo, self.t_hi = name, t_lo, t_hi
+
+    def get_events(self, a, b):
+        return {"src": self.name} if self.t_lo <= a and b <= self.t_hi else None
+
+
+def test_chunked_slicer_routes_by_owned_start():
+    from evflow.eval.datasets import ChunkedSlicer
+    # chunk p0 owns starts 100..500 and covers events up to 900 (dt tail); p1 owns 600..
+    s = ChunkedSlicer([(600, 1500, _FakeSlicer("p1", 400, 2000)),
+                       (100, 500, _FakeSlicer("p0", 0, 900))])
+    assert s.get_events(500, 880)["src"] == "p0"   # owned by p0 although p1 also covers it
+    assert s.get_events(600, 700)["src"] == "p1"
+    assert s.get_events(500, 950) is None           # owner does not cover the end -> uncovered
+    with pytest.raises(ValueError):
+        s.get_events(550, 560)                      # owned by no chunk
+    with pytest.raises(ValueError):
+        ChunkedSlicer([(0, 10, None), (10, 20, None)])

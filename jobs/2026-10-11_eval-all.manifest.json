@@ -1,0 +1,88 @@
+{
+ "kind": "gpu_job_manifest",
+ "job": "jobs/2026-10-11_eval-all.sh",
+ "plan_step": "Phase 6 steps 1-3: evaluate every trained M1 run on mvsec_test (T1, dt 1/4), the voxel5 runs on dsec_test (T1) and on the v2e(APS) mvsec_test corpus (T2, with M0a); then scripts/summarise_eval.py, make_tables.py, make_figures.py. Matrix: src/evflow/eval/study.py, D-051 (T2 scope: user decision 2026-10-11)",
+ "launch": "from the commit that adds this manifest, main tree, clean code paths: nohup bash jobs/2026-10-11_eval-all.sh > runs/eval-all/job.log 2>&1 &",
+ "git_sha_at_preparation": "83f72c5294ed045d1be6e9ceee2ed5d3d843a4c1",
+ "configs": [
+  "configs/evflow.yaml",
+  "configs/eval_mvsec.yaml",
+  "configs/v2e_corpus_mvsec.yaml",
+  "configs/eraft.yaml"
+ ],
+ "config_sha256": {
+  "configs/evflow.yaml": "d3fae5900be4a1d06bf79b1ab4f4a8c7ffacaadd7063773a19c9112770a46403",
+  "configs/eval_mvsec.yaml": "9d668acf7d2219861ef4f47162502a27485c7e7598ede8da0ef3fca0d34ccc99",
+  "configs/v2e_corpus_mvsec.yaml": "987022287a68a4bfad2d8ea4ed9fac46f72be0b829aab3b39393c8304d38ceb5",
+  "configs/eraft.yaml": "3f95690eef9cecbd04f422ea8e7a0510bf241be3047deccad6710c90b94eabff"
+ },
+ "inputs": {
+  "splits/mvsec_test.json": {
+   "manifest_sha256": "b45014a33bfc02740e3804061554ea4a14955d50468e87bfd154fbeef14a8e2e",
+   "file_sha256": "f69191ff48304c7febfacb2cacda033065c3d505b0f6e72efacc9417747bcfc2"
+  },
+  "splits/dsec_test.json": {
+   "manifest_sha256": "5110b28785fc47d7959f5aad102c65eccf17430d74d55a851474348058f19c28",
+   "file_sha256": "bd7121fe7b569fdc72aa44a3f26be64353fa163f2490e732d231a352f0972f33"
+  },
+  "train_summary": {
+   "path": "results/train/summary.json",
+   "sha256": "e90e0a9108778cfb928ede1f52231a36beab9bcd9f4aa9c299bf234cb4da8227",
+   "runs": [
+    "real_sup_voxel5_s1337",
+    "v2e_fixed_sup_voxel5_s1337",
+    "v2e_rand_sup_voxel5_s1337",
+    "real_sup_voxel5_s2026",
+    "v2e_fixed_sup_voxel5_s2026",
+    "v2e_rand_sup_voxel5_s2026",
+    "real_sup_voxel5_s7",
+    "v2e_fixed_sup_voxel5_s7",
+    "v2e_rand_sup_voxel5_s7",
+    "real_selfsup_voxel5_s1337",
+    "v2e_selfsup_voxel5_s1337",
+    "real_sup_voxel15_s1337",
+    "v2e_fixed_sup_voxel15_s1337",
+    "real_sup_timesurface_s1337",
+    "v2e_fixed_sup_timesurface_s1337",
+    "real_sup_count_s1337",
+    "v2e_fixed_sup_count_s1337"
+   ]
+  },
+  "checkpoints": "runs/train/<run_id>/best.pt per selection.json (selected on mvsec_tune; SHA-256 verified by run_eval.py)",
+  "v2e_test_corpus": {
+   "plan": "data/converted/v2e/mvsec_d035/corpus_plan.json",
+   "store_sha256_source": "results/v2e_mvsec_corpus.json (verified per unit)",
+   "results_sha256": "ca9f3573c74108c7c457343756b545d674c8ff984c8239938b3c00760de336f9"
+  },
+  "event_stores_real": "data/converted/mvsec_{indoor_flying1,2,3,outdoor_day1}_left.h5, dsec_{thun_00_a,zurich_city_02_a,zurich_city_11_a}_left.h5"
+ },
+ "units": {
+  "expected_total": 298,
+  "present_before_launch": 38,
+  "m1_t1_mvsec": 136,
+  "m1_t1_dsec": 33,
+  "m1_t2_mvsec": 88,
+  "zero_flow_t2_mvsec": 8,
+  "repro_unit": 1
+ },
+ "expected_outputs": [
+  "results/eval/<arm>/<seed>/<stem>.json (study.expected_units)",
+  "results/baselines/zero_flow/mvsec_<seq>_dt<k>_v2e.json",
+  "runs/eval/npz/** (gitignored)",
+  "runs/eval/repro/real_sup/1337/mvsec_outdoor_day1_dt1.json",
+  "results/eval/{summary,aggregate,paired}.json",
+  "results/TABLES.md",
+  "results/figures/epe_mvsec_{T1,T2}.png",
+  "results/figures/flow_panels/*.png (gitignored)"
+ ],
+ "estimate": {
+  "basis": "Phase 5 gate units run alone: indoor_flying1 dt1 95 s, dt4 120 s, outdoor_day1 dt1 39 s (results/eval/real_sup/1337/*.json wall_time_s), scaled by window count; DSEC smoke 20 windows ~19 s",
+  "per_run_mvsec_min": 14,
+  "per_run_dsec_min": 6,
+  "gpu_hours": 7.8,
+  "disk_mb": 300
+ },
+ "concurrency": "1 CUDA process (D-048b)",
+ "tf32": "off (run_eval.py, run_baselines.py)",
+ "seed": "evaluation is deterministic given the checkpoint; bootstrap seed 0"
+}

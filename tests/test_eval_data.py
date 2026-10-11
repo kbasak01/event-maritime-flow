@@ -56,3 +56,26 @@ def test_dsec_test_units(paths, seq, n):
     assert ev is not None and np.issubdtype(ev["x"].dtype, np.floating)
     flow, valid = data.gt(w)
     assert flow.shape == (2, 480, 640) and valid.any()
+
+
+@pytest.mark.parametrize("seq", ["indoor_flying1", "outdoor_day1"])
+@pytest.mark.parametrize("dt", [1, 4])
+def test_mvsec_v2e_units_match_real_windows(paths, seq, dt):
+    """T2 units (D-051): same windows, GT and region as the real unit; every window's events
+    come from the v2e chunk that owns it, including the first and last window and the windows
+    at a chunk boundary."""
+    cfg = load_yaml("configs/eval_mvsec.yaml")
+    region = cfg["regions"][cfg["sequences"][seq]["region"]]
+    wr, _, _ = mvsec_unit(paths, seq, dt, split="mvsec_test", region=region)
+    wv, data, meta = mvsec_unit(paths, seq, dt, split="mvsec_test", region=region, events="v2e")
+    assert wr == wv and meta["events"] == "v2e" and meta["v2e_stores"]
+    probe = [wv[0], wv[-1]]
+    for st in meta["v2e_stores"][1:]:
+        k0 = st["owned_window_starts"][0]
+        probe += [w for w in wv if w.index in (k0 - 1, k0)]
+    for w in probe:
+        ev = data.slicer.get_events(w.t_start_us, w.t_end_us)
+        assert ev is not None and len(ev["t"]) > 0
+        assert ev["t"].min() >= w.t_start_us and ev["t"].max() < w.t_end_us
+    with pytest.raises(ValueError):
+        mvsec_unit(paths, "outdoor_day2", 1, split="mvsec_tune", region=region, events="v2e")

@@ -9,9 +9,12 @@ of results/baselines/cm_tune.json, chosen on mvsec_tune only), ``eraft`` = R1 (a
 MVSEC with the 20 Hz MVSEC checkpoint, eraft_dsec on DSEC with the DSEC checkpoint; tagged
 reference_external, plus reference_seen_data on DSEC: E-RAFT trained on DSEC train sequences).
 
-Writes ``results/baselines/<arm>/<dataset>_<sequence>_<dt k|100ms>.json`` (tier T1: real events,
-real GT) and the per-window arrays to ``runs/phase4-baselines/npz/`` (gitignored). Skips a unit
-whose JSON exists unless ``--force``. ``--max-windows N`` is a smoke run: it writes under
+``--events v2e`` (``zero`` on MVSEC only) evaluates the same windows on the calibrated v2e(APS)
+test corpus: tier T2, stem suffix ``_v2e`` (Phase 6, D-051).
+
+Writes ``results/baselines/<arm>/<dataset>_<sequence>_<dt k|100ms>[_v2e].json`` (tier T1: real
+events, real GT) and the per-window arrays to ``runs/phase4-baselines/npz/`` (gitignored). Skips a
+unit whose JSON exists unless ``--force``. ``--max-windows N`` is a smoke run: it writes under
 ``runs/phase4-baselines/smoke/`` and never to results/.
 """
 
@@ -29,7 +32,7 @@ import torch
 import yaml
 from check_data import redact_home, sha256_file
 
-from evflow.eval.datasets import dsec_unit, load_yaml, mvsec_unit
+from evflow.eval.datasets import dsec_unit, load_yaml, mvsec_unit, verify_v2e_stores
 from evflow.eval.run import CMPredictor, ERAFTPredictor, ZeroPredictor, evaluate_windows
 from evflow.eval.summary import summarise
 from evflow.models.cm_baseline import CMParams
@@ -68,7 +71,8 @@ def build_unit(args, paths, device):
         seq_cfg = ev_cfg["sequences"][args.sequence]
         region = ev_cfg["regions"][seq_cfg["region"]]
         windows, data, meta = mvsec_unit(paths, args.sequence, args.dt, split="mvsec_test",
-                                         region=region)
+                                         region=region, events=args.events)
+        verify_v2e_stores(meta)
         meta.update(region_name=seq_cfg["region"], region=region,
                     mask="valid_gt AND events_in_window (sparse) AND region",
                     gt="EV-FlowNet propagation of *_gt_flow_dist.npz (D-019)")
@@ -117,16 +121,19 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--dataset", choices=["mvsec", "dsec"], required=True)
     ap.add_argument("--sequence", required=True)
     ap.add_argument("--dt", type=int, choices=[1, 4])
+    ap.add_argument("--events", choices=["real", "v2e"], default="real")
     ap.add_argument("--max-windows", type=int)
     ap.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
     ap.add_argument("--force", action="store_true")
     args = ap.parse_args(argv)
     if (args.dataset == "mvsec") != (args.dt is not None):
         ap.error("--dt is required for mvsec and not allowed for dsec")
+    if args.events == "v2e" and (args.dataset != "mvsec" or args.model != "zero"):
+        ap.error("--events v2e exists for --model zero on mvsec only (T2, D-051)")
 
     arm = arm_of(args.model, args.dataset)
     tag = f"dt{args.dt}" if args.dataset == "mvsec" else "100ms"
-    stem = f"{args.dataset}_{args.sequence}_{tag}"
+    stem = f"{args.dataset}_{args.sequence}_{tag}" + ("_v2e" if args.events == "v2e" else "")
     smoke = args.max_windows is not None
     out_dir = (RUNS / "smoke" / arm) if smoke else (RESULTS / arm)
     out = out_dir / f"{stem}.json"
@@ -153,7 +160,7 @@ def main(argv: list[str] | None = None) -> int:
     np.savez_compressed(npz, **pw)
     sha, dirty = git_sha(), git_dirty()
     doc = {
-        "tier": "T1",
+        "tier": "T2" if args.events == "v2e" else "T1",
         "arm": arm,
         "model": MODEL_ID[args.model],
         "seed": extra["seed"],
