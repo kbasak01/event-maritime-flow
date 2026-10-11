@@ -16,6 +16,8 @@ recorded; (3) representation ablation (§1.5); (4) `training-run-diagnostician` 
 
 ## Overall verdict: **PASS**
 
+CI: green on the gate commit cb1fb21 (GitHub Actions run 38162105980: ruff + pytest, CPU).
+
 All 17 planned runs are present, selected on `mvsec_tune` only, and judged TRUSTWORTHY; none is
 excluded. The `real_sup` gate threshold (D-043(h), confirmed by the user in D-046) is met. Tune
 metrics below are selection evidence on `outdoor_day2` (T1 real events / T2 v2e events, real GT),
