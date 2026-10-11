@@ -23,8 +23,14 @@ def eval_mask(*, valid_gt, events_in_window=None, crop=None, class_mask=None) ->
     return mask
 
 
+def _mag(f: torch.Tensor) -> torch.Tensor:
+    """sqrt(u^2 + v^2), the reference's operations (``torch.linalg.vector_norm`` over the
+    2-channel dim is ~36 ms per MVSEC frame on CPU; Phase 6)."""
+    return torch.sqrt(f[..., 0, :, :] ** 2 + f[..., 1, :, :] ** 2)
+
+
 def epe_map(flow_pred: torch.Tensor, flow_gt: torch.Tensor) -> torch.Tensor:
-    return torch.linalg.vector_norm(flow_pred - flow_gt, dim=-3)
+    return _mag(flow_pred - flow_gt)
 
 
 def ae_map(flow_pred: torch.Tensor, flow_gt: torch.Tensor) -> torch.Tensor:
@@ -52,7 +58,7 @@ def flow_metrics(
     if n == 0:
         return {**{k: math.nan for k in keys}, "n_px": 0}
     e = epe_map(flow_pred, flow_gt)[mask]
-    gt_mag = torch.linalg.vector_norm(flow_gt, dim=0)[mask]
+    gt_mag = _mag(flow_gt)[mask]
     out = {
         "epe": float(e.mean()),
         "outlier_pct": float(100.0 * ((e > OUTLIER_ABS_PX) & (e > OUTLIER_REL * gt_mag))

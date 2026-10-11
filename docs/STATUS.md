@@ -15,7 +15,7 @@
 | 10 | not started | – | – |
 
 Pending GPU jobs:
-- `jobs/2026-10-11_eval-all.sh` (Phase 6, D-051): 298 units, 38 present before launch, ≈ 7.8 GPU-h → `results/eval/`, `results/baselines/zero_flow/*_v2e.json`, `results/TABLES.md`. Log `runs/eval-all/job.log`.
+- `jobs/2026-10-11_eval-all.sh` (Phase 6, D-051; attempt 1 stopped, D-052): 298 units, 38 present before launch, ≈ 5.5 GPU-h → `results/eval/`, `results/baselines/zero_flow/*_v2e.json`, `results/TABLES.md`. Log `runs/eval-all/job.log`.
 
 (Claude may launch GPU jobs after `gpu-job` prep, D-006; one CUDA process at a time on this workstation, D-048b).
 

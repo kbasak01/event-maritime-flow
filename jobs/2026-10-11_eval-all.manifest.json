@@ -76,13 +76,14 @@
   "results/figures/flow_panels/*.png (gitignored)"
  ],
  "estimate": {
-  "basis": "Phase 5 gate units run alone: indoor_flying1 dt1 95 s, dt4 120 s, outdoor_day1 dt1 39 s (results/eval/real_sup/1337/*.json wall_time_s), scaled by window count; DSEC smoke 20 windows ~19 s",
-  "per_run_mvsec_min": 14,
+  "basis": "Phase 5 gate units run alone: indoor_flying1 dt1 95 s, dt4 120 s, outdoor_day1 dt1 39 s (results/eval/real_sup/1337/*.json wall_time_s), scaled by window count; DSEC smoke 20 windows ~19 s; attempt 1 ran at ~5 windows/s with torch's default 18 CPU threads and was stopped after 8 min with no unit finished (D-052); with 4 threads a 300-window smoke ran at ~37 windows/s",
+  "per_run_mvsec_min": 9,
   "per_run_dsec_min": 6,
-  "gpu_hours": 7.8,
+  "gpu_hours": 5.5,
   "disk_mb": 300
  },
  "concurrency": "1 CUDA process (D-048b)",
  "tf32": "off (run_eval.py, run_baselines.py)",
- "seed": "evaluation is deterministic given the checkpoint; bootstrap seed 0"
+ "seed": "evaluation is deterministic given the checkpoint; bootstrap seed 0",
+ "threads": "OMP_NUM_THREADS=MKL_NUM_THREADS=4 (D-052)"
 }

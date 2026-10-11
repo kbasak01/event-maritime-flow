@@ -134,3 +134,15 @@ def test_torch_float32_input_matches_float64_reference():
                         valid_gt=torch.from_numpy(valid))
     assert b["ae_deg"] == pytest.approx(a["ae_deg"], rel=1e-5)
     assert b["epe"] == pytest.approx(a["epe"], rel=1e-5)
+
+
+def test_epe_map_is_the_reference_formula():
+    """epe_map = sqrt(du^2 + dv^2) as metrics_ref (float64, same operations; equal to a few ulp,
+    the kernels round differently). Replaces torch.linalg.vector_norm over the 2-channel dim,
+    which took ~36 ms per MVSEC frame on CPU (Phase 6, D-052)."""
+    rng = np.random.default_rng(3)
+    gt = rng.normal(0, 6, (2, 260, 346))
+    pred = gt + rng.normal(0, 3, gt.shape)
+    t = lambda z: torch.from_numpy(z)  # noqa: E731
+    np.testing.assert_allclose(tm.epe_map(t(pred), t(gt)).numpy(), ref.epe_map(pred, gt),
+                               rtol=1e-14, atol=0)

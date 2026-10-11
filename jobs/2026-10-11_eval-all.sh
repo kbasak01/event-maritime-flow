@@ -23,8 +23,11 @@ PY=${EVFLOW_PY:-$PWD/.venv/bin/python}
 export PYTHONPATH=$PWD/src
 LOGS=${LOGS:-$PWD/runs/eval-all}
 export CUBLAS_WORKSPACE_CONFIG=:4096:8
+# D-052: torch's default 18 OpenMP threads make per-window CPU metrics ~40x slower on this WSL2
+# host (attempt 1, runs/eval-all/job.attempt1.log); 4 threads: ~37 windows/s.
+export OMP_NUM_THREADS=${OMP_NUM_THREADS:-4} MKL_NUM_THREADS=${MKL_NUM_THREADS:-4}
 mkdir -p "$LOGS"
-echo "[$(date -Is)] code $(git rev-parse HEAD) dirty=$(git status --porcelain -- src scripts configs jobs splits | wc -l)"
+echo "[$(date -Is)] threads $OMP_NUM_THREADS code $(git rev-parse HEAD) dirty=$(git status --porcelain -- src scripts configs jobs splits | wc -l)"
 RUNS=$($PY -c "import yaml; print(yaml.safe_load(open('configs/paths.local.yaml'))['outputs']['runs'])")/train
 
 m1() {      # run_id log-name run_eval-args...
