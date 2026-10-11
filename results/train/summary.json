@@ -1,0 +1,1717 @@
+{
+ "kind": "training_runs",
+ "phase": 5,
+ "note": "Tune metrics are mvsec_tune selection evidence (T1 real events, T2 v2e events, real GT); test results are in results/eval/.",
+ "n_expected": 17,
+ "n_done": 17,
+ "n_excluded": 0,
+ "runs": [
+  {
+   "run_id": "real_sup_voxel5_s1337",
+   "status": "done",
+   "arm": "real_sup",
+   "model": "M1",
+   "representation": "voxel5",
+   "seed": 1337,
+   "loss": "supervised",
+   "git_sha": "a2b1fa005d1cfdd0c2aba10b0b1d07b87797e99c",
+   "git_dirty": false,
+   "config_files": {
+    "configs/evflow.yaml": "3cdc804cb1faf94dd63b035afb1c537e925493ebbb455255cbb03cbf860a3703",
+    "configs/train_real_sup.yaml": "0c93d720b133748e1cbc3d4c38d9e6db728625ce8c6f70cc9eb3ffaed39749a8"
+   },
+   "manifest_sha256": "d5431d4861b09e64f621af522e6b701417e1db1fc3f60febb9708c7e7b541730",
+   "train_windows": {
+    "1": 10452,
+    "4": 10440
+   },
+   "n_params": 13341192,
+   "epochs_planned": 40,
+   "epochs_done": 40,
+   "checkpoint_sha256": "0abee62e5a4f40e244fa6e370ed82468205fcf1527c9e1cec06003eb2be8697b",
+   "selection": {
+    "rule": "min of real tune dt1 epe over epochs (mvsec_tune only)",
+    "split": "mvsec_tune",
+    "stream": "real",
+    "metric": "epe",
+    "dt": 1,
+    "mode": "min",
+    "selected_epoch": 36,
+    "value": 0.21601891336050252
+   },
+   "tune_at_selected_epoch": {
+    "real_dt1": {
+     "tier": "T1",
+     "events": "real",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 1,
+     "used_for_selection": true,
+     "metrics": {
+      "epe": 0.21601891336050252,
+      "outlier_pct": 0.050521954338771345,
+      "npe_1": 3.251271718362803,
+      "npe_3": 0.050521954338771345,
+      "ae_deg": 5.187876789002902,
+      "fwl": 1.0600985615278575,
+      "flow_mag": 0.8476401290343459
+     }
+    },
+    "real_dt4": {
+     "tier": "T1",
+     "events": "real",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 4,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 0.6931988854230118,
+      "outlier_pct": 4.536947585565722,
+      "npe_1": 19.814363085735312,
+      "npe_3": 4.536947585565722,
+      "ae_deg": 5.105709768550502,
+      "fwl": 1.1518670024316686,
+      "flow_mag": 3.4466080679335453
+     }
+    }
+   },
+   "collapse_diagnostics_at_selected_epoch": {
+    "flow_mag_events": 1.659801804125309,
+    "iwe_nonempty_ratio": 0.9724662646651268,
+    "iwe_var_ratio": 0.8871454241238124,
+    "abs_div": 0.05006239547394216
+   },
+   "final_epoch_train_loss": 0.5144505651858827
+  },
+  {
+   "run_id": "v2e_fixed_sup_voxel5_s1337",
+   "status": "done",
+   "arm": "v2e_fixed_sup",
+   "model": "M1",
+   "representation": "voxel5",
+   "seed": 1337,
+   "loss": "supervised",
+   "git_sha": "a2b1fa005d1cfdd0c2aba10b0b1d07b87797e99c",
+   "git_dirty": false,
+   "config_files": {
+    "configs/evflow.yaml": "3cdc804cb1faf94dd63b035afb1c537e925493ebbb455255cbb03cbf860a3703",
+    "configs/train_v2e_fixed_sup.yaml": "7b09a5ace1afd283bb3842e5211660ee67dead329b08a6deaaf79b833dab7bd0"
+   },
+   "manifest_sha256": "20fb78dc0584fabf6b922bd69627e0ec29adf18c1f5913b9e4ad03b461560536",
+   "train_windows": {
+    "1": 10452,
+    "4": 10440
+   },
+   "n_params": 13341192,
+   "epochs_planned": 40,
+   "epochs_done": 40,
+   "checkpoint_sha256": "9dd9c585fd09fe91d6be7316d2116bafd026a6cb13de459b2c4b25f87e95651f",
+   "selection": {
+    "rule": "min of v2e tune dt1 epe over epochs (mvsec_tune only)",
+    "split": "mvsec_tune",
+    "stream": "v2e",
+    "metric": "epe",
+    "dt": 1,
+    "mode": "min",
+    "selected_epoch": 26,
+    "value": 0.23393781026328178
+   },
+   "tune_at_selected_epoch": {
+    "v2e_dt1": {
+     "tier": "T2",
+     "events": "v2e",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 1,
+     "used_for_selection": true,
+     "metrics": {
+      "epe": 0.23393781026328178,
+      "outlier_pct": 0.07438431441183228,
+      "npe_1": 3.425009579359067,
+      "npe_3": 0.07438431441183228,
+      "ae_deg": 5.522301149280223,
+      "fwl": 1.1173405071893934,
+      "flow_mag": 0.9395213857534529
+     }
+    },
+    "v2e_dt4": {
+     "tier": "T2",
+     "events": "v2e",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 4,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 0.7085860765820902,
+      "outlier_pct": 4.625024738796846,
+      "npe_1": 20.696017391310903,
+      "npe_3": 4.625024738796846,
+      "ae_deg": 5.153398019887572,
+      "fwl": 1.2210696674206376,
+      "flow_mag": 3.7759462744780232
+     }
+    },
+    "real_dt1": {
+     "tier": "T1",
+     "events": "real",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 1,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 0.2995110462842852,
+      "outlier_pct": 0.23063807707855116,
+      "npe_1": 6.230698064114647,
+      "npe_3": 0.23063807707855116,
+      "ae_deg": 7.453908753666836,
+      "fwl": 1.0610547555775247,
+      "flow_mag": 0.7729684306602955
+     }
+    },
+    "real_dt4": {
+     "tier": "T1",
+     "events": "real",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 4,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 0.8710604318877712,
+      "outlier_pct": 6.804359799668613,
+      "npe_1": 25.663811441760913,
+      "npe_3": 6.804359799668613,
+      "ae_deg": 6.920151249463092,
+      "fwl": 1.142499115147206,
+      "flow_mag": 2.9888879719898136
+     }
+    }
+   },
+   "collapse_diagnostics_at_selected_epoch": {
+    "flow_mag_events": 2.313413877338171,
+    "iwe_nonempty_ratio": 1.0526555448770523,
+    "iwe_var_ratio": 0.7783896086962343,
+    "abs_div": 0.041668030889704825
+   },
+   "final_epoch_train_loss": 0.5177929218841366
+  },
+  {
+   "run_id": "v2e_rand_sup_voxel5_s1337",
+   "status": "done",
+   "arm": "v2e_rand_sup",
+   "model": "M1",
+   "representation": "voxel5",
+   "seed": 1337,
+   "loss": "supervised",
+   "git_sha": "7904922a2883e9b05addaac3a639aa194be8258c",
+   "git_dirty": false,
+   "config_files": {
+    "configs/evflow.yaml": "8fdfa24004e532527e49847a3912f53496c6b860b9d9efdb8314c120bbfd5b89",
+    "configs/train_v2e_rand_sup.yaml": "984591b7885c88d6c0be71156f6ea1d01bb7bef3bab668c064ac66ffd80d35d6"
+   },
+   "manifest_sha256": "a13b2a338af2a3c08c3ca1e46cdbf45699ffffa5a91ad77734db0eac1ff07668",
+   "train_windows": {
+    "1": 10452,
+    "4": 10440
+   },
+   "n_params": 13341192,
+   "epochs_planned": 40,
+   "epochs_done": 40,
+   "checkpoint_sha256": "8aa40f3225b55406136c4a2dd8edd1ce7db89e91a9264ed72815eb39a9b75686",
+   "selection": {
+    "rule": "min of v2e tune dt1 epe over epochs (mvsec_tune only)",
+    "split": "mvsec_tune",
+    "stream": "v2e",
+    "metric": "epe",
+    "dt": 1,
+    "mode": "min",
+    "selected_epoch": 28,
+    "value": 0.23227801363588052
+   },
+   "tune_at_selected_epoch": {
+    "v2e_dt1": {
+     "tier": "T2",
+     "events": "v2e",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 1,
+     "used_for_selection": true,
+     "metrics": {
+      "epe": 0.23227801363588052,
+      "outlier_pct": 0.06711952795990583,
+      "npe_1": 3.3763665649288708,
+      "npe_3": 0.06711952795990583,
+      "ae_deg": 5.520076784346775,
+      "fwl": 1.1183707378776764,
+      "flow_mag": 0.9655088121517704
+     }
+    },
+    "v2e_dt4": {
+     "tier": "T2",
+     "events": "v2e",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 4,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 0.6983997069454649,
+      "outlier_pct": 4.419510124352774,
+      "npe_1": 20.531868574843926,
+      "npe_3": 4.419510124352774,
+      "ae_deg": 5.042389558708602,
+      "fwl": 1.2200968268541148,
+      "flow_mag": 3.8894567343027737
+     }
+    },
+    "real_dt1": {
+     "tier": "T1",
+     "events": "real",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 1,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 0.30061873786927923,
+      "outlier_pct": 0.21616966202264914,
+      "npe_1": 5.8526165462628965,
+      "npe_3": 0.21616966202264914,
+      "ae_deg": 7.712953044724645,
+      "fwl": 1.0597342709413375,
+      "flow_mag": 0.7927712702154116
+     }
+    },
+    "real_dt4": {
+     "tier": "T1",
+     "events": "real",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 4,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 0.8273156777376195,
+      "outlier_pct": 5.994863885149388,
+      "npe_1": 24.581335137707924,
+      "npe_3": 5.994863885149388,
+      "ae_deg": 6.859171896809593,
+      "fwl": 1.1470921015026594,
+      "flow_mag": 3.102204045183979
+     }
+    }
+   },
+   "collapse_diagnostics_at_selected_epoch": {
+    "flow_mag_events": 2.1892147207260133,
+    "iwe_nonempty_ratio": 1.0534881800413132,
+    "iwe_var_ratio": 0.7751499581020349,
+    "abs_div": 0.046042543957009914
+   },
+   "final_epoch_train_loss": 0.533520610144456
+  },
+  {
+   "run_id": "real_sup_voxel5_s2026",
+   "status": "done",
+   "arm": "real_sup",
+   "model": "M1",
+   "representation": "voxel5",
+   "seed": 2026,
+   "loss": "supervised",
+   "git_sha": "f9e996e4cc45b98b190638ab38d457131b053aad",
+   "git_dirty": false,
+   "config_files": {
+    "configs/evflow.yaml": "3cdc804cb1faf94dd63b035afb1c537e925493ebbb455255cbb03cbf860a3703",
+    "configs/train_real_sup.yaml": "0c93d720b133748e1cbc3d4c38d9e6db728625ce8c6f70cc9eb3ffaed39749a8"
+   },
+   "manifest_sha256": "f9b6dba09ebe7cc1421a1691977272f86c1a08f19a03c67c3183d7ba05b69a9c",
+   "train_windows": {
+    "1": 10452,
+    "4": 10440
+   },
+   "n_params": 13341192,
+   "epochs_planned": 40,
+   "epochs_done": 40,
+   "checkpoint_sha256": "36e79d368593d1dd7b54e795c0aa843c3c4da41a4e17d392376331a3d81f13a3",
+   "selection": {
+    "rule": "min of real tune dt1 epe over epochs (mvsec_tune only)",
+    "split": "mvsec_tune",
+    "stream": "real",
+    "metric": "epe",
+    "dt": 1,
+    "mode": "min",
+    "selected_epoch": 36,
+    "value": 0.2182964369014619
+   },
+   "tune_at_selected_epoch": {
+    "real_dt1": {
+     "tier": "T1",
+     "events": "real",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 1,
+     "used_for_selection": true,
+     "metrics": {
+      "epe": 0.2182964369014619,
+      "outlier_pct": 0.05040331790855033,
+      "npe_1": 3.2969622065303152,
+      "npe_3": 0.05040331790855033,
+      "ae_deg": 5.2450839604605175,
+      "fwl": 1.0600449896621413,
+      "flow_mag": 0.8488493560487467
+     }
+    },
+    "real_dt4": {
+     "tier": "T1",
+     "events": "real",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 4,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 0.6952686838080462,
+      "outlier_pct": 4.552776389424391,
+      "npe_1": 19.845987139199426,
+      "npe_3": 4.552776389424391,
+      "ae_deg": 5.23752188854934,
+      "fwl": 1.1524057836130823,
+      "flow_mag": 3.4585619190303745
+     }
+    }
+   },
+   "collapse_diagnostics_at_selected_epoch": {
+    "flow_mag_events": 1.7574904239177704,
+    "iwe_nonempty_ratio": 0.9695285457372665,
+    "iwe_var_ratio": 0.8869198961140822,
+    "abs_div": 0.04564548651687801
+   },
+   "final_epoch_train_loss": 0.5020859845747079
+  },
+  {
+   "run_id": "v2e_fixed_sup_voxel5_s2026",
+   "status": "done",
+   "arm": "v2e_fixed_sup",
+   "model": "M1",
+   "representation": "voxel5",
+   "seed": 2026,
+   "loss": "supervised",
+   "git_sha": "7904922a2883e9b05addaac3a639aa194be8258c",
+   "git_dirty": false,
+   "config_files": {
+    "configs/evflow.yaml": "8fdfa24004e532527e49847a3912f53496c6b860b9d9efdb8314c120bbfd5b89",
+    "configs/train_v2e_fixed_sup.yaml": "7b09a5ace1afd283bb3842e5211660ee67dead329b08a6deaaf79b833dab7bd0"
+   },
+   "manifest_sha256": "bf87664697b6424d44a908e717f95032acbfd4f7d67346f19615250071633b4b",
+   "train_windows": {
+    "1": 10452,
+    "4": 10440
+   },
+   "n_params": 13341192,
+   "epochs_planned": 40,
+   "epochs_done": 40,
+   "checkpoint_sha256": "d8b4612d48b7d73599f969f06c81ee504a3d4b46cfe5f5be510fde91391b008c",
+   "selection": {
+    "rule": "min of v2e tune dt1 epe over epochs (mvsec_tune only)",
+    "split": "mvsec_tune",
+    "stream": "v2e",
+    "metric": "epe",
+    "dt": 1,
+    "mode": "min",
+    "selected_epoch": 29,
+    "value": 0.23442554595092277
+   },
+   "tune_at_selected_epoch": {
+    "v2e_dt1": {
+     "tier": "T2",
+     "events": "v2e",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 1,
+     "used_for_selection": true,
+     "metrics": {
+      "epe": 0.23442554595092277,
+      "outlier_pct": 0.07876421377835371,
+      "npe_1": 3.4158865898648405,
+      "npe_3": 0.07876421377835371,
+      "ae_deg": 5.549375851084526,
+      "fwl": 1.1191694706342645,
+      "flow_mag": 0.9579829940051393
+     }
+    },
+    "v2e_dt4": {
+     "tier": "T2",
+     "events": "v2e",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 4,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 0.7006785777507197,
+      "outlier_pct": 4.439627334250306,
+      "npe_1": 20.505190886491274,
+      "npe_3": 4.439627334250306,
+      "ae_deg": 5.1039633162631475,
+      "fwl": 1.2185263496832144,
+      "flow_mag": 3.88126859681061
+     }
+    },
+    "real_dt1": {
+     "tier": "T1",
+     "events": "real",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 1,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 0.2933458162463213,
+      "outlier_pct": 0.23719803932108977,
+      "npe_1": 6.014970185635097,
+      "npe_3": 0.23719803932108977,
+      "ae_deg": 7.284837640458629,
+      "fwl": 1.0634587264972957,
+      "flow_mag": 0.7910261550972586
+     }
+    },
+    "real_dt4": {
+     "tier": "T1",
+     "events": "real",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 4,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 0.8514579398369141,
+      "outlier_pct": 6.5783734855089575,
+      "npe_1": 25.02298647270369,
+      "npe_3": 6.5783734855089575,
+      "ae_deg": 6.636029378557319,
+      "fwl": 1.1447521178402595,
+      "flow_mag": 3.0595356325078695
+     }
+    }
+   },
+   "collapse_diagnostics_at_selected_epoch": {
+    "flow_mag_events": 2.1379727199673653,
+    "iwe_nonempty_ratio": 1.0507235908508301,
+    "iwe_var_ratio": 0.779561128344454,
+    "abs_div": 0.041790531622245906
+   },
+   "final_epoch_train_loss": 0.5053115826653485
+  },
+  {
+   "run_id": "v2e_rand_sup_voxel5_s2026",
+   "status": "done",
+   "arm": "v2e_rand_sup",
+   "model": "M1",
+   "representation": "voxel5",
+   "seed": 2026,
+   "loss": "supervised",
+   "git_sha": "7904922a2883e9b05addaac3a639aa194be8258c",
+   "git_dirty": false,
+   "config_files": {
+    "configs/evflow.yaml": "8fdfa24004e532527e49847a3912f53496c6b860b9d9efdb8314c120bbfd5b89",
+    "configs/train_v2e_rand_sup.yaml": "984591b7885c88d6c0be71156f6ea1d01bb7bef3bab668c064ac66ffd80d35d6"
+   },
+   "manifest_sha256": "4da312e861bb47f16b3d9ed3f5639e14d42750a6458f00661cef056ba41789db",
+   "train_windows": {
+    "1": 10452,
+    "4": 10440
+   },
+   "n_params": 13341192,
+   "epochs_planned": 40,
+   "epochs_done": 40,
+   "checkpoint_sha256": "3608f2b53fa3a89ac7058c70304d520f33a40448007176e47d1aec29005acef0",
+   "selection": {
+    "rule": "min of v2e tune dt1 epe over epochs (mvsec_tune only)",
+    "split": "mvsec_tune",
+    "stream": "v2e",
+    "metric": "epe",
+    "dt": 1,
+    "mode": "min",
+    "selected_epoch": 28,
+    "value": 0.23443745059649865
+   },
+   "tune_at_selected_epoch": {
+    "v2e_dt1": {
+     "tier": "T2",
+     "events": "v2e",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 1,
+     "used_for_selection": true,
+     "metrics": {
+      "epe": 0.23443745059649865,
+      "outlier_pct": 0.05768260707730294,
+      "npe_1": 3.3806345272773104,
+      "npe_3": 0.05768260707730294,
+      "ae_deg": 5.597632882256836,
+      "fwl": 1.1177081117037078,
+      "flow_mag": 0.9354682005409695
+     }
+    },
+    "v2e_dt4": {
+     "tier": "T2",
+     "events": "v2e",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 4,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 0.7073412037721735,
+      "outlier_pct": 4.539647108641414,
+      "npe_1": 20.643010785247306,
+      "npe_3": 4.539647108641414,
+      "ae_deg": 5.114077443613908,
+      "fwl": 1.2191083368376285,
+      "flow_mag": 3.8414756523179037
+     }
+    },
+    "real_dt1": {
+     "tier": "T1",
+     "events": "real",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 1,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 0.2966003403858744,
+      "outlier_pct": 0.23309442189080978,
+      "npe_1": 5.6527979378465885,
+      "npe_3": 0.23309442189080978,
+      "ae_deg": 7.55090363090743,
+      "fwl": 1.0613490876863323,
+      "flow_mag": 0.7628730751011717
+     }
+    },
+    "real_dt4": {
+     "tier": "T1",
+     "events": "real",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 4,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 0.8355590027906351,
+      "outlier_pct": 6.317245933017562,
+      "npe_1": 24.134346277019095,
+      "npe_3": 6.317245933017562,
+      "ae_deg": 6.566838234191031,
+      "fwl": 1.1467385639274428,
+      "flow_mag": 3.060805323090815
+     }
+    }
+   },
+   "collapse_diagnostics_at_selected_epoch": {
+    "flow_mag_events": 1.8044969798624515,
+    "iwe_nonempty_ratio": 1.0110550779104233,
+    "iwe_var_ratio": 0.8178671031728578,
+    "abs_div": 0.038911877404898404
+   },
+   "final_epoch_train_loss": 0.5158590807210066
+  },
+  {
+   "run_id": "real_sup_voxel5_s7",
+   "status": "done",
+   "arm": "real_sup",
+   "model": "M1",
+   "representation": "voxel5",
+   "seed": 7,
+   "loss": "supervised",
+   "git_sha": "7904922a2883e9b05addaac3a639aa194be8258c",
+   "git_dirty": false,
+   "config_files": {
+    "configs/evflow.yaml": "8fdfa24004e532527e49847a3912f53496c6b860b9d9efdb8314c120bbfd5b89",
+    "configs/train_real_sup.yaml": "0c93d720b133748e1cbc3d4c38d9e6db728625ce8c6f70cc9eb3ffaed39749a8"
+   },
+   "manifest_sha256": "b2702a15b93e2dc0b9d177526802993d0f6dd81a4b70ce656b15a5ab9394cf5d",
+   "train_windows": {
+    "1": 10452,
+    "4": 10440
+   },
+   "n_params": 13341192,
+   "epochs_planned": 40,
+   "epochs_done": 40,
+   "checkpoint_sha256": "ff124e393502b132261cdf4f8e57c053a12a606bd864a4f131c73508d9b21fff",
+   "selection": {
+    "rule": "min of real tune dt1 epe over epochs (mvsec_tune only)",
+    "split": "mvsec_tune",
+    "stream": "real",
+    "metric": "epe",
+    "dt": 1,
+    "mode": "min",
+    "selected_epoch": 34,
+    "value": 0.21802316392727736
+   },
+   "tune_at_selected_epoch": {
+    "real_dt1": {
+     "tier": "T1",
+     "events": "real",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 1,
+     "used_for_selection": true,
+     "metrics": {
+      "epe": 0.21802316392727736,
+      "outlier_pct": 0.05621793833973603,
+      "npe_1": 3.3325016541796955,
+      "npe_3": 0.05621793833973603,
+      "ae_deg": 5.224265414892731,
+      "fwl": 1.0604564359918425,
+      "flow_mag": 0.8579148110397345
+     }
+    },
+    "real_dt4": {
+     "tier": "T1",
+     "events": "real",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 4,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 0.6883909849260662,
+      "outlier_pct": 4.494498067727894,
+      "npe_1": 19.54876716232135,
+      "npe_3": 4.494498067727894,
+      "ae_deg": 5.086155871969595,
+      "fwl": 1.1523637458721694,
+      "flow_mag": 3.5088298621609284
+     }
+    }
+   },
+   "collapse_diagnostics_at_selected_epoch": {
+    "flow_mag_events": 1.6388164315372706,
+    "iwe_nonempty_ratio": 0.9744280010461808,
+    "iwe_var_ratio": 0.8890294285657512,
+    "abs_div": 0.04467533922754228
+   },
+   "final_epoch_train_loss": 0.5065486612537188
+  },
+  {
+   "run_id": "v2e_fixed_sup_voxel5_s7",
+   "status": "done",
+   "arm": "v2e_fixed_sup",
+   "model": "M1",
+   "representation": "voxel5",
+   "seed": 7,
+   "loss": "supervised",
+   "git_sha": "7904922a2883e9b05addaac3a639aa194be8258c",
+   "git_dirty": false,
+   "config_files": {
+    "configs/evflow.yaml": "8fdfa24004e532527e49847a3912f53496c6b860b9d9efdb8314c120bbfd5b89",
+    "configs/train_v2e_fixed_sup.yaml": "7b09a5ace1afd283bb3842e5211660ee67dead329b08a6deaaf79b833dab7bd0"
+   },
+   "manifest_sha256": "c8bdf5ff31f97f4a8edbe7424fc1e60c83b734a9e0ad3745f771e38ad1c571be",
+   "train_windows": {
+    "1": 10452,
+    "4": 10440
+   },
+   "n_params": 13341192,
+   "epochs_planned": 40,
+   "epochs_done": 40,
+   "checkpoint_sha256": "8a584851bc124e2f282c53c9ef553eee952511bcf501b6d91f50b742f6d99cd0",
+   "selection": {
+    "rule": "min of v2e tune dt1 epe over epochs (mvsec_tune only)",
+    "split": "mvsec_tune",
+    "stream": "v2e",
+    "metric": "epe",
+    "dt": 1,
+    "mode": "min",
+    "selected_epoch": 34,
+    "value": 0.2368793040356452
+   },
+   "tune_at_selected_epoch": {
+    "v2e_dt1": {
+     "tier": "T2",
+     "events": "v2e",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 1,
+     "used_for_selection": true,
+     "metrics": {
+      "epe": 0.2368793040356452,
+      "outlier_pct": 0.08985520570698875,
+      "npe_1": 3.629773891019435,
+      "npe_3": 0.08985520570698875,
+      "ae_deg": 5.61800101625955,
+      "fwl": 1.1179179763073672,
+      "flow_mag": 0.9404506845491875
+     }
+    },
+    "v2e_dt4": {
+     "tier": "T2",
+     "events": "v2e",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 4,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 0.7144007011583922,
+      "outlier_pct": 4.63185149491426,
+      "npe_1": 21.07339432098986,
+      "npe_3": 4.63185149491426,
+      "ae_deg": 5.297630756341346,
+      "fwl": 1.2205308714743859,
+      "flow_mag": 3.8375057802161163
+     }
+    },
+    "real_dt1": {
+     "tier": "T1",
+     "events": "real",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 1,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 0.30145826741641957,
+      "outlier_pct": 0.22601854752858855,
+      "npe_1": 6.358631789284661,
+      "npe_3": 0.22601854752858855,
+      "ae_deg": 7.551438540099451,
+      "fwl": 1.0614632668423358,
+      "flow_mag": 0.7574159056078066
+     }
+    },
+    "real_dt4": {
+     "tier": "T1",
+     "events": "real",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 4,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 0.8739618422140638,
+      "outlier_pct": 6.90245820836974,
+      "npe_1": 25.814613997302484,
+      "npe_3": 6.90245820836974,
+      "ae_deg": 6.875034286272724,
+      "fwl": 1.144753510044658,
+      "flow_mag": 3.017425691223955
+     }
+    }
+   },
+   "collapse_diagnostics_at_selected_epoch": {
+    "flow_mag_events": 2.224857634305954,
+    "iwe_nonempty_ratio": 1.077101323902607,
+    "iwe_var_ratio": 0.7750189366892856,
+    "abs_div": 0.04379148146137595
+   },
+   "final_epoch_train_loss": 0.509871565935075
+  },
+  {
+   "run_id": "v2e_rand_sup_voxel5_s7",
+   "status": "done",
+   "arm": "v2e_rand_sup",
+   "model": "M1",
+   "representation": "voxel5",
+   "seed": 7,
+   "loss": "supervised",
+   "git_sha": "7904922a2883e9b05addaac3a639aa194be8258c",
+   "git_dirty": false,
+   "config_files": {
+    "configs/evflow.yaml": "8fdfa24004e532527e49847a3912f53496c6b860b9d9efdb8314c120bbfd5b89",
+    "configs/train_v2e_rand_sup.yaml": "984591b7885c88d6c0be71156f6ea1d01bb7bef3bab668c064ac66ffd80d35d6"
+   },
+   "manifest_sha256": "e238a6d665d4baebd0f90cf5484d6c6efd5496c52a660ffbb1d608e639f1c8b1",
+   "train_windows": {
+    "1": 10452,
+    "4": 10440
+   },
+   "n_params": 13341192,
+   "epochs_planned": 40,
+   "epochs_done": 40,
+   "checkpoint_sha256": "f8de9fb7d2ad96a2961a82dc08a33b22798a6ac562f1a7677b83486316960f35",
+   "selection": {
+    "rule": "min of v2e tune dt1 epe over epochs (mvsec_tune only)",
+    "split": "mvsec_tune",
+    "stream": "v2e",
+    "metric": "epe",
+    "dt": 1,
+    "mode": "min",
+    "selected_epoch": 33,
+    "value": 0.23006125433883573
+   },
+   "tune_at_selected_epoch": {
+    "v2e_dt1": {
+     "tier": "T2",
+     "events": "v2e",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 1,
+     "used_for_selection": true,
+     "metrics": {
+      "epe": 0.23006125433883573,
+      "outlier_pct": 0.0680763172398056,
+      "npe_1": 3.3322712450961753,
+      "npe_3": 0.0680763172398056,
+      "ae_deg": 5.383890182351068,
+      "fwl": 1.1171359079008105,
+      "flow_mag": 0.9402360634396705
+     }
+    },
+    "v2e_dt4": {
+     "tier": "T2",
+     "events": "v2e",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 4,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 0.6973339975311511,
+      "outlier_pct": 4.46315759153961,
+      "npe_1": 20.12181205546861,
+      "npe_3": 4.46315759153961,
+      "ae_deg": 4.980866956415031,
+      "fwl": 1.2197669372351738,
+      "flow_mag": 3.8935941013918565
+     }
+    },
+    "real_dt1": {
+     "tier": "T1",
+     "events": "real",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 1,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 0.296210391782716,
+      "outlier_pct": 0.1578256313953816,
+      "npe_1": 5.694828059480036,
+      "npe_3": 0.1578256313953816,
+      "ae_deg": 7.565521585812011,
+      "fwl": 1.0591822716744876,
+      "flow_mag": 0.7631042401942051
+     }
+    },
+    "real_dt4": {
+     "tier": "T1",
+     "events": "real",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 4,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 0.8351439931466386,
+      "outlier_pct": 6.1416508525761975,
+      "npe_1": 24.313593704493485,
+      "npe_3": 6.1416508525761975,
+      "ae_deg": 6.80999350705807,
+      "fwl": 1.1449827014890268,
+      "flow_mag": 3.088896620309105
+     }
+    }
+   },
+   "collapse_diagnostics_at_selected_epoch": {
+    "flow_mag_events": 2.16752330288291,
+    "iwe_nonempty_ratio": 1.0590505248308182,
+    "iwe_var_ratio": 0.7754580423125631,
+    "abs_div": 0.04354626136831939
+   },
+   "final_epoch_train_loss": 0.5268675341494781
+  },
+  {
+   "run_id": "real_selfsup_voxel5_s1337",
+   "status": "done",
+   "arm": "real_selfsup",
+   "model": "M1",
+   "representation": "voxel5",
+   "seed": 1337,
+   "loss": "cm",
+   "git_sha": "7904922a2883e9b05addaac3a639aa194be8258c",
+   "git_dirty": false,
+   "config_files": {
+    "configs/evflow.yaml": "8fdfa24004e532527e49847a3912f53496c6b860b9d9efdb8314c120bbfd5b89",
+    "configs/train_real_selfsup.yaml": "c244dfccdeda53def4375eb7858897d633397ae24709bcc2f8eee6e034565bc5"
+   },
+   "manifest_sha256": "6b9e71d19059b99fcb8f419347c1c1092af3fee45c1ba9ea5991fd4abb45d1d2",
+   "train_windows": {
+    "1": 10452,
+    "4": 10440
+   },
+   "n_params": 13341192,
+   "epochs_planned": 40,
+   "epochs_done": 40,
+   "checkpoint_sha256": "7990a80892782397cbb671fae9c5fe4e6dfcd3a984dac14fa7da7837ab32665e",
+   "selection": {
+    "rule": "max of real tune dt1 fwl over epochs (mvsec_tune only)",
+    "split": "mvsec_tune",
+    "stream": "real",
+    "metric": "fwl",
+    "dt": 1,
+    "mode": "max",
+    "selected_epoch": 23,
+    "value": 1.089370280411972
+   },
+   "tune_at_selected_epoch": {
+    "real_dt1": {
+     "tier": "T1",
+     "events": "real",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 1,
+     "used_for_selection": true,
+     "metrics": {
+      "epe": 0.7743118629506497,
+      "outlier_pct": 1.45966071205206,
+      "npe_1": 21.18427232914459,
+      "npe_3": 1.45966071205206,
+      "ae_deg": 25.20532985041892,
+      "fwl": 1.089370280411972,
+      "flow_mag": 1.2022685196224099
+     }
+    },
+    "real_dt4": {
+     "tier": "T1",
+     "events": "real",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 4,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 1.7763756430951918,
+      "outlier_pct": 18.718517262868342,
+      "npe_1": 40.72543835326095,
+      "npe_3": 18.718517262868342,
+      "ae_deg": 22.610061181544694,
+      "fwl": 1.16136142004427,
+      "flow_mag": 2.8759338152900638
+     }
+    }
+   },
+   "collapse_diagnostics_at_selected_epoch": {
+    "flow_mag_events": 1.3450334770977497,
+    "iwe_nonempty_ratio": 0.9763214358687401,
+    "iwe_var_ratio": 0.7894267209593238,
+    "abs_div": 0.011543182324967347
+   },
+   "final_epoch_train_loss": 0.7898816473633735
+  },
+  {
+   "run_id": "v2e_selfsup_voxel5_s1337",
+   "status": "done",
+   "arm": "v2e_selfsup",
+   "model": "M1",
+   "representation": "voxel5",
+   "seed": 1337,
+   "loss": "cm",
+   "git_sha": "7904922a2883e9b05addaac3a639aa194be8258c",
+   "git_dirty": false,
+   "config_files": {
+    "configs/evflow.yaml": "8fdfa24004e532527e49847a3912f53496c6b860b9d9efdb8314c120bbfd5b89",
+    "configs/train_v2e_selfsup.yaml": "00a4d7da4ae5ee780cfae2b99b2e5b821a6fa9dd32206636f04cc46304a2a0c8"
+   },
+   "manifest_sha256": "bd20bc9ed8c765382e0788f4db865f8d97ad8cdb130e40fc82809173afba3107",
+   "train_windows": {
+    "1": 10452,
+    "4": 10440
+   },
+   "n_params": 13341192,
+   "epochs_planned": 40,
+   "epochs_done": 40,
+   "checkpoint_sha256": "28148a01f98bf95b9a665dc886def091d2edf75704a5f7113a3b9f63758e970a",
+   "selection": {
+    "rule": "max of v2e tune dt1 fwl over epochs (mvsec_tune only)",
+    "split": "mvsec_tune",
+    "stream": "v2e",
+    "metric": "fwl",
+    "dt": 1,
+    "mode": "max",
+    "selected_epoch": 22,
+    "value": 1.1469050862458015
+   },
+   "tune_at_selected_epoch": {
+    "v2e_dt1": {
+     "tier": "T2",
+     "events": "v2e",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 1,
+     "used_for_selection": true,
+     "metrics": {
+      "epe": 0.7668222095507314,
+      "outlier_pct": 1.6349037092692553,
+      "npe_1": 32.01447756862346,
+      "npe_3": 1.6349037092692553,
+      "ae_deg": 19.433248249208972,
+      "fwl": 1.1469050862458015,
+      "flow_mag": 1.4712448566707694
+     }
+    },
+    "v2e_dt4": {
+     "tier": "T2",
+     "events": "v2e",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 4,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 1.5218713745707908,
+      "outlier_pct": 15.441450894210702,
+      "npe_1": 42.86493401848848,
+      "npe_3": 15.441450894210702,
+      "ae_deg": 14.848798789772061,
+      "fwl": 1.2205091861374724,
+      "flow_mag": 3.6700641024525567
+     }
+    },
+    "real_dt1": {
+     "tier": "T1",
+     "events": "real",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 1,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 0.7555645876208786,
+      "outlier_pct": 1.4811639530639447,
+      "npe_1": 31.30843142540247,
+      "npe_3": 1.4811639530639447,
+      "ae_deg": 22.201396160967192,
+      "fwl": 1.0824298798212197,
+      "flow_mag": 1.2660441048883484
+     }
+    },
+    "real_dt4": {
+     "tier": "T1",
+     "events": "real",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 4,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 1.6552726149369141,
+      "outlier_pct": 17.625584573685977,
+      "npe_1": 44.573760557595385,
+      "npe_3": 17.625584573685977,
+      "ae_deg": 17.51119074673619,
+      "fwl": 1.1442718696665843,
+      "flow_mag": 2.890820728333441
+     }
+    }
+   },
+   "collapse_diagnostics_at_selected_epoch": {
+    "flow_mag_events": 1.6550414111837746,
+    "iwe_nonempty_ratio": 1.009395931661129,
+    "iwe_var_ratio": 0.8435098567109561,
+    "abs_div": 0.027603573414962737
+   },
+   "final_epoch_train_loss": 0.7558883078065437
+  },
+  {
+   "run_id": "real_sup_voxel15_s1337",
+   "status": "done",
+   "arm": "real_sup",
+   "model": "M1",
+   "representation": "voxel15",
+   "seed": 1337,
+   "loss": "supervised",
+   "git_sha": "7904922a2883e9b05addaac3a639aa194be8258c",
+   "git_dirty": false,
+   "config_files": {
+    "configs/evflow.yaml": "8fdfa24004e532527e49847a3912f53496c6b860b9d9efdb8314c120bbfd5b89",
+    "configs/train_real_sup.yaml": "0c93d720b133748e1cbc3d4c38d9e6db728625ce8c6f70cc9eb3ffaed39749a8"
+   },
+   "manifest_sha256": "145d8c68d288cab8a9da144b1bc3f38462c0b966593b689e8535848f1a82a345",
+   "train_windows": {
+    "1": 10452,
+    "4": 10440
+   },
+   "n_params": 13346952,
+   "epochs_planned": 40,
+   "epochs_done": 40,
+   "checkpoint_sha256": "6653f4580a4323bbb57d60ed51a671f086af978165d275f54dd9b3622ae96098",
+   "selection": {
+    "rule": "min of real tune dt1 epe over epochs (mvsec_tune only)",
+    "split": "mvsec_tune",
+    "stream": "real",
+    "metric": "epe",
+    "dt": 1,
+    "mode": "min",
+    "selected_epoch": 36,
+    "value": 0.21819920903228593
+   },
+   "tune_at_selected_epoch": {
+    "real_dt1": {
+     "tier": "T1",
+     "events": "real",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 1,
+     "used_for_selection": true,
+     "metrics": {
+      "epe": 0.21819920903228593,
+      "outlier_pct": 0.05253528439847267,
+      "npe_1": 3.323931027150724,
+      "npe_3": 0.05253528439847267,
+      "ae_deg": 5.177544718740666,
+      "fwl": 1.059432641491734,
+      "flow_mag": 0.8357176820927518
+     }
+    },
+    "real_dt4": {
+     "tier": "T1",
+     "events": "real",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 4,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 0.6909425878196281,
+      "outlier_pct": 4.524080554789283,
+      "npe_1": 19.833294860603456,
+      "npe_3": 4.524080554789283,
+      "ae_deg": 5.135994266449532,
+      "fwl": 1.151084417960789,
+      "flow_mag": 3.4436626603812943
+     }
+    }
+   },
+   "collapse_diagnostics_at_selected_epoch": {
+    "flow_mag_events": 1.655354858636856,
+    "iwe_nonempty_ratio": 0.9755695512890816,
+    "iwe_var_ratio": 0.8870258056603071,
+    "abs_div": 0.04914545143023133
+   },
+   "final_epoch_train_loss": 0.5165811729193829
+  },
+  {
+   "run_id": "v2e_fixed_sup_voxel15_s1337",
+   "status": "done",
+   "arm": "v2e_fixed_sup",
+   "model": "M1",
+   "representation": "voxel15",
+   "seed": 1337,
+   "loss": "supervised",
+   "git_sha": "7904922a2883e9b05addaac3a639aa194be8258c",
+   "git_dirty": false,
+   "config_files": {
+    "configs/evflow.yaml": "8fdfa24004e532527e49847a3912f53496c6b860b9d9efdb8314c120bbfd5b89",
+    "configs/train_v2e_fixed_sup.yaml": "7b09a5ace1afd283bb3842e5211660ee67dead329b08a6deaaf79b833dab7bd0"
+   },
+   "manifest_sha256": "86c6ac0248dd627ed0305604c52dd77027a6791189c26ebf5e07d03a65b4bffc",
+   "train_windows": {
+    "1": 10452,
+    "4": 10440
+   },
+   "n_params": 13346952,
+   "epochs_planned": 40,
+   "epochs_done": 40,
+   "checkpoint_sha256": "f4546067ed494b650056a39983f3207b072e8fb8ab3b5d9d951f1dcb3885051e",
+   "selection": {
+    "rule": "min of v2e tune dt1 epe over epochs (mvsec_tune only)",
+    "split": "mvsec_tune",
+    "stream": "v2e",
+    "metric": "epe",
+    "dt": 1,
+    "mode": "min",
+    "selected_epoch": 26,
+    "value": 0.24021860848240897
+   },
+   "tune_at_selected_epoch": {
+    "v2e_dt1": {
+     "tier": "T2",
+     "events": "v2e",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 1,
+     "used_for_selection": true,
+     "metrics": {
+      "epe": 0.24021860848240897,
+      "outlier_pct": 0.0733653500689961,
+      "npe_1": 3.693064640664432,
+      "npe_3": 0.0733653500689961,
+      "ae_deg": 5.687523372021971,
+      "fwl": 1.1186781441209466,
+      "flow_mag": 0.9407126951569424
+     }
+    },
+    "v2e_dt4": {
+     "tier": "T2",
+     "events": "v2e",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 4,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 0.7261075048369691,
+      "outlier_pct": 4.773574830757303,
+      "npe_1": 21.54865979993061,
+      "npe_3": 4.773574830757303,
+      "ae_deg": 5.32629916036357,
+      "fwl": 1.2201928111201161,
+      "flow_mag": 3.8005365905110433
+     }
+    },
+    "real_dt1": {
+     "tier": "T1",
+     "events": "real",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 1,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 0.3085182808655132,
+      "outlier_pct": 0.21393489594815457,
+      "npe_1": 7.099345134544795,
+      "npe_3": 0.21393489594815457,
+      "ae_deg": 7.6443899761319365,
+      "fwl": 1.0610652082489622,
+      "flow_mag": 0.7183479752332025
+     }
+    },
+    "real_dt4": {
+     "tier": "T1",
+     "events": "real",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 4,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 0.9341509855142491,
+      "outlier_pct": 7.832211788678126,
+      "npe_1": 27.4560148525193,
+      "npe_3": 7.832211788678126,
+      "ae_deg": 7.193907831344764,
+      "fwl": 1.1406715513989685,
+      "flow_mag": 2.90834836425194
+     }
+    }
+   },
+   "collapse_diagnostics_at_selected_epoch": {
+    "flow_mag_events": 2.130363813638687,
+    "iwe_nonempty_ratio": 1.0561266654729844,
+    "iwe_var_ratio": 0.7866916349357951,
+    "abs_div": 0.040549698313698174
+   },
+   "final_epoch_train_loss": 0.5175777393497333
+  },
+  {
+   "run_id": "real_sup_timesurface_s1337",
+   "status": "done",
+   "arm": "real_sup",
+   "model": "M1",
+   "representation": "timesurface",
+   "seed": 1337,
+   "loss": "supervised",
+   "git_sha": "7904922a2883e9b05addaac3a639aa194be8258c",
+   "git_dirty": false,
+   "config_files": {
+    "configs/evflow.yaml": "8fdfa24004e532527e49847a3912f53496c6b860b9d9efdb8314c120bbfd5b89",
+    "configs/train_real_sup.yaml": "0c93d720b133748e1cbc3d4c38d9e6db728625ce8c6f70cc9eb3ffaed39749a8"
+   },
+   "manifest_sha256": "f53111f2d1923651f430fc2f92d7ed3475770d53510445a60c60430387512eef",
+   "train_windows": {
+    "1": 10452,
+    "4": 10440
+   },
+   "n_params": 13339464,
+   "epochs_planned": 40,
+   "epochs_done": 40,
+   "checkpoint_sha256": "5239869de24b52915a63303d72fe234798bbe245b716fc4c381dd7c3f4bb5334",
+   "selection": {
+    "rule": "min of real tune dt1 epe over epochs (mvsec_tune only)",
+    "split": "mvsec_tune",
+    "stream": "real",
+    "metric": "epe",
+    "dt": 1,
+    "mode": "min",
+    "selected_epoch": 26,
+    "value": 0.23315095425618454
+   },
+   "tune_at_selected_epoch": {
+    "real_dt1": {
+     "tier": "T1",
+     "events": "real",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 1,
+     "used_for_selection": true,
+     "metrics": {
+      "epe": 0.23315095425618454,
+      "outlier_pct": 0.06478866596636662,
+      "npe_1": 3.5643135592199604,
+      "npe_3": 0.06478866596636662,
+      "ae_deg": 5.609938435123361,
+      "fwl": 1.0580834640165206,
+      "flow_mag": 0.8273497090302022
+     }
+    },
+    "real_dt4": {
+     "tier": "T1",
+     "events": "real",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 4,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 0.7724561061105646,
+      "outlier_pct": 5.454299679876088,
+      "npe_1": 23.496114703576655,
+      "npe_3": 5.454299679876088,
+      "ae_deg": 5.56758527352515,
+      "fwl": 1.1431893781760494,
+      "flow_mag": 3.3225096288823797
+     }
+    }
+   },
+   "collapse_diagnostics_at_selected_epoch": {
+    "flow_mag_events": 1.5146547148376703,
+    "iwe_nonempty_ratio": 0.9795323362946511,
+    "iwe_var_ratio": 0.8918486498179701,
+    "abs_div": 0.04099174499511719
+   },
+   "final_epoch_train_loss": 0.5435302137050658
+  },
+  {
+   "run_id": "v2e_fixed_sup_timesurface_s1337",
+   "status": "done",
+   "arm": "v2e_fixed_sup",
+   "model": "M1",
+   "representation": "timesurface",
+   "seed": 1337,
+   "loss": "supervised",
+   "git_sha": "7904922a2883e9b05addaac3a639aa194be8258c",
+   "git_dirty": false,
+   "config_files": {
+    "configs/evflow.yaml": "8fdfa24004e532527e49847a3912f53496c6b860b9d9efdb8314c120bbfd5b89",
+    "configs/train_v2e_fixed_sup.yaml": "7b09a5ace1afd283bb3842e5211660ee67dead329b08a6deaaf79b833dab7bd0"
+   },
+   "manifest_sha256": "bb910038b6505e0a3c6fce6c57fbbb9f4735f8c29c4bed1c8c20131762806eb7",
+   "train_windows": {
+    "1": 10452,
+    "4": 10440
+   },
+   "n_params": 13339464,
+   "epochs_planned": 40,
+   "epochs_done": 40,
+   "checkpoint_sha256": "91a81393eb3ebab721dd6a13287dc0954aafa19228ac61f75cf89d211c2589f0",
+   "selection": {
+    "rule": "min of v2e tune dt1 epe over epochs (mvsec_tune only)",
+    "split": "mvsec_tune",
+    "stream": "v2e",
+    "metric": "epe",
+    "dt": 1,
+    "mode": "min",
+    "selected_epoch": 26,
+    "value": 0.2625203945709848
+   },
+   "tune_at_selected_epoch": {
+    "v2e_dt1": {
+     "tier": "T2",
+     "events": "v2e",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 1,
+     "used_for_selection": true,
+     "metrics": {
+      "epe": 0.2625203945709848,
+      "outlier_pct": 0.07583486675567147,
+      "npe_1": 4.861603428298391,
+      "npe_3": 0.07583486675567147,
+      "ae_deg": 6.1624536400103045,
+      "fwl": 1.1139129637447622,
+      "flow_mag": 0.8700809712011306
+     }
+    },
+    "v2e_dt4": {
+     "tier": "T2",
+     "events": "v2e",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 4,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 0.8042684297389012,
+      "outlier_pct": 5.6170613445565385,
+      "npe_1": 24.91701384813987,
+      "npe_3": 5.6170613445565385,
+      "ae_deg": 5.550610162071681,
+      "fwl": 1.2101432028983647,
+      "flow_mag": 3.6315653926539424
+     }
+    },
+    "real_dt1": {
+     "tier": "T1",
+     "events": "real",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 1,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 0.3341181650539103,
+      "outlier_pct": 0.38484123363410044,
+      "npe_1": 7.78397155076527,
+      "npe_3": 0.38484123363410044,
+      "ae_deg": 8.251074876061825,
+      "fwl": 1.0607361008821339,
+      "flow_mag": 0.8205237013995097
+     }
+    },
+    "real_dt4": {
+     "tier": "T1",
+     "events": "real",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 4,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 1.072536794784632,
+      "outlier_pct": 9.614992022417752,
+      "npe_1": 32.2204952926128,
+      "npe_3": 9.614992022417752,
+      "ae_deg": 8.03473404499312,
+      "fwl": 1.1314207936025291,
+      "flow_mag": 2.8115726890446866
+     }
+    }
+   },
+   "collapse_diagnostics_at_selected_epoch": {
+    "flow_mag_events": 2.3293464358150957,
+    "iwe_nonempty_ratio": 1.0736748266220093,
+    "iwe_var_ratio": 0.7735361373263764,
+    "abs_div": 0.04477259703911841
+   },
+   "final_epoch_train_loss": 0.5370700090530273
+  },
+  {
+   "run_id": "real_sup_count_s1337",
+   "status": "done",
+   "arm": "real_sup",
+   "model": "M1",
+   "representation": "count",
+   "seed": 1337,
+   "loss": "supervised",
+   "git_sha": "7904922a2883e9b05addaac3a639aa194be8258c",
+   "git_dirty": false,
+   "config_files": {
+    "configs/evflow.yaml": "8fdfa24004e532527e49847a3912f53496c6b860b9d9efdb8314c120bbfd5b89",
+    "configs/train_real_sup.yaml": "0c93d720b133748e1cbc3d4c38d9e6db728625ce8c6f70cc9eb3ffaed39749a8"
+   },
+   "manifest_sha256": "737395e02087f663875caee00b24c0d1ccac9d8648c6e0f549bb4b630a089733",
+   "train_windows": {
+    "1": 10452,
+    "4": 10440
+   },
+   "n_params": 13339464,
+   "epochs_planned": 40,
+   "epochs_done": 40,
+   "checkpoint_sha256": "c323fb413e121e0ac580dac19df415de75b51c62531253ca84881aa4b07ffaa0",
+   "selection": {
+    "rule": "min of real tune dt1 epe over epochs (mvsec_tune only)",
+    "split": "mvsec_tune",
+    "stream": "real",
+    "metric": "epe",
+    "dt": 1,
+    "mode": "min",
+    "selected_epoch": 19,
+    "value": 0.22505325946470514
+   },
+   "tune_at_selected_epoch": {
+    "real_dt1": {
+     "tier": "T1",
+     "events": "real",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 1,
+     "used_for_selection": true,
+     "metrics": {
+      "epe": 0.22505325946470514,
+      "outlier_pct": 0.06742254439451298,
+      "npe_1": 3.321484971792051,
+      "npe_3": 0.06742254439451298,
+      "ae_deg": 5.413295274221611,
+      "fwl": 1.0580628681057147,
+      "flow_mag": 0.8558527639592575
+     }
+    },
+    "real_dt4": {
+     "tier": "T1",
+     "events": "real",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 4,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 0.7404147251509732,
+      "outlier_pct": 4.9737868030242725,
+      "npe_1": 22.40937405018756,
+      "npe_3": 4.9737868030242725,
+      "ae_deg": 5.390596538279641,
+      "fwl": 1.1490351380358268,
+      "flow_mag": 3.371254754946921
+     }
+    }
+   },
+   "collapse_diagnostics_at_selected_epoch": {
+    "flow_mag_events": 1.6094767908751964,
+    "iwe_nonempty_ratio": 0.9783129867911339,
+    "iwe_var_ratio": 0.8884221098656055,
+    "abs_div": 0.04591364205349237
+   },
+   "final_epoch_train_loss": 0.5236446345381861
+  },
+  {
+   "run_id": "v2e_fixed_sup_count_s1337",
+   "status": "done",
+   "arm": "v2e_fixed_sup",
+   "model": "M1",
+   "representation": "count",
+   "seed": 1337,
+   "loss": "supervised",
+   "git_sha": "7904922a2883e9b05addaac3a639aa194be8258c",
+   "git_dirty": false,
+   "config_files": {
+    "configs/evflow.yaml": "8fdfa24004e532527e49847a3912f53496c6b860b9d9efdb8314c120bbfd5b89",
+    "configs/train_v2e_fixed_sup.yaml": "7b09a5ace1afd283bb3842e5211660ee67dead329b08a6deaaf79b833dab7bd0"
+   },
+   "manifest_sha256": "0faec91a8527b52e6e6dedc3819e2690cd5e847d111d3c2329f37edc5278fa8d",
+   "train_windows": {
+    "1": 10452,
+    "4": 10440
+   },
+   "n_params": 13339464,
+   "epochs_planned": 40,
+   "epochs_done": 40,
+   "checkpoint_sha256": "bd3ca679cc4c55f0c5970a188710ec4f4c1cabdcb288d94ea56aace2b5876aa0",
+   "selection": {
+    "rule": "min of v2e tune dt1 epe over epochs (mvsec_tune only)",
+    "split": "mvsec_tune",
+    "stream": "v2e",
+    "metric": "epe",
+    "dt": 1,
+    "mode": "min",
+    "selected_epoch": 26,
+    "value": 0.2471222050389083
+   },
+   "tune_at_selected_epoch": {
+    "v2e_dt1": {
+     "tier": "T2",
+     "events": "v2e",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 1,
+     "used_for_selection": true,
+     "metrics": {
+      "epe": 0.2471222050389083,
+      "outlier_pct": 0.08582599504997265,
+      "npe_1": 4.238870309107486,
+      "npe_3": 0.08582599504997265,
+      "ae_deg": 5.716048749033991,
+      "fwl": 1.1176529826264485,
+      "flow_mag": 0.912709388492043
+     }
+    },
+    "v2e_dt4": {
+     "tier": "T2",
+     "events": "v2e",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 4,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 0.8043733079589472,
+      "outlier_pct": 6.1330830913215415,
+      "npe_1": 23.889088353042023,
+      "npe_3": 6.1330830913215415,
+      "ae_deg": 5.383236794075183,
+      "fwl": 1.2169523341498754,
+      "flow_mag": 3.55599499364555
+     }
+    },
+    "real_dt1": {
+     "tier": "T1",
+     "events": "real",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 1,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 0.32970051899997993,
+      "outlier_pct": 0.4208629093289197,
+      "npe_1": 7.317684357570459,
+      "npe_3": 0.4208629093289197,
+      "ae_deg": 8.041232276947223,
+      "fwl": 1.0610588875359408,
+      "flow_mag": 0.8107275913281042
+     }
+    },
+    "real_dt4": {
+     "tier": "T1",
+     "events": "real",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 4,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 1.01567746584548,
+      "outlier_pct": 8.756474497694853,
+      "npe_1": 29.858870427678262,
+      "npe_3": 8.756474497694853,
+      "ae_deg": 7.831329722121727,
+      "fwl": 1.1389325995696526,
+      "flow_mag": 2.853352808468203
+     }
+    }
+   },
+   "collapse_diagnostics_at_selected_epoch": {
+    "flow_mag_events": 2.7395312401652334,
+    "iwe_nonempty_ratio": 1.064536074101925,
+    "iwe_var_ratio": 0.7714378772242106,
+    "abs_div": 0.04375241225585341
+   },
+   "final_epoch_train_loss": 0.5157781072177712
+  }
+ ],
+ "git_sha": "fe8ef001e60afa12a967aa658ddf6f478f00e2bf",
+ "git_dirty": false,
+ "created_by": "scripts/summarise_training.py",
+ "created_at": "2026-10-11T18:00:05+00:00"
+}

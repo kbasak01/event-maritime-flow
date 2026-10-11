@@ -29,12 +29,12 @@ Phase 9 walks every line. Verdict ∈ {met, met-with-caveat, unmet} + evidence p
 - [ ] C6 Bootstrap CIs use moving blocks of 1 s; paired bootstrap for arm differences.
 
 ## D. Training
-- [ ] D1 `train-smoke` overfits 8 windows to EPE < 0.1 px.
-- [ ] D2 `real_sup` within 2× of EV-FlowNet-class EPE on `indoor_flying1` dt=1.
-- [ ] D3 No contrast-maximisation run shows event collapse (or it is excluded and listed).
-- [ ] D4 Seeds 1337/2026/7 for the three core arms; spread reported.
-- [ ] D5 Checkpoint SHA-256 recorded and referenced by every eval JSON.
-- [ ] D6 Augmentation flips flow sign consistently with the image flip (unit test).
+- [x] D1 `train-smoke` overfits 8 windows to EPE < 0.1 px. — Phase 5 gate: `docs/gates/phase-5.md`.
+- [x] D2 `real_sup` within 2× of EV-FlowNet-class EPE on `indoor_flying1` dt=1. — Phase 5 gate (D-043(h), D-046: within the 2.0 px gate, above zero flow; reported as a generalisation gap).
+- [x] D3 No contrast-maximisation run shows event collapse (or it is excluded and listed). — Phase 5 gate (collapsed IWE-variance cells stopped and listed, D-047).
+- [x] D4 Seeds 1337/2026/7 for the three core arms; spread reported. — `results/train/summary.json`, Phase 5 gate.
+- [x] D5 Checkpoint SHA-256 recorded and referenced by every eval JSON. — Phase 5 gate (Phase 6 eval JSONs must keep this).
+- [x] D6 Augmentation flips flow sign consistently with the image flip (unit test). — `tests/test_train_data.py::test_hflip_consistent_with_warping`.
 
 ## E. Claims
 - [ ] E1 (critical) Every README/docs number traces to a committed `results/*.json` (`claim-trace`).

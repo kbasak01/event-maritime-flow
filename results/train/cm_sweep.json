@@ -1,0 +1,160 @@
+{
+ "kind": "cm_weight_sweep",
+ "phase": 5,
+ "split": "mvsec_tune",
+ "grid": {
+  "smoothness_weight": [
+   0.1,
+   0.5
+  ],
+  "divergence_penalty": [
+   0.3,
+   1.0
+  ],
+  "epochs": 10
+ },
+ "rule": {
+  "metric": "own-stream tune dt1 FWL at the cell's best epoch, max",
+  "min_iwe_nonempty_ratio": 0.8,
+  "max_abs_div": 0.1,
+  "max_final_flow_mag_over_median": 2.0
+ },
+ "arms": {
+  "real_selfsup": {
+   "cells": [
+    {
+     "run_id": "real_selfsup_voxel5_s1337_sw0.1_dp0.3",
+     "smoothness_weight": 0.1,
+     "divergence_penalty": 0.3,
+     "status": "done",
+     "stream": "real",
+     "selected_epoch": 7,
+     "tune_fwl": 1.0871004005386937,
+     "iwe_nonempty_ratio": 0.9757008585333824,
+     "abs_div": 0.029317016597196925,
+     "final_flow_mag_over_median": 1.0021854840839446,
+     "checkpoint_sha256": "7ec866105615530f8ef1c815a647685e9984879fbcd767bb5c66cfebd11fdc60",
+     "eligible": true
+    },
+    {
+     "run_id": "real_selfsup_voxel5_s1337_sw0.1_dp1",
+     "smoothness_weight": 0.1,
+     "divergence_penalty": 1.0,
+     "status": "done",
+     "stream": "real",
+     "selected_epoch": 8,
+     "tune_fwl": 1.0857215578825177,
+     "iwe_nonempty_ratio": 0.9754025530815125,
+     "abs_div": 0.019266547107254155,
+     "final_flow_mag_over_median": 1.0094506083235133,
+     "checkpoint_sha256": "91f577cc69908d7235403e3f9de613fed2ca483c7c607aadbf124d932298b0ad",
+     "eligible": true
+    },
+    {
+     "run_id": "real_selfsup_voxel5_s1337_sw0.5_dp0.3",
+     "smoothness_weight": 0.5,
+     "divergence_penalty": 0.3,
+     "status": "done",
+     "stream": "real",
+     "selected_epoch": 7,
+     "tune_fwl": 1.0612120066424569,
+     "iwe_nonempty_ratio": 0.9765387761592865,
+     "abs_div": 0.0077503664905088955,
+     "final_flow_mag_over_median": 0.995219804618253,
+     "checkpoint_sha256": "5065455bf32b7efd93c84d4dc0215bb86c0e5e19f48c722b0b9fbecfedf20491",
+     "eligible": true
+    },
+    {
+     "run_id": "real_selfsup_voxel5_s1337_sw0.5_dp1",
+     "smoothness_weight": 0.5,
+     "divergence_penalty": 1.0,
+     "status": "done",
+     "stream": "real",
+     "selected_epoch": 8,
+     "tune_fwl": 1.088013935370674,
+     "iwe_nonempty_ratio": 0.9615025654435158,
+     "abs_div": 0.011604834917525295,
+     "final_flow_mag_over_median": 1.1489424089200697,
+     "checkpoint_sha256": "ea805a84c8b0fdc79c1ecca48255f8c303c38dc2554056ff07f27ea498c3e2bd",
+     "eligible": true
+    }
+   ],
+   "chosen": {
+    "smoothness_weight": 0.5,
+    "divergence_penalty": 1.0,
+    "run_id": "real_selfsup_voxel5_s1337_sw0.5_dp1",
+    "tune_fwl": 1.088013935370674
+   }
+  },
+  "v2e_selfsup": {
+   "cells": [
+    {
+     "run_id": "v2e_selfsup_voxel5_s1337_sw0.1_dp0.3",
+     "smoothness_weight": 0.1,
+     "divergence_penalty": 0.3,
+     "status": "done",
+     "stream": "v2e",
+     "selected_epoch": 7,
+     "tune_fwl": 1.1282443389361088,
+     "iwe_nonempty_ratio": 0.97306371986866,
+     "abs_div": 0.03173362898902269,
+     "final_flow_mag_over_median": 0.9805332247749781,
+     "checkpoint_sha256": "03468f62168a6812760cedcfbb8c7bbdc8762ef656ec26f401c872adf5176f68",
+     "eligible": true
+    },
+    {
+     "run_id": "v2e_selfsup_voxel5_s1337_sw0.1_dp1",
+     "smoothness_weight": 0.1,
+     "divergence_penalty": 1.0,
+     "status": "done",
+     "stream": "v2e",
+     "selected_epoch": 8,
+     "tune_fwl": 1.1413289087522742,
+     "iwe_nonempty_ratio": 0.9979581648111343,
+     "abs_div": 0.023901901699136942,
+     "final_flow_mag_over_median": 1.0379423953146203,
+     "checkpoint_sha256": "a8a4e85d11a492119198eef6e933bd8723406831a75330eab5513ce5797b2d0f",
+     "eligible": true
+    },
+    {
+     "run_id": "v2e_selfsup_voxel5_s1337_sw0.5_dp0.3",
+     "smoothness_weight": 0.5,
+     "divergence_penalty": 0.3,
+     "status": "done",
+     "stream": "v2e",
+     "selected_epoch": 9,
+     "tune_fwl": 1.1271100271612227,
+     "iwe_nonempty_ratio": 0.9885101348161698,
+     "abs_div": 0.015542687783017754,
+     "final_flow_mag_over_median": 0.9937168293176135,
+     "checkpoint_sha256": "40c26364628f83860cd1aba4a736a64f4fe711d1eb38802c5f09cd1b395e8b32",
+     "eligible": true
+    },
+    {
+     "run_id": "v2e_selfsup_voxel5_s1337_sw0.5_dp1",
+     "smoothness_weight": 0.5,
+     "divergence_penalty": 1.0,
+     "status": "done",
+     "stream": "v2e",
+     "selected_epoch": 9,
+     "tune_fwl": 1.1299184623029837,
+     "iwe_nonempty_ratio": 0.9735172525048256,
+     "abs_div": 0.013407175656757317,
+     "final_flow_mag_over_median": 0.9865332303071811,
+     "checkpoint_sha256": "c6dffdac63f4a6d0e81e92224c3fa519e6c1508c949ea1c0459c22ddfe0a7187",
+     "eligible": true
+    }
+   ],
+   "chosen": {
+    "smoothness_weight": 0.1,
+    "divergence_penalty": 1.0,
+    "run_id": "v2e_selfsup_voxel5_s1337_sw0.1_dp1",
+    "tune_fwl": 1.1413289087522742
+   }
+  }
+ },
+ "git_sha": "fe8ef001e60afa12a967aa658ddf6f478f00e2bf",
+ "git_dirty": false,
+ "created_by": "scripts/freeze_cm_sweep.py",
+ "created_at": "2026-10-11T17:59:59+00:00"
+}
