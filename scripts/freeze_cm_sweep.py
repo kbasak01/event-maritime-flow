@@ -67,6 +67,11 @@ def main(argv: list[str] | None = None) -> int:
                     continue
                 sel = json.loads((rd / "selection.json").read_text())
                 stream = sel["stream"]
+                if sel.get("split") != "mvsec_tune":
+                    raise SystemExit(f"{rid}: selected on {sel.get('split')!r}, not mvsec_tune")
+                if stream != yaml.safe_load((REPO / "configs" / f"train_{arm}.yaml").read_text()
+                                            )["events"]["tune_select"]:
+                    raise SystemExit(f"{rid}: selected on stream {stream!r}, not the arm's own")
                 with open(rd / "metrics.csv") as f:
                     rows = list(csv.DictReader(f))
                 best = next(r for r in rows if int(r["epoch"]) == sel["selected_epoch"])

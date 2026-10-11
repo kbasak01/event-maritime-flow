@@ -455,15 +455,20 @@ def load_mvsec(*, train_source: str | None, tune_streams: list[str], dts, warmup
         events_root)), "corpus_plan_sha256": _sha(plan_path), "gt_cache": {}, "stores": {}}
 
     def gt_for(split: str) -> dict[int, GTCache]:
+        """GT caches of ``split``; each must match the current split manifest and warm-up."""
+        split_sha = load_split(split)["manifest_sha256"]
         out = {}
         for dt in dts:
             p = gt_cache_path(gt_root, split, dt)
             out[dt] = GTCache(p)
             if out[dt].split != split or out[dt].dt != dt:
                 raise LeakageError(f"{p}: holds {out[dt].split} dt{out[dt].dt}")
-            man = p.with_suffix(".json")
-            prov["gt_cache"][p.name] = json.loads(man.read_text()).get("sha256") \
-                if man.exists() else None
+            man = json.loads(p.with_suffix(".json").read_text())
+            built = (man.get("split_manifest_sha256"), int(man.get("warmup", -1)))
+            if built != (split_sha, warmup):
+                raise LeakageError(f"{p}: built for (split manifest, warm-up) {built}, "
+                                   f"current ({split_sha}, {warmup})")
+            prov["gt_cache"][p.name] = man.get("sha256")
         return out
 
     def store_entry(path: Path) -> None:

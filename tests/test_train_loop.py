@@ -66,6 +66,8 @@ def test_train_select_resume(tmp_path):
     run_training(_cfg(epochs=3), run_dir, train, tune, device="cpu", log=logs.append)
     assert any("resuming at epoch 2" in s for s in logs)
     assert [int(r["epoch"]) for r in _rows(run_dir)] == [0, 1, 2]
+    resumes = json.loads((run_dir / "manifest.json").read_text())["resumes"]
+    assert [r["start_epoch"] for r in resumes] == [2] and "git_sha" in resumes[0]
 
 
 def test_supervised_training_reduces_tune_epe(tmp_path):

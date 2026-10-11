@@ -270,6 +270,12 @@ def run_training(cfg: dict, run_dir: Path, train_ds, tune_ds: dict, *, device,
         torch.set_rng_state(st["rng_torch"])
         random.setstate(st["rng_python"])
         log(f"{run_dir.name}: resuming at epoch {start_epoch}")
+        from evflow.sim.v2e_runner import git_dirty, git_sha
+        man = json.loads(manifest_path.read_text())
+        man.setdefault("resumes", []).append({
+            "start_epoch": start_epoch, "git_sha": git_sha(), "git_dirty": git_dirty(),
+            "argv": sys.argv, "at": datetime.now(timezone.utc).isoformat(timespec="seconds")})
+        manifest_path.write_text(json.dumps(man, indent=1, default=str) + "\n")
     else:
         from evflow.sim.v2e_runner import git_dirty, git_sha
         manifest = {
