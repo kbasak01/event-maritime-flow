@@ -301,7 +301,7 @@ M1 arms trained at 346×260 on MVSEC outdoor_day2 and applied unchanged to DSEC'
 
 ## Table E — maritime arms on MVSEC test, real test events (T1)
 
-Phase 7 step 4: the two maritime arms (trained on v2e(SMD + LaRS train), selected on v2e(mvsec_tune) at dt 1, D-056) evaluated with the Table A protocol on real `mvsec_test` events and real GT; M0a and two v2e arms repeated from Table A-T1 for reference. EPE (px over the window), mean [95 % CI]; 3-seed rows `r` = range of the per-seed means.
+Phase 7 step 4: the two maritime arms (trained on v2e(SMD + LaRS train), selected on v2e(mvsec_tune) at dt 1, D-056) evaluated with the Table A protocol on real `mvsec_test` events and real GT; M0a and two v2e arms repeated from Table A-T1 for reference. EPE (px over the window), mean [95 % CI]; 3-seed rows `r` = range of the per-seed means. **The maritime rows are zero-shot, out-of-domain results**: those arms never trained on MVSEC; MVSEC tune data only picked their epoch, and the selected epochs sit on a late-schedule plateau; one seed each (D-062). They are not tuned MVSEC models and are not comparable in standing to the 3-seed MVSEC arms.
 
 **EPE (px), dt = 1**
 
@@ -353,6 +353,7 @@ Phase 7 step 4: the two maritime arms (trained on v2e(SMD + LaRS train), selecte
 | T3a | v2e_selfsup | M1 | 1337 | 14.488 [13.156, 16.182] | 2.236 [1.177, 4.005] | 2.963 [1.594, 4.973] | 1.879 [0.792, 3.513] | 1.794 [0.773, 3.545] | 2.059 [1.251, 3.222] |
 | T3a | maritime_selfsup | M1 | 1337 | 11.827 [10.620, 13.444] | 2.481 [1.629, 4.005] | 3.075 [2.030, 4.859] | 2.277 [1.364, 3.749] | 2.147 [1.334, 3.619] | 2.282 [1.677, 3.289] |
 | T3a | maritime_teacher | M1 | 1337 | 10.790 [9.425, 12.647] | 1.505 [0.792, 2.722] | 1.843 [1.037, 3.142] | 1.339 [0.548, 2.681] | 1.337 [0.634, 2.624] | 1.367 [0.859, 2.148] |
+| T3a | n windows | – | – | 822 | 40 | 40 | 29 | 39 | 475 |
 
 **teacher-3PE (% px with teacher-EPE > 3 px)**
 
@@ -368,8 +369,11 @@ Phase 7 step 4: the two maritime arms (trained on v2e(SMD + LaRS train), selecte
 | T3a | v2e_selfsup | M1 | 1337 | 86.8 [82.5, 91.9] | 13.0 [6.2, 21.1] | 22.4 [12.8, 33.4] | 10.9 [1.7, 21.9] | 7.5 [1.7, 14.8] | 13.0 [6.9, 20.6] |
 | T3a | maritime_selfsup | M1 | 1337 | 75.5 [71.1, 82.6] | 16.2 [11.2, 22.6] | 24.9 [18.1, 32.5] | 11.8 [4.6, 21.0] | 11.0 [6.5, 17.1] | 16.3 [12.0, 21.6] |
 | T3a | maritime_teacher | M1 | 1337 | 73.5 [68.0, 82.0] | 6.1 [1.9, 11.8] | 10.3 [4.6, 17.3] | 5.5 [0.0, 13.8] | 3.9 [0.6, 9.9] | 6.7 [3.0, 11.4] |
+| T3a | n windows | – | – | 822 | 40 | 40 | 29 | 39 | 475 |
 
 ## Table G-T3b — motion-compensation self-consistency (T3b)
+
+`maritime_selfsup` (and M0b) optimise a contrast-maximisation objective on these very statistics, so leading on FWL/RSAT is partly built in; FWL/RSAT are self-consistency, not accuracy (D-062). Read them beside Table F.
 
 **FWL (> 1 better)**
 
@@ -385,6 +389,7 @@ Phase 7 step 4: the two maritime arms (trained on v2e(SMD + LaRS train), selecte
 | T3b | v2e_selfsup | M1 | 1337 | 1.027 [1.009, 1.046] | 1.305 [1.219, 1.399] | 1.171 [1.113, 1.232] | 1.105 [1.053, 1.174] | 1.312 [1.222, 1.418] | 1.300 [1.220, 1.394] |
 | T3b | maritime_selfsup | M1 | 1337 | 1.301 [1.200, 1.415] | 1.446 [1.362, 1.538] | 1.383 [1.315, 1.458] | 1.213 [1.146, 1.298] | 1.400 [1.308, 1.501] | 1.448 [1.369, 1.534] |
 | T3b | maritime_teacher | M1 | 1337 | 1.225 [1.141, 1.321] | 1.322 [1.234, 1.422] | 1.233 [1.172, 1.299] | 1.171 [1.093, 1.268] | 1.304 [1.210, 1.408] | 1.320 [1.238, 1.415] |
+| T3b | n windows | – | – | 844 | 40 | 40 | 29 | 39 | 475 |
 
 **RSAT (< 1 better)** — on the windows where RSAT is defined for every model (a flow that warps all events off the frame leaves it undefined); n = windows. Off-frame events leave the sum, so for border bands (sky, water) read RSAT beside FWL (D-057)
 
