@@ -110,9 +110,17 @@ class EventArrays:
     p: np.ndarray
     source: str = ""
     end_clamped_us: int = 0
+    span_us: tuple[int, int] | None = None   # [t0, t1) loaded from the store (from_store)
 
     def window(self, t0: int, t1: int) -> dict[str, np.ndarray]:
-        if t0 < int(self.t[0]) - 10_000 or t1 > int(self.t[-1]) + 10_000:
+        """Events in [t0, t1). With ``span_us`` the window must lie inside the loaded range
+        (an empty tail of a near-static clip is a valid empty window, D-060); otherwise within
+        10 ms of the first/last event (in-memory fixtures)."""
+        if self.span_us is not None:
+            if t0 < self.span_us[0] or t1 > self.span_us[1]:
+                raise ValueError(f"window [{t0}, {t1}) outside the loaded range {self.span_us} "
+                                 f"of {self.source}")
+        elif t0 < int(self.t[0]) - 10_000 or t1 > int(self.t[-1]) + 10_000:
             raise ValueError(f"window [{t0}, {t1}) outside the events of {self.source}")
         a, b = np.searchsorted(self.t, [t0, t1], side="left")
         return {"x": self.x[a:b], "y": self.y[a:b], "t": self.t[a:b], "p": self.p[a:b]}
@@ -142,7 +150,8 @@ class EventArrays:
                     ev = s.get_events(int(t0), int(covered), rectify=False)
         if ev is None:
             raise ValueError(f"{path}: [{t0}, {t1}) not covered")
-        out = cls(ev["x"], ev["y"], ev["t"], ev["p"].astype(np.int8), source=str(path))
+        out = cls(ev["x"], ev["y"], ev["t"], ev["p"].astype(np.int8), source=str(path),
+                  span_us=(int(t0), int(t1)))
         out.end_clamped_us = clamp
         return out
 

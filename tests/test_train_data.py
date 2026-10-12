@@ -216,6 +216,11 @@ def test_from_store_clamps_short_end(tmp_path):
     tail = EventArrays.from_store(path, 1_000_000, 1_000_000 + 40_000,
                                   known_end_us=1_000_000 + 40_000)
     assert tail.end_clamped_us == 34_000 and tail.t.size == n
+    empty = tail.window(1_000_000 + 30_000, 1_000_000 + 40_000)   # the empty tail is a window
+    assert empty["t"].size == 0
+    assert tail.window(1_000_000, 1_000_000 + 1_000)["t"].size == 100
+    with pytest.raises(ValueError):
+        tail.window(1_000_000 + 30_000, 1_000_000 + 41_000)        # beyond the loaded range
     with pytest.raises(ValueError):                      # but never beyond the known end
         EventArrays.from_store(path, 1_000_000, 1_000_000 + 40_000,
                                known_end_us=1_000_000 + 30_000)
