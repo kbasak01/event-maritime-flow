@@ -15,12 +15,12 @@
 | 10 | not started | – | – |
 
 Pending GPU jobs (Phase 7; Claude launches them after `gpu-job` prep, D-006; one CUDA job at a time, D-048b):
-- `jobs/2026-10-12_train-maritime.sh` → `results/train/maritime_summary.json` (after teacher-flows).
 - `jobs/2026-10-12_eval-maritime.sh` → `results/eval_maritime/`, `results/maritime/clutter.json`, `results/TABLES.md`, `results/figures/clutter_ct.png` (after train-maritime).
 
 Done GPU jobs (Phase 7):
 - `jobs/2026-10-12_v2e-maritime.sh` → `results/v2e_maritime_corpus.json` (243/243 units, clean at 7fd867c, 11:04–14:02 on 2026-10-12 incl. trials; measured 2.89 GPU-h, budget 19.44/19.5 after the user accepted the overrun, D-059).
 - `jobs/2026-10-12_teacher-flows.sh` → `results/teacher/summary.json` (161 units, clean at cdc358b, 14:05–14:22).
+- `jobs/2026-10-12_train-maritime.sh` → `results/train/maritime_summary.json` (2/2 runs at b552569, 14:26–16:11; attempt 1 at 4164c3d failed at epoch 0, D-060 amendment, `runs/train-maritime/attempt1/`).
 
 Done GPU jobs (Phase 6):
 - `jobs/2026-10-11_eval-all.sh` → `results/eval/` (298/298 units incl. Phase 4 baselines and Phase 5 gate units; reproduction unit equal to its committed JSON, max diff 0), `results/eval/{summary,aggregate,paired}.json`, `results/TABLES.md`, `results/figures/`. Attempt 1 stopped after 8 min (CPU threads, D-052); attempt 2 at b19e609, 16:31–22:47 on 2026-10-11 (`runs/eval-all/job.log`).

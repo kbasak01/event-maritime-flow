@@ -1,0 +1,56 @@
+{
+ "kind": "gpu_job_manifest",
+ "job": "jobs/2026-10-12_eval-maritime.sh",
+ "plan_step": "Phase 7 steps 4-6: T3a/T3b evaluation of every model on smd_test and lars_eval (class-sliced), maritime arms on mvsec_test (T1), sea-clutter study, tables and figures (D-057, D-058)",
+ "configs": [
+  "configs/evflow.yaml",
+  "configs/eval_mvsec.yaml",
+  "configs/eraft.yaml",
+  "configs/v2e_corpus_maritime.yaml",
+  "configs/v2e_profiles.yaml"
+ ],
+ "config_sha256": {
+  "configs/evflow.yaml": "d3fae5900be4a1d06bf79b1ab4f4a8c7ffacaadd7063773a19c9112770a46403",
+  "configs/eval_mvsec.yaml": "9d668acf7d2219861ef4f47162502a27485c7e7598ede8da0ef3fca0d34ccc99",
+  "configs/eraft.yaml": "3f95690eef9cecbd04f422ea8e7a0510bf241be3047deccad6710c90b94eabff",
+  "configs/v2e_corpus_maritime.yaml": "0234ce95ece6f93d22275784fec3cd36bd62b5cc480c80ab6d1bcf6242be8abb",
+  "configs/v2e_profiles.yaml": "5234aafe589caf55b5326247c1a891afd7c0caaa226cda90ebb787d7a3aad12f"
+ },
+ "inputs": {
+  "splits/smd_test.json": {
+   "manifest_sha256": "4883a16613ef6f5c4f3452036a1360165f4215052605ef43599fe0c71865a599",
+   "file_sha256": "cf9570da01c24bba10c7772f2b46c3ec3d643fa7f89a14466c1c3f69dbdac886"
+  },
+  "splits/lars_eval.json": {
+   "manifest_sha256": "adff4e8ca4bd8585a353348a128bba0d8f76cd7bc5c3cc8d3d3d2dfa83db25c9",
+   "file_sha256": "7c3651e094971e7680e6a751318276e1c79bef685befc6ea590ea12c32e773a7"
+  },
+  "splits/mvsec_test.json": {
+   "manifest_sha256": "b45014a33bfc02740e3804061554ea4a14955d50468e87bfd154fbeef14a8e2e",
+   "file_sha256": "f69191ff48304c7febfacb2cacda033065c3d505b0f6e72efacc9417747bcfc2"
+  },
+  "results/v2e_maritime_corpus.json": "eval stores",
+  "results/teacher/summary.json": "teacher stores",
+  "results/train/summary.json": "MVSEC runs",
+  "results/train/maritime_summary.json": "maritime runs",
+  "results/baselines/cm_tune.json": "frozen M0b parameters"
+ },
+ "units": {
+  "commands": "python -m evflow.eval.study_maritime (16 models x 5 T3 units + 16 T1 units = 96)"
+ },
+ "expected_outputs": [
+  "results/eval_maritime/<arm>/<seed>/<dataset>_<sequence>_{T3a,T3b}.json",
+  "results/eval/maritime_{selfsup,teacher}/1337/mvsec_*_dt{1,4}.json",
+  "results/eval_maritime/summary.json",
+  "results/maritime/clutter.json",
+  "results/TABLES.md",
+  "results/figures/clutter_ct.png"
+ ],
+ "estimated_gpu_hours": 2.0,
+ "estimated_wall_hours": 2.5,
+ "estimated_gpu_hours_basis": "~1,400 T3 windows per model; M1/R1/M0a fast (CPU metric-bound, 4 threads); M0b timed by the smoke (per-window CMax at 640x360) dominates; T1 units as Phase 6 (~2.6k-2.9k windows each)",
+ "disk_estimate_gb": 1,
+ "disk_estimate_basis": "per-window npz in runs/eval-maritime/npz",
+ "launch": "from a detached worktree at the prepared commit: nohup bash jobs/2026-10-12_eval-maritime.sh > runs/eval-maritime/job.log 2>&1 &",
+ "prepared_on_git_sha": "9df5b5954feac5ffb3a630f6e25b836ec0e4aa49"
+}
