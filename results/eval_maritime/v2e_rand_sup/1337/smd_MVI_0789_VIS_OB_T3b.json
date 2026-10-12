@@ -1,0 +1,80 @@
+{
+ "tier": "T3b",
+ "tier_note": "self-consistency (FWL > 1 better, RSAT < 1 better; round, t_ref = 1); not accuracy",
+ "model": "M1",
+ "arm": "v2e_rand_sup",
+ "seed": 1337,
+ "checkpoint_sha256": "8aa40f3225b55406136c4a2dd8edd1ce7db89e91a9264ed72815eb39a9b75686",
+ "dataset": "smd",
+ "sequence": "MVI_0789_VIS_OB",
+ "dt": 1,
+ "dt_unit": "source frame interval",
+ "representation": "voxel5",
+ "tags": [],
+ "run_id": "v2e_rand_sup_voxel5_s1337",
+ "selection": {
+  "rule": "min of v2e tune dt1 epe over epochs (mvsec_tune only)",
+  "split": "mvsec_tune",
+  "stream": "v2e",
+  "metric": "epe",
+  "dt": 1,
+  "selected_epoch": 28,
+  "value": 0.23227801363588052
+ },
+ "train_git_sha": "7904922a2883e9b05addaac3a639aa194be8258c",
+ "n_windows_total": 276,
+ "per_window_npz": "~/projects_02/event-maritime-flow/runs/eval-maritime/npz/v2e_rand_sup/1337/smd_MVI_0789_VIS_OB.npz",
+ "per_window_npz_sha256": "6f71ab1d30c3dbf3531225077ee9dbef1cd811acd57412ff1c14b9c85972609b",
+ "device": "NVIDIA RTX A4000",
+ "wall_time_s": 15.7,
+ "smoke": false,
+ "git_sha": "3cfe6fa6b7f5e90e5aa445a27473bb8b4ee815dd",
+ "git_dirty": false,
+ "created_by": "scripts/run_eval_maritime.py",
+ "created_at": "2026-10-12T21:07:58+00:00",
+ "metrics": {
+  "fwl": 1.0146675623038897,
+  "rsat": 1.0016424272572613
+ },
+ "ci95": {
+  "fwl": [
+   1.007585904711796,
+   1.0246228370006851
+  ],
+  "rsat": [
+   0.9992593234480267,
+   1.0049802969445474
+  ]
+ },
+ "n_windows": 276,
+ "n_windows_per_metric": {
+  "fwl": 255,
+  "rsat": 242
+ },
+ "protocol": {
+  "units": [
+   "smd_test/smd_MVI_0789_VIS_OB"
+  ],
+  "store_sha256": {
+   "smd_test/smd_MVI_0789_VIS_OB": "d7acf4cc9db6aae389c8d49caa3617ffeed7505ad5c38e8fc87cb51d056088b1"
+  },
+  "teacher_sha256": {
+   "smd_test/smd_MVI_0789_VIS_OB": "13f43f2286f5aee21b4b7adad5387e45d1e381345294e599c9b5a1dca40be456"
+  },
+  "end_clamped_us": {},
+  "corpus": "smd_test",
+  "resolution": "640x360 (v2e output grid)",
+  "window": "one source-frame interval (frames k -> k+1); flow in px per frame interval",
+  "frame_rate": "SMD: 30 fps (ffprobe r_frame_rate)",
+  "warmup_windows": 2,
+  "windows": "every window after the warm-up",
+  "slices": "all = full frame",
+  "ci": "moving-block bootstrap over windows, 1 s blocks"
+ },
+ "bootstrap": {
+  "resamples": 1000,
+  "ci": 0.95,
+  "seed": 0,
+  "method": "moving-block bootstrap over windows, 1 s blocks"
+ }
+}

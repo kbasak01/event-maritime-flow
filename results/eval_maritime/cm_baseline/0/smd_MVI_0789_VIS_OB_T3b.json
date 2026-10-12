@@ -1,0 +1,96 @@
+{
+ "tier": "T3b",
+ "tier_note": "self-consistency (FWL > 1 better, RSAT < 1 better; round, t_ref = 1); not accuracy",
+ "model": "M0b",
+ "arm": "cm_baseline",
+ "seed": 0,
+ "checkpoint_sha256": null,
+ "dataset": "smd",
+ "sequence": "MVI_0789_VIS_OB",
+ "dt": 1,
+ "dt_unit": "source frame interval",
+ "representation": "events (IWE)",
+ "tags": [],
+ "params": {
+  "tile_px": 64,
+  "sigmas": [
+   3.0,
+   1.5,
+   1.0
+  ],
+  "iters_global": 60,
+  "iters_tiles": 90,
+  "lr": 0.3,
+  "tv_weight": 0.01,
+  "t_refs": [
+   0.0,
+   0.5,
+   1.0
+  ],
+  "max_events": 200000,
+  "pad_px": 64
+ },
+ "params_provenance": {
+  "source": "results/baselines/cm_tune.json",
+  "sha256": "0514e2f19cde584e67122d9ceca3f1cf6d40a0088097028da0f8328676b0054a",
+  "argmin_cell": {
+   "tile_px": 64,
+   "tv_weight": 0.01
+  }
+ },
+ "n_windows_total": 276,
+ "per_window_npz": "~/projects_02/event-maritime-flow/runs/eval-maritime/npz/cm_baseline/0/smd_MVI_0789_VIS_OB.npz",
+ "per_window_npz_sha256": "7eb94b8972e96ac096e97a493d63242c34e1d4bf2adf7a5adbad5445cda0c387",
+ "device": "NVIDIA RTX A4000",
+ "wall_time_s": 487.9,
+ "smoke": false,
+ "git_sha": "5eea7f9d9b78a2dcfb83b3f84d086557ee6052b8",
+ "git_dirty": false,
+ "created_by": "scripts/run_eval_maritime.py",
+ "created_at": "2026-10-12T20:23:54+00:00",
+ "metrics": {
+  "fwl": 1.4136297934814481,
+  "rsat": 0.9917561208201341
+ },
+ "ci95": {
+  "fwl": [
+   1.2697707868499504,
+   1.521415725700183
+  ],
+  "rsat": [
+   0.9875465717425452,
+   0.9953936633358927
+  ]
+ },
+ "n_windows": 276,
+ "n_windows_per_metric": {
+  "fwl": 255,
+  "rsat": 242
+ },
+ "protocol": {
+  "units": [
+   "smd_test/smd_MVI_0789_VIS_OB"
+  ],
+  "store_sha256": {
+   "smd_test/smd_MVI_0789_VIS_OB": "d7acf4cc9db6aae389c8d49caa3617ffeed7505ad5c38e8fc87cb51d056088b1"
+  },
+  "teacher_sha256": {
+   "smd_test/smd_MVI_0789_VIS_OB": "13f43f2286f5aee21b4b7adad5387e45d1e381345294e599c9b5a1dca40be456"
+  },
+  "end_clamped_us": {},
+  "corpus": "smd_test",
+  "resolution": "640x360 (v2e output grid)",
+  "window": "one source-frame interval (frames k -> k+1); flow in px per frame interval",
+  "frame_rate": "SMD: 30 fps (ffprobe r_frame_rate)",
+  "warmup_windows": 2,
+  "windows": "every window after the warm-up",
+  "slices": "all = full frame",
+  "ci": "moving-block bootstrap over windows, 1 s blocks"
+ },
+ "bootstrap": {
+  "resamples": 1000,
+  "ci": 0.95,
+  "seed": 0,
+  "method": "moving-block bootstrap over windows, 1 s blocks"
+ }
+}

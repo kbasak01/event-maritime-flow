@@ -1,0 +1,121 @@
+{
+ "tier": "T3a",
+ "tier_note": "agreement with a frame-based RAFT teacher (teacher-EPE), not accuracy; mask = FB-consistent AND events-in-window AND slice (D-055, D-057)",
+ "model": "M0b",
+ "arm": "cm_baseline",
+ "seed": 0,
+ "checkpoint_sha256": null,
+ "dataset": "smd",
+ "sequence": "MVI_0789_VIS_OB",
+ "dt": 1,
+ "dt_unit": "source frame interval",
+ "representation": "events (IWE)",
+ "tags": [],
+ "params": {
+  "tile_px": 64,
+  "sigmas": [
+   3.0,
+   1.5,
+   1.0
+  ],
+  "iters_global": 60,
+  "iters_tiles": 90,
+  "lr": 0.3,
+  "tv_weight": 0.01,
+  "t_refs": [
+   0.0,
+   0.5,
+   1.0
+  ],
+  "max_events": 200000,
+  "pad_px": 64
+ },
+ "params_provenance": {
+  "source": "results/baselines/cm_tune.json",
+  "sha256": "0514e2f19cde584e67122d9ceca3f1cf6d40a0088097028da0f8328676b0054a",
+  "argmin_cell": {
+   "tile_px": 64,
+   "tv_weight": 0.01
+  }
+ },
+ "n_windows_total": 276,
+ "per_window_npz": "~/projects_02/event-maritime-flow/runs/eval-maritime/npz/cm_baseline/0/smd_MVI_0789_VIS_OB.npz",
+ "per_window_npz_sha256": "7eb94b8972e96ac096e97a493d63242c34e1d4bf2adf7a5adbad5445cda0c387",
+ "device": "NVIDIA RTX A4000",
+ "wall_time_s": 487.9,
+ "smoke": false,
+ "git_sha": "5eea7f9d9b78a2dcfb83b3f84d086557ee6052b8",
+ "git_dirty": false,
+ "created_by": "scripts/run_eval_maritime.py",
+ "created_at": "2026-10-12T20:23:54+00:00",
+ "metrics": {
+  "teacher_epe": 7.31297649554039,
+  "teacher_npe_1": 89.7502872070584,
+  "teacher_npe_3": 60.970818879868936,
+  "teacher_ae_deg": 21.40847579521393,
+  "teacher_mask_coverage": 0.9669276651821659,
+  "events_px_fraction": 0.0005038339120370371
+ },
+ "ci95": {
+  "teacher_epe": [
+   5.697978964102676,
+   10.092805013423146
+  ],
+  "teacher_npe_1": [
+   88.08576024293451,
+   91.64926993606933
+  ],
+  "teacher_npe_3": [
+   54.46605492106275,
+   70.62161714850916
+  ],
+  "teacher_ae_deg": [
+   13.006225290848436,
+   36.445247674318985
+  ],
+  "teacher_mask_coverage": [
+   0.9582424906117903,
+   0.9772595254157861
+  ],
+  "events_px_fraction": [
+   0.00020601969794182773,
+   0.0007261249339522946
+  ]
+ },
+ "n_windows": 276,
+ "n_windows_per_metric": {
+  "teacher_epe": 255,
+  "teacher_npe_1": 255,
+  "teacher_npe_3": 255,
+  "teacher_ae_deg": 255,
+  "teacher_mask_coverage": 276,
+  "events_px_fraction": 276
+ },
+ "mean_teacher_mask_px": 114.1231884057971,
+ "protocol": {
+  "units": [
+   "smd_test/smd_MVI_0789_VIS_OB"
+  ],
+  "store_sha256": {
+   "smd_test/smd_MVI_0789_VIS_OB": "d7acf4cc9db6aae389c8d49caa3617ffeed7505ad5c38e8fc87cb51d056088b1"
+  },
+  "teacher_sha256": {
+   "smd_test/smd_MVI_0789_VIS_OB": "13f43f2286f5aee21b4b7adad5387e45d1e381345294e599c9b5a1dca40be456"
+  },
+  "end_clamped_us": {},
+  "corpus": "smd_test",
+  "resolution": "640x360 (v2e output grid)",
+  "window": "one source-frame interval (frames k -> k+1); flow in px per frame interval",
+  "frame_rate": "SMD: 30 fps (ffprobe r_frame_rate)",
+  "warmup_windows": 2,
+  "windows": "every window after the warm-up",
+  "slices": "all = full frame",
+  "ci": "moving-block bootstrap over windows, 1 s blocks"
+ },
+ "bootstrap": {
+  "resamples": 1000,
+  "ci": 0.95,
+  "seed": 0,
+  "method": "moving-block bootstrap over windows, 1 s blocks"
+ }
+}

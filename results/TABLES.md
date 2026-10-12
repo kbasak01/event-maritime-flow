@@ -310,8 +310,8 @@ Phase 7 step 4: the two maritime arms (trained on v2e(SMD + LaRS train), selecte
 | T1 | zero_flow | M0a | 1.279 [1.150, 1.442] | 2.119 [1.872, 2.400] | 1.872 [1.689, 2.084] | 0.890 [0.800, 1.004] |
 | T1 | v2e_fixed_sup | M1 | 1.324 [1.219, 1.447] r [1.288, 1.378] | 1.960 [1.719, 2.248] r [1.928, 1.979] | 1.866 [1.687, 2.081] r [1.813, 1.910] | 0.401 [0.344, 0.462] r [0.365, 0.448] |
 | T1 | v2e_selfsup | M1 | 1.017 [0.947, 1.108] | 1.489 [1.308, 1.709] | 1.263 [1.132, 1.415] | 0.773 [0.726, 0.797] |
-| T1 | maritime_selfsup | M1 | — (run not trained) | — (run not trained) | — (run not trained) | — (run not trained) |
-| T1 | maritime_teacher | M1 | — (run not trained) | — (run not trained) | — (run not trained) | — (run not trained) |
+| T1 | maritime_selfsup | M1 | 1.244 [1.207, 1.288] | 1.404 [1.286, 1.545] | 1.308 [1.224, 1.405] | 1.159 [1.094, 1.188] |
+| T1 | maritime_teacher | M1 | 0.904 [0.836, 0.982] | 1.320 [1.157, 1.512] | 1.158 [1.044, 1.297] | 0.544 [0.468, 0.604] |
 
 **EPE (px), dt = 4**
 
@@ -320,8 +320,8 @@ Phase 7 step 4: the two maritime arms (trained on v2e(SMD + LaRS train), selecte
 | T1 | zero_flow | M0a | 4.851 [4.377, 5.437] | 7.513 [6.740, 8.358] | 6.635 [6.040, 7.340] | 3.458 [3.135, 3.868] |
 | T1 | v2e_fixed_sup | M1 | 3.882 [3.479, 4.374] r [3.817, 3.992] | 6.321 [5.569, 7.174] r [6.265, 6.418] | 5.493 [4.865, 6.232] r [5.410, 5.601] | 1.132 [0.973, 1.340] r [1.091, 1.153] |
 | T1 | v2e_selfsup | M1 | 3.521 [3.093, 4.043] | 6.125 [5.374, 6.927] | 5.180 [4.581, 5.857] | 1.387 [1.225, 1.507] |
-| T1 | maritime_selfsup | M1 | — (run not trained) | — (run not trained) | — (run not trained) | — (run not trained) |
-| T1 | maritime_teacher | M1 | — (run not trained) | — (run not trained) | — (run not trained) | — (run not trained) |
+| T1 | maritime_selfsup | M1 | 2.405 [2.206, 2.645] | 4.295 [3.764, 4.908] | 3.349 [2.962, 3.834] | 1.408 [1.235, 1.486] |
+| T1 | maritime_teacher | M1 | 2.455 [2.230, 2.736] | 4.486 [3.910, 5.124] | 3.555 [3.144, 4.037] | 1.566 [1.308, 1.760] |
 
 # Maritime tables (T3)
 
@@ -329,7 +329,110 @@ Phase 7 step 4: the two maritime arms (trained on v2e(SMD + LaRS train), selecte
 
 **Protocol (D-054, D-057).** 640×360 v2e output grid (LaRS sources of other aspect ratios are stretched); windows of one source-frame interval, flow in px per frame interval; SMD at 30 fps (ffprobe), **LaRS at an assumed 30 fps (D-024)** — px per frame interval does not depend on it; the first windows of each v2e unit are dropped (warm-up, count in the summary's `protocol`). LaRS kf = the window ending at each keyframe of the `lars_eval` corpus clips, sliced by the keyframe's LaRS label (water / sky / obstacle; all = full frame). Teacher mask = forward-backward-consistent ∧ pixel has events ∧ slice (D-055). mean [95 % CI]: SMD pooled = mean of the three video means, stratified moving-block bootstrap (1 s blocks); LaRS = cluster bootstrap over clips; 1000 resamples, seed 0. 3-seed arms: per-window seed mean, `r` = range of the per-seed means. M1 arms other than the maritime ones were trained on MVSEC driving (346×260) and are applied zero-shot. R1 = E-RAFT DSEC checkpoint, `reference_external` (trained on 100 ms DSEC volumes).
 
-T3 evaluation summary not present yet (`results/eval_maritime/summary.json`).
+## Table F-T3a — agreement with the RAFT teacher (T3a)
+
+**Teacher mask and event coverage** (model-independent; mean over windows)
+
+| tier | quantity | SMD test (3 videos) | LaRS kf: all | kf: water | kf: sky | kf: obstacle | LaRS all windows |
+|---|---|---|---|---|---|---|---|
+| T3a | teacher mask coverage (FB-consistent px / slice px) | 0.885 | 0.932 | 0.897 | 0.958 | 0.981 | 0.926 |
+| T3a | px with events / slice px | 0.007 | 0.036 | 0.028 | 0.006 | 0.087 | 0.036 |
+| T3a | slice px / frame px | 1.000 | 1.000 | 0.496 | 0.261 | 0.228 | 1.000 |
+
+**teacher-EPE (px per frame interval)**
+
+| tier | arm | model | seeds | SMD test (3 videos) | LaRS kf: all | kf: water | kf: sky | kf: obstacle | LaRS all windows |
+|---|---|---|---|---|---|---|---|---|---|
+| T3a | zero_flow | M0a | – | 14.720 [13.387, 16.333] | 3.310 [1.842, 5.384] | 3.605 [2.057, 5.704] | 2.535 [1.229, 4.237] | 3.132 [1.670, 5.551] | 3.071 [1.927, 4.517] |
+| T3a | cm_baseline | M0b | – | 4.914 [3.853, 6.785] | 1.723 [1.282, 2.276] | 2.180 [1.610, 2.955] | 2.295 [1.180, 3.716] | 1.422 [0.985, 2.016] | 1.942 [1.563, 2.348] |
+| T3a | eraft_dsec `reference_external` | R1 | – | 13.306 [11.993, 14.924] | 1.108 [0.833, 1.487] | 1.550 [1.052, 2.302] | 1.224 [0.579, 2.310] | 1.175 [0.760, 1.772] | 1.259 [0.895, 1.791] |
+| T3a | real_sup | M1 | 1337/2026/7 | 13.834 [12.495, 15.477] r [13.083, 14.849] | 3.149 [1.804, 5.239] r [3.099, 3.184] | 3.980 [2.536, 6.185] r [3.876, 4.095] | 2.199 [1.017, 3.889] r [2.151, 2.266] | 2.613 [1.209, 4.973] r [2.576, 2.670] | 2.878 [1.823, 4.282] r [2.830, 2.902] |
+| T3a | v2e_fixed_sup | M1 | 1337/2026/7 | 14.973 [13.557, 16.775] r [14.919, 15.081] | 2.978 [1.704, 5.056] r [2.928, 3.027] | 3.776 [2.320, 5.943] r [3.708, 3.814] | 2.093 [0.908, 3.807] r [2.066, 2.111] | 2.414 [1.073, 4.748] r [2.381, 2.433] | 2.712 [1.720, 4.112] r [2.663, 2.760] |
+| T3a | v2e_rand_sup | M1 | 1337/2026/7 | 15.275 [13.856, 17.077] r [14.958, 15.637] | 2.881 [1.612, 4.929] r [2.819, 2.927] | 3.668 [2.265, 5.732] r [3.515, 3.812] | 1.988 [0.857, 3.689] r [1.975, 1.997] | 2.321 [0.983, 4.654] r [2.313, 2.336] | 2.592 [1.634, 3.984] r [2.528, 2.660] |
+| T3a | real_selfsup | M1 | 1337 | 14.513 [13.182, 16.146] | 2.471 [1.251, 4.456] | 3.195 [1.746, 5.289] | 1.922 [0.811, 3.599] | 2.065 [0.851, 4.209] | 2.216 [1.330, 3.500] |
+| T3a | v2e_selfsup | M1 | 1337 | 14.488 [13.156, 16.182] | 2.236 [1.177, 4.005] | 2.963 [1.594, 4.973] | 1.879 [0.792, 3.513] | 1.794 [0.773, 3.545] | 2.059 [1.251, 3.222] |
+| T3a | maritime_selfsup | M1 | 1337 | 11.827 [10.620, 13.444] | 2.481 [1.629, 4.005] | 3.075 [2.030, 4.859] | 2.277 [1.364, 3.749] | 2.147 [1.334, 3.619] | 2.282 [1.677, 3.289] |
+| T3a | maritime_teacher | M1 | 1337 | 10.790 [9.425, 12.647] | 1.505 [0.792, 2.722] | 1.843 [1.037, 3.142] | 1.339 [0.548, 2.681] | 1.337 [0.634, 2.624] | 1.367 [0.859, 2.148] |
+
+**teacher-3PE (% px with teacher-EPE > 3 px)**
+
+| tier | arm | model | seeds | SMD test (3 videos) | LaRS kf: all | kf: water | kf: sky | kf: obstacle | LaRS all windows |
+|---|---|---|---|---|---|---|---|---|---|
+| T3a | zero_flow | M0a | – | 88.3 [83.5, 93.1] | 25.1 [14.8, 36.6] | 31.1 [19.6, 43.7] | 14.1 [4.1, 26.1] | 19.8 [9.2, 30.8] | 24.9 [15.0, 35.6] |
+| T3a | cm_baseline | M0b | – | 38.6 [32.9, 46.3] | 15.8 [9.5, 22.7] | 22.3 [15.5, 29.9] | 17.3 [5.5, 31.3] | 10.7 [4.4, 17.8] | 17.9 [12.1, 23.5] |
+| T3a | eraft_dsec `reference_external` | R1 | – | 78.8 [74.7, 84.9] | 6.6 [2.3, 12.9] | 11.1 [5.2, 19.4] | 4.6 [0.0, 11.1] | 7.3 [1.8, 14.1] | 7.2 [4.0, 11.6] |
+| T3a | real_sup | M1 | 1337/2026/7 | 89.3 [84.2, 94.0] r [88.9, 89.5] | 23.9 [16.1, 33.1] r [23.9, 24.0] | 33.5 [24.0, 42.9] r [32.1, 34.6] | 11.2 [2.5, 22.2] r [10.1, 12.5] | 15.1 [6.9, 25.2] r [14.8, 15.6] | 22.9 [15.2, 30.8] r [22.8, 22.9] |
+| T3a | v2e_fixed_sup | M1 | 1337/2026/7 | 89.7 [84.3, 94.2] r [89.6, 89.7] | 21.1 [14.0, 28.7] r [20.7, 21.9] | 30.2 [21.8, 39.8] r [29.7, 30.8] | 10.4 [1.7, 21.3] r [9.7, 11.4] | 12.0 [4.6, 20.5] r [11.7, 12.4] | 20.1 [13.7, 27.3] r [19.7, 20.5] |
+| T3a | v2e_rand_sup | M1 | 1337/2026/7 | 89.5 [84.3, 94.1] r [89.5, 89.6] | 19.9 [13.0, 27.5] r [19.5, 20.3] | 29.9 [21.7, 38.7] r [28.3, 31.4] | 10.0 [1.7, 20.4] r [8.9, 11.1] | 10.6 [3.6, 18.6] r [10.4, 10.9] | 18.8 [12.8, 25.7] r [18.4, 19.2] |
+| T3a | real_selfsup | M1 | 1337 | 87.5 [82.7, 92.5] | 14.0 [7.0, 22.2] | 23.9 [13.6, 35.2] | 9.4 [0.7, 20.1] | 8.8 [2.6, 16.2] | 13.8 [7.3, 21.4] |
+| T3a | v2e_selfsup | M1 | 1337 | 86.8 [82.5, 91.9] | 13.0 [6.2, 21.1] | 22.4 [12.8, 33.4] | 10.9 [1.7, 21.9] | 7.5 [1.7, 14.8] | 13.0 [6.9, 20.6] |
+| T3a | maritime_selfsup | M1 | 1337 | 75.5 [71.1, 82.6] | 16.2 [11.2, 22.6] | 24.9 [18.1, 32.5] | 11.8 [4.6, 21.0] | 11.0 [6.5, 17.1] | 16.3 [12.0, 21.6] |
+| T3a | maritime_teacher | M1 | 1337 | 73.5 [68.0, 82.0] | 6.1 [1.9, 11.8] | 10.3 [4.6, 17.3] | 5.5 [0.0, 13.8] | 3.9 [0.6, 9.9] | 6.7 [3.0, 11.4] |
+
+## Table G-T3b — motion-compensation self-consistency (T3b)
+
+**FWL (> 1 better)**
+
+| tier | arm | model | seeds | SMD test (3 videos) | LaRS kf: all | kf: water | kf: sky | kf: obstacle | LaRS all windows |
+|---|---|---|---|---|---|---|---|---|---|
+| T3b | zero_flow | M0a | – | 1.000 [1.000, 1.000] | 1.000 [1.000, 1.000] | 1.000 [1.000, 1.000] | 1.000 [1.000, 1.000] | 1.000 [1.000, 1.000] | 1.000 [1.000, 1.000] |
+| T3b | cm_baseline | M0b | – | 1.548 [1.403, 1.696] | 1.508 [1.363, 1.669] | 1.355 [1.268, 1.448] | 1.209 [1.082, 1.360] | 1.460 [1.308, 1.639] | 1.507 [1.372, 1.656] |
+| T3b | eraft_dsec `reference_external` | R1 | – | 1.157 [1.074, 1.271] | 1.382 [1.251, 1.531] | 1.218 [1.148, 1.297] | 1.198 [1.096, 1.327] | 1.393 [1.262, 1.544] | 1.361 [1.245, 1.495] |
+| T3b | real_sup | M1 | 1337/2026/7 | 1.046 [1.032, 1.054] r [1.038, 1.051] | 1.144 [1.090, 1.204] r [1.143, 1.145] | 1.126 [1.077, 1.177] r [1.121, 1.130] | 1.033 [1.008, 1.073] r [1.027, 1.039] | 1.113 [1.059, 1.171] r [1.108, 1.115] | 1.152 [1.100, 1.211] r [1.149, 1.155] |
+| T3b | v2e_fixed_sup | M1 | 1337/2026/7 | 1.036 [1.024, 1.043] r [1.035, 1.037] | 1.168 [1.105, 1.236] r [1.162, 1.173] | 1.125 [1.082, 1.166] r [1.119, 1.128] | 1.043 [1.010, 1.091] r [1.038, 1.048] | 1.157 [1.090, 1.228] r [1.153, 1.162] | 1.175 [1.116, 1.242] r [1.173, 1.179] |
+| T3b | v2e_rand_sup | M1 | 1337/2026/7 | 1.033 [1.021, 1.041] r [1.031, 1.039] | 1.195 [1.119, 1.281] r [1.190, 1.201] | 1.138 [1.094, 1.182] r [1.132, 1.150] | 1.055 [1.013, 1.118] r [1.052, 1.057] | 1.189 [1.109, 1.276] r [1.182, 1.193] | 1.201 [1.130, 1.285] r [1.197, 1.208] |
+| T3b | real_selfsup | M1 | 1337 | 1.011 [1.003, 1.022] | 1.244 [1.149, 1.352] | 1.094 [1.047, 1.146] | 1.107 [1.047, 1.189] | 1.294 [1.191, 1.413] | 1.243 [1.154, 1.347] |
+| T3b | v2e_selfsup | M1 | 1337 | 1.027 [1.009, 1.046] | 1.305 [1.219, 1.399] | 1.171 [1.113, 1.232] | 1.105 [1.053, 1.174] | 1.312 [1.222, 1.418] | 1.300 [1.220, 1.394] |
+| T3b | maritime_selfsup | M1 | 1337 | 1.301 [1.200, 1.415] | 1.446 [1.362, 1.538] | 1.383 [1.315, 1.458] | 1.213 [1.146, 1.298] | 1.400 [1.308, 1.501] | 1.448 [1.369, 1.534] |
+| T3b | maritime_teacher | M1 | 1337 | 1.225 [1.141, 1.321] | 1.322 [1.234, 1.422] | 1.233 [1.172, 1.299] | 1.171 [1.093, 1.268] | 1.304 [1.210, 1.408] | 1.320 [1.238, 1.415] |
+
+**RSAT (< 1 better)** — on the windows where RSAT is defined for every model (a flow that warps all events off the frame leaves it undefined); n = windows. Off-frame events leave the sum, so for border bands (sky, water) read RSAT beside FWL (D-057)
+
+| tier | arm | model | seeds | SMD test (3 videos) | LaRS kf: all | kf: water | kf: sky | kf: obstacle | LaRS all windows |
+|---|---|---|---|---|---|---|---|---|---|
+| T3b | zero_flow | M0a | – | 1.000 [1.000, 1.000] n=831 | 1.000 [1.000, 1.000] n=40 | 1.000 [1.000, 1.000] n=40 | 1.000 [1.000, 1.000] n=26 | 1.000 [1.000, 1.000] n=39 | 1.000 [1.000, 1.000] n=475 |
+| T3b | cm_baseline | M0b | – | 0.986 [0.982, 0.991] n=831 | 0.961 [0.940, 0.979] n=40 | 0.983 [0.964, 1.007] n=40 | 0.962 [0.930, 0.987] n=26 | 0.957 [0.934, 0.977] n=39 | 0.958 [0.941, 0.973] n=475 |
+| T3b | eraft_dsec `reference_external` | R1 | – | 0.996 [0.993, 1.000] n=831 | 0.957 [0.939, 0.973] n=40 | 0.978 [0.966, 0.990] n=40 | 0.967 [0.935, 0.991] n=26 | 0.950 [0.930, 0.968] n=39 | 0.957 [0.941, 0.972] n=475 |
+| T3b | real_sup | M1 | 1337/2026/7 | 1.000 [0.998, 1.003] r [0.999, 1.001] n=831 | 0.980 [0.966, 0.990] r [0.979, 0.980] n=40 | 0.983 [0.974, 0.992] r [0.982, 0.984] n=40 | 0.994 [0.984, 1.000] r [0.993, 0.995] n=26 | 0.979 [0.965, 0.991] r [0.978, 0.980] n=39 | 0.980 [0.968, 0.990] r [0.980, 0.981] n=475 |
+| T3b | v2e_fixed_sup | M1 | 1337/2026/7 | 1.001 [0.999, 1.004] r [1.000, 1.001] n=831 | 0.977 [0.963, 0.988] r [0.976, 0.978] n=40 | 0.986 [0.977, 0.995] r [0.985, 0.987] n=40 | 0.993 [0.982, 1.000] r [0.992, 0.993] n=26 | 0.973 [0.958, 0.986] r [0.973, 0.974] n=39 | 0.978 [0.965, 0.988] r [0.977, 0.979] n=475 |
+| T3b | v2e_rand_sup | M1 | 1337/2026/7 | 1.001 [0.999, 1.003] r [1.000, 1.001] n=831 | 0.974 [0.960, 0.986] r [0.973, 0.974] n=40 | 0.985 [0.976, 0.993] r [0.983, 0.986] n=40 | 0.989 [0.977, 0.998] r [0.987, 0.990] n=26 | 0.969 [0.954, 0.983] r [0.969, 0.970] n=39 | 0.974 [0.961, 0.985] r [0.973, 0.975] n=475 |
+| T3b | real_selfsup | M1 | 1337 | 1.000 [1.000, 1.001] n=831 | 0.970 [0.957, 0.983] n=40 | 0.989 [0.981, 0.996] n=40 | 0.978 [0.962, 0.991] n=26 | 0.959 [0.943, 0.974] n=39 | 0.971 [0.958, 0.983] n=475 |
+| T3b | v2e_selfsup | M1 | 1337 | 0.998 [0.996, 1.000] n=831 | 0.959 [0.944, 0.973] n=40 | 0.979 [0.969, 0.987] n=40 | 0.971 [0.956, 0.984] n=26 | 0.952 [0.935, 0.967] n=39 | 0.960 [0.946, 0.973] n=475 |
+| T3b | maritime_selfsup | M1 | 1337 | 0.974 [0.969, 0.980] n=831 | 0.938 [0.922, 0.952] n=40 | 0.947 [0.934, 0.958] n=40 | 0.951 [0.933, 0.968] n=26 | 0.939 [0.922, 0.955] n=39 | 0.936 [0.921, 0.948] n=475 |
+| T3b | maritime_teacher | M1 | 1337 | 0.991 [0.989, 0.996] n=831 | 0.958 [0.943, 0.970] n=40 | 0.974 [0.962, 0.983] n=40 | 0.970 [0.949, 0.989] n=26 | 0.954 [0.939, 0.968] n=39 | 0.959 [0.946, 0.970] n=475 |
+
+## Table H — sea-clutter event budget, synthetic v2e(LaRS) events (T3b)
+
+Keyframe windows of the 40 `lars_eval` clips converted at three contrast-threshold multipliers on the calibrated profile (D-054, D-058); each event takes the LaRS class of its pixel. Event share = class events / all events; pixel share = class px / all px; enrichment = event share / pixel share; events per px per frame interval (LaRS frame rate assumed, D-024). Pooled over clips (event-weighted), [95 % CI] = cluster bootstrap over clips. Synthetic: these describe v2e on LaRS frames, not a real sensor.
+
+| tier | CT | class | event share | pixel share | enrichment | events / px / frame interval |
+|---|---|---|---|---|---|---|
+| T3b | ×0.67 | water | 0.334 [0.219, 0.538] | 0.496 [0.462, 0.532] | 0.673 [0.445, 1.064] | 0.087 [0.059, 0.117] |
+| T3b | ×0.67 | sky | 0.017 [0.004, 0.036] | 0.261 [0.204, 0.323] | 0.066 [0.015, 0.128] | 0.009 [0.002, 0.020] |
+| T3b | ×0.67 | obstacle | 0.643 [0.439, 0.763] | 0.228 [0.180, 0.276] | 2.819 [1.903, 3.701] | 0.366 [0.142, 0.697] |
+| T3b | ×1 | water | 0.276 [0.169, 0.500] | 0.496 [0.462, 0.532] | 0.555 [0.341, 0.993] | 0.034 [0.022, 0.047] |
+| T3b | ×1 | sky | 0.018 [0.003, 0.042] | 0.261 [0.204, 0.323] | 0.067 [0.012, 0.149] | 0.004 [0.001, 0.010] |
+| T3b | ×1 | obstacle | 0.701 [0.479, 0.813] | 0.228 [0.180, 0.276] | 3.073 [2.061, 4.014] | 0.189 [0.067, 0.380] |
+| T3b | ×1.5 | water | 0.211 [0.125, 0.448] | 0.496 [0.462, 0.532] | 0.425 [0.255, 0.889] | 0.011 [0.007, 0.016] |
+| T3b | ×1.5 | sky | 0.016 [0.002, 0.049] | 0.261 [0.204, 0.323] | 0.060 [0.009, 0.171] | 0.002 [0.000, 0.004] |
+| T3b | ×1.5 | obstacle | 0.768 [0.530, 0.859] | 0.228 [0.180, 0.276] | 3.364 [2.258, 4.302] | 0.090 [0.026, 0.199] |
+
+**Water enrichment by LaRS scene attribute (CT ×1.0)** — per level, the *mean of per-clip* water enrichment (not the pooled, event-weighted value of the table above); levels with fewer than 3 clips are not reported; ρ = Spearman of per-clip water enrichment on the ordinal / binary attribute, clip-bootstrap 95 % CI; small levels (n < 10) make ρ fragile.
+
+| tier | attribute | levels (n clips, mean water enrichment) | Spearman ρ [CI] |
+|---|---|---|---|
+| T3b | waves | moderate: n=38, enr. 0.78; rough: n=1 (not reported); still: n=1 (not reported) | — |
+| T3b | reflections | moderate: n=22, enr. 0.63; none: n=18, enr. 0.92 | -0.19 [-0.51, 0.14] (n=40) |
+| T3b | special.glitter | false: n=35, enr. 0.65; true: n=5, enr. 1.50 | 0.46 [0.17, 0.66] (n=40) |
+| T3b | special.wakes | false: n=36, enr. 0.82; true: n=4, enr. 0.22 | -0.30 [-0.47, -0.10] (n=40) |
+| T3b | special.extra_bright | false: n=38, enr. 0.75; true: n=2 (not reported) | — |
+| T3b | special.extra_dark | false: n=36, enr. 0.71; true: n=4, enr. 1.17 | 0.22 [-0.16, 0.52] (n=40) |
+| T3b | special.fog | false: n=37, enr. 0.79; true: n=3, enr. 0.36 | -0.19 [-0.40, 0.06] (n=40) |
+| T3b | special.dirty_lens | false: n=39, enr. 0.77; true: n=1 (not reported) | — |
+| T3b | special.plants_debris | false: n=40, enr. 0.76 | — |
+| T3b | special.rain | false: n=40, enr. 0.76 | — |
+| T3b | scene_type | river_like: n=11, enr. 0.67; sea_like: n=29, enr. 0.79 | — |
+| T3b | lighting | day_like: n=35, enr. 0.69; dusk_like: n=4, enr. 1.26; night_like: n=1 (not reported) | — |
 
 # Sources
 
@@ -338,8 +441,12 @@ T3 evaluation summary not present yet (`results/eval_maritime/summary.json`).
 - `results/baselines/eraft_mvsec20/`
 - `results/baselines/zero_flow/`
 - `results/eval/aggregate.json`
+- `results/eval/maritime_selfsup/1337/`
+- `results/eval/maritime_teacher/1337/`
 - `results/eval/paired.json`
 - `results/eval/real_sup/1337/`
 - `results/eval/summary.json`
 - `results/eval/v2e_fixed_sup/1337/`
+- `results/eval_maritime/summary.json`
+- `results/maritime/clutter.json`
 - units: 298/298 present (`results/eval/summary.json`)

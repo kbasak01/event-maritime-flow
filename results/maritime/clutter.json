@@ -1,0 +1,1833 @@
+{
+ "kind": "clutter_study",
+ "tier": "T3b",
+ "tier_note": "synthetic: v2e events simulated from LaRS frames (assumed 30 fps, D-024; 640x360 stretched, D-054); event-budget statistics, no flow reference; inherits the source frames' dynamic range and blur (plan section 0(1))",
+ "plan_step": "Phase 7 step 5",
+ "protocol": {
+  "windows": "keyframe window (keyframe - 1 -> keyframe), one frame interval",
+  "labels": "LaRS keyframe semantic mask, nearest-resized to 640x360; ignore px count in totals, in no class",
+  "shares": "event_share = class events / all events; pixel_share = class px / all px; enrichment = event_share / pixel_share; events_per_px per frame interval",
+  "pooled": "events and pixels summed over clips; 95 % CI = cluster bootstrap over clips, 1000 resamples, seed 0",
+  "attributes": "LaRS image_annotations.json of the (first) keyframe; levels with n < 3 clips not reported; Spearman rho with clip-bootstrap CI at CT x1.0",
+  "ct_variants": [
+   0.67,
+   1.0,
+   1.5
+  ]
+ },
+ "n_clips": 40,
+ "by_ct": {
+  "ct067": {
+   "ct_multiplier": 0.67,
+   "corpus": "lars_eval_ct067",
+   "pos_neg_thres": 0.402,
+   "n_clips": 40,
+   "pooled": {
+    "water": {
+     "event_share": {
+      "mean": 0.33396429937246497,
+      "ci95": [
+       0.21887184109968444,
+       0.5382259540541375
+      ],
+      "n_valid_resamples": 1000
+     },
+     "pixel_share": {
+      "mean": 0.4964076605902778,
+      "ci95": [
+       0.4620617350260417,
+       0.5322145128038195
+      ],
+      "n_valid_resamples": 1000
+     },
+     "enrichment": {
+      "mean": 0.6727621789223567,
+      "ci95": [
+       0.44529342260913113,
+       1.063958052800104
+      ],
+      "n_valid_resamples": 1000
+     },
+     "events_per_px": {
+      "mean": 0.08723373420973998,
+      "ci95": [
+       0.05864347535112387,
+       0.11705910715483496
+      ],
+      "n_valid_resamples": 1000
+     },
+     "n_clips_with_class": 40
+    },
+    "sky": {
+     "event_share": {
+      "mean": 0.017143196654708436,
+      "ci95": [
+       0.003573448621873715,
+       0.03570274892857706
+      ],
+      "n_valid_resamples": 1000
+     },
+     "pixel_share": {
+      "mean": 0.2614350043402778,
+      "ci95": [
+       0.20385257432725698,
+       0.32297349446614587
+      ],
+      "n_valid_resamples": 1000
+     },
+     "enrichment": {
+      "mean": 0.06557345562033172,
+      "ci95": [
+       0.014628207468936397,
+       0.12842682492171947
+      ],
+      "n_valid_resamples": 1000
+     },
+     "events_per_px": {
+      "mean": 0.008502584684473423,
+      "ci95": [
+       0.0017685457210905701,
+       0.01986002540475649
+      ],
+      "n_valid_resamples": 1000
+     },
+     "n_clips_with_class": 38
+    },
+    "obstacle": {
+     "event_share": {
+      "mean": 0.6432046045458006,
+      "ci95": [
+       0.4390109005078022,
+       0.7632352641907337
+      ],
+      "n_valid_resamples": 1000
+     },
+     "pixel_share": {
+      "mean": 0.22814051649305556,
+      "ci95": [
+       0.18024602322048613,
+       0.2759659939236111
+      ],
+      "n_valid_resamples": 1000
+     },
+     "enrichment": {
+      "mean": 2.8193352694780076,
+      "ci95": [
+       1.9032085329033535,
+       3.70114424173147
+      ],
+      "n_valid_resamples": 1000
+     },
+     "events_per_px": {
+      "mean": 0.36556921784714985,
+      "ci95": [
+       0.14203156893274926,
+       0.697075647383963
+      ],
+      "n_valid_resamples": 1000
+     },
+     "n_clips_with_class": 40
+    }
+   }
+  },
+  "ct100": {
+   "ct_multiplier": 1.0,
+   "corpus": "lars_eval_ct100",
+   "pos_neg_thres": null,
+   "n_clips": 40,
+   "pooled": {
+    "water": {
+     "event_share": {
+      "mean": 0.275725800623613,
+      "ci95": [
+       0.16883645512467335,
+       0.4997369843700315
+      ],
+      "n_valid_resamples": 1000
+     },
+     "pixel_share": {
+      "mean": 0.4964076605902778,
+      "ci95": [
+       0.4620617350260417,
+       0.5322145128038195
+      ],
+      "n_valid_resamples": 1000
+     },
+     "enrichment": {
+      "mean": 0.5554422756001545,
+      "ci95": [
+       0.34119948835859076,
+       0.992756206569304
+      ],
+      "n_valid_resamples": 1000
+     },
+     "events_per_px": {
+      "mean": 0.03419314943540756,
+      "ci95": [
+       0.02247486694560865,
+       0.04663121708466364
+      ],
+      "n_valid_resamples": 1000
+     },
+     "n_clips_with_class": 40
+    },
+    "sky": {
+     "event_share": {
+      "mean": 0.01753272734643661,
+      "ci95": [
+       0.0030639112487232125,
+       0.04211168666560997
+      ],
+      "n_valid_resamples": 1000
+     },
+     "pixel_share": {
+      "mean": 0.2614350043402778,
+      "ci95": [
+       0.20385257432725698,
+       0.32297349446614587
+      ],
+      "n_valid_resamples": 1000
+     },
+     "enrichment": {
+      "mean": 0.06706342706738848,
+      "ci95": [
+       0.012414484990801567,
+       0.14881572580786004
+      ],
+      "n_valid_resamples": 1000
+     },
+     "events_per_px": {
+      "mean": 0.004128439415037447,
+      "ci95": [
+       0.0007486167253348446,
+       0.009904987037514598
+      ],
+      "n_valid_resamples": 1000
+     },
+     "n_clips_with_class": 38
+    },
+    "obstacle": {
+     "event_share": {
+      "mean": 0.7010975801064266,
+      "ci95": [
+       0.47931650131478637,
+       0.8129436063287382
+      ],
+      "n_valid_resamples": 1000
+     },
+     "pixel_share": {
+      "mean": 0.22814051649305556,
+      "ci95": [
+       0.18024602322048613,
+       0.2759659939236111
+      ],
+      "n_valid_resamples": 1000
+     },
+     "enrichment": {
+      "mean": 3.0730954364599574,
+      "ci95": [
+       2.0609467797139676,
+       4.013990883613976
+      ],
+      "n_valid_resamples": 1000
+     },
+     "events_per_px": {
+      "mean": 0.1891804353109544,
+      "ci95": [
+       0.06667452726725306,
+       0.3798619416309439
+      ],
+      "n_valid_resamples": 1000
+     },
+     "n_clips_with_class": 40
+    }
+   }
+  },
+  "ct150": {
+   "ct_multiplier": 1.5,
+   "corpus": "lars_eval_ct150",
+   "pos_neg_thres": 0.9,
+   "n_clips": 40,
+   "pooled": {
+    "water": {
+     "event_share": {
+      "mean": 0.21090795727831446,
+      "ci95": [
+       0.12460991765192964,
+       0.44840424020311287
+      ],
+      "n_valid_resamples": 1000
+     },
+     "pixel_share": {
+      "mean": 0.4964076605902778,
+      "ci95": [
+       0.4620617350260417,
+       0.5322145128038195
+      ],
+      "n_valid_resamples": 1000
+     },
+     "enrichment": {
+      "mean": 0.424868457967639,
+      "ci95": [
+       0.25518671505155616,
+       0.8890989344817969
+      ],
+      "n_valid_resamples": 1000
+     },
+     "events_per_px": {
+      "mean": 0.011386714399659183,
+      "ci95": [
+       0.006549400394667837,
+       0.01640078323278751
+      ],
+      "n_valid_resamples": 1000
+     },
+     "n_clips_with_class": 40
+    },
+    "sky": {
+     "event_share": {
+      "mean": 0.01571293229795056,
+      "ci95": [
+       0.0022842777424969536,
+       0.04852016185291664
+      ],
+      "n_valid_resamples": 1000
+     },
+     "pixel_share": {
+      "mean": 0.2614350043402778,
+      "ci95": [
+       0.20385257432725698,
+       0.32297349446614587
+      ],
+      "n_valid_resamples": 1000
+     },
+     "enrichment": {
+      "mean": 0.06010263368366299,
+      "ci95": [
+       0.009103805340825383,
+       0.17078470878470006
+      ],
+      "n_valid_resamples": 1000
+     },
+     "events_per_px": {
+      "mean": 0.001610784494798465,
+      "ci95": [
+       0.000259889985819247,
+       0.004076586325469497
+      ],
+      "n_valid_resamples": 1000
+     },
+     "n_clips_with_class": 38
+    },
+    "obstacle": {
+     "event_share": {
+      "mean": 0.7675692526943975,
+      "ci95": [
+       0.529730977135383,
+       0.858963448571341
+      ],
+      "n_valid_resamples": 1000
+     },
+     "pixel_share": {
+      "mean": 0.22814051649305556,
+      "ci95": [
+       0.18024602322048613,
+       0.2759659939236111
+      ],
+      "n_valid_resamples": 1000
+     },
+     "enrichment": {
+      "mean": 3.3644582930439793,
+      "ci95": [
+       2.2583274574402727,
+       4.302272835676739
+      ],
+      "n_valid_resamples": 1000
+     },
+     "events_per_px": {
+      "mean": 0.0901693806024419,
+      "ci95": [
+       0.02604627272836658,
+       0.19864832695512777
+      ],
+      "n_valid_resamples": 1000
+     },
+     "n_clips_with_class": 40
+    }
+   }
+  }
+ },
+ "events_per_px_ratio_vs_ct100_median_over_clips": {
+  "water": {
+   "ct067_over_ct100": 2.6099584298273433,
+   "ct150_over_ct100": 0.2816479636867987,
+   "n_clips": 40
+  },
+  "sky": {
+   "ct067_over_ct100": 2.0058479532163744,
+   "ct150_over_ct100": 0.25,
+   "n_clips": 29
+  },
+  "obstacle": {
+   "ct067_over_ct100": 2.1671499826006264,
+   "ct150_over_ct100": 0.38994531951358846,
+   "n_clips": 39
+  }
+ },
+ "attributes_ct100": {
+  "waves": {
+   "levels": {
+    "moderate": {
+     "n": 38,
+     "water_event_share": 0.40050230694456435,
+     "water_enrichment": 0.78027418663651,
+     "water_events_per_px": 0.031283149869421926
+    },
+    "rough": {
+     "n": 1,
+     "reported": false,
+     "reason": "fewer than 3 clips"
+    },
+    "still": {
+     "n": 1,
+     "reported": false,
+     "reason": "fewer than 3 clips"
+    }
+   },
+   "spearman": {
+    "reported": false,
+    "reason": "fewer than two levels with >= 3 clips",
+    "level_counts": {
+     "still": 1,
+     "moderate": 38,
+     "rough": 1
+    }
+   }
+  },
+  "reflections": {
+   "levels": {
+    "moderate": {
+     "n": 22,
+     "water_event_share": 0.31896750737281004,
+     "water_enrichment": 0.6258312511321953,
+     "water_events_per_px": 0.04379446192115985
+    },
+    "none": {
+     "n": 18,
+     "water_event_share": 0.47274374730044816,
+     "water_enrichment": 0.9189791682986487,
+     "water_events_per_px": 0.019673877488511397
+    }
+   },
+   "spearman_water_enrichment": {
+    "rho": -0.18719198679133867,
+    "ci95": [
+     -0.5100932556326433,
+     0.1432612390679728
+    ],
+    "n": 40,
+    "n_valid_resamples": 1000,
+    "resamples": 1000
+   },
+   "spearman_water_events_per_px": {
+    "rho": 0.37438397358267733,
+    "ci95": [
+     0.07411014234795123,
+     0.6320234131107122
+    ],
+    "n": 40,
+    "n_valid_resamples": 1000,
+    "resamples": 1000
+   }
+  },
+  "special.glitter": {
+   "levels": {
+    "false": {
+     "n": 35,
+     "water_event_share": 0.33101940400840546,
+     "water_enrichment": 0.6516358784647593,
+     "water_events_per_px": 0.030287012323506658
+    },
+    "true": {
+     "n": 5,
+     "water_event_share": 0.7881986946631387,
+     "water_enrichment": 1.500531361603479,
+     "water_events_per_px": 0.05151250514719778
+    }
+   },
+   "spearman_water_enrichment": {
+    "rho": 0.4551265504189736,
+    "ci95": [
+     0.17314907885345812,
+     0.6597925303115069
+    ],
+    "n": 40,
+    "n_valid_resamples": 998,
+    "resamples": 1000
+   },
+   "spearman_water_events_per_px": {
+    "rho": 0.2652176301002652,
+    "ci95": [
+     0.05786160461831482,
+     0.455452036909475
+    ],
+    "n": 40,
+    "n_valid_resamples": 998,
+    "resamples": 1000
+   }
+  },
+  "special.wakes": {
+   "levels": {
+    "false": {
+     "n": 36,
+     "water_event_share": 0.41866202149038967,
+     "water_enrichment": 0.8172288371364838,
+     "water_events_per_px": 0.03649628749161273
+    },
+    "true": {
+     "n": 4,
+     "water_event_share": 0.11370995998896458,
+     "water_enrichment": 0.22241860434263827,
+     "water_events_per_px": 0.0009354018401659766
+    }
+   },
+   "spearman_water_enrichment": {
+    "rho": -0.2959845225798769,
+    "ci95": [
+     -0.4743886237780545,
+     -0.10350720638649338
+    ],
+    "n": 40,
+    "n_valid_resamples": 981,
+    "resamples": 1000
+   },
+   "spearman_water_events_per_px": {
+    "rho": -0.43314808182421,
+    "ci95": [
+     -0.6196773539191816,
+     -0.1989801418944724
+    ],
+    "n": 40,
+    "n_valid_resamples": 981,
+    "resamples": 1000
+   }
+  },
+  "special.extra_bright": {
+   "levels": {
+    "false": {
+     "n": 38,
+     "water_event_share": 0.383689530918639,
+     "water_enrichment": 0.7530578173793374,
+     "water_events_per_px": 0.031488828439448564
+    },
+    "true": {
+     "n": 2,
+     "reported": false,
+     "reason": "fewer than 3 clips"
+    }
+   },
+   "spearman": {
+    "reported": false,
+    "reason": "fewer than two levels with >= 3 clips",
+    "level_counts": {
+     "false": 38,
+     "true": 2
+    }
+   }
+  },
+  "special.extra_dark": {
+   "levels": {
+    "false": {
+     "n": 36,
+     "water_event_share": 0.3652537920055853,
+     "water_enrichment": 0.7120903521331347,
+     "water_events_per_px": 0.029050309282199895
+    },
+    "true": {
+     "n": 4,
+     "water_event_share": 0.5943840253522044,
+     "water_enrichment": 1.1686649693727804,
+     "water_events_per_px": 0.06794920572488147
+    }
+   },
+   "spearman_water_enrichment": {
+    "rho": 0.216574040912105,
+    "ci95": [
+     -0.1599838197843134,
+     0.5205596131827063
+    ],
+    "n": 40,
+    "n_valid_resamples": 988,
+    "resamples": 1000
+   },
+   "spearman_water_events_per_px": {
+    "rho": 0.3104227919740172,
+    "ci95": [
+     0.10413494860534761,
+     0.5205094295719481
+    ],
+    "n": 40,
+    "n_valid_resamples": 988,
+    "resamples": 1000
+   }
+  },
+  "special.fog": {
+   "levels": {
+    "false": {
+     "n": 37,
+     "water_event_share": 0.39888997017309985,
+     "water_enrichment": 0.7896407793231914,
+     "water_events_per_px": 0.03560403639934939
+    },
+    "true": {
+     "n": 3,
+     "water_event_share": 0.2559145724017306,
+     "water_enrichment": 0.3644012397752947,
+     "water_events_per_px": 8.620342759810534e-05
+    }
+   },
+   "spearman_water_enrichment": {
+    "rho": -0.18500668434373796,
+    "ci95": [
+     -0.39647615298065375,
+     0.05801535450898047
+    ],
+    "n": 40,
+    "n_valid_resamples": 957,
+    "resamples": 1000
+   },
+   "spearman_water_events_per_px": {
+    "rho": -0.4234597441645558,
+    "ci95": [
+     -0.6124943205677107,
+     -0.21539475745184097
+    ],
+    "n": 40,
+    "n_valid_resamples": 957,
+    "resamples": 1000
+   }
+  },
+  "special.dirty_lens": {
+   "levels": {
+    "false": {
+     "n": 39,
+     "water_event_share": 0.39604329869525945,
+     "water_enrichment": 0.7731158148716878,
+     "water_events_per_px": 0.030571583019694152
+    },
+    "true": {
+     "n": 1,
+     "reported": false,
+     "reason": "fewer than 3 clips"
+    }
+   },
+   "spearman": {
+    "reported": false,
+    "reason": "fewer than two levels with >= 3 clips",
+    "level_counts": {
+     "false": 39,
+     "true": 1
+    }
+   }
+  },
+  "special.plants_debris": {
+   "levels": {
+    "false": {
+     "n": 40,
+     "water_event_share": 0.3881668153402472,
+     "water_enrichment": 0.7577478138570992,
+     "water_events_per_px": 0.032940198926468045
+    }
+   },
+   "spearman": {
+    "reported": false,
+    "reason": "fewer than two levels with >= 3 clips",
+    "level_counts": {
+     "false": 40,
+     "true": 0
+    }
+   }
+  },
+  "special.rain": {
+   "levels": {
+    "false": {
+     "n": 40,
+     "water_event_share": 0.3881668153402472,
+     "water_enrichment": 0.7577478138570992,
+     "water_events_per_px": 0.032940198926468045
+    }
+   },
+   "spearman": {
+    "reported": false,
+    "reason": "fewer than two levels with >= 3 clips",
+    "level_counts": {
+     "false": 40,
+     "true": 0
+    }
+   }
+  },
+  "scene_type": {
+   "levels": {
+    "river_like": {
+     "n": 11,
+     "water_event_share": 0.3220528016940978,
+     "water_enrichment": 0.67356711672645,
+     "water_events_per_px": 0.04920485639545826
+    },
+    "sea_like": {
+     "n": 29,
+     "water_event_share": 0.4132445446543039,
+     "water_enrichment": 0.7896784231135525,
+     "water_events_per_px": 0.02677084609340279
+    }
+   }
+  },
+  "lighting": {
+   "levels": {
+    "day_like": {
+     "n": 35,
+     "water_event_share": 0.3525533488485706,
+     "water_enrichment": 0.6886792282458174,
+     "water_events_per_px": 0.033644984823237585
+    },
+    "dusk_like": {
+     "n": 4,
+     "water_event_share": 0.6665233206744484,
+     "water_enrichment": 1.2607948354272747,
+     "water_events_per_px": 0.03480015978166931
+    },
+    "night_like": {
+     "n": 1,
+     "reported": false,
+     "reason": "fewer than 3 clips"
+    }
+   }
+  }
+ },
+ "clips_ct100": [
+  {
+   "clip": "davimar_seq_08:0:13",
+   "n_events": 11537,
+   "water": {
+    "events": 5285,
+    "px": 108969,
+    "event_share": 0.4580913582387102,
+    "pixel_share": 0.47295572916666667,
+    "enrichment": 0.9685713270581434,
+    "events_per_px": 0.04850003211922657
+   },
+   "sky": {
+    "events": 8,
+    "px": 48730,
+    "event_share": 0.000693421166681113,
+    "pixel_share": 0.21150173611111112,
+    "enrichment": 0.003278560164238219,
+    "events_per_px": 0.00016416991586291812
+   },
+   "obstacle": {
+    "events": 6118,
+    "px": 71212,
+    "event_share": 0.5302938372193812,
+    "pixel_share": 0.30907986111111113,
+    "enrichment": 1.7157178578799277,
+    "events_per_px": 0.08591248665955176
+   }
+  },
+  {
+   "clip": "davimar_seq_36:132:146",
+   "n_events": 6687,
+   "water": {
+    "events": 5609,
+    "px": 109729,
+    "event_share": 0.8387916853596531,
+    "pixel_share": 0.4762543402777778,
+    "enrichment": 1.7612263331194493,
+    "events_per_px": 0.05111684240264652
+   },
+   "sky": {
+    "events": 9,
+    "px": 43215,
+    "event_share": 0.0013458950201884253,
+    "pixel_share": 0.18756510416666666,
+    "enrichment": 0.0071756152412683835,
+    "events_per_px": 0.00020826102047900034
+   },
+   "obstacle": {
+    "events": 936,
+    "px": 75968,
+    "event_share": 0.13997308209959622,
+    "pixel_share": 0.32972222222222225,
+    "enrichment": 0.4245181933938891,
+    "events_per_px": 0.012320977253580456
+   }
+  },
+  {
+   "clip": "davimar_seq_69:28:42",
+   "n_events": 15018,
+   "water": {
+    "events": 8438,
+    "px": 109398,
+    "event_share": 0.5618591024104408,
+    "pixel_share": 0.4748177083333333,
+    "enrichment": 1.18331539146388,
+    "events_per_px": 0.07713120898005447
+   },
+   "sky": {
+    "events": 176,
+    "px": 34528,
+    "event_share": 0.011719270209082434,
+    "pixel_share": 0.1498611111111111,
+    "enrichment": 0.07820087627932672,
+    "events_per_px": 0.005097312326227989
+   },
+   "obstacle": {
+    "events": 6311,
+    "px": 84917,
+    "event_share": 0.42022905846317754,
+    "pixel_share": 0.36856336805555556,
+    "enrichment": 1.140181295499324,
+    "events_per_px": 0.0743196297561148
+   }
+  },
+  {
+   "clip": "davimar_seq_70:30:44",
+   "n_events": 7859,
+   "water": {
+    "events": 4626,
+    "px": 109227,
+    "event_share": 0.5886245069347246,
+    "pixel_share": 0.4740755208333333,
+    "enrichment": 1.241626030173497,
+    "events_per_px": 0.04235216567332253
+   },
+   "sky": {
+    "events": 49,
+    "px": 29515,
+    "event_share": 0.006234889935106248,
+    "pixel_share": 0.1281032986111111,
+    "enrichment": 0.04867079929013991,
+    "events_per_px": 0.0016601727934948331
+   },
+   "obstacle": {
+    "events": 3085,
+    "px": 90233,
+    "event_share": 0.39254358060821987,
+    "pixel_share": 0.3916362847222222,
+    "enrichment": 1.0023166798414533,
+    "events_per_px": 0.03418926556802943
+   }
+  },
+  {
+   "clip": "inhouse_seq_117:480:494",
+   "n_events": 8096,
+   "water": {
+    "events": 8096,
+    "px": 164175,
+    "event_share": 1.0,
+    "pixel_share": 0.7125651041666666,
+    "enrichment": 1.4033805390589311,
+    "events_per_px": 0.04931323283082077
+   },
+   "sky": {
+    "events": 0,
+    "px": 60509,
+    "event_share": 0.0,
+    "pixel_share": 0.26262586805555554,
+    "enrichment": 0.0,
+    "events_per_px": 0.0
+   },
+   "obstacle": {
+    "events": 0,
+    "px": 5716,
+    "event_share": 0.0,
+    "pixel_share": 0.024809027777777777,
+    "enrichment": 0.0,
+    "events_per_px": 0.0
+   }
+  },
+  {
+   "clip": "inhouse_seq_132:123:137",
+   "n_events": 278,
+   "water": {
+    "events": 5,
+    "px": 80521,
+    "event_share": 0.017985611510791366,
+    "pixel_share": 0.34948350694444447,
+    "enrichment": 0.05146340572131904,
+    "events_per_px": 6.209560238943878e-05
+   },
+   "sky": {
+    "events": 91,
+    "px": 148092,
+    "event_share": 0.3273381294964029,
+    "pixel_share": 0.6427604166666666,
+    "enrichment": 0.5092692720469116,
+    "events_per_px": 0.0006144828890149366
+   },
+   "obstacle": {
+    "events": 182,
+    "px": 1787,
+    "event_share": 0.6546762589928058,
+    "pixel_share": 0.007756076388888889,
+    "enrichment": 84.40817575374508,
+    "events_per_px": 0.10184667039731393
+   }
+  },
+  {
+   "clip": "inhouse_seq_153:350:364",
+   "n_events": 29532,
+   "water": {
+    "events": 17232,
+    "px": 138051,
+    "event_share": 0.5835026412027631,
+    "pixel_share": 0.5991796875,
+    "enrichment": 0.973835818162249,
+    "events_per_px": 0.12482343481756743
+   },
+   "sky": {
+    "events": 47,
+    "px": 1944,
+    "event_share": 0.0015914939726398483,
+    "pixel_share": 0.0084375,
+    "enrichment": 0.18862150786842644,
+    "events_per_px": 0.02417695473251029
+   },
+   "obstacle": {
+    "events": 12253,
+    "px": 90405,
+    "event_share": 0.41490586482459707,
+    "pixel_share": 0.3923828125,
+    "enrichment": 1.0574007107525818,
+    "events_per_px": 0.1355345390188596
+   }
+  },
+  {
+   "clip": "inhouse_seq_155:3:17",
+   "n_events": 8285,
+   "water": {
+    "events": 7299,
+    "px": 118556,
+    "event_share": 0.8809897404948702,
+    "pixel_share": 0.5145659722222222,
+    "enrichment": 1.7121026030738056,
+    "events_per_px": 0.06156584230237187
+   },
+   "sky": {
+    "events": 184,
+    "px": 104931,
+    "event_share": 0.022208811104405552,
+    "pixel_share": 0.4554296875,
+    "enrichment": 0.04876452219510954,
+    "events_per_px": 0.001753533274246886
+   },
+   "obstacle": {
+    "events": 802,
+    "px": 6913,
+    "event_share": 0.0968014484007242,
+    "pixel_share": 0.030004340277777777,
+    "enrichment": 3.2262481862471946,
+    "events_per_px": 0.11601330825980037
+   }
+  },
+  {
+   "clip": "inhouse_seq_158:70:84",
+   "n_events": 10251,
+   "water": {
+    "events": 7658,
+    "px": 121530,
+    "event_share": 0.7470490683835723,
+    "pixel_share": 0.5274739583333333,
+    "enrichment": 1.4162766835808036,
+    "events_per_px": 0.06301324775775528
+   },
+   "sky": {
+    "events": 10,
+    "px": 16557,
+    "event_share": 0.0009755145839430299,
+    "pixel_share": 0.07186197916666667,
+    "enrichment": 0.013574836029502572,
+    "events_per_px": 0.000603974149906384
+   },
+   "obstacle": {
+    "events": 2583,
+    "px": 92313,
+    "event_share": 0.25197541703248466,
+    "pixel_share": 0.4006640625,
+    "enrichment": 0.6288944794805116,
+    "events_per_px": 0.027980891098761822
+   }
+  },
+  {
+   "clip": "inhouse_seq_191:140:154",
+   "n_events": 68,
+   "water": {
+    "events": 38,
+    "px": 175366,
+    "event_share": 0.5588235294117647,
+    "pixel_share": 0.7611371527777778,
+    "enrichment": 0.734195574834749,
+    "events_per_px": 0.00021668966618386689
+   },
+   "sky": {
+    "events": 0,
+    "px": 37623,
+    "event_share": 0.0,
+    "pixel_share": 0.16329427083333334,
+    "enrichment": 0.0,
+    "events_per_px": 0.0
+   },
+   "obstacle": {
+    "events": 30,
+    "px": 17411,
+    "event_share": 0.4411764705882353,
+    "pixel_share": 0.07556857638888889,
+    "enrichment": 5.838094240625432,
+    "events_per_px": 0.0017230486474068118
+   }
+  },
+  {
+   "clip": "inhouse_seq_194:260:274",
+   "n_events": 2065,
+   "water": {
+    "events": 68,
+    "px": 87851,
+    "event_share": 0.03292978208232446,
+    "pixel_share": 0.3812977430555556,
+    "enrichment": 0.08636238394289826,
+    "events_per_px": 0.0007740378595576602
+   },
+   "sky": {
+    "events": 171,
+    "px": 121726,
+    "event_share": 0.08280871670702179,
+    "pixel_share": 0.5283246527777777,
+    "enrichment": 0.1567383166233822,
+    "events_per_px": 0.0014047943742503655
+   },
+   "obstacle": {
+    "events": 1826,
+    "px": 20289,
+    "event_share": 0.8842615012106537,
+    "pixel_share": 0.08805989583333333,
+    "enrichment": 10.041591496817714,
+    "events_per_px": 0.08999950712208586
+   }
+  },
+  {
+   "clip": "inhouse_seq_244:15:29",
+   "n_events": 5098,
+   "water": {
+    "events": 1602,
+    "px": 118005,
+    "event_share": 0.3142408787759906,
+    "pixel_share": 0.5121744791666667,
+    "enrichment": 0.6135426335323777,
+    "events_per_px": 0.013575695945087073
+   },
+   "sky": {
+    "events": 40,
+    "px": 31010,
+    "event_share": 0.007846214201647704,
+    "pixel_share": 0.1345920138888889,
+    "enrichment": 0.05829628352336766,
+    "events_per_px": 0.0012899064817800709
+   },
+   "obstacle": {
+    "events": 3456,
+    "px": 81385,
+    "event_share": 0.6779129070223617,
+    "pixel_share": 0.35323350694444444,
+    "enrichment": 1.919163651507675,
+    "events_per_px": 0.04246482767094673
+   }
+  },
+  {
+   "clip": "inhouse_seq_244:380:394",
+   "n_events": 16337,
+   "water": {
+    "events": 2042,
+    "px": 85333,
+    "event_share": 0.12499234865642407,
+    "pixel_share": 0.3703689236111111,
+    "enrichment": 0.33748065965617174,
+    "events_per_px": 0.023929780975706937
+   },
+   "sky": {
+    "events": 1373,
+    "px": 14185,
+    "event_share": 0.08404235783803636,
+    "pixel_share": 0.06156684027777778,
+    "enrichment": 1.3650588118352893,
+    "events_per_px": 0.09679238632358125
+   },
+   "obstacle": {
+    "events": 12922,
+    "px": 130882,
+    "event_share": 0.7909652935055396,
+    "pixel_share": 0.5680642361111111,
+    "enrichment": 1.3923870633370234,
+    "events_per_px": 0.09873015387906664
+   }
+  },
+  {
+   "clip": "inhouse_seq_260:75:85",
+   "n_events": 1313,
+   "water": {
+    "events": 734,
+    "px": 79124,
+    "event_share": 0.559025133282559,
+    "pixel_share": 0.3434201388888889,
+    "enrichment": 1.627816979782387,
+    "events_per_px": 0.009276578534957787
+   },
+   "sky": {
+    "events": 29,
+    "px": 87608,
+    "event_share": 0.022086824067022087,
+    "pixel_share": 0.38024305555555554,
+    "enrichment": 0.05808606822484121,
+    "events_per_px": 0.00033101999817368276
+   },
+   "obstacle": {
+    "events": 550,
+    "px": 63668,
+    "event_share": 0.4188880426504189,
+    "pixel_share": 0.27633680555555556,
+    "enrichment": 1.5158604797803688,
+    "events_per_px": 0.008638562543192813
+   }
+  },
+  {
+   "clip": "inhouse_seq_296:290:304",
+   "n_events": 4798,
+   "water": {
+    "events": 315,
+    "px": 87805,
+    "event_share": 0.06565235514797832,
+    "pixel_share": 0.3810980902777778,
+    "enrichment": 0.17227154064226644,
+    "events_per_px": 0.0035874950173680315
+   },
+   "sky": {
+    "events": 41,
+    "px": 90522,
+    "event_share": 0.00854522717799083,
+    "pixel_share": 0.392890625,
+    "enrichment": 0.02174963370019539,
+    "events_per_px": 0.0004529285698504231
+   },
+   "obstacle": {
+    "events": 4442,
+    "px": 52073,
+    "event_share": 0.9258024176740308,
+    "pixel_share": 0.22601128472222223,
+    "enrichment": 4.096266338257767,
+    "events_per_px": 0.08530332417951722
+   }
+  },
+  {
+   "clip": "inhouse_seq_344:104:118",
+   "n_events": 10940,
+   "water": {
+    "events": 7964,
+    "px": 100701,
+    "event_share": 0.7279707495429616,
+    "pixel_share": 0.4370703125,
+    "enrichment": 1.665568968477953,
+    "events_per_px": 0.0790856098747778
+   },
+   "sky": {
+    "events": 20,
+    "px": 121018,
+    "event_share": 0.0018281535648994515,
+    "pixel_share": 0.5252517361111111,
+    "enrichment": 0.003480528362333154,
+    "events_per_px": 0.00016526467137120097
+   },
+   "obstacle": {
+    "events": 2956,
+    "px": 8681,
+    "event_share": 0.27020109689213895,
+    "pixel_share": 0.03767795138888889,
+    "enrichment": 7.171331957602674,
+    "events_per_px": 0.3405137656951964
+   }
+  },
+  {
+   "clip": "inhouse_seq_346:227:241",
+   "n_events": 5308,
+   "water": {
+    "events": 4923,
+    "px": 125303,
+    "event_share": 0.9274679728711379,
+    "pixel_share": 0.5438498263888889,
+    "enrichment": 1.7053751382609368,
+    "events_per_px": 0.039288764035976795
+   },
+   "sky": {
+    "events": 0,
+    "px": 5123,
+    "event_share": 0.0,
+    "pixel_share": 0.022235243055555555,
+    "enrichment": 0.0,
+    "events_per_px": 0.0
+   },
+   "obstacle": {
+    "events": 385,
+    "px": 99974,
+    "event_share": 0.0725320271288621,
+    "pixel_share": 0.4339149305555556,
+    "enrichment": 0.16715725139025975,
+    "events_per_px": 0.0038510012603276854
+   }
+  },
+  {
+   "clip": "inhouse_seq_372:10:24",
+   "n_events": 1137,
+   "water": {
+    "events": 809,
+    "px": 111283,
+    "event_share": 0.7115215479331575,
+    "pixel_share": 0.48299913194444444,
+    "enrichment": 1.4731321463637705,
+    "events_per_px": 0.007269753691039961
+   },
+   "sky": {
+    "events": 28,
+    "px": 107199,
+    "event_share": 0.024626209322779244,
+    "pixel_share": 0.4652734375,
+    "enrichment": 0.05292846601151445,
+    "events_per_px": 0.00026119646638494764
+   },
+   "obstacle": {
+    "events": 300,
+    "px": 11918,
+    "event_share": 0.2638522427440633,
+    "pixel_share": 0.05172743055555556,
+    "enrichment": 5.100818654827336,
+    "events_per_px": 0.02517200872629636
+   }
+  },
+  {
+   "clip": "inhouse_seq_372:390:404",
+   "n_events": 214,
+   "water": {
+    "events": 7,
+    "px": 82276,
+    "event_share": 0.03271028037383177,
+    "pixel_share": 0.3571006944444444,
+    "enrichment": 0.09159959888826438,
+    "events_per_px": 8.507948855073168e-05
+   },
+   "sky": {
+    "events": 6,
+    "px": 121777,
+    "event_share": 0.028037383177570093,
+    "pixel_share": 0.5285460069444444,
+    "enrichment": 0.05304624916127142,
+    "events_per_px": 4.92703876758337e-05
+   },
+   "obstacle": {
+    "events": 201,
+    "px": 26347,
+    "event_share": 0.9392523364485982,
+    "pixel_share": 0.11435329861111111,
+    "enrichment": 8.213600725614189,
+    "events_per_px": 0.0076289520628534556
+   }
+  },
+  {
+   "clip": "inhouse_seq_387:6:20",
+   "n_events": 6044,
+   "water": {
+    "events": 6042,
+    "px": 128927,
+    "event_share": 0.999669093315685,
+    "pixel_share": 0.5595789930555556,
+    "enrichment": 1.786466443025385,
+    "events_per_px": 0.046863729087002724
+   },
+   "sky": {
+    "events": 0,
+    "px": 3696,
+    "event_share": 0.0,
+    "pixel_share": 0.016041666666666666,
+    "enrichment": 0.0,
+    "events_per_px": 0.0
+   },
+   "obstacle": {
+    "events": 2,
+    "px": 97777,
+    "event_share": 0.00033090668431502316,
+    "pixel_share": 0.4243793402777778,
+    "enrichment": 0.0007797426804481763,
+    "events_per_px": 2.045470816245129e-05
+   }
+  },
+  {
+   "clip": "inhouse_seq_406:90:104",
+   "n_events": 5982,
+   "water": {
+    "events": 32,
+    "px": 178891,
+    "event_share": 0.005349381477766633,
+    "pixel_share": 0.7764366319444445,
+    "enrichment": 0.006889656229086048,
+    "events_per_px": 0.00017887987657288517
+   },
+   "sky": {
+    "events": 0,
+    "px": 0,
+    "event_share": 0.0,
+    "pixel_share": 0.0,
+    "enrichment": NaN,
+    "events_per_px": NaN
+   },
+   "obstacle": {
+    "events": 5950,
+    "px": 51509,
+    "event_share": 0.9946506185222334,
+    "pixel_share": 0.22356336805555554,
+    "enrichment": 4.449076909035752,
+    "events_per_px": 0.1155137937059543
+   }
+  },
+  {
+   "clip": "inhouse_seq_82:30:44",
+   "n_events": 11193,
+   "water": {
+    "events": 4532,
+    "px": 147341,
+    "event_share": 0.40489591709103906,
+    "pixel_share": 0.6395008680555555,
+    "enrichment": 0.6331436551793147,
+    "events_per_px": 0.030758580435859672
+   },
+   "sky": {
+    "events": 286,
+    "px": 5896,
+    "event_share": 0.025551684088269456,
+    "pixel_share": 0.025590277777777778,
+    "enrichment": 0.9984918612512352,
+    "events_per_px": 0.048507462686567165
+   },
+   "obstacle": {
+    "events": 6356,
+    "px": 77065,
+    "event_share": 0.5678549093183239,
+    "pixel_share": 0.33448350694444445,
+    "enrichment": 1.697706755426482,
+    "events_per_px": 0.08247583208979432
+   }
+  },
+  {
+   "clip": "mit_seq_02:140:154",
+   "n_events": 3603,
+   "water": {
+    "events": 1225,
+    "px": 140719,
+    "event_share": 0.33999444907021925,
+    "pixel_share": 0.6107595486111111,
+    "enrichment": 0.5566747991797732,
+    "events_per_px": 0.008705292106964944
+   },
+   "sky": {
+    "events": 485,
+    "px": 78983,
+    "event_share": 0.13461004718290315,
+    "pixel_share": 0.3428081597222222,
+    "enrichment": 0.3926687372085244,
+    "events_per_px": 0.006140561893065596
+   },
+   "obstacle": {
+    "events": 1879,
+    "px": 7814,
+    "event_share": 0.5215098529003608,
+    "pixel_share": 0.033914930555555556,
+    "enrichment": 15.37699899004903,
+    "events_per_px": 0.2404658305605324
+   }
+  },
+  {
+   "clip": "mit_seq_08:210:224",
+   "n_events": 22761,
+   "water": {
+    "events": 13804,
+    "px": 122891,
+    "event_share": 0.606475989631387,
+    "pixel_share": 0.5333810763888889,
+    "enrichment": 1.1370406946893716,
+    "events_per_px": 0.11232718425271175
+   },
+   "sky": {
+    "events": 0,
+    "px": 0,
+    "event_share": 0.0,
+    "pixel_share": 0.0,
+    "enrichment": NaN,
+    "events_per_px": NaN
+   },
+   "obstacle": {
+    "events": 8857,
+    "px": 71339,
+    "event_share": 0.3891305302930451,
+    "pixel_share": 0.30963107638888887,
+    "enrichment": 1.256755409797132,
+    "events_per_px": 0.12415368872566199
+   }
+  },
+  {
+   "clip": "mit_seq_21:1100:1114",
+   "n_events": 9707,
+   "water": {
+    "events": 7455,
+    "px": 136000,
+    "event_share": 0.7680024724425673,
+    "pixel_share": 0.5902777777777778,
+    "enrichment": 1.301086541549761,
+    "events_per_px": 0.054816176470588236
+   },
+   "sky": {
+    "events": 81,
+    "px": 75120,
+    "event_share": 0.008344493664365921,
+    "pixel_share": 0.3260416666666667,
+    "enrichment": 0.025593335200611134,
+    "events_per_px": 0.0010782747603833866
+   },
+   "obstacle": {
+    "events": 2171,
+    "px": 17273,
+    "event_share": 0.22365303389306687,
+    "pixel_share": 0.07496961805555556,
+    "enrichment": 2.9832489439566143,
+    "events_per_px": 0.12568748914490824
+   }
+  },
+  {
+   "clip": "orca_flow_11:16:30",
+   "n_events": 9106,
+   "water": {
+    "events": 478,
+    "px": 99254,
+    "event_share": 0.052492861849330115,
+    "pixel_share": 0.43078993055555553,
+    "enrichment": 0.12185257390216675,
+    "events_per_px": 0.004815926814032684
+   },
+   "sky": {
+    "events": 7,
+    "px": 46156,
+    "event_share": 0.0007687239182956292,
+    "pixel_share": 0.20032986111111112,
+    "enrichment": 0.0038372907265645413,
+    "events_per_px": 0.00015165958921916977
+   },
+   "obstacle": {
+    "events": 8621,
+    "px": 83201,
+    "event_share": 0.9467384142323743,
+    "pixel_share": 0.3611154513888889,
+    "enrichment": 2.6217056362199855,
+    "events_per_px": 0.10361654307039579
+   }
+  },
+  {
+   "clip": "orca_flow_6:131:145",
+   "n_events": 3774,
+   "water": {
+    "events": 207,
+    "px": 103046,
+    "event_share": 0.054848966613672494,
+    "pixel_share": 0.4472482638888889,
+    "enrichment": 0.12263651095423542,
+    "events_per_px": 0.002008811598703492
+   },
+   "sky": {
+    "events": 177,
+    "px": 40886,
+    "event_share": 0.04689984101748808,
+    "pixel_share": 0.17745659722222223,
+    "enrichment": 0.26428908111405497,
+    "events_per_px": 0.004329110208873453
+   },
+   "obstacle": {
+    "events": 3390,
+    "px": 84656,
+    "event_share": 0.8982511923688394,
+    "pixel_share": 0.36743055555555554,
+    "enrichment": 2.4446828898339232,
+    "events_per_px": 0.04004441504441504
+   }
+  },
+  {
+   "clip": "orca_usv_inland_N03_3:768:782",
+   "n_events": 46861,
+   "water": {
+    "events": 5885,
+    "px": 130603,
+    "event_share": 0.12558417447344272,
+    "pixel_share": 0.5668532986111111,
+    "enrichment": 0.22154616508565042,
+    "events_per_px": 0.04506022066874421
+   },
+   "sky": {
+    "events": 1,
+    "px": 14483,
+    "event_share": 2.133970679242867e-05,
+    "pixel_share": 0.06286024305555556,
+    "enrichment": 0.0003394785917955925,
+    "events_per_px": 6.904646827314783e-05
+   },
+   "obstacle": {
+    "events": 40672,
+    "px": 74027,
+    "event_share": 0.867928554661659,
+    "pixel_share": 0.32129774305555553,
+    "enrichment": 2.7013216663385826,
+    "events_per_px": 0.5494211571453659
+   }
+  },
+  {
+   "clip": "orca_usv_inland_N03_3:1550:1564",
+   "n_events": 182283,
+   "water": {
+    "events": 14762,
+    "px": 117798,
+    "event_share": 0.08098396449476912,
+    "pixel_share": 0.5112760416666666,
+    "enrichment": 0.15839577428814416,
+    "events_per_px": 0.1253162192906501
+   },
+   "sky": {
+    "events": 6,
+    "px": 16833,
+    "event_share": 3.291585062786985e-05,
+    "pixel_share": 0.07305989583333333,
+    "enrichment": 0.00045053240567107547,
+    "events_per_px": 0.0003564427018356799
+   },
+   "obstacle": {
+    "events": 167515,
+    "px": 84691,
+    "event_share": 0.918983119654603,
+    "pixel_share": 0.36758246527777777,
+    "enrichment": 2.5000733344560877,
+    "events_per_px": 1.977955154620916
+   }
+  },
+  {
+   "clip": "smd_seq01:41:55",
+   "n_events": 71,
+   "water": {
+    "events": 3,
+    "px": 107352,
+    "event_share": 0.04225352112676056,
+    "pixel_share": 0.4659375,
+    "enrichment": 0.09068495479921784,
+    "events_per_px": 2.794545048066175e-05
+   },
+   "sky": {
+    "events": 0,
+    "px": 112335,
+    "event_share": 0.0,
+    "pixel_share": 0.48756510416666665,
+    "enrichment": 0.0,
+    "events_per_px": 0.0
+   },
+   "obstacle": {
+    "events": 68,
+    "px": 10713,
+    "event_share": 0.9577464788732394,
+    "pixel_share": 0.04649739583333334,
+    "enrichment": 20.59785202393301,
+    "events_per_px": 0.006347428358069635
+   }
+  },
+  {
+   "clip": "smd_seq03:191:205",
+   "n_events": 12,
+   "water": {
+    "events": 2,
+    "px": 143111,
+    "event_share": 0.16666666666666666,
+    "pixel_share": 0.6211414930555555,
+    "enrichment": 0.26832318969191743,
+    "events_per_px": 1.3975166129787369e-05
+   },
+   "sky": {
+    "events": 0,
+    "px": 72523,
+    "event_share": 0.0,
+    "pixel_share": 0.3147699652777778,
+    "enrichment": 0.0,
+    "events_per_px": 0.0
+   },
+   "obstacle": {
+    "events": 10,
+    "px": 14766,
+    "event_share": 0.8333333333333334,
+    "pixel_share": 0.06408854166666667,
+    "enrichment": 13.002844372206422,
+    "events_per_px": 0.0006772314777190844
+   }
+  },
+  {
+   "clip": "smd_seq08:326:340",
+   "n_events": 165,
+   "water": {
+    "events": 86,
+    "px": 103260,
+    "event_share": 0.5212121212121212,
+    "pixel_share": 0.44817708333333334,
+    "enrichment": 1.1629602239712642,
+    "events_per_px": 0.0008328491187294209
+   },
+   "sky": {
+    "events": 1,
+    "px": 117661,
+    "event_share": 0.006060606060606061,
+    "pixel_share": 0.5106814236111111,
+    "enrichment": 0.011867684588467176,
+    "events_per_px": 8.498992869344982e-06
+   },
+   "obstacle": {
+    "events": 78,
+    "px": 9479,
+    "event_share": 0.4727272727272727,
+    "pixel_share": 0.041141493055555554,
+    "enrichment": 11.490279948978124,
+    "events_per_px": 0.008228716109294229
+   }
+  },
+  {
+   "clip": "smd_seq27:41:55",
+   "n_events": 53,
+   "water": {
+    "events": 8,
+    "px": 108044,
+    "event_share": 0.1509433962264151,
+    "pixel_share": 0.4689409722222222,
+    "enrichment": 0.32188144173268335,
+    "events_per_px": 7.404390803746622e-05
+   },
+   "sky": {
+    "events": 1,
+    "px": 117394,
+    "event_share": 0.018867924528301886,
+    "pixel_share": 0.5095225694444444,
+    "enrichment": 0.03703059620867127,
+    "events_per_px": 8.51832291258497e-06
+   },
+   "obstacle": {
+    "events": 44,
+    "px": 4962,
+    "event_share": 0.8301886792452831,
+    "pixel_share": 0.021536458333333335,
+    "enrichment": 38.54805959252584,
+    "events_per_px": 0.00886739218057235
+   }
+  },
+  {
+   "clip": "yt005_00:80:94",
+   "n_events": 1563,
+   "water": {
+    "events": 286,
+    "px": 108428,
+    "event_share": 0.18298144593730006,
+    "pixel_share": 0.4706076388888889,
+    "enrichment": 0.3888195405610537,
+    "events_per_px": 0.0026376950603165233
+   },
+   "sky": {
+    "events": 0,
+    "px": 86084,
+    "event_share": 0.0,
+    "pixel_share": 0.37362847222222223,
+    "enrichment": 0.0,
+    "events_per_px": 0.0
+   },
+   "obstacle": {
+    "events": 1277,
+    "px": 35780,
+    "event_share": 0.8170185540627,
+    "pixel_share": 0.15529513888888888,
+    "enrichment": 5.261069727670377,
+    "events_per_px": 0.03569032979318055
+   }
+  },
+  {
+   "clip": "yt009_02:136:150",
+   "n_events": 76247,
+   "water": {
+    "events": 8583,
+    "px": 86470,
+    "event_share": 0.1125683633454431,
+    "pixel_share": 0.37530381944444446,
+    "enrichment": 0.29993929588053764,
+    "events_per_px": 0.09925985891060483
+   },
+   "sky": {
+    "events": 6335,
+    "px": 105611,
+    "event_share": 0.0830852361404383,
+    "pixel_share": 0.45838107638888886,
+    "enrichment": 0.1812579978104268,
+    "events_per_px": 0.059984281940328184
+   },
+   "obstacle": {
+    "events": 61310,
+    "px": 38311,
+    "event_share": 0.8040972103820478,
+    "pixel_share": 0.16628038194444444,
+    "enrichment": 4.83579121589162,
+    "events_per_px": 1.6003236668319805
+   }
+  },
+  {
+   "clip": "yt015_08:133:147",
+   "n_events": 13646,
+   "water": {
+    "events": 7595,
+    "px": 146323,
+    "event_share": 0.556573354829254,
+    "pixel_share": 0.6350824652777778,
+    "enrichment": 0.8763796597435818,
+    "events_per_px": 0.0519057154377644
+   },
+   "sky": {
+    "events": 0,
+    "px": 27805,
+    "event_share": 0.0,
+    "pixel_share": 0.12068142361111112,
+    "enrichment": 0.0,
+    "events_per_px": 0.0
+   },
+   "obstacle": {
+    "events": 6036,
+    "px": 56217,
+    "event_share": 0.4423274219551517,
+    "pixel_share": 0.24399739583333332,
+    "enrichment": 1.8128366511636507,
+    "events_per_px": 0.10736965686536101
+   }
+  },
+  {
+   "clip": "yt025_04:540:554",
+   "n_events": 316,
+   "water": {
+    "events": 70,
+    "px": 79508,
+    "event_share": 0.22151898734177214,
+    "pixel_share": 0.34508680555555554,
+    "enrichment": 0.6419225069621208,
+    "events_per_px": 0.0008804145494792977
+   },
+   "sky": {
+    "events": 0,
+    "px": 96336,
+    "event_share": 0.0,
+    "pixel_share": 0.418125,
+    "enrichment": 0.0,
+    "events_per_px": 0.0
+   },
+   "obstacle": {
+    "events": 246,
+    "px": 54340,
+    "event_share": 0.7784810126582279,
+    "pixel_share": 0.23585069444444445,
+    "enrichment": 3.300736571889137,
+    "events_per_px": 0.004527051895472948
+   }
+  },
+  {
+   "clip": "yt028_02:51:65",
+   "n_events": 4001,
+   "water": {
+    "events": 380,
+    "px": 104809,
+    "event_share": 0.094976255936016,
+    "pixel_share": 0.4549001736111111,
+    "enrichment": 0.20878483114673438,
+    "events_per_px": 0.003625642836015991
+   },
+   "sky": {
+    "events": 58,
+    "px": 69091,
+    "event_share": 0.014496375906023495,
+    "pixel_share": 0.29987413194444446,
+    "enrichment": 0.048341535203540446,
+    "events_per_px": 0.0008394725796413426
+   },
+   "obstacle": {
+    "events": 3563,
+    "px": 55953,
+    "event_share": 0.8905273681579605,
+    "pixel_share": 0.2428515625,
+    "enrichment": 3.6669616575267474,
+    "events_per_px": 0.06367844440870016
+   }
+  },
+  {
+   "clip": "yt043_04:46:60",
+   "n_events": 23506,
+   "water": {
+    "events": 1877,
+    "px": 64726,
+    "event_share": 0.07985195269292947,
+    "pixel_share": 0.2809288194444444,
+    "enrichment": 0.284242652109677,
+    "events_per_px": 0.028999165713932577
+   },
+   "sky": {
+    "events": 20,
+    "px": 13922,
+    "event_share": 0.0008508465923593976,
+    "pixel_share": 0.060425347222222224,
+    "enrichment": 0.014080954954719524,
+    "events_per_px": 0.0014365752047119666
+   },
+   "obstacle": {
+    "events": 19328,
+    "px": 99658,
+    "event_share": 0.8222581468561219,
+    "pixel_share": 0.43254340277777775,
+    "enrichment": 1.9009841361019737,
+    "events_per_px": 0.1939432860382508
+   }
+  },
+  {
+   "clip": "yt052_03:49:63",
+   "n_events": 1624,
+   "water": {
+    "events": 368,
+    "px": 104189,
+    "event_share": 0.22660098522167488,
+    "pixel_share": 0.45220920138888887,
+    "enrichment": 0.5010976878084432,
+    "events_per_px": 0.0035320427300386797
+   },
+   "sky": {
+    "events": 207,
+    "px": 82758,
+    "event_share": 0.12746305418719212,
+    "pixel_share": 0.35919270833333333,
+    "enrichment": 0.35485980430567515,
+    "events_per_px": 0.0025012687595156965
+   },
+   "obstacle": {
+    "events": 1049,
+    "px": 40920,
+    "event_share": 0.645935960591133,
+    "pixel_share": 0.17760416666666667,
+    "enrichment": 3.6369414789881973,
+    "events_per_px": 0.025635386119257086
+   }
+  }
+ ],
+ "git_sha": "0e8537728803bf7487a42db549647a23f7c50e4f",
+ "git_dirty": false,
+ "created_by": "scripts/run_clutter.py",
+ "created_at": "2026-10-12T21:57:11+00:00"
+}

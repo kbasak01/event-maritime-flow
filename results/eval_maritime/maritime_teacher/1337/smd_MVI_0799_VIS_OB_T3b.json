@@ -1,0 +1,80 @@
+{
+ "tier": "T3b",
+ "tier_note": "self-consistency (FWL > 1 better, RSAT < 1 better; round, t_ref = 1); not accuracy",
+ "model": "M1",
+ "arm": "maritime_teacher",
+ "seed": 1337,
+ "checkpoint_sha256": "bd4110ee0ccbd684557df985a2f8291b45661f581382b00d5fed1b0e070ac91d",
+ "dataset": "smd",
+ "sequence": "MVI_0799_VIS_OB",
+ "dt": 1,
+ "dt_unit": "source frame interval",
+ "representation": "voxel5",
+ "tags": [],
+ "run_id": "maritime_teacher_voxel5_s1337",
+ "selection": {
+  "rule": "min of v2e tune dt1 epe over epochs (mvsec_tune only)",
+  "split": "mvsec_tune",
+  "stream": "v2e",
+  "metric": "epe",
+  "dt": 1,
+  "selected_epoch": 38,
+  "value": 0.6170661250982257
+ },
+ "train_git_sha": "b552569bb7377ef3c35fcaa2367598cc79d886fa",
+ "n_windows_total": 298,
+ "per_window_npz": "~/projects_02/event-maritime-flow/runs/eval-maritime/npz/maritime_teacher/1337/smd_MVI_0799_VIS_OB.npz",
+ "per_window_npz_sha256": "5899c5240c5577b363077e4c9ecb913862c634eef93b37d60be43eb90d65f7cd",
+ "device": "NVIDIA RTX A4000",
+ "wall_time_s": 14.6,
+ "smoke": false,
+ "git_sha": "3cfe6fa6b7f5e90e5aa445a27473bb8b4ee815dd",
+ "git_dirty": false,
+ "created_by": "scripts/run_eval_maritime.py",
+ "created_at": "2026-10-12T21:30:23+00:00",
+ "metrics": {
+  "fwl": 1.3789684905823716,
+  "rsat": 0.9863126075453233
+ },
+ "ci95": {
+  "fwl": [
+   1.145119404015874,
+   1.6467544517304706
+  ],
+  "rsat": [
+   0.9797873301799671,
+   0.996885204968948
+  ]
+ },
+ "n_windows": 298,
+ "n_windows_per_metric": {
+  "fwl": 291,
+  "rsat": 291
+ },
+ "protocol": {
+  "units": [
+   "smd_test/smd_MVI_0799_VIS_OB"
+  ],
+  "store_sha256": {
+   "smd_test/smd_MVI_0799_VIS_OB": "4bfa270520f9a975bbe67775fb3f9b47069a3280f0de33ae6919477829266959"
+  },
+  "teacher_sha256": {
+   "smd_test/smd_MVI_0799_VIS_OB": "340a90a842ba98fa53a5621b0e76e4a6be4541715ea59d9c9171152862cd0b71"
+  },
+  "end_clamped_us": {},
+  "corpus": "smd_test",
+  "resolution": "640x360 (v2e output grid)",
+  "window": "one source-frame interval (frames k -> k+1); flow in px per frame interval",
+  "frame_rate": "SMD: 30 fps (ffprobe r_frame_rate)",
+  "warmup_windows": 2,
+  "windows": "every window after the warm-up",
+  "slices": "all = full frame",
+  "ci": "moving-block bootstrap over windows, 1 s blocks"
+ },
+ "bootstrap": {
+  "resamples": 1000,
+  "ci": 0.95,
+  "seed": 0,
+  "method": "moving-block bootstrap over windows, 1 s blocks"
+ }
+}

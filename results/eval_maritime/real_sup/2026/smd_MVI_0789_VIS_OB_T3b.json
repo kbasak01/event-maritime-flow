@@ -1,0 +1,80 @@
+{
+ "tier": "T3b",
+ "tier_note": "self-consistency (FWL > 1 better, RSAT < 1 better; round, t_ref = 1); not accuracy",
+ "model": "M1",
+ "arm": "real_sup",
+ "seed": 2026,
+ "checkpoint_sha256": "36e79d368593d1dd7b54e795c0aa843c3c4da41a4e17d392376331a3d81f13a3",
+ "dataset": "smd",
+ "sequence": "MVI_0789_VIS_OB",
+ "dt": 1,
+ "dt_unit": "source frame interval",
+ "representation": "voxel5",
+ "tags": [],
+ "run_id": "real_sup_voxel5_s2026",
+ "selection": {
+  "rule": "min of real tune dt1 epe over epochs (mvsec_tune only)",
+  "split": "mvsec_tune",
+  "stream": "real",
+  "metric": "epe",
+  "dt": 1,
+  "selected_epoch": 36,
+  "value": 0.2182964369014619
+ },
+ "train_git_sha": "f9e996e4cc45b98b190638ab38d457131b053aad",
+ "n_windows_total": 276,
+ "per_window_npz": "~/projects_02/event-maritime-flow/runs/eval-maritime/npz/real_sup/2026/smd_MVI_0789_VIS_OB.npz",
+ "per_window_npz_sha256": "2ae5860e930b65fb97e7bca8b5e15eaddda9e59c09993682593b6c2529dcaa9c",
+ "device": "NVIDIA RTX A4000",
+ "wall_time_s": 15.5,
+ "smoke": false,
+ "git_sha": "3cfe6fa6b7f5e90e5aa445a27473bb8b4ee815dd",
+ "git_dirty": false,
+ "created_by": "scripts/run_eval_maritime.py",
+ "created_at": "2026-10-12T21:10:08+00:00",
+ "metrics": {
+  "fwl": 1.0394203087890295,
+  "rsat": 1.0027007407106518
+ },
+ "ci95": {
+  "fwl": [
+   1.0224043601684187,
+   1.0599065363555191
+  ],
+  "rsat": [
+   0.9997357958014386,
+   1.006339758013327
+  ]
+ },
+ "n_windows": 276,
+ "n_windows_per_metric": {
+  "fwl": 255,
+  "rsat": 242
+ },
+ "protocol": {
+  "units": [
+   "smd_test/smd_MVI_0789_VIS_OB"
+  ],
+  "store_sha256": {
+   "smd_test/smd_MVI_0789_VIS_OB": "d7acf4cc9db6aae389c8d49caa3617ffeed7505ad5c38e8fc87cb51d056088b1"
+  },
+  "teacher_sha256": {
+   "smd_test/smd_MVI_0789_VIS_OB": "13f43f2286f5aee21b4b7adad5387e45d1e381345294e599c9b5a1dca40be456"
+  },
+  "end_clamped_us": {},
+  "corpus": "smd_test",
+  "resolution": "640x360 (v2e output grid)",
+  "window": "one source-frame interval (frames k -> k+1); flow in px per frame interval",
+  "frame_rate": "SMD: 30 fps (ffprobe r_frame_rate)",
+  "warmup_windows": 2,
+  "windows": "every window after the warm-up",
+  "slices": "all = full frame",
+  "ci": "moving-block bootstrap over windows, 1 s blocks"
+ },
+ "bootstrap": {
+  "resamples": 1000,
+  "ci": 0.95,
+  "seed": 0,
+  "method": "moving-block bootstrap over windows, 1 s blocks"
+ }
+}

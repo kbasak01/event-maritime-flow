@@ -1,0 +1,94 @@
+{
+ "tier": "T3a",
+ "tier_note": "agreement with a frame-based RAFT teacher (teacher-EPE), not accuracy; mask = FB-consistent AND events-in-window AND slice (D-055, D-057)",
+ "model": "M0a",
+ "arm": "zero_flow",
+ "seed": null,
+ "checkpoint_sha256": null,
+ "dataset": "smd",
+ "sequence": "MVI_0789_VIS_OB",
+ "dt": 1,
+ "dt_unit": "source frame interval",
+ "representation": null,
+ "tags": [],
+ "n_windows_total": 276,
+ "per_window_npz": "~/projects_02/event-maritime-flow/runs/eval-maritime/npz/zero_flow/none/smd_MVI_0789_VIS_OB.npz",
+ "per_window_npz_sha256": "69652d167c0ed6ba0bc5149920abfabfb0e05951344e797fa39ab6fdd6b0cd32",
+ "device": "NVIDIA RTX A4000",
+ "wall_time_s": 17.0,
+ "smoke": false,
+ "git_sha": "5eea7f9d9b78a2dcfb83b3f84d086557ee6052b8",
+ "git_dirty": false,
+ "created_by": "scripts/run_eval_maritime.py",
+ "created_at": "2026-10-12T20:14:09+00:00",
+ "metrics": {
+  "teacher_epe": 19.07951808099441,
+  "teacher_npe_1": 98.29777151737271,
+  "teacher_npe_3": 94.37948540129676,
+  "teacher_ae_deg": 84.70605752126065,
+  "teacher_mask_coverage": 0.9669276651821659,
+  "events_px_fraction": 0.0005038339120370371
+ },
+ "ci95": {
+  "teacher_epe": [
+   17.480704925264718,
+   20.224832050916355
+  ],
+  "teacher_npe_1": [
+   97.00010917532612,
+   99.09644915429996
+  ],
+  "teacher_npe_3": [
+   92.34107422561995,
+   96.32502894259831
+  ],
+  "teacher_ae_deg": [
+   83.7357175684916,
+   85.46577312047539
+  ],
+  "teacher_mask_coverage": [
+   0.9582424906117903,
+   0.9772595254157861
+  ],
+  "events_px_fraction": [
+   0.00020601969794182773,
+   0.0007261249339522946
+  ]
+ },
+ "n_windows": 276,
+ "n_windows_per_metric": {
+  "teacher_epe": 255,
+  "teacher_npe_1": 255,
+  "teacher_npe_3": 255,
+  "teacher_ae_deg": 255,
+  "teacher_mask_coverage": 276,
+  "events_px_fraction": 276
+ },
+ "mean_teacher_mask_px": 114.1231884057971,
+ "protocol": {
+  "units": [
+   "smd_test/smd_MVI_0789_VIS_OB"
+  ],
+  "store_sha256": {
+   "smd_test/smd_MVI_0789_VIS_OB": "d7acf4cc9db6aae389c8d49caa3617ffeed7505ad5c38e8fc87cb51d056088b1"
+  },
+  "teacher_sha256": {
+   "smd_test/smd_MVI_0789_VIS_OB": "13f43f2286f5aee21b4b7adad5387e45d1e381345294e599c9b5a1dca40be456"
+  },
+  "end_clamped_us": {},
+  "corpus": "smd_test",
+  "resolution": "640x360 (v2e output grid)",
+  "window": "one source-frame interval (frames k -> k+1); flow in px per frame interval",
+  "frame_rate": "SMD: 30 fps (ffprobe r_frame_rate)",
+  "warmup_windows": 2,
+  "windows": "every window after the warm-up",
+  "slices": "all = full frame",
+  "ci": "moving-block bootstrap over windows, 1 s blocks"
+ },
+ "bootstrap": {
+  "resamples": 1000,
+  "ci": 0.95,
+  "seed": 0,
+  "method": "moving-block bootstrap over windows, 1 s blocks"
+ }
+}

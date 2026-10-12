@@ -1,0 +1,365 @@
+{
+ "tier": "T3a",
+ "tier_note": "agreement with a frame-based RAFT teacher (teacher-EPE), not accuracy; mask = FB-consistent AND events-in-window AND slice (D-055, D-057)",
+ "model": "M1",
+ "arm": "real_sup",
+ "seed": 2026,
+ "checkpoint_sha256": "36e79d368593d1dd7b54e795c0aa843c3c4da41a4e17d392376331a3d81f13a3",
+ "dataset": "lars",
+ "sequence": "lars_eval_kf",
+ "dt": 1,
+ "dt_unit": "source frame interval",
+ "representation": "voxel5",
+ "tags": [],
+ "run_id": "real_sup_voxel5_s2026",
+ "selection": {
+  "rule": "min of real tune dt1 epe over epochs (mvsec_tune only)",
+  "split": "mvsec_tune",
+  "stream": "real",
+  "metric": "epe",
+  "dt": 1,
+  "selected_epoch": 36,
+  "value": 0.2182964369014619
+ },
+ "train_git_sha": "f9e996e4cc45b98b190638ab38d457131b053aad",
+ "n_windows_total": 40,
+ "per_window_npz": "~/projects_02/event-maritime-flow/runs/eval-maritime/npz/real_sup/2026/lars_lars_eval_kf.npz",
+ "per_window_npz_sha256": "ba01b92a57e03cbb00a8991e76a18b4311db4e6e630f490b5063f50fd7fa9af7",
+ "device": "NVIDIA RTX A4000",
+ "wall_time_s": 10.6,
+ "smoke": false,
+ "git_sha": "3cfe6fa6b7f5e90e5aa445a27473bb8b4ee815dd",
+ "git_dirty": false,
+ "created_by": "scripts/run_eval_maritime.py",
+ "created_at": "2026-10-12T21:11:15+00:00",
+ "metrics": {
+  "teacher_epe": 3.1841937915517833,
+  "teacher_npe_1": 56.99625145967104,
+  "teacher_npe_3": 23.929491174753746,
+  "teacher_ae_deg": 36.94504713755053,
+  "teacher_mask_coverage": 0.9317874348958333,
+  "events_px_fraction": 0.03628830295138889
+ },
+ "ci95": {
+  "teacher_epe": [
+   1.8758131311828536,
+   5.280661350415752
+  ],
+  "teacher_npe_1": [
+   46.72143746098469,
+   67.3237754159247
+  ],
+  "teacher_npe_3": [
+   16.029538861176274,
+   32.833603936022556
+  ],
+  "teacher_ae_deg": [
+   31.02780016989979,
+   43.41306022788147
+  ],
+  "teacher_mask_coverage": [
+   0.9071236653645836,
+   0.9538935492621528
+  ],
+  "events_px_fraction": [
+   0.023606190321180557,
+   0.05031643880208332
+  ]
+ },
+ "n_windows": 40,
+ "n_windows_per_metric": {
+  "teacher_epe": 40,
+  "teacher_npe_1": 40,
+  "teacher_npe_3": 40,
+  "teacher_ae_deg": 40,
+  "teacher_mask_coverage": 40,
+  "events_px_fraction": 40
+ },
+ "mean_teacher_mask_px": 7284.35,
+ "by_class": {
+  "water": {
+   "metrics": {
+    "teacher_epe": 4.095375025780817,
+    "teacher_npe_1": 66.60204405916922,
+    "teacher_npe_3": 34.62584658388759,
+    "teacher_ae_deg": 44.85716188730596,
+    "teacher_mask_coverage": 0.8970132825186237,
+    "events_px_fraction": 0.02834483884448632
+   },
+   "ci95": {
+    "teacher_epe": [
+     2.635495073189027,
+     6.2894389858824935
+    ],
+    "teacher_npe_1": [
+     57.043916000297806,
+     76.22902163498621
+    ],
+    "teacher_npe_3": [
+     25.30758203837045,
+     44.2697599701285
+    ],
+    "teacher_ae_deg": [
+     38.8046638302259,
+     51.8077342812728
+    ],
+    "teacher_mask_coverage": [
+     0.8535319496836109,
+     0.9330189274318429
+    ],
+    "events_px_fraction": [
+     0.018800158334313307,
+     0.03782713130116517
+    ]
+   },
+   "n_windows_per_metric": {
+    "teacher_epe": 40,
+    "teacher_npe_1": 40,
+    "teacher_npe_3": 40,
+    "teacher_ae_deg": 40,
+    "teacher_mask_coverage": 40,
+    "events_px_fraction": 40
+   },
+   "n_windows": 40,
+   "mean_slice_px": 114372.325,
+   "mean_scored_px": 2628.6
+  },
+  "sky": {
+   "metrics": {
+    "teacher_epe": 2.1803147354439876,
+    "teacher_npe_1": 46.8649228874124,
+    "teacher_npe_3": 10.106482746484124,
+    "teacher_ae_deg": 36.005946316933525,
+    "teacher_mask_coverage": 0.9584421298297695,
+    "events_px_fraction": 0.005605267376510219
+   },
+   "ci95": {
+    "teacher_epe": [
+     0.9930590787246789,
+     3.867330055371702
+    ],
+    "teacher_npe_1": [
+     30.089890821835876,
+     63.72268296310175
+    ],
+    "teacher_npe_3": [
+     1.451008964139816,
+     20.69338792760396
+    ],
+    "teacher_ae_deg": [
+     27.71181822267288,
+     44.650792569563514
+    ],
+    "teacher_mask_coverage": [
+     0.9257469408926751,
+     0.9844977787456939
+    ],
+    "events_px_fraction": [
+     0.0013449937092906688,
+     0.011999901953415087
+    ]
+   },
+   "n_windows_per_metric": {
+    "teacher_epe": 29,
+    "teacher_npe_1": 29,
+    "teacher_npe_3": 29,
+    "teacher_ae_deg": 29,
+    "teacher_mask_coverage": 38,
+    "events_px_fraction": 38
+   },
+   "n_windows": 40,
+   "mean_slice_px": 60234.625,
+   "mean_scored_px": 135.47368421052633
+  },
+  "obstacle": {
+   "metrics": {
+    "teacher_epe": 2.5918773229955274,
+    "teacher_npe_1": 50.76590419010601,
+    "teacher_npe_3": 14.819758956894276,
+    "teacher_ae_deg": 32.765285071441276,
+    "teacher_mask_coverage": 0.9814540735007249,
+    "events_px_fraction": 0.08676677807558215
+   },
+   "ci95": {
+    "teacher_epe": [
+     1.1791815637520302,
+     4.976885398956055
+    ],
+    "teacher_npe_1": [
+     38.59449194186299,
+     63.61071765566637
+    ],
+    "teacher_npe_3": [
+     6.675557395690328,
+     24.672705466427544
+    ],
+    "teacher_ae_deg": [
+     26.44040629918168,
+     40.15034533765143
+    ],
+    "teacher_mask_coverage": [
+     0.9700564262396202,
+     0.9897660620928342
+    ],
+    "events_px_fraction": [
+     0.05245928723638155,
+     0.12661453195020123
+    ]
+   },
+   "n_windows_per_metric": {
+    "teacher_epe": 39,
+    "teacher_npe_1": 39,
+    "teacher_npe_3": 39,
+    "teacher_ae_deg": 39,
+    "teacher_mask_coverage": 40,
+    "events_px_fraction": 40
+   },
+   "n_windows": 40,
+   "mean_slice_px": 52563.575,
+   "mean_scored_px": 4468.175
+  }
+ },
+ "protocol": {
+  "units": [
+   "lars_eval_ct100/lars_davimar_seq_08_00000",
+   "lars_eval_ct100/lars_davimar_seq_36_00132",
+   "lars_eval_ct100/lars_davimar_seq_69_00028",
+   "lars_eval_ct100/lars_davimar_seq_70_00030",
+   "lars_eval_ct100/lars_inhouse_seq_117_00480",
+   "lars_eval_ct100/lars_inhouse_seq_132_00123",
+   "lars_eval_ct100/lars_inhouse_seq_153_00350",
+   "lars_eval_ct100/lars_inhouse_seq_155_00003",
+   "lars_eval_ct100/lars_inhouse_seq_158_00070",
+   "lars_eval_ct100/lars_inhouse_seq_191_00140",
+   "lars_eval_ct100/lars_inhouse_seq_194_00260",
+   "lars_eval_ct100/lars_inhouse_seq_244_00015",
+   "lars_eval_ct100/lars_inhouse_seq_244_00380",
+   "lars_eval_ct100/lars_inhouse_seq_260_00075",
+   "lars_eval_ct100/lars_inhouse_seq_296_00290",
+   "lars_eval_ct100/lars_inhouse_seq_344_00104",
+   "lars_eval_ct100/lars_inhouse_seq_346_00227",
+   "lars_eval_ct100/lars_inhouse_seq_372_00010",
+   "lars_eval_ct100/lars_inhouse_seq_372_00390",
+   "lars_eval_ct100/lars_inhouse_seq_387_00006",
+   "lars_eval_ct100/lars_inhouse_seq_406_00090",
+   "lars_eval_ct100/lars_inhouse_seq_82_00030",
+   "lars_eval_ct100/lars_mit_seq_02_00140",
+   "lars_eval_ct100/lars_mit_seq_08_00210",
+   "lars_eval_ct100/lars_mit_seq_21_01100",
+   "lars_eval_ct100/lars_orca_flow_11_00016",
+   "lars_eval_ct100/lars_orca_flow_6_00131",
+   "lars_eval_ct100/lars_orca_usv_inland_N03_3_00768",
+   "lars_eval_ct100/lars_orca_usv_inland_N03_3_01550",
+   "lars_eval_ct100/lars_smd_seq01_00041",
+   "lars_eval_ct100/lars_smd_seq03_00191",
+   "lars_eval_ct100/lars_smd_seq08_00326",
+   "lars_eval_ct100/lars_smd_seq27_00041",
+   "lars_eval_ct100/lars_yt005_00_00080",
+   "lars_eval_ct100/lars_yt009_02_00136",
+   "lars_eval_ct100/lars_yt015_08_00133",
+   "lars_eval_ct100/lars_yt025_04_00540",
+   "lars_eval_ct100/lars_yt028_02_00051",
+   "lars_eval_ct100/lars_yt043_04_00046",
+   "lars_eval_ct100/lars_yt052_03_00049"
+  ],
+  "store_sha256": {
+   "lars_eval_ct100/lars_davimar_seq_08_00000": "75238af8ac2b4a2e9f32c20636a4f22e2592f12e878c5f9143d5042096ab09ff",
+   "lars_eval_ct100/lars_davimar_seq_36_00132": "a779f4a34ecf015e5b45b8862443bcc6d53615e518516be803f4c6496ec7aed2",
+   "lars_eval_ct100/lars_davimar_seq_69_00028": "89be6de7b826abb0a92bb0dc82c052a6f4d6e77240470096db289cef9aebc40d",
+   "lars_eval_ct100/lars_davimar_seq_70_00030": "7fa15e8689db69c4795f21867542d58417580e91635e7e15388db37426c9218e",
+   "lars_eval_ct100/lars_inhouse_seq_117_00480": "b60b5690bcc53301066634fd097fa70ae9aa4e48bfc84b71de9a2f83e3348836",
+   "lars_eval_ct100/lars_inhouse_seq_132_00123": "6826899bce80c55e27f77f126ad94fe4fced44b55a488030bea1c09cb6553ed1",
+   "lars_eval_ct100/lars_inhouse_seq_153_00350": "527d3c9d7854dc29c1cf16b8486619231a34dc7aadc2efc2f49a231bc0d69d4b",
+   "lars_eval_ct100/lars_inhouse_seq_155_00003": "931c19f2039e3c8cf475efa3483c0f9d6c8662694079c9226c48599f44e55507",
+   "lars_eval_ct100/lars_inhouse_seq_158_00070": "7cf4368fd9498fd84dc05b20816cd2b1bbf15564506b48e977bfefda7bff67f5",
+   "lars_eval_ct100/lars_inhouse_seq_191_00140": "f7ed082580245085b9e4c05ea7084eebd86633388941e99902f8f703a6a35eb5",
+   "lars_eval_ct100/lars_inhouse_seq_194_00260": "5ee664bab7eb1c88d8baf2d5eb0e9aaecd36623f7d69684dab1fc99a2156c1fc",
+   "lars_eval_ct100/lars_inhouse_seq_244_00015": "65d68bbdd680d787120a961f443680fc38d02be3fde21721a2b2cf900c310a1b",
+   "lars_eval_ct100/lars_inhouse_seq_244_00380": "86f6b78c0974dc2448071fdab13065a3a932175252376b28de3bd8a04e2e14e6",
+   "lars_eval_ct100/lars_inhouse_seq_260_00075": "8b82b28cd5fd481817300406f4f16a5adb667ff45b4ad06176ac80d83b1cb6ae",
+   "lars_eval_ct100/lars_inhouse_seq_296_00290": "4cd2d182da660ecf421885296ef43af69c8b118e45eb1d3534c834819be2fb67",
+   "lars_eval_ct100/lars_inhouse_seq_344_00104": "4e3b711e6f727eecbf7c30d9c3f46c91fbe5ea55aa089433812391abb904df56",
+   "lars_eval_ct100/lars_inhouse_seq_346_00227": "5ebea350a97292c933707c6a43b460f37c3f56c149c289bda340dcff7088e13f",
+   "lars_eval_ct100/lars_inhouse_seq_372_00010": "ad65d0ba3b9c07cff26581861de035a70e985ba1a7f791ac6a7b1415e6276186",
+   "lars_eval_ct100/lars_inhouse_seq_372_00390": "cdbfc75252ea8a860b07fac81384dabc6576f8eed186bb8b6b5dd8fdfb0b94ab",
+   "lars_eval_ct100/lars_inhouse_seq_387_00006": "4082dd9a506a39004aaacc1dccd41cad26b20b1b19b0a8bd3a717128383c2a4e",
+   "lars_eval_ct100/lars_inhouse_seq_406_00090": "88121290129b823c633fcd0c5de727e5dbd15ec80ba370b2acf03e798d0b7b3e",
+   "lars_eval_ct100/lars_inhouse_seq_82_00030": "81c949db856a4eb5ec266568cc64ebffbdc62f306a808a634892efb2b65955f2",
+   "lars_eval_ct100/lars_mit_seq_02_00140": "3a7bab18f6d59877ddd4119d2482e501289639683aec5c3f804a30db5d6bdb01",
+   "lars_eval_ct100/lars_mit_seq_08_00210": "457d4423137df9d9f6b71fbdc8f6095a2623bbce833ffbb1afd0fbf345a3c4cc",
+   "lars_eval_ct100/lars_mit_seq_21_01100": "1c69d4b9756aeb0a31c33cebac31a73c1e75f2fab51911bd04c90065866ce8b4",
+   "lars_eval_ct100/lars_orca_flow_11_00016": "7786e9f504acce650b9abd22bd69b6bce8ce81ae93d9787fdc9bea5cc174d059",
+   "lars_eval_ct100/lars_orca_flow_6_00131": "fe91dd658bb01f278c6e3e67df71d26705fb65547a424c9f55510c3ba71ca073",
+   "lars_eval_ct100/lars_orca_usv_inland_N03_3_00768": "ab2729ea930e9c819298cd8422662cc18bbc79622976b9f01053499bf7b953aa",
+   "lars_eval_ct100/lars_orca_usv_inland_N03_3_01550": "a0972bb27d5eca2de6551f5e48816112c5b81cac9bc31a9391a9f93e53bb856d",
+   "lars_eval_ct100/lars_smd_seq01_00041": "0e94cff14c5f7b1cf28dce80762816f6b5343abfeb35727bb3e158be40667b55",
+   "lars_eval_ct100/lars_smd_seq03_00191": "c3983a7b71d0b867ef14dcdb16805ff17e7a3fcec76c7793e934ae7c141c8104",
+   "lars_eval_ct100/lars_smd_seq08_00326": "829e2f310f0e6dd54bc5ac9d974fbfcba8dc1c8ba78747de209d1c340dff170c",
+   "lars_eval_ct100/lars_smd_seq27_00041": "287010b246b86b35da5b23062b6bd0c858dcd194a69bccdc406d8493f72c4566",
+   "lars_eval_ct100/lars_yt005_00_00080": "5857f63bd2702c4e04a4d070c4be7c22434f2671a47a7224406f2419da921197",
+   "lars_eval_ct100/lars_yt009_02_00136": "a76d59aa2a6ea1f96237cafd735c3303c87da7e1fcb2c66978079caeaa53cf67",
+   "lars_eval_ct100/lars_yt015_08_00133": "bcc250a357e949ea34503d915b2f8259614278ae7c4e9f9cc6f36db728a4f15a",
+   "lars_eval_ct100/lars_yt025_04_00540": "79dee4409b02927a9cc3a61334a289a3f283b812cbeeb95e43a5c942eb5330a1",
+   "lars_eval_ct100/lars_yt028_02_00051": "8c7292ccba1440636ec059fc27ca8f157ebe1a7644466ca66c0478b7c10067da",
+   "lars_eval_ct100/lars_yt043_04_00046": "2be1c5be681806699624aae479de9a196645b397179115d9bfb61360323805b9",
+   "lars_eval_ct100/lars_yt052_03_00049": "dc4a39ac7d915acb302421d86c6ca170a40739121a94eb77bd11a76ea57750b2"
+  },
+  "teacher_sha256": {
+   "lars_eval_ct100/lars_davimar_seq_08_00000": "453c0f9f061a5cc3b5bbcf0fbf5e81e7094d5cf7506e7b29ef1deb02b764a8c0",
+   "lars_eval_ct100/lars_davimar_seq_36_00132": "7f1df69cedc83047105746038c8f71b77c1882bbf495742c8822049989eff38e",
+   "lars_eval_ct100/lars_davimar_seq_69_00028": "4fe839d7df5bebff648ed963ae9bd0b0bac4ccf688223d9c9bd05a32ebca1283",
+   "lars_eval_ct100/lars_davimar_seq_70_00030": "5c95dc0d6bd4c4f8b9557429ca68003908f0590cdd457f026406090f67e0780e",
+   "lars_eval_ct100/lars_inhouse_seq_117_00480": "c015dda4146712f66313c2a348b3913baefe41ddd11d6e715af0e6f5f792103c",
+   "lars_eval_ct100/lars_inhouse_seq_132_00123": "2cda78171088dcd48ad5b89c343ad4930cab297fdd82b021ef59f31f426c3a5c",
+   "lars_eval_ct100/lars_inhouse_seq_153_00350": "e1714c5a6a6e16d882ba5c8b273a6255ec215d177ab75c1a74b7adf3c0790aad",
+   "lars_eval_ct100/lars_inhouse_seq_155_00003": "dd8f7999b1dd9c4bbd650f26789bad86636bba67eb8bfe6707b0ef53d2670675",
+   "lars_eval_ct100/lars_inhouse_seq_158_00070": "c4bd37e1e8b7587015dad6dadb253ac5d9768220657543b02177e4468a6befb7",
+   "lars_eval_ct100/lars_inhouse_seq_191_00140": "7e8150e199065d9043bb5fe66ee0ac6eefd22b082633d306a6c4b86f8c4f6a5a",
+   "lars_eval_ct100/lars_inhouse_seq_194_00260": "aca8793114f72e5b9a41626758e52ae8a426ca9bf23446811a94e459d50063b2",
+   "lars_eval_ct100/lars_inhouse_seq_244_00015": "1cac528514d641f4c93113cfd1517c593c30a69f840ebfcf5578d62d457194b4",
+   "lars_eval_ct100/lars_inhouse_seq_244_00380": "241ae99dbbb5def5afd2efdee229760fc7fb68dde0419d3b43b0d723246f1d58",
+   "lars_eval_ct100/lars_inhouse_seq_260_00075": "c1852b78eabc256d8d5dfdf17cf2459e41ae8bc4e38a556736c7e70e4b485d9d",
+   "lars_eval_ct100/lars_inhouse_seq_296_00290": "cdffcd07e2a114a26790c2f3196e6b893411129ad41884fc1e449b6229b81f45",
+   "lars_eval_ct100/lars_inhouse_seq_344_00104": "e3ec9f6fc736c55e54c3476046f08fe95d1359b6a2550e24285146168e0822a4",
+   "lars_eval_ct100/lars_inhouse_seq_346_00227": "dce83720a4d28d44849b8e1829a914422f67d645b221c68b00255bd3427373f5",
+   "lars_eval_ct100/lars_inhouse_seq_372_00010": "f8411cb66786e033b1c386f9c25eb8686fe72299425f1d88efbb9117b55676af",
+   "lars_eval_ct100/lars_inhouse_seq_372_00390": "3ab35f49fbc8e8b4c9f614fe2fbbc04cff881b3ff46321fa31d144765ca62851",
+   "lars_eval_ct100/lars_inhouse_seq_387_00006": "11c0dba9cdbf0110bef594756ad23b3ba0fd88b8f5db0825bc2d434bacddbdf3",
+   "lars_eval_ct100/lars_inhouse_seq_406_00090": "9016c309063b0083e904461bcb92d848098ee27162b6b5d84de891fc1ae3a2c3",
+   "lars_eval_ct100/lars_inhouse_seq_82_00030": "8265f55f329e78f8ce0f36b2fa8a4c006d289165f94e02daadb689ae766f8cba",
+   "lars_eval_ct100/lars_mit_seq_02_00140": "994af51890638e59c543a019ffef48012e9b045deefed174ae957dde1b634fe6",
+   "lars_eval_ct100/lars_mit_seq_08_00210": "a76be90001714438ad657c503e26e02357e894739c6ecf2c95122410aa02541c",
+   "lars_eval_ct100/lars_mit_seq_21_01100": "a5b9f39a234017659e0667964e52f968c2bc53793ebbded0c094578580b191f3",
+   "lars_eval_ct100/lars_orca_flow_11_00016": "5da059ea4dd4bda21e833553d1c31560301cd3b2da67ef44b20f744928422fdc",
+   "lars_eval_ct100/lars_orca_flow_6_00131": "4bf465f1534c116b94ace4f8f45ef47ff0e466ca35550d3733425cabffcc39c3",
+   "lars_eval_ct100/lars_orca_usv_inland_N03_3_00768": "11d8436a7ffb5eb416ccc29fa6fb115263f2d06b12694a8d03bc8d46f88c1ee3",
+   "lars_eval_ct100/lars_orca_usv_inland_N03_3_01550": "a7336f9489ea768fd8a93d2806522dd16f6619a3eda01b6fd0e036b1170d01c8",
+   "lars_eval_ct100/lars_smd_seq01_00041": "bb1f12e986f43f968cd93e2c1f403a3f32905497cf2b1c3c1cab6882c96465c8",
+   "lars_eval_ct100/lars_smd_seq03_00191": "5d346bf24ce94d999a2c0ad99b17dd9e4ee39601d3f41fb88dd7ddd4741a2ec0",
+   "lars_eval_ct100/lars_smd_seq08_00326": "dfdd6703ae1d884ac2a0587fd94ebc975b8b794411f840aed8d9f3d780ee2e11",
+   "lars_eval_ct100/lars_smd_seq27_00041": "688f422c29f057c9960743532f984e5284783192d45ccee0660aea46ca1194de",
+   "lars_eval_ct100/lars_yt005_00_00080": "3b1a088892d278602227c193bf94243bdb8c056f0b9982391f0c2b8082017033",
+   "lars_eval_ct100/lars_yt009_02_00136": "07876becccb12b8f8c570ee7054d3d6e38a96ff5d7cccd36a9203a08c108e369",
+   "lars_eval_ct100/lars_yt015_08_00133": "7ff312d209b033c7bfcf445b9f9f660dce471ecfc5b819b9157aab19734d12dc",
+   "lars_eval_ct100/lars_yt025_04_00540": "116c7bb5b4f6cb906623748a892793c0d0cc3f01117f2e6fe871abcf2c453b37",
+   "lars_eval_ct100/lars_yt028_02_00051": "12f0ce9019707dddb78ef1014bc1e6e94ded1e37148c7d00a1944c876a8761b8",
+   "lars_eval_ct100/lars_yt043_04_00046": "cb7bf0b55443ce8225424d408e63e8357ad6e858a6fccdc79c34eb8c4cce4831",
+   "lars_eval_ct100/lars_yt052_03_00049": "ee6246bc6fb5f738b21e4f06995da26c48f0266ced83d3ff2bbb29ebc5334954"
+  },
+  "end_clamped_us": {},
+  "corpus": "lars_eval_ct100",
+  "resolution": "640x360 (v2e output grid; LaRS sources stretched, aspect not kept, D-054)",
+  "window": "one source-frame interval (frames k -> k+1); flow in px per frame interval",
+  "frame_rate": "LaRS: assumed 30 fps (D-024), px per frame interval is rate-free",
+  "warmup_windows": 2,
+  "windows": "the keyframe window (keyframe - 1 -> keyframe)",
+  "slices": "all = full frame; water/sky/obstacle = LaRS keyframe semantic mask, nearest-resized; ignore px in no class",
+  "ci": "cluster bootstrap over clips"
+ },
+ "bootstrap": {
+  "resamples": 1000,
+  "ci": 0.95,
+  "seed": 0,
+  "method": "cluster bootstrap over clips"
+ }
+}

@@ -222,9 +222,11 @@ def t3_part(root: Path, sources: set) -> list[str]:
                                    if v.get("reported", True) else " (not reported)")
             for lv, v in a["levels"].items())
         rows.append(["T3b", name, levels, rtxt])
-    L += ["**Water enrichment by LaRS scene attribute (CT ×1.0)** — levels with fewer than 3 "
-          "clips are not reported; ρ = Spearman of water enrichment on the ordinal / binary "
-          "attribute, clip-bootstrap 95 % CI.", ""]
+    L += ["**Water enrichment by LaRS scene attribute (CT ×1.0)** — per level, the *mean of "
+          "per-clip* water enrichment (not the pooled, event-weighted value of the table above); "
+          "levels with fewer than 3 clips are not reported; ρ = Spearman of per-clip water "
+          "enrichment on the ordinal / binary attribute, clip-bootstrap 95 % CI; small levels "
+          "(n < 10) make ρ fragile.", ""]
     L += _table(["tier", "attribute", "levels (n clips, mean water enrichment)",
                  "Spearman ρ [CI]"], rows) + [""]
     return L
