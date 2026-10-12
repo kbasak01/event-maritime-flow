@@ -1,7 +1,6 @@
 # Phase 7 gate — Maritime track (T3) and sea-clutter study
 
-Date: 2026-10-12 · HEAD at the gate: see the gate commit · Overall: **PASS** (CI: see the follow-up
-commit that records the run).
+Date: 2026-10-12 · gate commit 828b3e4 · Overall: **PASS (CI green)**.
 
 ## Gate text (IMPLEMENTATION_PLAN.md, Phase 7)
 
@@ -92,6 +91,13 @@ now names the SMD test videos; (5) info — D-062(c) wording accepted.
   caption, clutter figure title, D-024).
 - G4 — LaRS / SMD imagery only where `docs/LICENSES.md` permits: met for this phase (no SMD
   imagery; LaRS panels gitignored, publication decision in Phase 10).
+
+## CI
+
+- 828b3e4 (gate commit): run 38315084301 **failed** — `tests/test_io_smd.py::test_probe_and_read`:
+  `FileNotFoundError: 'ffprobe'` on the GitHub runner (373 other tests passed).
+- 8b6f614 (CI installs ffmpeg so the probe stays tested): run 38315269762 **success**
+  (https://github.com/kbasak01/event-maritime-flow/actions/runs/38315269762).
 
 ## Open items
 
