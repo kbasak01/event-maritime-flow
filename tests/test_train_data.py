@@ -212,3 +212,10 @@ def test_from_store_clamps_short_end(tmp_path):
     assert full.end_clamped_us == 0
     with pytest.raises(ValueError):
         EventArrays.from_store(path, 1_000_000, 1_000_000 + 8_000)
+    # maritime units (D-060): up to the unit's known last frame, an empty tail is accepted
+    tail = EventArrays.from_store(path, 1_000_000, 1_000_000 + 40_000,
+                                  known_end_us=1_000_000 + 40_000)
+    assert tail.end_clamped_us == 34_000 and tail.t.size == n
+    with pytest.raises(ValueError):                      # but never beyond the known end
+        EventArrays.from_store(path, 1_000_000, 1_000_000 + 40_000,
+                               known_end_us=1_000_000 + 30_000)

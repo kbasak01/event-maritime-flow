@@ -119,18 +119,25 @@ class EventArrays:
 
     @classmethod
     def from_store(cls, path: str | os.PathLike, t0: int, t1: int,
-                   max_end_shortfall_us: int = 1000) -> EventArrays:
+                   max_end_shortfall_us: int = 1000,
+                   known_end_us: int | None = None) -> EventArrays:
         """Events in [t0, t1). A v2e store whose last event lies just before the clip's last
         APS frame has an ``ms_to_idx`` ending short of t1, and the slicer then refuses the
         range; if the shortfall is at most ``max_end_shortfall_us`` the range is clamped to the
-        store's covered end (no events exist past it) and ``end_clamped_us`` records it (D-048)."""
+        store's covered end (no events exist past it) and ``end_clamped_us`` records it (D-048).
+        ``known_end_us`` (maritime units, D-060): the absolute time of the unit's last source
+        frame; a range ending at or before it is clamped whatever the shortfall, because a
+        near-static clip makes v2e emit no events after the last change, so the store's index
+        stops early while the input still spans to that frame."""
         from evflow.io.store import EventSlicer
         clamp = 0
         with EventSlicer(path) as s:
             ev = s.get_events(int(t0), int(t1), rectify=False)
             if ev is None:
                 covered = s.store.t_offset + (s.store.ms_to_idx.size - 1) * 1000
-                if 0 < t1 - covered <= max_end_shortfall_us and s.t_final_us < covered:
+                limit = (t1 - covered if known_end_us is not None and t1 <= known_end_us
+                         else max_end_shortfall_us)
+                if 0 < t1 - covered <= limit and s.t_final_us < covered:
                     clamp = int(t1 - covered)
                     ev = s.get_events(int(t0), int(covered), rectify=False)
         if ev is None:
@@ -641,7 +648,8 @@ def load_maritime(*, supervision: str, warmup: int, augment: Augment | None,
         ft = frame_times_us(n, float(man["input_frame_rate"]),
                             int(man["conversion"]["t_offset_us"]))
         ks = maritime_windows(n, warmup)
-        arr = EventArrays.from_store(store, int(ft[ks[0]]), int(ft[ks[-1] + 1]))
+        arr = EventArrays.from_store(store, int(ft[ks[0]]), int(ft[ks[-1] + 1]),
+                                     known_end_us=int(ft[-1]))
         if arr.end_clamped_us:
             prov.setdefault("end_clamped_us", {})[u["key"]] = arr.end_clamped_us
         data.append(ClipData(Clip(u["key"], u["split"], 0, n - 1), [arr]))

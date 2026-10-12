@@ -73,6 +73,7 @@ class Segment:
     teacher: Path
     masks: list[dict[str, np.ndarray] | None] = field(default_factory=list)
     store_sha256: str = ""
+    end_clamped_us: int = 0                 # empty tail after the store's last event (D-060)
 
 
 def unit_windows(n_frames: int, frame_t: np.ndarray, ks) -> tuple[list[Window], list[int]]:
@@ -124,7 +125,7 @@ def segments(paths: dict, dataset: str, sequence: str, *, size=(640, 360)) -> li
         lo = min(w.t_start_us for w in wins)
         lo = min([lo] + [w.prev_start_us for w in wins if w.prev_start_us is not None])
         arr = EventArrays.from_store(root / u["corpus"] / f"{u['name']}.h5", lo,
-                                     max(w.t_end_us for w in wins))
+                                     max(w.t_end_us for w in wins), known_end_us=int(ft[-1]))
         masks: list = [None] * len(wins)
         if sequence == "lars_eval_kf":
             for i, kf in enumerate(u["keyframes"]):
@@ -132,7 +133,7 @@ def segments(paths: dict, dataset: str, sequence: str, *, size=(640, 360)) -> li
                     paths["lars"]["root"], u["subset"], kf, size=size))
         tp = troot / u["corpus"] / f"{u['name']}.h5"
         out.append(Segment(u["key"], ArraySlicer(arr), wins, local, tp, masks,
-                           man["store_sha256"]))
+                           man["store_sha256"], int(arr.end_clamped_us)))
     return out
 
 

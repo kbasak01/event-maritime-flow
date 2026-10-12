@@ -57,7 +57,7 @@ def main(argv: list[str] | None = None) -> int:
                                 int(man["conversion"]["t_offset_us"]))
             ks = [j - 1 for j in u["keyframes_local"]]
             arr = EventArrays.from_store(root / corpus / f"{u['name']}.h5", int(ft[min(ks)]),
-                                         int(ft[max(ks) + 1]))
+                                         int(ft[max(ks) + 1]), known_end_us=int(ft[-1]))
             counts = []
             for kf, k in zip(u["keyframes"], ks, strict=True):
                 ev = arr.window(int(ft[k]), int(ft[k + 1]))
@@ -66,7 +66,7 @@ def main(argv: list[str] | None = None) -> int:
                 counts.append(clutter.window_class_counts(ev["x"], ev["y"], masks))
             st = clutter.clip_stats(counts)
             st.update(clip=u["clip"], keyframes=u["keyframes"], n_windows=len(counts),
-                      store_sha256=man["store_sha256"])
+                      store_sha256=man["store_sha256"], end_clamped_us=arr.end_clamped_us)
             clips.append(st)
             rows.append({"clip": u["clip"], "n_events": st["n_events"],
                          **{c: st["classes"][c] for c in lars_io.CLASSES}})

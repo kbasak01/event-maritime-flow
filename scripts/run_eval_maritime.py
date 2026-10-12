@@ -147,6 +147,7 @@ def main(argv: list[str] | None = None) -> int:
     protocol = {
         "units": [s.key for s in segs], "store_sha256": {s.key: s.store_sha256 for s in segs},
         "teacher_sha256": {s.key: sha256_file(s.teacher) for s in segs},
+        "end_clamped_us": {s.key: s.end_clamped_us for s in segs if s.end_clamped_us},
         "corpus": em.LARS_CORPUS if args.dataset == "lars" else em.SMD_CORPUS,
         "resolution": f"{W}x{H} (v2e output grid"
                       + ("; LaRS sources stretched, aspect not kept, D-054)" if cluster else ")"),
