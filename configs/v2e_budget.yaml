@@ -7,7 +7,8 @@
 # Video seconds: splits/*.json (mvsec_test 265.58 s, mvsec_train 489.98 s, SMD 147.6 s, LaRS
 # 2603 train / 197 val clips). Cap 0.75 ms everywhere (D-025). LaRS cost uses the cap-0.5 ms
 # clip measurements (conservative: no cap-0.75 ms LaRS unit was run). Decisions: D-025, D-026, D-028, D-032 (Phase 3 lines measured).
-limit_gpu_hours: 19          # raised from 12 by the user for the D-035 re-run (2026-10-09)
+limit_gpu_hours: 19.5        # 12 -> 19 by the user for the D-035 re-run (2026-10-09); 19 -> 19.5:
+                             # user accepted the Phase 7 overrun (19.44 measured, D-059, 2026-10-12)
 concurrency_reference: mvsec_auto_ts750
 
 scenarios:
