@@ -1,0 +1,54 @@
+{
+ "kind": "gpu_job_manifest",
+ "job": "jobs/2026-10-12_train-maritime.sh",
+ "plan_step": "Phase 7 step 3: train maritime_selfsup and maritime_teacher (one seed each), D-056",
+ "configs": [
+  "configs/evflow.yaml",
+  "configs/train_maritime_selfsup.yaml",
+  "configs/train_maritime_teacher.yaml",
+  "configs/v2e_corpus_maritime.yaml",
+  "configs/eval_mvsec.yaml"
+ ],
+ "config_sha256": {
+  "configs/evflow.yaml": "d3fae5900be4a1d06bf79b1ab4f4a8c7ffacaadd7063773a19c9112770a46403",
+  "configs/train_maritime_selfsup.yaml": "e1ac343aed367f618eaac03889132f41a074d9e0ed46ec0b57d1b7b98954d809",
+  "configs/train_maritime_teacher.yaml": "6e0e7fd55a2e0f5e167168ab692a08bbc069be97e16ddbb426ce4a05409f3919",
+  "configs/v2e_corpus_maritime.yaml": "0234ce95ece6f93d22275784fec3cd36bd62b5cc480c80ab6d1bcf6242be8abb",
+  "configs/eval_mvsec.yaml": "9d668acf7d2219861ef4f47162502a27485c7e7598ede8da0ef3fca0d34ccc99"
+ },
+ "inputs": {
+  "splits/smd_train.json": {
+   "manifest_sha256": "e994381f2fa4fb2ddece4b0dc4a01c09a69b04717db2af97b2f16c889425571e",
+   "file_sha256": "ddb65d517dac6405158381fe49f3438c22d33dedb9d6fb47e3f70bb099770a58"
+  },
+  "splits/lars_train.json": {
+   "manifest_sha256": "4979dfb1d9ba8b67096183cb873dd578391ed5b0a4ab116c60515252c5d21327",
+   "file_sha256": "5285f4cd3d53deb95d211535820dc2d43d3a879ab514c7afae8c7679b87980e5"
+  },
+  "splits/mvsec_tune.json": {
+   "manifest_sha256": "9ea94aea246c4c9678b7ea22860574c22aa03fb57b25368bc19bc48861c5b9b5",
+   "file_sha256": "290a8f9b03388c5aaacef673d4ba495ed1f6d02c447a468d238c8f128975f0c7"
+  },
+  "results/v2e_maritime_corpus.json": "train stores (smd_train, lars_train, x1.0)",
+  "results/teacher/summary.json": "teacher stores of the train units",
+  "results/train/cm_sweep.json": "v2e_selfsup's chosen CM weights (mvsec_tune)",
+  "results/v2e_mvsec_corpus.json": "v2e(mvsec_tune) selection stream"
+ },
+ "units": {
+  "runs": [
+   "maritime_teacher_voxel5_s1337",
+   "maritime_selfsup_voxel5_s1337"
+  ]
+ },
+ "expected_outputs": [
+  "runs/train/maritime_{teacher,selfsup}_voxel5_s1337/{manifest.json,metrics.csv,best.pt,last.pt,selection.json,DONE}",
+  "results/train/maritime_summary.json"
+ ],
+ "estimated_gpu_hours": 1.5,
+ "estimated_wall_hours": 1.5,
+ "estimated_gpu_hours_basis": "Phase 5 runs: 40 epochs over ~10k MVSEC windows per epoch; maritime epochs hold ~2,800 windows (640x360, 256x256 crops) -> roughly a third of a Phase 5 run each, plus per-epoch tune evaluation",
+ "disk_estimate_gb": 1,
+ "disk_estimate_basis": "two checkpoints per run (~55 MB each) + logs",
+ "launch": "from a detached worktree at the prepared commit: nohup bash jobs/2026-10-12_train-maritime.sh > runs/train-maritime/job.log 2>&1 &",
+ "prepared_on_git_sha": "53dd33d8a6eb6fb192a78b0ead31a5c526b9f27e"
+}
