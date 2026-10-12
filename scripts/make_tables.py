@@ -112,10 +112,13 @@ class Notes:
     def __init__(self) -> None:
         self.items: list[str] = []
 
-    def mark(self, text: str) -> str:
+    def ref(self, text: str) -> str:
         if text not in self.items:
             self.items.append(text)
-        return f"— ({self.items.index(text) + 1})"
+        return f"({self.items.index(text) + 1})"
+
+    def mark(self, text: str) -> str:
+        return f"— {self.ref(text)}"
 
     def render(self) -> list[str]:
         return [f"({i}) {t}  " for i, t in enumerate(self.items, 1)]
@@ -132,7 +135,7 @@ def fmt_cell(r: dict, metric: str) -> str:
     s = _f(m, metric) + (f" [{_f(ci[0], metric)}, {_f(ci[1], metric)}]" if ci else "")
     rng = (r["seed_range"] or {}).get(metric) if r["seeds"] and len(r["seeds"]) > 1 else None
     if rng:
-        s += f" r {_f(rng[0], metric)}–{_f(rng[1], metric)}"
+        s += f" r [{_f(rng[0], metric)}, {_f(rng[1], metric)}]"
     return s
 
 
@@ -179,18 +182,47 @@ def pair_cell(e: dict | None, notes: Notes) -> str:
     if e["estimate"] is None:
         return notes.mark(f"undefined: {e.get('undefined_reason', 'see paired.json')}")
     lo, hi = e["ci95"]
-    return f"{e['estimate']:.3f} [{lo:.3f}, {hi:.3f}]"
+    s = f"{_pf(e['estimate'])} [{_pf(lo)}, {_pf(hi)}]"
+    sp = e.get("seed_pairings")
+    if sp and sp.get("range"):
+        s += f" r [{_pf(sp['range'][0])}, {_pf(sp['range'][1])}]"
+    if e.get("seed_unstable"):
+        s += " " + notes.ref("seed-unstable (D-053): gap(v2e_fixed_sup) ≤ 0 for some single-seed "
+                             "pairings (`n_fixed_gap_pairings_nonpositive` in paired.json); `r` "
+                             "covers the pairings with a positive gap only")
+    return s
+
+
+def _pf(v: float) -> str:
+    """3 decimals; a nonzero value that would print as ±0.000 keeps 4 decimals."""
+    return f"{v:.4f}" if v != 0 and abs(v) < 0.0005 else f"{v:.3f}"
 
 
 def pair_table(st: Study, table: str, tier: str, dt, comps: list[tuple[str, str]],
                notes: Notes) -> list[str]:
+    """One row per comparison; per-sequence columns carry the paired window count n (windows
+    scored in every series of the comparison; a range if the rows differ)."""
     cols = list(study.MVSEC_SEQS) + ["pooled"]
-    body = []
+    body, ns = [], {c: set() for c in study.MVSEC_SEQS}
     for comp, label in comps:
-        body.append([tier, label] + [pair_cell(st.pairs.get((table, tier, comp, c, dt)), notes)
-                                     for c in cols])
-    return _table(["tier", "comparison"] + [c if c != "pooled" else "pooled (mean of 4)"
-                                            for c in cols], body)
+        row = [tier, label]
+        for c in cols:
+            e = st.pairs.get((table, tier, comp, c, dt))
+            row.append(pair_cell(e, notes))
+            n = (e or {}).get("n_windows", {}).get(c)
+            if n is not None:
+                ns[c].add(n)
+        body.append(row)
+    head = []
+    for c in cols:
+        if c == "pooled":
+            head.append("pooled (mean of 4)")
+        elif ns[c]:
+            head.append(f"{c} (n={min(ns[c])})" if len(ns[c]) == 1
+                        else f"{c} (n={min(ns[c])}–{max(ns[c])})")
+        else:
+            head.append(c)
+    return _table(["tier", "comparison"] + head, body)
 
 
 def render(root: Path = REPO) -> str:
@@ -212,6 +244,9 @@ def render(root: Path = REPO) -> str:
           "arms: seed mean, CI of the seed-mean per-window series, `r` = range of the "
           "per-seed means. Gaps, closure and T2 − T1: paired bootstrap on the same windows; "
           "pooled = mean of the four sequence means, each sequence resampled independently. "
+          "**CIs resample windows only** (each arm's seed mean held fixed); between-seed "
+          "variation is shown by `r` (Table A: range of the per-seed means; Table B: range over "
+          "single-seed combinations, D-053) and is not in the CI. "
           "EPE in px over the window (dt = k APS frame intervals; never compared across dt).", ""]
 
     a_rows_t1 = ([("zero_flow", ""), ("cm_baseline", ""), ("eraft_mvsec20", "")]
@@ -238,13 +273,26 @@ def render(root: Path = REPO) -> str:
             L += ["- Same windows, GT and region as A-T1; events and the sparse mask come from "
                   "the calibrated v2e(APS) test corpus (D-035, D-051), so n can differ from "
                   "A-T1.  ",
-                  f"- M0b and R1 are {study.BY_DESIGN.split(': ', 1)[0]} (D-051).  "]
+                  "- M0b and R1 are not evaluated on T2 events, by design (D-051).  "]
         L += notes.render() + [""]
 
     L += ["## Table B — simulator gap and closure (paired bootstrap)", "",
           "gap = EPE(v2e arm) − EPE(real arm) on the same windows (> 0: the v2e-trained arm "
           "is worse). closure = 1 − gap(v2e_rand_sup) / gap(v2e_fixed_sup). Supervised arms: "
-          "3-seed means; self-supervised arms: one seed each.", ""]
+          "3-seed means; self-supervised arms: one seed each. n = windows scored in every series "
+          "of the comparison.", "",
+          "Reading notes:  ",
+          "- `r` = range of the statistic over single-seed pairings (supervised gaps: 3 × 3 "
+          "seeds; closure: 3 × 3 × 3; T2 − T1: same model, 3 seeds); the CI covers windows "
+          "only. A CI that excludes 0 while `r` spans 0 means the sign is not stable across "
+          "training seeds.  ",
+          "- Indoor dt = 1: on indoor_flying1 no supervised M1 arm has a lower EPE than zero "
+          "flow, and on indoor_flying3 real_sup does not either (Table A-T1; D-046); negative "
+          "gaps on these sequences compare models at or near the zero-flow floor and are not "
+          "evidence that v2e training is better.  ",
+          "- closure is a ratio: where gap(v2e_fixed_sup) is small its CI is wide; values above "
+          "1 (randomisation overshoots the real arm) are within that uncertainty, not a "
+          "finding.  ", ""]
     comps = [("gap_v2e_fixed_sup", "gap v2e_fixed_sup − real_sup"),
              ("gap_v2e_rand_sup", "gap v2e_rand_sup − real_sup"),
              ("closure_v2e_rand_sup", "closure (CT randomisation)"),
@@ -257,8 +305,9 @@ def render(root: Path = REPO) -> str:
             L += pair_table(st, "B", tier, dt, comps, notes) + [""]
         if tier == "T2":
             L += ["**T2 − T1: the same model on v2e vs real test events** (EPE difference, same "
-                  "windows and GT, each stream's own sparse mask; < 0: lower EPE on v2e events)",
-                  ""]
+                  "windows and GT, each stream's own sparse mask; < 0: lower EPE on v2e events). "
+                  "These rows combine a T2 series with the same model's T1 series; they are "
+                  "tagged T2 because they measure the simulator (D-051(c)).", ""]
             tcomps = [(f"t2_minus_t1_{a}", a) for a in (*study.M1_ARMS, "zero_flow")]
             for dt in study.DTS:
                 L += [f"*dt = {dt}*", ""]

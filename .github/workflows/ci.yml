@@ -15,3 +15,4 @@ jobs:
           pip install -e . --no-deps
       - run: ruff check src tests scripts
       - run: pytest -q
+      - run: python scripts/make_tables.py --check   # make reproduce-tables (checklist G6)

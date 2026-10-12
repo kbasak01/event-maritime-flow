@@ -8,16 +8,16 @@
 | 3 | PASS (CI green) | docs/gates/phase-3.md | 2026-10-09 |
 | 4 | PASS (CI green) | docs/gates/phase-4.md | 2026-10-10 |
 | 5 | PASS (CI green) | docs/gates/phase-5.md | 2026-10-11 |
-| 6 | in progress (eval-all job) | – | – |
+| 6 | in progress (gate audits) | – | – |
 | 7 | not started | – | – |
 | 8 | not started | – | – |
 | 9 | not started | – | – |
 | 10 | not started | – | – |
 
-Pending GPU jobs:
-- `jobs/2026-10-11_eval-all.sh` (Phase 6, D-051; attempt 1 stopped, D-052): 298 units, 38 present before launch, ≈ 5.5 GPU-h → `results/eval/`, `results/baselines/zero_flow/*_v2e.json`, `results/TABLES.md`. Log `runs/eval-all/job.log`.
+Pending GPU jobs: none (Claude may launch GPU jobs after `gpu-job` prep, D-006; one CUDA process at a time on this workstation, D-048b).
 
-(Claude may launch GPU jobs after `gpu-job` prep, D-006; one CUDA process at a time on this workstation, D-048b).
+Done GPU jobs (Phase 6):
+- `jobs/2026-10-11_eval-all.sh` → `results/eval/` (298/298 units incl. Phase 4 baselines and Phase 5 gate units; reproduction unit equal to its committed JSON, max diff 0), `results/eval/{summary,aggregate,paired}.json`, `results/TABLES.md`, `results/figures/`. Attempt 1 stopped after 8 min (CPU threads, D-052); attempt 2 at b19e609, 16:31–22:47 on 2026-10-11 (`runs/eval-all/job.log`).
 
 Done GPU jobs (Phase 5):
 - `jobs/2026-10-10_phase5-train.sh` → `runs/train/` (17 runs, all TRUSTWORTHY), `runs/train-sweep/` (8 CM cells), `results/train/{summary,cm_sweep}.json`, `results/eval/real_sup/*/` gate units (attempts 1–3, D-045/D-047/D-048; final launch at 7904922 from a clean worktree, ended 2026-10-11 13:28).

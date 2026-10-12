@@ -40,7 +40,12 @@ def root(tmp_path):
                             "per_seed": {}, "n_windows": {k: 2193 for k in met}})
     _w(tmp_path, "results/eval/aggregate.json", {"kind": "x", "entries": entries})
     pairs = [{"table": "B", "tier": "T1", "comparison": "gap_v2e_fixed_sup",
-              "sequence": "indoor_flying1", "dt": 1, "estimate": 0.25, "ci95": [0.1, 0.4]},
+              "sequence": "indoor_flying1", "dt": 1, "estimate": 0.25, "ci95": [0.1, 0.4],
+              "n_windows": {"indoor_flying1": 2193},
+              "seed_pairings": {"range": [-0.05, 0.27], "n": 9}},
+             {"table": "B", "tier": "T1", "comparison": "closure_v2e_rand_sup",
+              "sequence": "indoor_flying1", "dt": 4, "estimate": 0.6, "ci95": [0.4, 1.06],
+              "seed_pairings": {"range": [-0.2, 2.7], "n": 27}, "seed_unstable": True},
              {"table": "B", "tier": "T1", "comparison": "closure_v2e_rand_sup",
               "sequence": "indoor_flying1", "dt": 1, "estimate": None, "ci95": None,
               "undefined_reason": "gap CI includes 0"}]
@@ -69,10 +74,15 @@ def test_render_tiers_apart_and_values(root):
     rows2 = [ln for ln in a2.splitlines() if ln.startswith("| T")]
     assert rows1 and all(ln.startswith("| T1 |") for ln in rows1)
     assert rows2 and all(ln.startswith("| T2 |") for ln in rows2)
-    assert "1.500 [1.400, 1.600] r 1.300–1.700" in a1          # 3-seed: mean [CI] range
+    assert "1.500 [1.400, 1.600] r [1.300, 1.700]" in a1          # 3-seed: mean [CI] range
     assert "1.200 [1.100, 1.300]" in a2 and "(n=2190)" not in a1
     assert "1.280 [1.180, 1.380]" in a1 and "1.100 [1.000, 1.200]" in a2
     assert "0.250 [0.100, 0.400]" in _section(text, "## Table B")
+    b1 = _section(text, "### Table B-T1")
+    assert "indoor_flying1 (n=2193)" in b1
+    assert "0.250 [0.100, 0.400] r [-0.050, 0.270]" in b1             # seed range beside the CI
+    assert "0.600 [0.400, 1.060] r [-0.200, 2.700] (" in b1 and "seed-unstable (D-053)" in b1
+    assert "**CIs resample windows only**" in text
     assert "undefined: gap CI includes 0" in _section(text, "## Table B")
 
 

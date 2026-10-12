@@ -23,6 +23,7 @@ are local, gitignored). Bootstrap settings: ``configs/evflow.yaml metrics.bootst
 
 from __future__ import annotations
 
+import itertools
 import json
 import sys
 from collections import defaultdict
@@ -260,7 +261,7 @@ def _pooled(fn):
 
 def paired_entry(units: Units, boot: dict, *, table: str, tier: str, comparison: str,
                  spec: dict, stat, seqs: list[str], dt, ds: str, definition: str,
-                 pooled: bool) -> dict | None:
+                 pooled: bool, same_seed: bool = False) -> dict | None:
     strata = _strata(units, spec, seqs, dt)
     if strata is None:
         return None
@@ -271,15 +272,73 @@ def paired_entry(units: Units, boot: dict, *, table: str, tier: str, comparison:
                                            blocks=blocks, **kw)
     else:
         est, lo, hi = paired_block_ci(strata[0]["series"], stat, block=blocks[0], **kw)
-    return {"table": table, "tier": tier, "comparison": comparison, "metric": "epe",
-            "dataset": ds, "sequence": "pooled" if pooled else seqs[0],
-            **({"dt": dt} if ds == "mvsec" else {}),
-            "estimate": est, "ci95": [lo, hi],
-            "n_windows": {st["sequence"]: int(st["t"].size) for st in strata},
-            "block_windows": dict(zip([st["sequence"] for st in strata], blocks, strict=True)),
-            "series": {k: {"tier": v[0], "arm": v[1], "representation": v[2],
-                           "seeds": list(v[4]) if v[4] else "all"} for k, v in spec.items()},
-            "definition": definition}
+    series = {}
+    for k, (t, arm, rep, d, seeds) in spec.items():
+        us = [u for seq in seqs for u in units.groups.get((t, arm, rep, d, seq, dt), [])
+              if seeds is None or u.get("seed") in seeds]
+        series[k] = {"tier": t, "arm": arm, "representation": rep,
+                     "seeds": list(seeds) if seeds else "all",
+                     "source_json": sorted(u["path"] for u in us),
+                     "checkpoint_sha256": sorted({u["doc"]["checkpoint_sha256"] for u in us
+                                                  if u["doc"].get("checkpoint_sha256")})}
+    out = {"table": table, "tier": tier, "comparison": comparison, "metric": "epe",
+           "dataset": ds, "sequence": "pooled" if pooled else seqs[0],
+           **({"dt": dt} if ds == "mvsec" else {}),
+           "estimate": est, "ci95": [lo, hi],
+           "ci_scope": "windows only (each arm's seed mean held fixed); between-seed variation "
+                       "is in seed_pairings",
+           "n_windows": {st["sequence"]: int(st["t"].size) for st in strata},
+           "block_windows": dict(zip([st["sequence"] for st in strata], blocks, strict=True)),
+           "series": series, "definition": definition}
+    sp = seed_pairings(units, spec, stat, seqs, dt, pooled, same_seed=same_seed)
+    if sp is not None:
+        out["seed_pairings"] = sp
+    return out
+
+
+def seed_pairings(units: Units, spec: dict, stat, seqs: list[str], dt, pooled: bool, *,
+                  same_seed: bool) -> dict | None:
+    """Point estimate of the statistic per combination of single training seeds of the
+    3-seed series (D-053): every pairing across arms (independent seeds, 3^k combinations),
+    or the same seed in every series (``same_seed``: one model on two event streams)."""
+    multi = [k for k, (_, arm, rep, _, seeds) in spec.items()
+             if seeds is None and arm in study.CORE_ARMS and rep == study.MAIN_REP]
+    if not multi:
+        return None
+    combos = ([dict.fromkeys(multi, s) for s in study.CORE_SEEDS] if same_seed else
+              [dict(zip(multi, c, strict=True)) for c in
+               itertools.product(study.CORE_SEEDS, repeat=len(multi))])
+    values = {}
+    for c in combos:
+        sp = {k: (*v[:4], (c[k],) if k in c else v[4]) for k, v in spec.items()}
+        strata = _strata(units, sp, seqs, dt)
+        if strata is None:
+            return None
+        ser = [st["series"] for st in strata]
+        v = _pooled(stat)(ser) if pooled else stat(ser[0])
+        values[",".join(f"{k}:{c[k]}" for k in multi)] = float(np.asarray(v).item())
+    vals = list(values.values())
+    return {"rule": "same seed in every series" if same_seed else
+            "all combinations of single seeds across arms", "n": len(vals),
+            "range": [min(vals), max(vals)], "values": values}
+
+
+def mark_seed_stability(closure: dict, gap: dict | None) -> None:
+    """D-053: closure is seed-unstable when gap(v2e_fixed_sup) <= 0 for any single-seed pairing
+    (fixed seed, real seed); its pairing range then covers only pairings with a positive
+    denominator, and the count of the others is recorded."""
+    sp, gsp = closure.get("seed_pairings"), (gap or {}).get("seed_pairings")
+    if sp is None or gsp is None:
+        return
+    def den(key):
+        d = dict(kv.split(":") for kv in key.split(","))
+        return gsp["values"][f"v2e:{d['fixed']},real:{d['real']}"]
+    ok = {k: v for k, v in sp["values"].items() if den(k) > 0}
+    bad_gaps = sum(v <= 0 for v in gsp["values"].values())
+    closure["seed_unstable"] = bad_gaps > 0
+    closure["n_fixed_gap_pairings_nonpositive"] = f"{bad_gaps} of {gsp['n']}"
+    sp["range"] = [min(ok.values()), max(ok.values())] if ok else None
+    sp["n_defined"] = len(ok)
 
 
 def paired(units: Units, boot: dict) -> list[dict]:
@@ -318,6 +377,7 @@ def paired(units: Units, boot: dict) -> list[dict]:
                 if g is None or g["ci95"][0] <= 0:
                     e.update(estimate=None, ci95=None, undefined_reason=(
                         "gap(v2e_fixed_sup) CI includes 0 or lies below it"))
+                mark_seed_stability(e, g)
             add(table="B", tier=tier, comparison="gap_selfsup", dt=dt,
                 spec={"v2e": (tier, "v2e_selfsup", rep, "mvsec", core),
                       "real": (tier, "real_selfsup", rep, "mvsec", core)},
@@ -336,7 +396,7 @@ def paired(units: Units, boot: dict) -> list[dict]:
         for dt in study.DTS:
             add(table="T1_vs_T2", tier="T2", comparison=f"t2_minus_t1_{arm}", dt=dt,
                 spec={"t2": ("T2", arm, r, "mvsec", core), "t1": ("T1", arm, r, "mvsec", core)},
-                stat=_gap("t2", "t1"),
+                stat=_gap("t2", "t1"), same_seed=True,
                 definition=f"EPE({arm} on v2e test events) - EPE(same model on real test events),"
                            " same windows and GT; each stream's own sparse mask")
     return entries
