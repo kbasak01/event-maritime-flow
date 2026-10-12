@@ -40,14 +40,10 @@ scenarios:
       # units killed by the user-requested pause and re-run (runs/v2e-mvsec-d035/paused_at.txt: elapsed
       # times of tune 47, indoor_flying2_p1 15, indoor_flying3_p0 8, indoor_flying3_p1 8 min; ps at the pause)
       - {name: phase3_d035_pause_lost, lost_unit_minutes: 78, concurrency: 4}
-      # Phase 7 maritime corpus (configs/v2e_corpus_maritime.yaml; SMD segments D-054 replace
-      # D-026's 3 x 15 s / 3 x 10 s, which the 8.5-20 s videos cannot hold)
-      - {name: phase7_trial_maritime_640x360, video_s: 5.0, units: 1, rate_from: smd_640x360_ts750}
-      - {name: phase7_trial_lars_ct067, clips: 1, rate_from: "lars_640x360_ts500_.*"}
-      - {name: smd_train_640x360_8x5p6s, video_s: 44.8, units: 8, rate_from: smd_640x360_ts750}
-      - {name: smd_test_640x360_3x10s, video_s: 29.27, units: 3, rate_from: smd_640x360_ts750}
-      - {name: lars_train_subset, clips: 110, rate_from: "lars_640x360_ts500_.*"}
-      - {name: lars_eval_clutter_x3ct, clips: 40, multiplier: 3, rate_from: "lars_640x360_ts500_.*"}
+      # Phase 7 maritime corpus (configs/v2e_corpus_maritime.yaml, D-054), measured
+      # (jobs/2026-10-12_v2e-maritime.sh at 7fd867c: trials sequential, the rest 4-way)
+      - {name: phase7_trials_measured, measured_from: results/v2e_maritime_corpus.json, corpora: [trial], concurrency: 1}
+      - {name: phase7_maritime_corpus_measured, measured_from: results/v2e_maritime_corpus.json, corpora: [smd_train, smd_test, lars_train, lars_eval_ct067, lars_eval_ct100, lars_eval_ct150], concurrency: 4}
 
   calibration_full_tune:
     description: the 32-cell grid on the whole 60 s tune slice (alternative rejected in D-028)

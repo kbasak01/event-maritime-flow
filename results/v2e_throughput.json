@@ -1128,61 +1128,41 @@
      "measured": true
     },
     {
-     "name": "phase7_trial_maritime_640x360",
-     "video_s": 5.0,
-     "units": 1,
-     "rate_from": "smd_640x360_ts750",
-     "marginal_per_video_s": 56.2,
-     "overhead_s": 11.8,
-     "gpu_hours": 0.081
+     "name": "phase7_trials_measured",
+     "measured_from": "results/v2e_maritime_corpus.json",
+     "corpora": [
+      "trial"
+     ],
+     "concurrency": 1,
+     "units": 2,
+     "sum_unit_wall_s": 495.0,
+     "gpu_hours": 0.137,
+     "measured": true
     },
     {
-     "name": "phase7_trial_lars_ct067",
-     "clips": 1,
-     "rate_from": "lars_640x360_ts500_.*",
-     "per_clip_wall_s": 36.394999999999996,
-     "gpu_hours": 0.01
-    },
-    {
-     "name": "smd_train_640x360_8x5p6s",
-     "video_s": 44.8,
-     "units": 8,
-     "rate_from": "smd_640x360_ts750",
-     "marginal_per_video_s": 56.2,
-     "overhead_s": 11.8,
-     "gpu_hours": 0.726
-    },
-    {
-     "name": "smd_test_640x360_3x10s",
-     "video_s": 29.27,
-     "units": 3,
-     "rate_from": "smd_640x360_ts750",
-     "marginal_per_video_s": 56.2,
-     "overhead_s": 11.8,
-     "gpu_hours": 0.467
-    },
-    {
-     "name": "lars_train_subset",
-     "clips": 110,
-     "rate_from": "lars_640x360_ts500_.*",
-     "per_clip_wall_s": 36.394999999999996,
-     "gpu_hours": 1.112
-    },
-    {
-     "name": "lars_eval_clutter_x3ct",
-     "clips": 40,
-     "multiplier": 3,
-     "rate_from": "lars_640x360_ts500_.*",
-     "per_clip_wall_s": 36.394999999999996,
-     "gpu_hours": 1.213
+     "name": "phase7_maritime_corpus_measured",
+     "measured_from": "results/v2e_maritime_corpus.json",
+     "corpora": [
+      "smd_train",
+      "smd_test",
+      "lars_train",
+      "lars_eval_ct067",
+      "lars_eval_ct100",
+      "lars_eval_ct150"
+     ],
+     "concurrency": 4,
+     "units": 241,
+     "sum_unit_wall_s": 39580.5,
+     "gpu_hours": 2.749,
+     "measured": true
     }
    ],
-   "measured_gpu_hours": 16.55,
-   "sequential_gpu_hours": 3.61,
+   "measured_gpu_hours": 19.44,
+   "sequential_gpu_hours": 0,
    "concurrency": 4,
    "concurrency_factor": 0.484,
-   "total_gpu_hours": 18.3,
-   "within_limit": true
+   "total_gpu_hours": 19.44,
+   "within_limit": false
   },
   "calibration_full_tune": {
    "description": "the 32-cell grid on the whole 60 s tune slice (alternative rejected in D-028)",
@@ -1205,7 +1185,7 @@
    "within_limit": true
   }
  },
- "git_sha": "27bc50b11e8b38573a7cdaf803e2555bfe66fe58",
+ "git_sha": "e480fe0431f418600c329e530b6d30c7c7622022",
  "created_by": "scripts/summarise_throughput.py",
- "created_at": "2026-10-12T14:50:22+00:00"
+ "created_at": "2026-10-12T18:03:23+00:00"
 }
