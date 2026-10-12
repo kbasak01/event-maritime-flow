@@ -1,0 +1,94 @@
+{
+ "tier": "T1",
+ "arm": "v2e_fixed_sup",
+ "model": "M1",
+ "seed": 1337,
+ "checkpoint_sha256": "9dd9c585fd09fe91d6be7316d2116bafd026a6cb13de459b2c4b25f87e95651f",
+ "dataset": "dsec",
+ "sequence": "thun_00_a",
+ "window_ms": 100,
+ "representation": "voxel5",
+ "tags": [],
+ "metrics": {
+  "epe": 4.675115294737089,
+  "outlier_pct": 35.301383335149204,
+  "npe_1": 77.1130883131985,
+  "npe_2": 50.591275696633836,
+  "npe_3": 35.301383335149204,
+  "ae_deg": 17.58774153678785,
+  "fwl": 1.0679166540714213
+ },
+ "ci95": {
+  "epe": [
+   3.9902484663320075,
+   5.438593116656768
+  ],
+  "outlier_pct": [
+   30.208961840686467,
+   40.597768378282844
+  ],
+  "npe_1": [
+   74.01537478687766,
+   80.46744162109877
+  ],
+  "npe_2": [
+   46.2383492335105,
+   54.611528141956704
+  ],
+  "npe_3": [
+   30.208961840686467,
+   40.597768378282844
+  ],
+  "ae_deg": [
+   16.73081474654147,
+   19.667371930764215
+  ],
+  "fwl": [
+   0.9841028848576271,
+   1.1489873988635548
+  ]
+ },
+ "n_windows": 41,
+ "n_windows_total": 41,
+ "n_windows_skipped_no_valid_px": 0,
+ "bootstrap": {
+  "method": "moving_block",
+  "block_windows": 10,
+  "block_seconds": 1.0,
+  "resamples": 1000,
+  "ci": 0.95,
+  "seed": 0
+ },
+ "mean_valid_px_per_window": 64006.19512195122,
+ "mean_events_per_window": 957723.1463414634,
+ "mean_pred_s_per_window": 0.08122947555824706,
+ "protocol": {
+  "split": "dsec_test",
+  "split_manifest_sha256": "5110b28785fc47d7959f5aad102c65eccf17430d74d55a851474348058f19c28",
+  "store": "dsec_thun_00_a_left.h5",
+  "mask": "valid_gt (PNG channel 3), full 640x480 rectified frame",
+  "gt": "DSEC forward flow PNG",
+  "resolution_note": "zero-shot from 346x260 MVSEC training"
+ },
+ "run_id": "v2e_fixed_sup_voxel5_s1337",
+ "selection": {
+  "rule": "min of v2e tune dt1 epe over epochs (mvsec_tune only)",
+  "split": "mvsec_tune",
+  "stream": "v2e",
+  "metric": "epe",
+  "dt": 1,
+  "selected_epoch": 26,
+  "value": 0.23393781026328178
+ },
+ "train_git_sha": "a2b1fa005d1cfdd0c2aba10b0b1d07b87797e99c",
+ "fwl_protocol": "interpolation=round, t_ref=1 (window end), events in the eval region",
+ "per_window_npz": "~/projects_02/event-maritime-flow/runs/eval/npz/v2e_fixed_sup/1337/dsec_thun_00_a_100ms.npz",
+ "per_window_npz_sha256": "ed0406c723c9340e7575e42afdb2def6641f814e573ba0cc6a88ab7aa948f4fe",
+ "device": "NVIDIA RTX A4000",
+ "wall_time_s": 13.9,
+ "smoke": false,
+ "git_sha": "b19e60900023e6cfecb9c7f34a213d9ebbe74c63",
+ "git_dirty": false,
+ "created_by": "scripts/run_eval.py",
+ "created_at": "2026-10-12T02:31:49+00:00"
+}

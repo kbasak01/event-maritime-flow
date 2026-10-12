@@ -1,0 +1,107 @@
+{
+ "tier": "T1",
+ "arm": "real_selfsup",
+ "model": "M1",
+ "seed": 1337,
+ "checkpoint_sha256": "7990a80892782397cbb671fae9c5fe4e6dfcd3a984dac14fa7da7837ab32665e",
+ "dataset": "mvsec",
+ "sequence": "outdoor_day1",
+ "dt": 1,
+ "representation": "voxel5",
+ "tags": [],
+ "metrics": {
+  "epe": 0.6679715890392447,
+  "outlier_pct": 0.26676720147518096,
+  "npe_1": 11.492840413959579,
+  "npe_2": 1.7276059578700795,
+  "npe_3": 0.26676720147518096,
+  "ae_deg": 23.77524485855555,
+  "fwl": 1.0489150398638882
+ },
+ "ci95": {
+  "epe": [
+   0.6224753626912614,
+   0.7125560551240132
+  ],
+  "outlier_pct": [
+   0.09883360990749597,
+   0.5459011723910451
+  ],
+  "npe_1": [
+   8.190128885317801,
+   14.623893562567481
+  ],
+  "npe_2": [
+   0.8488624105789482,
+   2.82627031656662
+  ],
+  "npe_3": [
+   0.09883360990749597,
+   0.5459011723910451
+  ],
+  "ae_deg": [
+   21.577827646708062,
+   25.423443430364763
+  ],
+  "fwl": [
+   1.0337721017513601,
+   1.0622419613492733
+  ]
+ },
+ "n_windows": 797,
+ "n_windows_total": 797,
+ "n_windows_skipped_no_valid_px": 0,
+ "bootstrap": {
+  "method": "moving_block",
+  "block_windows": 46,
+  "block_seconds": 1.0,
+  "resamples": 1000,
+  "ci": 0.95,
+  "seed": 0
+ },
+ "mean_valid_px_per_window": 1970.3776662484315,
+ "mean_events_per_window": 8423.784190715181,
+ "mean_pred_s_per_window": 0.01609406223089885,
+ "protocol": {
+  "split": "mvsec_test",
+  "split_manifest_sha256": "b45014a33bfc02740e3804061554ea4a14955d50468e87bfd154fbeef14a8e2e",
+  "aps_first": 10164,
+  "aps_last": 10960,
+  "events": "real",
+  "store": "mvsec_outdoor_day1_left.h5",
+  "region_name": "center_256_no_hood",
+  "region": {
+   "rows": [
+    2,
+    192
+   ],
+   "cols": [
+    45,
+    301
+   ]
+  },
+  "mask": "valid_gt AND events_in_window (sparse) AND region",
+  "gt": "EV-FlowNet propagation of *_gt_flow_dist.npz (D-019)"
+ },
+ "run_id": "real_selfsup_voxel5_s1337",
+ "selection": {
+  "rule": "max of real tune dt1 fwl over epochs (mvsec_tune only)",
+  "split": "mvsec_tune",
+  "stream": "real",
+  "metric": "fwl",
+  "dt": 1,
+  "selected_epoch": 23,
+  "value": 1.089370280411972
+ },
+ "train_git_sha": "7904922a2883e9b05addaac3a639aa194be8258c",
+ "fwl_protocol": "interpolation=round, t_ref=1 (window end), events in the eval region",
+ "per_window_npz": "~/projects_02/event-maritime-flow/runs/eval/npz/real_selfsup/1337/mvsec_outdoor_day1_dt1.npz",
+ "per_window_npz_sha256": "a5f4a76765001f8e53067ff725f2aaf419eb23da1a80bd8d06f8c80b8011c56b",
+ "device": "NVIDIA RTX A4000",
+ "wall_time_s": 21.6,
+ "smoke": false,
+ "git_sha": "b19e60900023e6cfecb9c7f34a213d9ebbe74c63",
+ "git_dirty": false,
+ "created_by": "scripts/run_eval.py",
+ "created_at": "2026-10-11T20:42:24+00:00"
+}

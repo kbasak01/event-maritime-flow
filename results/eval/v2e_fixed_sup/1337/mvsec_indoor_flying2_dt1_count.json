@@ -1,0 +1,107 @@
+{
+ "tier": "T1",
+ "arm": "v2e_fixed_sup",
+ "model": "M1",
+ "seed": 1337,
+ "checkpoint_sha256": "bd3ca679cc4c55f0c5970a188710ec4f4c1cabdcb288d94ea56aace2b5876aa0",
+ "dataset": "mvsec",
+ "sequence": "indoor_flying2",
+ "dt": 1,
+ "representation": "count",
+ "tags": [],
+ "metrics": {
+  "epe": 3.12475201928725,
+  "outlier_pct": 32.33754535637006,
+  "npe_1": 69.05382232277324,
+  "npe_2": 44.52649931329398,
+  "npe_3": 32.33754535637006,
+  "ae_deg": 60.3929508913343,
+  "fwl": 1.0983401173467133
+ },
+ "ci95": {
+  "epe": [
+   2.742387231920459,
+   3.598278579522505
+  ],
+  "outlier_pct": [
+   27.906171362404457,
+   37.63767967475695
+  ],
+  "npe_1": [
+   63.13467680541623,
+   75.85427688195416
+  ],
+  "npe_2": [
+   39.49664978274535,
+   50.983445569078455
+  ],
+  "npe_3": [
+   27.906171362404457,
+   37.63767967475695
+  ],
+  "ae_deg": [
+   55.1703412349097,
+   66.67492736294186
+  ],
+  "fwl": [
+   1.0790065280871104,
+   1.1228090217804494
+  ]
+ },
+ "n_windows": 2652,
+ "n_windows_total": 2652,
+ "n_windows_skipped_no_valid_px": 0,
+ "bootstrap": {
+  "method": "moving_block",
+  "block_windows": 31,
+  "block_seconds": 1.0,
+  "resamples": 1000,
+  "ci": 0.95,
+  "seed": 0
+ },
+ "mean_valid_px_per_window": 5788.416666666667,
+ "mean_events_per_window": 9442.40233785822,
+ "mean_pred_s_per_window": 0.011714723352201495,
+ "protocol": {
+  "split": "mvsec_test",
+  "split_manifest_sha256": "b45014a33bfc02740e3804061554ea4a14955d50468e87bfd154fbeef14a8e2e",
+  "aps_first": 9,
+  "aps_last": 2660,
+  "events": "real",
+  "store": "mvsec_indoor_flying2_left.h5",
+  "region_name": "center_256",
+  "region": {
+   "rows": [
+    2,
+    258
+   ],
+   "cols": [
+    45,
+    301
+   ]
+  },
+  "mask": "valid_gt AND events_in_window (sparse) AND region",
+  "gt": "EV-FlowNet propagation of *_gt_flow_dist.npz (D-019)"
+ },
+ "run_id": "v2e_fixed_sup_count_s1337",
+ "selection": {
+  "rule": "min of v2e tune dt1 epe over epochs (mvsec_tune only)",
+  "split": "mvsec_tune",
+  "stream": "v2e",
+  "metric": "epe",
+  "dt": 1,
+  "selected_epoch": 26,
+  "value": 0.2471222050389083
+ },
+ "train_git_sha": "7904922a2883e9b05addaac3a639aa194be8258c",
+ "fwl_protocol": "interpolation=round, t_ref=1 (window end), events in the eval region",
+ "per_window_npz": "~/projects_02/event-maritime-flow/runs/eval/npz/v2e_fixed_sup/1337/mvsec_indoor_flying2_dt1_count.npz",
+ "per_window_npz_sha256": "a30affb22c1a93490ea72089f1f51f205e337528f736bd095680b7fe36702977",
+ "device": "NVIDIA RTX A4000",
+ "wall_time_s": 67.5,
+ "smoke": false,
+ "git_sha": "b19e60900023e6cfecb9c7f34a213d9ebbe74c63",
+ "git_dirty": false,
+ "created_by": "scripts/run_eval.py",
+ "created_at": "2026-10-11T23:10:33+00:00"
+}

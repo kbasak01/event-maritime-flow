@@ -1,0 +1,46 @@
+{
+ "kind": "eval_inventory",
+ "tier": "n/a",
+ "tier_note": "inventory of the Phase 6 units; the units carry their own tiers",
+ "phase": 6,
+ "bootstrap": {
+  "block_seconds": 1.0,
+  "resamples": 1000,
+  "ci": 0.95,
+  "seed": 0
+ },
+ "n_expected": 298,
+ "n_present": 298,
+ "n_missing": 0,
+ "missing": [],
+ "by_design": "not evaluated by design (D-051): T2 covers voxel5 M1 runs and M0a only; DSEC covers voxel5 M1 runs and the Phase 4 baselines",
+ "problems": [],
+ "git_shas": [
+  "0da94b33371f02e1ac2bc37e5f4f974ad94948ad",
+  "7904922a2883e9b05addaac3a639aa194be8258c",
+  "b19e60900023e6cfecb9c7f34a213d9ebbe74c63",
+  "f1967dec3cee7a47decb33e67025bd8ee5bdb031",
+  "fe8ef001e60afa12a967aa658ddf6f478f00e2bf"
+ ],
+ "git_dirty_units": [],
+ "smoke_units": [],
+ "checkpoint_sha_checked_against_selection": 257,
+ "repro_check": {
+  "rule": "metrics and ci95 of the re-evaluated unit equal the committed JSON to 1e-06",
+  "units": [
+   {
+    "unit": "results/eval/real_sup/1337/mvsec_outdoor_day1_dt1.json",
+    "committed_git_sha": "f1967dec3cee7a47decb33e67025bd8ee5bdb031",
+    "repro_git_sha": "b19e60900023e6cfecb9c7f34a213d9ebbe74c63",
+    "max_abs_diff": 0.0,
+    "n_windows_equal": true,
+    "pass": true
+   }
+  ],
+  "pass": true
+ },
+ "git_sha": "88cd806a0f81d49e66d8686bcd9f59498b1f0c73",
+ "git_dirty": false,
+ "created_by": "scripts/summarise_eval.py",
+ "created_at": "2026-10-12T03:08:17+00:00"
+}

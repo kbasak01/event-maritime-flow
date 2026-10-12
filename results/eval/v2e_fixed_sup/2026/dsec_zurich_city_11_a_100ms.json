@@ -1,0 +1,94 @@
+{
+ "tier": "T1",
+ "arm": "v2e_fixed_sup",
+ "model": "M1",
+ "seed": 2026,
+ "checkpoint_sha256": "d8b4612d48b7d73599f969f06c81ee504a3d4b46cfe5f5be510fde91391b008c",
+ "dataset": "dsec",
+ "sequence": "zurich_city_11_a",
+ "window_ms": 100,
+ "representation": "voxel5",
+ "tags": [],
+ "metrics": {
+  "epe": 3.848869081713905,
+  "outlier_pct": 30.348420905403426,
+  "npe_1": 73.61697184156209,
+  "npe_2": 45.00245221457667,
+  "npe_3": 30.348420905403426,
+  "ae_deg": 20.62708270974214,
+  "fwl": 1.2164076755472595
+ },
+ "ci95": {
+  "epe": [
+   3.4771424735335428,
+   4.173332981055772
+  ],
+  "outlier_pct": [
+   26.54944611951732,
+   33.66451249322363
+  ],
+  "npe_1": [
+   70.72069638482836,
+   76.02065167007996
+  ],
+  "npe_2": [
+   41.1658936809764,
+   48.143558489782485
+  ],
+  "npe_3": [
+   26.54944611951732,
+   33.66451249322363
+  ],
+  "ae_deg": [
+   19.73093931839329,
+   21.81898980899855
+  ],
+  "fwl": [
+   1.1563995343107882,
+   1.2856008289657928
+  ]
+ },
+ "n_windows": 231,
+ "n_windows_total": 231,
+ "n_windows_skipped_no_valid_px": 0,
+ "bootstrap": {
+  "method": "moving_block",
+  "block_windows": 10,
+  "block_seconds": 1.0,
+  "resamples": 1000,
+  "ci": 0.95,
+  "seed": 0
+ },
+ "mean_valid_px_per_window": 81817.64069264069,
+ "mean_events_per_window": 554694.1861471861,
+ "mean_pred_s_per_window": 0.07153836902618022,
+ "protocol": {
+  "split": "dsec_test",
+  "split_manifest_sha256": "5110b28785fc47d7959f5aad102c65eccf17430d74d55a851474348058f19c28",
+  "store": "dsec_zurich_city_11_a_left.h5",
+  "mask": "valid_gt (PNG channel 3), full 640x480 rectified frame",
+  "gt": "DSEC forward flow PNG",
+  "resolution_note": "zero-shot from 346x260 MVSEC training"
+ },
+ "run_id": "v2e_fixed_sup_voxel5_s2026",
+ "selection": {
+  "rule": "min of v2e tune dt1 epe over epochs (mvsec_tune only)",
+  "split": "mvsec_tune",
+  "stream": "v2e",
+  "metric": "epe",
+  "dt": 1,
+  "selected_epoch": 29,
+  "value": 0.23442554595092277
+ },
+ "train_git_sha": "7904922a2883e9b05addaac3a639aa194be8258c",
+ "fwl_protocol": "interpolation=round, t_ref=1 (window end), events in the eval region",
+ "per_window_npz": "~/projects_02/event-maritime-flow/runs/eval/npz/v2e_fixed_sup/2026/dsec_zurich_city_11_a_100ms.npz",
+ "per_window_npz_sha256": "3e8495f2c6190be60dd829b98a95d916bdaf238ceaa353219e88ffcd23e25b63",
+ "device": "NVIDIA RTX A4000",
+ "wall_time_s": 55.1,
+ "smoke": false,
+ "git_sha": "b19e60900023e6cfecb9c7f34a213d9ebbe74c63",
+ "git_dirty": false,
+ "created_by": "scripts/run_eval.py",
+ "created_at": "2026-10-12T02:35:40+00:00"
+}

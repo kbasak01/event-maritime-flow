@@ -23,10 +23,10 @@ Phase 9 walks every line. Verdict ∈ {met, met-with-caveat, unmet} + evidence p
 ## C. Metrics
 - [x] C1 (critical) EPE/%Out/NPE/AE match hand-computed fixtures and the vendored MIT oracle to 1e-6. — Phase 1 gate: `docs/gates/phase-1.md`.
 - [x] C2 (critical) FWL = 1 for zero flow exactly; correct flow > wrong-sign flow on analytic fixtures. — Phase 1 gate: `docs/gates/phase-1.md`.
-- [ ] C3 Flow units = pixels over the window, forward; dt=1 and dt=4 never mixed in one mean.
+- [x] C3 Flow units = pixels over the window, forward; dt=1 and dt=4 never mixed in one mean. — Phase 6 gate: `docs/gates/phase-6.md` (criterion 9).
 - [ ] C4 MVSEC eval windows, sparse mask, crop rule written in `configs/eval_mvsec.yaml` and quoted in README.
 - [x] C5 Phase 4 reproduction gate met (our metrics on E-RAFT flows = E-RAFT's own, ≤ 1e-3 px; EPE within 10 % of paper) or miss documented. — Phase 4 gate: `docs/gates/phase-4.md` (`results/baselines/eraft_reproduction.json`).
-- [ ] C6 Bootstrap CIs use moving blocks of 1 s; paired bootstrap for arm differences.
+- [x] C6 Bootstrap CIs use moving blocks of 1 s; paired bootstrap for arm differences. — Phase 6 gate: `docs/gates/phase-6.md` (criterion 5; seed spread D-053).
 
 ## D. Training
 - [x] D1 `train-smoke` overfits 8 windows to EPE < 0.1 px. — Phase 5 gate: `docs/gates/phase-5.md`.
@@ -38,7 +38,7 @@ Phase 9 walks every line. Verdict ∈ {met, met-with-caveat, unmet} + evidence p
 
 ## E. Claims
 - [ ] E1 (critical) Every README/docs number traces to a committed `results/*.json` (`claim-trace`).
-- [ ] E2 (critical) Every table row carries a tier tag; no T3 row in a T1/T2 section.
+- [x] E2 (critical) Every table row carries a tier tag; no T3 row in a T1/T2 section. — Phase 6 gate (`results/TABLES.md`; re-check in Phase 7 when T3 tables are added).
 - [ ] E3 (critical) No HDR, glare-robustness or latency-advantage claim derived from v2e events.
 - [ ] E4 "teacher-EPE" never called "EPE" or "accuracy"; FWL never called accuracy.
 - [ ] E5 Maritime metrics reported per class (water/sky/obstacle) wherever LaRS labels exist.
@@ -57,4 +57,4 @@ Phase 9 walks every line. Verdict ∈ {met, met-with-caveat, unmet} + evidence p
 - [ ] G3 Every figure derived from a CC BY-SA dataset is attributed and marked share-alike.
 - [ ] G4 LaRS / SMD imagery appears only if `docs/LICENSES.md` permits.
 - [ ] G5 Vendored MIT code keeps its licence header and is listed in `docs/LICENSES.md`.
-- [ ] G6 `make reproduce-tables` regenerates `results/TABLES.md` with no diff.
+- [x] G6 `make reproduce-tables` regenerates `results/TABLES.md` with no diff. — Phase 6 gate; enforced in CI (`.github/workflows/ci.yml`).
