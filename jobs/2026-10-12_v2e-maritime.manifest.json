@@ -1,0 +1,63 @@
+{
+ "kind": "gpu_job_manifest",
+ "job": "jobs/2026-10-12_v2e-maritime.sh",
+ "plan_step": "Phase 7 step 1: v2e(SMD on-board) and v2e(LaRS clips) with the calibrated profile at 640x360; LaRS eval clips also at CT x0.67 and x1.5 (D-026, D-054)",
+ "configs": [
+  "configs/v2e_corpus_maritime.yaml",
+  "configs/v2e_profiles.yaml",
+  "configs/v2e_commit.txt",
+  "configs/v2e_budget.yaml",
+  "configs/paths.local.yaml.example"
+ ],
+ "config_sha256": {
+  "configs/v2e_corpus_maritime.yaml": "0234ce95ece6f93d22275784fec3cd36bd62b5cc480c80ab6d1bcf6242be8abb",
+  "configs/v2e_profiles.yaml": "5234aafe589caf55b5326247c1a891afd7c0caaa226cda90ebb787d7a3aad12f",
+  "configs/v2e_commit.txt": "ec39af09a501be1d2de71628dc2f1545f3776d8ce51fbaccef0aaa5233c3640b",
+  "configs/v2e_budget.yaml": "cdaf3bbe715bffdb2f5e859dfaa78b880b3742c43212c42ec084d39cc305c01f",
+  "configs/paths.local.yaml.example": "0f135f8b75733e3be16bb7329bf1ee61b4d885a9a763d1e0d9bb0f13096cf1a6"
+ },
+ "inputs": {
+  "splits/smd_train.json": {
+   "manifest_sha256": "e994381f2fa4fb2ddece4b0dc4a01c09a69b04717db2af97b2f16c889425571e",
+   "file_sha256": "ddb65d517dac6405158381fe49f3438c22d33dedb9d6fb47e3f70bb099770a58"
+  },
+  "splits/smd_test.json": {
+   "manifest_sha256": "4883a16613ef6f5c4f3452036a1360165f4215052605ef43599fe0c71865a599",
+   "file_sha256": "cf9570da01c24bba10c7772f2b46c3ec3d643fa7f89a14466c1c3f69dbdac886"
+  },
+  "splits/lars_train.json": {
+   "manifest_sha256": "4979dfb1d9ba8b67096183cb873dd578391ed5b0a4ab116c60515252c5d21327",
+   "file_sha256": "5285f4cd3d53deb95d211535820dc2d43d3a879ab514c7afae8c7679b87980e5"
+  },
+  "splits/lars_eval.json": {
+   "manifest_sha256": "adff4e8ca4bd8585a353348a128bba0d8f76cd7bc5c3cc8d3d3d2dfa83db25c9",
+   "file_sha256": "7c3651e094971e7680e6a751318276e1c79bef685befc6ea590ea12c32e773a7"
+  }
+ },
+ "units": {
+  "planned": 243,
+  "video_s": 176.41,
+  "by_corpus": {
+   "trial": 2,
+   "smd_train": 8,
+   "smd_test": 3,
+   "lars_train": 110,
+   "lars_eval_ct067": 40,
+   "lars_eval_ct100": 40,
+   "lars_eval_ct150": 40
+  },
+  "plan_file": "data/converted/v2e/maritime/corpus_plan.json (rebuilt and compared by `maritime_corpus summarise`)"
+ },
+ "expected_outputs": [
+  "data/converted/v2e/maritime/{trial,smd_train,smd_test,lars_train,lars_eval_ct067,lars_eval_ct100,lars_eval_ct150}/<unit>.{h5,json,v2e.json,log}",
+  "data/converted/v2e/maritime/frames_cache/ (SMD PNG input)",
+  "results/v2e_maritime_corpus.json"
+ ],
+ "estimated_gpu_hours": 1.75,
+ "estimated_wall_hours": 2.0,
+ "estimated_gpu_hours_basis": "results/v2e_throughput.json scenarios.chosen Phase 7 lines (3.6 sequential GPU-h x concurrency factor 0.484); LaRS from cap-0.5 ms units (conservative)",
+ "disk_estimate_gb": 9,
+ "disk_estimate_basis": "SMD PNG cache ~2,400 frames x ~3 MB; stores: SMD 54 MB per 5 s at thres 0.2 (fewer at 0.6), LaRS ~3 MB per clip",
+ "launch": "from a detached worktree at the prepared commit: nohup bash jobs/2026-10-12_v2e-maritime.sh > runs/v2e-maritime/job.log 2>&1 &",
+ "prepared_on_git_sha": "749480f5b8100e310dfe3a18d643183a5d67bdb8"
+}
