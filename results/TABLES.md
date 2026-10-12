@@ -439,6 +439,82 @@ Keyframe windows of the 40 `lars_eval` clips converted at three contrast-thresho
 | T3b | scene_type | river_like: n=11, enr. 0.67; sea_like: n=29, enr. 0.79 | — |
 | T3b | lighting | day_like: n=35, enr. 0.69; dusk_like: n=4, enr. 1.26; night_like: n=1 (not reported) | — |
 
+# Deployment (Phase 8)
+
+ONNX export of M1 (opset 17), numerical parity (T1) and latency. Parity rows are T1; latency is a hardware measurement and carries no tier.
+
+## Table I-T1 — ONNX parity (T1, mvsec_test, dt = 1)
+
+200 fixed windows (50 per sequence, evenly spaced (np.unique(np.linspace(0, n - 1, k).round())) over each mvsec_test dt1 unit; fixed in configs/evflow.yaml export.parity before any ONNX output). Same input to both sides (representation built outside the graph); reference = torch fp32 eager on CUDA, TF32 off. max |Δflow| = largest vector difference over every pixel of every window (the gated number); masked = over the evaluation mask. EPE change = |EPE(ONNX) − EPE(torch)| of the window mean. Tolerances: fp32 ≤ 0.001 px, fp16 ≤ 0.05 px, EPE change ≤ 0.01 px.
+
+| tier | arm | seed | provider | graph | max |Δflow| (px) | masked max (px) | EPE change (px) | tol. max (px) | verdict |
+|---|---|---|---|---|---|---|---|---|---|
+| T1 | real_sup | 1337 | ort_cuda_fp32 | fp32 | 7.32e-05 | 5.93e-05 | 3.69e-07 | 0.001 | PASS |
+| T1 | real_sup | 1337 | ort_cuda_fp16 | fp16 | 9.34e-02 | 9.24e-02 | 5.23e-04 | 0.05 | FAIL |
+| T1 | real_sup | 1337 | ort_trt_fp16 | fp32 | 9.57e-02 | 9.09e-02 | 8.72e-07 | 0.05 | FAIL |
+| T1 | real_sup | 1337 | torch_cuda_fp16 (diagnostic) | fp16 | 5.59e-02 | 4.47e-02 | 3.91e-04 | — | not gated |
+| T1 | v2e_rand_sup | 7 | ort_cuda_fp32 | fp32 | 5.42e-05 | 4.71e-05 | 1.82e-07 | 0.001 | PASS |
+| T1 | v2e_rand_sup | 7 | ort_cuda_fp16 | fp16 | 2.36e-01 | 1.96e-01 | 6.09e-04 | 0.05 | FAIL |
+| T1 | v2e_rand_sup | 7 | ort_trt_fp16 | fp32 | 4.91e-01 | 4.28e-01 | 1.10e-03 | 0.05 | FAIL |
+| T1 | v2e_rand_sup | 7 | torch_cuda_fp16 (diagnostic) | fp16 | 1.45e-01 | 1.12e-01 | 2.00e-04 | — | not gated |
+
+All rows pass: **no**.
+
+## Table J — latency (hardware timing; no evidence tier)
+
+RTX A4000 (desktop, WSL2) stands in for an embedded target; embedded latency will differ. Nothing here measures or implies event-camera sensor latency or a latency advantage of event cameras (CLAUDE.md rule 2). Hardware timing of the M1 network and its input build; not a flow metric, so no evidence tier applies. Inputs are synthetic (seeded).
+
+**Accuracy.** Backends that failed parity (results/onnx_parity.json, Table I-T1): ort_cuda_fp16, ort_trt_fp16; their timings are not a claim of a deployable configuration at the plan's tolerance.
+
+GPU NVIDIA RTX A4000; batch 1; 50 warm-up, 500 timed iterations per cell; ms, p50 / p90 / p99 / max. Versions and GPU state: `results/latency.json` `environment`.
+
+### J1 — representation build (torch-CUDA, events on the GPU)
+
+| events / window | frame | p50 | p90 | p99 | max | events H2D p50 |
+|---|---|---|---|---|---|---|
+| 10000 | 346×260 | 4.924 | 5.853 | 7.767 | 9.003 | 0.341 |
+| 100000 | 346×260 | 5.030 | 6.302 | 8.546 | 10.911 | 0.974 |
+| 1000000 | 346×260 | 7.133 | 8.155 | 9.525 | 10.334 | 5.751 |
+| 10000 | 640×480 | 5.063 | 6.313 | 8.266 | 14.328 | 0.324 |
+| 100000 | 640×480 | 5.345 | 6.336 | 7.777 | 10.789 | 0.980 |
+| 1000000 | 640×480 | 7.531 | 8.696 | 11.129 | 17.931 | 5.811 |
+
+### J2 — network forward (compute only; ORT H2D / D2H separate)
+
+| input (padded) | backend | p50 | p90 | p99 | max | H2D / D2H p50 | TRT cold build (s) | nodes per EP |
+|---|---|---|---|---|---|---|---|---|
+| 256×256 (256×256) | pytorch_eager_fp32 | 3.638 | 4.833 | 5.902 | 7.342 | — | — | — |
+| 346×260 (352×272) | pytorch_eager_fp32 | 5.177 | 5.672 | 6.900 | 9.182 | — | — | — |
+| 640×480 (640×480) | pytorch_eager_fp32 | 10.397 | 10.728 | 11.725 | 17.186 | — | — | — |
+| 256×256 (256×256) | ort_cuda_fp32 | 3.658 | 3.966 | 5.200 | 6.187 | 0.332 / 0.169 | — | CUDA 41 |
+| 256×256 (256×256) | ort_cuda_fp16 | 3.059 | 3.400 | 4.752 | 6.909 | 0.223 / 0.124 | — | CUDA 41 |
+| 256×256 (256×256) | ort_trt_fp16 | 0.901 | 1.099 | 2.938 | 3.392 | 0.316 / 0.163 | 26.7 | Tensorrt 1 |
+| 346×260 (352×272) | ort_cuda_fp32 | 4.937 | 5.192 | 6.287 | 8.013 | 0.419 / 0.231 | — | CUDA 41 |
+| 346×260 (352×272) | ort_cuda_fp16 | 3.135 | 3.925 | 5.821 | 6.617 | 0.286 / 0.152 | — | CUDA 41 |
+| 346×260 (352×272) | ort_trt_fp16 | 1.148 | 1.570 | 2.168 | 2.988 | 0.395 / 0.231 | 24.4 | Tensorrt 1 |
+| 640×480 (640×480) | ort_cuda_fp32 | 10.438 | 10.901 | 11.640 | 13.274 | 1.101 / 0.476 | — | CUDA 41 |
+| 640×480 (640×480) | ort_cuda_fp16 | 6.450 | 7.252 | 9.762 | 12.391 | 0.596 / 0.299 | — | CUDA 41 |
+| 640×480 (640×480) | ort_trt_fp16 | 2.951 | 3.060 | 3.608 | 4.226 | 0.939 / 0.460 | 34.1 | Tensorrt 1 |
+
+### J3 — end-to-end (events → flow on the host)
+
+PyTorch rows are measured in one bracket; ORT rows are composed from stages timed in two processes (sum of i-th samples, tails assume independent stages; D-063) and include a voxel D2H + H2D round trip a single-process deployment would not pay; ort_cuda_fp16 rows omit the fp32 → fp16 cast. Σ stage max bounds the observed stage samples only.
+
+| events / window | frame | backend | how | p50 | p90 | p99 | max | Σ stage max |
+|---|---|---|---|---|---|---|---|---|
+| 10000 | 346×260 | pytorch_eager_fp32 | measured | 11.040 | 13.431 | 16.048 | 19.399 | — |
+| 100000 | 346×260 | pytorch_eager_fp32 | measured | 11.842 | 14.465 | 18.479 | 21.077 | — |
+| 1000000 | 346×260 | pytorch_eager_fp32 | measured | 19.163 | 20.314 | 21.699 | 23.036 | — |
+| 10000 | 346×260 | ort_cuda_fp32 | composed | 11.869 | 14.747 | 18.149 | 21.617 | 30.706 |
+| 10000 | 346×260 | ort_cuda_fp16 | composed | 10.112 | 13.055 | 16.621 | 19.230 | 26.004 |
+| 10000 | 346×260 | ort_trt_fp16 | composed | 8.208 | 10.990 | 14.334 | 17.717 | 24.235 |
+| 100000 | 346×260 | ort_cuda_fp32 | composed | 12.352 | 14.120 | 16.686 | 17.863 | 25.784 |
+| 100000 | 346×260 | ort_cuda_fp16 | composed | 10.485 | 12.438 | 14.980 | 17.419 | 21.082 |
+| 100000 | 346×260 | ort_trt_fp16 | composed | 8.653 | 10.365 | 13.083 | 16.033 | 19.313 |
+| 1000000 | 346×260 | ort_cuda_fp32 | composed | 19.261 | 20.577 | 23.630 | 27.684 | 40.740 |
+| 1000000 | 346×260 | ort_cuda_fp16 | composed | 17.351 | 18.907 | 21.780 | 25.423 | 36.038 |
+| 1000000 | 346×260 | ort_trt_fp16 | composed | 15.553 | 16.813 | 19.884 | 23.628 | 34.269 |
+
 # Sources
 
 - `results/baselines/cm_baseline/`
@@ -453,5 +529,7 @@ Keyframe windows of the 40 `lars_eval` clips converted at three contrast-thresho
 - `results/eval/summary.json`
 - `results/eval/v2e_fixed_sup/1337/`
 - `results/eval_maritime/summary.json`
+- `results/latency.json`
 - `results/maritime/clutter.json`
+- `results/onnx_parity.json`
 - units: 298/298 present (`results/eval/summary.json`)

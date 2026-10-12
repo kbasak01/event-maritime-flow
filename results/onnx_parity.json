@@ -1,0 +1,684 @@
+{
+ "kind": "onnx_parity",
+ "tier": "T1",
+ "plan_step": "Phase 8 step 2",
+ "split": "mvsec_test",
+ "window_rule": "50 per sequence, evenly spaced (np.unique(np.linspace(0, n - 1, k).round())) over each mvsec_test dt1 unit; fixed in configs/evflow.yaml export.parity before any ONNX output",
+ "windows": [
+  {
+   "sequence": "indoor_flying1",
+   "n_windows_unit": 2193,
+   "positions": [
+    0,
+    45,
+    89,
+    134,
+    179,
+    224,
+    268,
+    313,
+    358,
+    403,
+    447,
+    492,
+    537,
+    582,
+    626,
+    671,
+    716,
+    760,
+    805,
+    850,
+    895,
+    939,
+    984,
+    1029,
+    1074,
+    1118,
+    1163,
+    1208,
+    1253,
+    1297,
+    1342,
+    1387,
+    1432,
+    1476,
+    1521,
+    1566,
+    1610,
+    1655,
+    1700,
+    1745,
+    1789,
+    1834,
+    1879,
+    1924,
+    1968,
+    2013,
+    2058,
+    2103,
+    2147,
+    2192
+   ],
+   "region_name": "center_256",
+   "split_manifest_sha256": "b45014a33bfc02740e3804061554ea4a14955d50468e87bfd154fbeef14a8e2e"
+  },
+  {
+   "sequence": "indoor_flying2",
+   "n_windows_unit": 2652,
+   "positions": [
+    0,
+    54,
+    108,
+    162,
+    216,
+    271,
+    325,
+    379,
+    433,
+    487,
+    541,
+    595,
+    649,
+    703,
+    757,
+    812,
+    866,
+    920,
+    974,
+    1028,
+    1082,
+    1136,
+    1190,
+    1244,
+    1298,
+    1353,
+    1407,
+    1461,
+    1515,
+    1569,
+    1623,
+    1677,
+    1731,
+    1785,
+    1839,
+    1894,
+    1948,
+    2002,
+    2056,
+    2110,
+    2164,
+    2218,
+    2272,
+    2326,
+    2380,
+    2435,
+    2489,
+    2543,
+    2597,
+    2651
+   ],
+   "region_name": "center_256",
+   "split_manifest_sha256": "b45014a33bfc02740e3804061554ea4a14955d50468e87bfd154fbeef14a8e2e"
+  },
+  {
+   "sequence": "indoor_flying3",
+   "n_windows_unit": 2939,
+   "positions": [
+    0,
+    60,
+    120,
+    180,
+    240,
+    300,
+    360,
+    420,
+    480,
+    540,
+    600,
+    660,
+    720,
+    779,
+    839,
+    899,
+    959,
+    1019,
+    1079,
+    1139,
+    1199,
+    1259,
+    1319,
+    1379,
+    1439,
+    1499,
+    1559,
+    1619,
+    1679,
+    1739,
+    1799,
+    1859,
+    1919,
+    1979,
+    2039,
+    2099,
+    2159,
+    2218,
+    2278,
+    2338,
+    2398,
+    2458,
+    2518,
+    2578,
+    2638,
+    2698,
+    2758,
+    2818,
+    2878,
+    2938
+   ],
+   "region_name": "center_256",
+   "split_manifest_sha256": "b45014a33bfc02740e3804061554ea4a14955d50468e87bfd154fbeef14a8e2e"
+  },
+  {
+   "sequence": "outdoor_day1",
+   "n_windows_unit": 797,
+   "positions": [
+    0,
+    16,
+    32,
+    49,
+    65,
+    81,
+    97,
+    114,
+    130,
+    146,
+    162,
+    179,
+    195,
+    211,
+    227,
+    244,
+    260,
+    276,
+    292,
+    309,
+    325,
+    341,
+    357,
+    374,
+    390,
+    406,
+    422,
+    439,
+    455,
+    471,
+    487,
+    504,
+    520,
+    536,
+    552,
+    569,
+    585,
+    601,
+    617,
+    634,
+    650,
+    666,
+    682,
+    699,
+    715,
+    731,
+    747,
+    764,
+    780,
+    796
+   ],
+   "region_name": "center_256_no_hood",
+   "split_manifest_sha256": "b45014a33bfc02740e3804061554ea4a14955d50468e87bfd154fbeef14a8e2e"
+  }
+ ],
+ "input_shape": [
+  5,
+  272,
+  352
+ ],
+ "max_px_definition": "max over all pixels of all windows of |flow_onnx - flow_torch| (2-vector norm, px), on the unpadded 260x346 frame; *_masked = over the evaluation mask (valid GT AND events-in-window AND region)",
+ "epe_definition": "mean over windows (with >= 1 masked px) of the per-window mean EPE vs MVSEC GT (flow.metrics.flow_metrics); change = |EPE_onnx - EPE_torch|",
+ "tolerances": {
+  "fp32_max_px": 0.001,
+  "fp16_max_px": 0.05,
+  "epe_change_px": 0.01
+ },
+ "all_passed": false,
+ "units": [
+  {
+   "tier": "T1",
+   "arm": "real_sup",
+   "model": "M1",
+   "seed": 1337,
+   "run_id": "real_sup_voxel5_s1337",
+   "checkpoint_sha256": "0abee62e5a4f40e244fa6e370ed82468205fcf1527c9e1cec06003eb2be8697b",
+   "dataset": "mvsec",
+   "sequences": [
+    "indoor_flying1",
+    "indoor_flying2",
+    "indoor_flying3",
+    "outdoor_day1"
+   ],
+   "dt": 1,
+   "representation": "voxel5",
+   "n_windows": 200,
+   "n_windows_with_valid_px": 200,
+   "reference": "torch fp32 eager, CUDA, TF32 off (run_eval.NetPredictor path)",
+   "reference_vs_phase6_epe_max_abs_diff": 4.440892098500626e-16,
+   "reference_vs_phase6_windows": 200,
+   "providers": {
+    "ort_cuda_fp32": {
+     "provider": "CUDAExecutionProvider",
+     "precision": "fp32",
+     "graph_precision": "fp32",
+     "onnx": "m1_272x352_fp32.onnx",
+     "onnx_sha256": "5c13638764cc62e4d4cc6c115064803c676af9fb11309b9027d37b8ffe4166e9",
+     "status": "ok",
+     "session_providers": [
+      "CUDAExecutionProvider",
+      "CPUExecutionProvider"
+     ],
+     "node_split": {
+      "CUDAExecutionProvider": 41
+     },
+     "provider_options": {
+      "device_id": 0,
+      "use_tf32": 0,
+      "cudnn_conv_algo_search": "EXHAUSTIVE"
+     },
+     "tolerance_max_px": 0.001,
+     "tolerance_epe_change_px": 0.01,
+     "metrics": {
+      "max_px": 7.32193510147378e-05,
+      "max_component_px": 7.319450378417969e-05,
+      "mean_px": 2.360585953987207e-06,
+      "p99_px": 2.639483192620817e-05,
+      "max_px_masked": 5.925133418849806e-05,
+      "mean_px_masked": 1.4840163806466449e-06,
+      "n_px": 17992000,
+      "n_px_masked": 805645,
+      "n_non_finite": 0,
+      "epe_torch": 1.3880538445388835,
+      "epe_onnx": 1.3880534754830507,
+      "epe_change_px": 3.690558327829052e-07,
+      "max_window_epe_change_px": 3.664878596154608e-06,
+      "n_windows_over_tolerance": 0
+     },
+     "worst_windows": [
+      {
+       "sequence": "indoor_flying3",
+       "window_index": 129,
+       "max_px": 7.32193510147378e-05
+      },
+      {
+       "sequence": "indoor_flying3",
+       "window_index": 9,
+       "max_px": 6.990474439006424e-05
+      },
+      {
+       "sequence": "outdoor_day1",
+       "window_index": 10863,
+       "max_px": 6.303469474772504e-05
+      }
+     ],
+     "passed": true
+    },
+    "ort_cuda_fp16": {
+     "provider": "CUDAExecutionProvider",
+     "precision": "fp16",
+     "graph_precision": "fp16",
+     "onnx": "m1_272x352_fp16.onnx",
+     "onnx_sha256": "9025d988a5ac7050e0c886ba1798baccc617911a964daf7a23f0e503bbf8dc5d",
+     "status": "ok",
+     "session_providers": [
+      "CUDAExecutionProvider",
+      "CPUExecutionProvider"
+     ],
+     "node_split": {
+      "CUDAExecutionProvider": 41
+     },
+     "provider_options": {
+      "device_id": 0,
+      "use_tf32": 0,
+      "cudnn_conv_algo_search": "EXHAUSTIVE"
+     },
+     "tolerance_max_px": 0.05,
+     "tolerance_epe_change_px": 0.01,
+     "metrics": {
+      "max_px": 0.09335088537210666,
+      "max_component_px": 0.09262096881866455,
+      "mean_px": 0.0033092424300129267,
+      "p99_px": 0.029554243512267212,
+      "max_px_masked": 0.09237946869754,
+      "mean_px_masked": 0.0037621905001793314,
+      "n_px": 17992000,
+      "n_px_masked": 805645,
+      "n_non_finite": 0,
+      "epe_torch": 1.3880538445388835,
+      "epe_onnx": 1.3875304263131156,
+      "epe_change_px": 0.0005234182257678466,
+      "max_window_epe_change_px": 0.004999208549249179,
+      "n_windows_over_tolerance": 87
+     },
+     "worst_windows": [
+      {
+       "sequence": "indoor_flying1",
+       "window_index": 367,
+       "max_px": 0.09335088537210666
+      },
+      {
+       "sequence": "indoor_flying1",
+       "window_index": 1172,
+       "max_px": 0.09330137363323306
+      },
+      {
+       "sequence": "indoor_flying2",
+       "window_index": 1903,
+       "max_px": 0.09304954304419964
+      }
+     ],
+     "passed": false
+    },
+    "ort_trt_fp16": {
+     "provider": "TensorrtExecutionProvider",
+     "precision": "fp16",
+     "graph_precision": "fp32",
+     "onnx": "m1_272x352_fp32.onnx",
+     "onnx_sha256": "5c13638764cc62e4d4cc6c115064803c676af9fb11309b9027d37b8ffe4166e9",
+     "status": "ok",
+     "session_providers": [
+      "TensorrtExecutionProvider",
+      "CUDAExecutionProvider",
+      "CPUExecutionProvider"
+     ],
+     "node_split": {
+      "TensorrtExecutionProvider": 1
+     },
+     "provider_options": {
+      "device_id": 0,
+      "trt_fp16_enable": true
+     },
+     "tolerance_max_px": 0.05,
+     "tolerance_epe_change_px": 0.01,
+     "metrics": {
+      "max_px": 0.0957468219333497,
+      "max_component_px": 0.09573924541473389,
+      "mean_px": 0.0033565284780820532,
+      "p99_px": 0.0262843690435696,
+      "max_px_masked": 0.09090267590221164,
+      "mean_px_masked": 0.0027972319620042396,
+      "n_px": 17992000,
+      "n_px_masked": 805645,
+      "n_non_finite": 0,
+      "epe_torch": 1.3880538445388835,
+      "epe_onnx": 1.38805297234441,
+      "epe_change_px": 8.72194473533483e-07,
+      "max_window_epe_change_px": 0.002980380482839884,
+      "n_windows_over_tolerance": 85
+     },
+     "worst_windows": [
+      {
+       "sequence": "indoor_flying1",
+       "window_index": 1441,
+       "max_px": 0.0957468219333497
+      },
+      {
+       "sequence": "indoor_flying2",
+       "window_index": 658,
+       "max_px": 0.08599918289867924
+      },
+      {
+       "sequence": "outdoor_day1",
+       "window_index": 10684,
+       "max_px": 0.08374397782557048
+      }
+     ],
+     "passed": false
+    }
+   },
+   "diagnostics": {
+    "torch_cuda_fp16": {
+     "gated": false,
+     "what": "torch eager fp16 (network cast to half, fp16 input) on the same inputs vs the fp32 reference: separates fp16 arithmetic from ORT / TensorRT effects (scripts/onnx_parity.py torch_fp16)",
+     "metrics": {
+      "max_px": 0.05589657300561072,
+      "max_component_px": 0.055792808532714844,
+      "mean_px": 0.001847497514731426,
+      "p99_px": 0.013878336039730602,
+      "max_px_masked": 0.044679420723320505,
+      "mean_px_masked": 0.001836881050319729,
+      "n_px": 17992000,
+      "n_px_masked": 805645,
+      "n_non_finite": 0,
+      "epe_change_px": 0.00039138180696074443,
+      "n_windows_over_fp16_tolerance": 6
+     }
+    }
+   }
+  },
+  {
+   "tier": "T1",
+   "arm": "v2e_rand_sup",
+   "model": "M1",
+   "seed": 7,
+   "run_id": "v2e_rand_sup_voxel5_s7",
+   "checkpoint_sha256": "f8de9fb7d2ad96a2961a82dc08a33b22798a6ac562f1a7677b83486316960f35",
+   "dataset": "mvsec",
+   "sequences": [
+    "indoor_flying1",
+    "indoor_flying2",
+    "indoor_flying3",
+    "outdoor_day1"
+   ],
+   "dt": 1,
+   "representation": "voxel5",
+   "n_windows": 200,
+   "n_windows_with_valid_px": 200,
+   "reference": "torch fp32 eager, CUDA, TF32 off (run_eval.NetPredictor path)",
+   "reference_vs_phase6_epe_max_abs_diff": 0.0,
+   "reference_vs_phase6_windows": 200,
+   "providers": {
+    "ort_cuda_fp32": {
+     "provider": "CUDAExecutionProvider",
+     "precision": "fp32",
+     "graph_precision": "fp32",
+     "onnx": "m1_272x352_fp32.onnx",
+     "onnx_sha256": "81993f7b639a58307580cc18ea745dd86775d4ab622b6c6aeb6c241cde3e75ea",
+     "status": "ok",
+     "session_providers": [
+      "CUDAExecutionProvider",
+      "CPUExecutionProvider"
+     ],
+     "node_split": {
+      "CUDAExecutionProvider": 41
+     },
+     "provider_options": {
+      "device_id": 0,
+      "use_tf32": 0,
+      "cudnn_conv_algo_search": "EXHAUSTIVE"
+     },
+     "tolerance_max_px": 0.001,
+     "tolerance_epe_change_px": 0.01,
+     "metrics": {
+      "max_px": 5.419950345078768e-05,
+      "max_component_px": 5.418062210083008e-05,
+      "mean_px": 2.6211844188181966e-06,
+      "p99_px": 2.2089452403832378e-05,
+      "max_px_masked": 4.708272720911003e-05,
+      "mean_px_masked": 1.1356447618180418e-06,
+      "n_px": 17992000,
+      "n_px_masked": 805645,
+      "n_non_finite": 0,
+      "epe_torch": 1.3869469861924273,
+      "epe_onnx": 1.3869471682866372,
+      "epe_change_px": 1.820942099328704e-07,
+      "max_window_epe_change_px": 3.182098759157981e-06,
+      "n_windows_over_tolerance": 0
+     },
+     "worst_windows": [
+      {
+       "sequence": "outdoor_day1",
+       "window_index": 10570,
+       "max_px": 5.419950345078768e-05
+      },
+      {
+       "sequence": "indoor_flying1",
+       "window_index": 9,
+       "max_px": 4.9423573384988636e-05
+      },
+      {
+       "sequence": "indoor_flying2",
+       "window_index": 2281,
+       "max_px": 4.863803155808601e-05
+      }
+     ],
+     "passed": true
+    },
+    "ort_cuda_fp16": {
+     "provider": "CUDAExecutionProvider",
+     "precision": "fp16",
+     "graph_precision": "fp16",
+     "onnx": "m1_272x352_fp16.onnx",
+     "onnx_sha256": "4b4088d62219141768d3cc202097e5c0ad68567e16b5ee9e88f103af3dbd1a05",
+     "status": "ok",
+     "session_providers": [
+      "CUDAExecutionProvider",
+      "CPUExecutionProvider"
+     ],
+     "node_split": {
+      "CUDAExecutionProvider": 41
+     },
+     "provider_options": {
+      "device_id": 0,
+      "use_tf32": 0,
+      "cudnn_conv_algo_search": "EXHAUSTIVE"
+     },
+     "tolerance_max_px": 0.05,
+     "tolerance_epe_change_px": 0.01,
+     "metrics": {
+      "max_px": 0.23563863015942918,
+      "max_component_px": 0.23563838005065918,
+      "mean_px": 0.0046041092117326664,
+      "p99_px": 0.07730648796116671,
+      "max_px_masked": 0.19635915321347389,
+      "mean_px_masked": 0.00244530645847634,
+      "n_px": 17992000,
+      "n_px_masked": 805645,
+      "n_non_finite": 0,
+      "epe_torch": 1.3869469861924273,
+      "epe_onnx": 1.3875563843613734,
+      "epe_change_px": 0.0006093981689461181,
+      "max_window_epe_change_px": 0.009682099157031665,
+      "n_windows_over_tolerance": 147
+     },
+     "worst_windows": [
+      {
+       "sequence": "outdoor_day1",
+       "window_index": 10749,
+       "max_px": 0.23563863015942918
+      },
+      {
+       "sequence": "outdoor_day1",
+       "window_index": 10635,
+       "max_px": 0.20521377209674047
+      },
+      {
+       "sequence": "outdoor_day1",
+       "window_index": 10343,
+       "max_px": 0.20481571571028
+      }
+     ],
+     "passed": false
+    },
+    "ort_trt_fp16": {
+     "provider": "TensorrtExecutionProvider",
+     "precision": "fp16",
+     "graph_precision": "fp32",
+     "onnx": "m1_272x352_fp32.onnx",
+     "onnx_sha256": "81993f7b639a58307580cc18ea745dd86775d4ab622b6c6aeb6c241cde3e75ea",
+     "status": "ok",
+     "session_providers": [
+      "TensorrtExecutionProvider",
+      "CUDAExecutionProvider",
+      "CPUExecutionProvider"
+     ],
+     "node_split": {
+      "TensorrtExecutionProvider": 1
+     },
+     "provider_options": {
+      "device_id": 0,
+      "trt_fp16_enable": true
+     },
+     "tolerance_max_px": 0.05,
+     "tolerance_epe_change_px": 0.01,
+     "metrics": {
+      "max_px": 0.49085157277282376,
+      "max_component_px": 0.49009066820144653,
+      "mean_px": 0.009741062921615171,
+      "p99_px": 0.17260457770071538,
+      "max_px_masked": 0.42799204386820433,
+      "mean_px_masked": 0.004590900499919725,
+      "n_px": 17992000,
+      "n_px_masked": 805645,
+      "n_non_finite": 0,
+      "epe_torch": 1.3869469861924273,
+      "epe_onnx": 1.385849116061336,
+      "epe_change_px": 0.0010978701310913053,
+      "max_window_epe_change_px": 0.018165717842556273,
+      "n_windows_over_tolerance": 163
+     },
+     "worst_windows": [
+      {
+       "sequence": "outdoor_day1",
+       "window_index": 10749,
+       "max_px": 0.49085157277282376
+      },
+      {
+       "sequence": "indoor_flying3",
+       "window_index": 2048,
+       "max_px": 0.45027105904521625
+      },
+      {
+       "sequence": "outdoor_day1",
+       "window_index": 10863,
+       "max_px": 0.4417222137705708
+      }
+     ],
+     "passed": false
+    }
+   },
+   "diagnostics": {
+    "torch_cuda_fp16": {
+     "gated": false,
+     "what": "torch eager fp16 (network cast to half, fp16 input) on the same inputs vs the fp32 reference: separates fp16 arithmetic from ORT / TensorRT effects (scripts/onnx_parity.py torch_fp16)",
+     "metrics": {
+      "max_px": 0.14542504104424067,
+      "max_component_px": 0.14519977569580078,
+      "mean_px": 0.002733933095363134,
+      "p99_px": 0.04582353790018838,
+      "max_px_masked": 0.11223079465391089,
+      "mean_px_masked": 0.0015649641682571036,
+      "n_px": 17992000,
+      "n_px_masked": 805645,
+      "n_non_finite": 0,
+      "epe_change_px": 0.00020009606280080305,
+      "n_windows_over_fp16_tolerance": 130
+     }
+    }
+   }
+  }
+ ],
+ "representation_build": "outside the ONNX graph; identical inputs fed to torch and ONNX",
+ "git_sha": "db4f7c359a2a5a671fc1952a1c1e61ec614aaef2",
+ "git_dirty": false,
+ "ref_git_sha": "15e71432714046f0e64d6dca8d5255ee70839667",
+ "created_by": "scripts/onnx_parity.py summarise",
+ "created_at": "2026-10-12T23:23:11+00:00"
+}

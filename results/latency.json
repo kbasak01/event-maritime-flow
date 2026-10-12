@@ -1,0 +1,1140 @@
+{
+ "kind": "latency",
+ "plan_step": "Phase 8 step 3",
+ "tier_note": "Hardware timing of the M1 network and its input build; not a flow metric, so no evidence tier applies. Inputs are synthetic (seeded).",
+ "hardware_note": "RTX A4000 (desktop, WSL2) stands in for an embedded target; embedded latency will differ.",
+ "claims_note": "Nothing here measures or implies event-camera sensor latency or a latency advantage of event cameras (CLAUDE.md rule 2).",
+ "accuracy_note": "Backends that failed parity (results/onnx_parity.json, Table I-T1): ort_cuda_fp16, ort_trt_fp16; their timings are not a claim of a deployable configuration at the plan's tolerance.",
+ "methodology": {
+  "warmup": 50,
+  "timed": 500,
+  "batch_size": 1,
+  "percentiles": [
+   "p50",
+   "p90",
+   "p99",
+   "max"
+  ],
+  "timer": "time.perf_counter around each iteration; torch.cuda.synchronize before and after (torch); IOBinding synchronize_inputs/outputs (ORT)",
+  "ort_io": "IOBinding with device-resident input/output; H2D (fresh device copy incl. allocation, an upper bound) and D2H timed separately",
+  "provider_check": "a session must report the requested provider first (evflow.export.bench.resolve_providers / ort_session); node split from the ORT profile",
+  "trt": "fp32 graph with trt_fp16_enable; cold engine build timed from an emptied cache, then the cached engine is benchmarked",
+  "end_to_end": "PyTorch: one measured bracket. ORT: composed from stages timed in two processes and separate loops (torch-CUDA build, ORT network; D-063), i-th samples summed; composed tails assume independent stages; sum_of_stage_max_ms = upper bound over the observed stage samples only (cross-process contention unmeasured). The ORT rows include a voxel D2H + H2D round trip a single-process deployment would not pay. ort_cuda_fp16 rows omit the fp32 -> fp16 cast of the voxel grid (not timed)",
+  "representation_events": "synthetic: uniform x, y, p; sorted uniform t over 30000 us; seed 1337",
+  "clocks": "not locked (WSL2 exposes no clock or persistence control); environment.*.gpu is one nvidia-smi snapshot taken at the end of each process (after its timed loops), not a per-cell record"
+ },
+ "model": {
+  "arm_run": "real_sup_voxel5_s1337",
+  "checkpoint_sha256": "0abee62e5a4f40e244fa6e370ed82468205fcf1527c9e1cec06003eb2be8697b",
+  "n_params": 13341192,
+  "representation": "voxel5",
+  "in_channels": 5
+ },
+ "representation_build": [
+  {
+   "events": 10000,
+   "height": 260,
+   "width": 346,
+   "device": "cuda",
+   "build": {
+    "p50_ms": 4.924459994072095,
+    "p90_ms": 5.852880707243458,
+    "p99_ms": 7.766560638556256,
+    "max_ms": 9.0028410195373,
+    "mean_ms": 5.124159500352107,
+    "n": 500
+   },
+   "events_h2d": {
+    "p50_ms": 0.34069898538291454,
+    "p90_ms": 0.458276696735993,
+    "p99_ms": 0.7529303262708708,
+    "max_ms": 0.9302209946326911,
+    "mean_ms": 0.36618234298657626,
+    "n": 500
+   },
+   "events_dtype": "int64 x, y, t (us), p"
+  },
+  {
+   "events": 100000,
+   "height": 260,
+   "width": 346,
+   "device": "cuda",
+   "build": {
+    "p50_ms": 5.030088999774307,
+    "p90_ms": 6.301739328773693,
+    "p99_ms": 8.546467286068946,
+    "max_ms": 10.91062102932483,
+    "mean_ms": 5.311952374293469,
+    "n": 500
+   },
+   "events_h2d": {
+    "p50_ms": 0.9741064859554172,
+    "p90_ms": 1.064095925539732,
+    "p99_ms": 1.2677243904909117,
+    "max_ms": 1.4564419980160892,
+    "mean_ms": 0.985886121285148,
+    "n": 500
+   },
+   "events_dtype": "int64 x, y, t (us), p"
+  },
+  {
+   "events": 1000000,
+   "height": 260,
+   "width": 346,
+   "device": "cuda",
+   "build": {
+    "p50_ms": 7.1328199992422014,
+    "p90_ms": 8.154702075989917,
+    "p99_ms": 9.524658191949129,
+    "max_ms": 10.334332997445017,
+    "mean_ms": 7.339285232825205,
+    "n": 500
+   },
+   "events_h2d": {
+    "p50_ms": 5.750971497036517,
+    "p90_ms": 6.285025685792789,
+    "p99_ms": 7.5585811748169345,
+    "max_ms": 13.90694099245593,
+    "mean_ms": 5.85038824507501,
+    "n": 500
+   },
+   "events_dtype": "int64 x, y, t (us), p"
+  },
+  {
+   "events": 10000,
+   "height": 480,
+   "width": 640,
+   "device": "cuda",
+   "build": {
+    "p50_ms": 5.0631919875741005,
+    "p90_ms": 6.313220883021131,
+    "p99_ms": 8.266058153822085,
+    "max_ms": 14.32776200817898,
+    "mean_ms": 5.313629341428168,
+    "n": 500
+   },
+   "events_h2d": {
+    "p50_ms": 0.3235714975744486,
+    "p90_ms": 0.40988271357491624,
+    "p99_ms": 0.558712439378723,
+    "max_ms": 0.8008919539861381,
+    "mean_ms": 0.340556776500307,
+    "n": 500
+   },
+   "events_dtype": "int64 x, y, t (us), p"
+  },
+  {
+   "events": 100000,
+   "height": 480,
+   "width": 640,
+   "device": "cuda",
+   "build": {
+    "p50_ms": 5.3445395024027675,
+    "p90_ms": 6.336271873442456,
+    "p99_ms": 7.776974465814415,
+    "max_ms": 10.789305029902607,
+    "mean_ms": 5.535179278347641,
+    "n": 500
+   },
+   "events_h2d": {
+    "p50_ms": 0.9795674704946578,
+    "p90_ms": 1.0744550032541156,
+    "p99_ms": 1.3920299155870435,
+    "max_ms": 2.0201189909130335,
+    "mean_ms": 0.9990046435268596,
+    "n": 500
+   },
+   "events_dtype": "int64 x, y, t (us), p"
+  },
+  {
+   "events": 1000000,
+   "height": 480,
+   "width": 640,
+   "device": "cuda",
+   "build": {
+    "p50_ms": 7.530857983510941,
+    "p90_ms": 8.69635560666211,
+    "p99_ms": 11.12943925079889,
+    "max_ms": 17.930584959685802,
+    "mean_ms": 7.831896315095946,
+    "n": 500
+   },
+   "events_h2d": {
+    "p50_ms": 5.8112674742005765,
+    "p90_ms": 6.428289331961423,
+    "p99_ms": 7.582576126442288,
+    "max_ms": 9.251659968867898,
+    "mean_ms": 5.901546880719252,
+    "n": 500
+   },
+   "events_dtype": "int64 x, y, t (us), p"
+  }
+ ],
+ "network": [
+  {
+   "height": 256,
+   "width": 256,
+   "padded": [
+    256,
+    256
+   ],
+   "backend": "pytorch_eager_fp32",
+   "precision": "fp32",
+   "compute": {
+    "p50_ms": 3.638314490672201,
+    "p90_ms": 4.832887125667185,
+    "p99_ms": 5.902131187613121,
+    "max_ms": 7.342174998484552,
+    "mean_ms": 3.8302830398315564,
+    "n": 500
+   },
+   "settings": "TF32 off, cudnn.benchmark off, inference_mode"
+  },
+  {
+   "height": 260,
+   "width": 346,
+   "padded": [
+    272,
+    352
+   ],
+   "backend": "pytorch_eager_fp32",
+   "precision": "fp32",
+   "compute": {
+    "p50_ms": 5.176873528398573,
+    "p90_ms": 5.671532411361113,
+    "p99_ms": 6.900009135133583,
+    "max_ms": 9.181567002087831,
+    "mean_ms": 5.298913303297013,
+    "n": 500
+   },
+   "settings": "TF32 off, cudnn.benchmark off, inference_mode"
+  },
+  {
+   "height": 480,
+   "width": 640,
+   "padded": [
+    480,
+    640
+   ],
+   "backend": "pytorch_eager_fp32",
+   "precision": "fp32",
+   "compute": {
+    "p50_ms": 10.397057514637709,
+    "p90_ms": 10.727666568709537,
+    "p99_ms": 11.724601604510097,
+    "max_ms": 17.185595992486924,
+    "mean_ms": 10.495986531837843,
+    "n": 500
+   },
+   "settings": "TF32 off, cudnn.benchmark off, inference_mode"
+  },
+  {
+   "height": 256,
+   "width": 256,
+   "padded": [
+    256,
+    256
+   ],
+   "backend": "ort_cuda_fp32",
+   "provider": "CUDAExecutionProvider",
+   "precision": "fp32",
+   "graph_precision": "fp32",
+   "onnx": "m1_256x256_fp32.onnx",
+   "onnx_sha256": "b929b69d15e276f11bb3d0e2137f70822b5165bcc707e6c9510d52971084ea0a",
+   "checkpoint_sha256": "0abee62e5a4f40e244fa6e370ed82468205fcf1527c9e1cec06003eb2be8697b",
+   "provider_options": {
+    "device_id": 0,
+    "use_tf32": 0,
+    "cudnn_conv_algo_search": "EXHAUSTIVE"
+   },
+   "node_split": {
+    "CUDAExecutionProvider": 41
+   },
+   "status": "ok",
+   "batch_size": 1,
+   "input_shape": [
+    1,
+    5,
+    256,
+    256
+   ],
+   "input_dtype": "float32",
+   "warmup": 50,
+   "timed": 500,
+   "compute": {
+    "p50_ms": 3.6584754998330027,
+    "p90_ms": 3.965958912158385,
+    "p99_ms": 5.200368843507021,
+    "max_ms": 6.1870309873484075,
+    "mean_ms": 3.7006917559774593,
+    "n": 500
+   },
+   "h2d": {
+    "p50_ms": 0.3316165239084512,
+    "p90_ms": 0.3769210074096918,
+    "p99_ms": 0.6431570556014775,
+    "max_ms": 1.563840953167528,
+    "mean_ms": 0.346533952630125,
+    "n": 500
+   },
+   "d2h": {
+    "p50_ms": 0.16895850421860814,
+    "p90_ms": 0.19770348444581032,
+    "p99_ms": 0.2705290325684472,
+    "max_ms": 0.5746970418840647,
+    "mean_ms": 0.17528752272482961,
+    "n": 500
+   }
+  },
+  {
+   "height": 256,
+   "width": 256,
+   "padded": [
+    256,
+    256
+   ],
+   "backend": "ort_cuda_fp16",
+   "provider": "CUDAExecutionProvider",
+   "precision": "fp16",
+   "graph_precision": "fp16",
+   "onnx": "m1_256x256_fp16.onnx",
+   "onnx_sha256": "1214f48ff670ceee53d6d81f6ae36431a068ec1938ab13e6afce09cbf5843705",
+   "checkpoint_sha256": "0abee62e5a4f40e244fa6e370ed82468205fcf1527c9e1cec06003eb2be8697b",
+   "provider_options": {
+    "device_id": 0,
+    "use_tf32": 0,
+    "cudnn_conv_algo_search": "EXHAUSTIVE"
+   },
+   "node_split": {
+    "CUDAExecutionProvider": 41
+   },
+   "status": "ok",
+   "batch_size": 1,
+   "input_shape": [
+    1,
+    5,
+    256,
+    256
+   ],
+   "input_dtype": "float16",
+   "warmup": 50,
+   "timed": 500,
+   "compute": {
+    "p50_ms": 3.0585729982703924,
+    "p90_ms": 3.399815101874993,
+    "p99_ms": 4.751975024119017,
+    "max_ms": 6.909210991580039,
+    "mean_ms": 3.1490303186001256,
+    "n": 500
+   },
+   "h2d": {
+    "p50_ms": 0.22282401914708316,
+    "p90_ms": 0.25233630440197885,
+    "p99_ms": 0.3329981287242844,
+    "max_ms": 1.0325650218874216,
+    "mean_ms": 0.2308611705666408,
+    "n": 500
+   },
+   "d2h": {
+    "p50_ms": 0.12421299470588565,
+    "p90_ms": 0.14294407446868718,
+    "p99_ms": 0.19384345854632543,
+    "max_ms": 0.6244360120035708,
+    "mean_ms": 0.12854856031481177,
+    "n": 500
+   }
+  },
+  {
+   "height": 256,
+   "width": 256,
+   "padded": [
+    256,
+    256
+   ],
+   "backend": "ort_trt_fp16",
+   "provider": "TensorrtExecutionProvider",
+   "precision": "fp16",
+   "graph_precision": "fp32",
+   "onnx": "m1_256x256_fp32.onnx",
+   "onnx_sha256": "b929b69d15e276f11bb3d0e2137f70822b5165bcc707e6c9510d52971084ea0a",
+   "checkpoint_sha256": "0abee62e5a4f40e244fa6e370ed82468205fcf1527c9e1cec06003eb2be8697b",
+   "provider_options": {
+    "device_id": 0,
+    "trt_fp16_enable": true
+   },
+   "trt_engine_build_cold_s": 26.69,
+   "node_split": {
+    "TensorrtExecutionProvider": 1
+   },
+   "status": "ok",
+   "batch_size": 1,
+   "input_shape": [
+    1,
+    5,
+    256,
+    256
+   ],
+   "input_dtype": "float32",
+   "warmup": 50,
+   "timed": 500,
+   "compute": {
+    "p50_ms": 0.9006554901134223,
+    "p90_ms": 1.0986544250044972,
+    "p99_ms": 2.9377523722359897,
+    "max_ms": 3.392069018445909,
+    "mean_ms": 0.9906989866867661,
+    "n": 500
+   },
+   "h2d": {
+    "p50_ms": 0.3157920145895332,
+    "p90_ms": 0.35780780599452555,
+    "p99_ms": 0.6591973511967799,
+    "max_ms": 1.4972639619372785,
+    "mean_ms": 0.3310771993128583,
+    "n": 500
+   },
+   "d2h": {
+    "p50_ms": 0.1632430066820234,
+    "p90_ms": 0.19300839048810303,
+    "p99_ms": 0.29901519825216316,
+    "max_ms": 0.8491129847243428,
+    "mean_ms": 0.17258450982626528,
+    "n": 500
+   }
+  },
+  {
+   "height": 260,
+   "width": 346,
+   "padded": [
+    272,
+    352
+   ],
+   "backend": "ort_cuda_fp32",
+   "provider": "CUDAExecutionProvider",
+   "precision": "fp32",
+   "graph_precision": "fp32",
+   "onnx": "m1_272x352_fp32.onnx",
+   "onnx_sha256": "5c13638764cc62e4d4cc6c115064803c676af9fb11309b9027d37b8ffe4166e9",
+   "checkpoint_sha256": "0abee62e5a4f40e244fa6e370ed82468205fcf1527c9e1cec06003eb2be8697b",
+   "provider_options": {
+    "device_id": 0,
+    "use_tf32": 0,
+    "cudnn_conv_algo_search": "EXHAUSTIVE"
+   },
+   "node_split": {
+    "CUDAExecutionProvider": 41
+   },
+   "status": "ok",
+   "batch_size": 1,
+   "input_shape": [
+    1,
+    5,
+    272,
+    352
+   ],
+   "input_dtype": "float32",
+   "warmup": 50,
+   "timed": 500,
+   "compute": {
+    "p50_ms": 4.937346035148948,
+    "p90_ms": 5.191831616684794,
+    "p99_ms": 6.286541264853439,
+    "max_ms": 8.013440994545817,
+    "mean_ms": 4.931915378198028,
+    "n": 500
+   },
+   "h2d": {
+    "p50_ms": 0.41907650302164257,
+    "p90_ms": 0.4991925787180662,
+    "p99_ms": 0.926561618107371,
+    "max_ms": 3.2512719626538455,
+    "mean_ms": 0.4458105032099411,
+    "n": 500
+   },
+   "d2h": {
+    "p50_ms": 0.2306280075572431,
+    "p90_ms": 0.26042700046673417,
+    "p99_ms": 0.45229412382468515,
+    "max_ms": 1.5110609820112586,
+    "mean_ms": 0.24316752748563886,
+    "n": 500
+   }
+  },
+  {
+   "height": 260,
+   "width": 346,
+   "padded": [
+    272,
+    352
+   ],
+   "backend": "ort_cuda_fp16",
+   "provider": "CUDAExecutionProvider",
+   "precision": "fp16",
+   "graph_precision": "fp16",
+   "onnx": "m1_272x352_fp16.onnx",
+   "onnx_sha256": "9025d988a5ac7050e0c886ba1798baccc617911a964daf7a23f0e503bbf8dc5d",
+   "checkpoint_sha256": "0abee62e5a4f40e244fa6e370ed82468205fcf1527c9e1cec06003eb2be8697b",
+   "provider_options": {
+    "device_id": 0,
+    "use_tf32": 0,
+    "cudnn_conv_algo_search": "EXHAUSTIVE"
+   },
+   "node_split": {
+    "CUDAExecutionProvider": 41
+   },
+   "status": "ok",
+   "batch_size": 1,
+   "input_shape": [
+    1,
+    5,
+    272,
+    352
+   ],
+   "input_dtype": "float16",
+   "warmup": 50,
+   "timed": 500,
+   "compute": {
+    "p50_ms": 3.1351125217042863,
+    "p90_ms": 3.925165318651125,
+    "p99_ms": 5.820591631345448,
+    "max_ms": 6.61729701096192,
+    "mean_ms": 3.324221319402568,
+    "n": 500
+   },
+   "h2d": {
+    "p50_ms": 0.28570048743858933,
+    "p90_ms": 0.3235428943298757,
+    "p99_ms": 0.427450209390372,
+    "max_ms": 0.7302280282601714,
+    "mean_ms": 0.29399648669641465,
+    "n": 500
+   },
+   "d2h": {
+    "p50_ms": 0.15204650117084384,
+    "p90_ms": 0.17548375762999058,
+    "p99_ms": 0.2906563680153339,
+    "max_ms": 0.7262850413098931,
+    "mean_ms": 0.15877864335197955,
+    "n": 500
+   }
+  },
+  {
+   "height": 260,
+   "width": 346,
+   "padded": [
+    272,
+    352
+   ],
+   "backend": "ort_trt_fp16",
+   "provider": "TensorrtExecutionProvider",
+   "precision": "fp16",
+   "graph_precision": "fp32",
+   "onnx": "m1_272x352_fp32.onnx",
+   "onnx_sha256": "5c13638764cc62e4d4cc6c115064803c676af9fb11309b9027d37b8ffe4166e9",
+   "checkpoint_sha256": "0abee62e5a4f40e244fa6e370ed82468205fcf1527c9e1cec06003eb2be8697b",
+   "provider_options": {
+    "device_id": 0,
+    "trt_fp16_enable": true
+   },
+   "trt_engine_build_cold_s": 24.41,
+   "node_split": {
+    "TensorrtExecutionProvider": 1
+   },
+   "status": "ok",
+   "batch_size": 1,
+   "input_shape": [
+    1,
+    5,
+    272,
+    352
+   ],
+   "input_dtype": "float32",
+   "warmup": 50,
+   "timed": 500,
+   "compute": {
+    "p50_ms": 1.1482475092634559,
+    "p90_ms": 1.5698855102527887,
+    "p99_ms": 2.1678388869622713,
+    "max_ms": 2.9884029645472765,
+    "mean_ms": 1.278924016864039,
+    "n": 500
+   },
+   "h2d": {
+    "p50_ms": 0.39501552237197757,
+    "p90_ms": 0.4647726018447429,
+    "p99_ms": 0.6744162243558094,
+    "max_ms": 2.3701529717072845,
+    "mean_ms": 0.4139549022074789,
+    "n": 500
+   },
+   "d2h": {
+    "p50_ms": 0.23070297902449965,
+    "p90_ms": 0.2648267021868378,
+    "p99_ms": 0.4831460735294966,
+    "max_ms": 0.9459310094825923,
+    "mean_ms": 0.24092941032722592,
+    "n": 500
+   }
+  },
+  {
+   "height": 480,
+   "width": 640,
+   "padded": [
+    480,
+    640
+   ],
+   "backend": "ort_cuda_fp32",
+   "provider": "CUDAExecutionProvider",
+   "precision": "fp32",
+   "graph_precision": "fp32",
+   "onnx": "m1_480x640_fp32.onnx",
+   "onnx_sha256": "1a9d08547f2d876373042ba554052838b9cbdd386052fffb1bf43b292b8ebdb6",
+   "checkpoint_sha256": "0abee62e5a4f40e244fa6e370ed82468205fcf1527c9e1cec06003eb2be8697b",
+   "provider_options": {
+    "device_id": 0,
+    "use_tf32": 0,
+    "cudnn_conv_algo_search": "EXHAUSTIVE"
+   },
+   "node_split": {
+    "CUDAExecutionProvider": 41
+   },
+   "status": "ok",
+   "batch_size": 1,
+   "input_shape": [
+    1,
+    5,
+    480,
+    640
+   ],
+   "input_dtype": "float32",
+   "warmup": 50,
+   "timed": 500,
+   "compute": {
+    "p50_ms": 10.438247525598854,
+    "p90_ms": 10.901493433630094,
+    "p99_ms": 11.639838138944468,
+    "max_ms": 13.273965974804014,
+    "mean_ms": 10.509182104025967,
+    "n": 500
+   },
+   "h2d": {
+    "p50_ms": 1.1008689762093127,
+    "p90_ms": 1.3386808102950454,
+    "p99_ms": 1.7141864850418638,
+    "max_ms": 201.84137002797797,
+    "mean_ms": 1.5449451468884945,
+    "n": 500
+   },
+   "d2h": {
+    "p50_ms": 0.47593246563337743,
+    "p90_ms": 0.5648983235005289,
+    "p99_ms": 0.9413696342380716,
+    "max_ms": 1.6720370040275156,
+    "mean_ms": 0.5036809721495956,
+    "n": 500
+   }
+  },
+  {
+   "height": 480,
+   "width": 640,
+   "padded": [
+    480,
+    640
+   ],
+   "backend": "ort_cuda_fp16",
+   "provider": "CUDAExecutionProvider",
+   "precision": "fp16",
+   "graph_precision": "fp16",
+   "onnx": "m1_480x640_fp16.onnx",
+   "onnx_sha256": "608ccb1fbef5d51f4880a291dbe5ed8504fc4717bbd4a249f8d238207b2944a6",
+   "checkpoint_sha256": "0abee62e5a4f40e244fa6e370ed82468205fcf1527c9e1cec06003eb2be8697b",
+   "provider_options": {
+    "device_id": 0,
+    "use_tf32": 0,
+    "cudnn_conv_algo_search": "EXHAUSTIVE"
+   },
+   "node_split": {
+    "CUDAExecutionProvider": 41
+   },
+   "status": "ok",
+   "batch_size": 1,
+   "input_shape": [
+    1,
+    5,
+    480,
+    640
+   ],
+   "input_dtype": "float16",
+   "warmup": 50,
+   "timed": 500,
+   "compute": {
+    "p50_ms": 6.4504189940635115,
+    "p90_ms": 7.251862494740636,
+    "p99_ms": 9.762005396187305,
+    "max_ms": 12.390929972752929,
+    "mean_ms": 6.621699924347922,
+    "n": 500
+   },
+   "h2d": {
+    "p50_ms": 0.5957679823040962,
+    "p90_ms": 0.7776867249049247,
+    "p99_ms": 1.809365731314755,
+    "max_ms": 8.292760991025716,
+    "mean_ms": 0.6798584874486551,
+    "n": 500
+   },
+   "d2h": {
+    "p50_ms": 0.2985445025842637,
+    "p90_ms": 0.3712954930961132,
+    "p99_ms": 1.1171600449597459,
+    "max_ms": 8.23006802238524,
+    "mean_ms": 0.3494320223107934,
+    "n": 500
+   }
+  },
+  {
+   "height": 480,
+   "width": 640,
+   "padded": [
+    480,
+    640
+   ],
+   "backend": "ort_trt_fp16",
+   "provider": "TensorrtExecutionProvider",
+   "precision": "fp16",
+   "graph_precision": "fp32",
+   "onnx": "m1_480x640_fp32.onnx",
+   "onnx_sha256": "1a9d08547f2d876373042ba554052838b9cbdd386052fffb1bf43b292b8ebdb6",
+   "checkpoint_sha256": "0abee62e5a4f40e244fa6e370ed82468205fcf1527c9e1cec06003eb2be8697b",
+   "provider_options": {
+    "device_id": 0,
+    "trt_fp16_enable": true
+   },
+   "trt_engine_build_cold_s": 34.13,
+   "node_split": {
+    "TensorrtExecutionProvider": 1
+   },
+   "status": "ok",
+   "batch_size": 1,
+   "input_shape": [
+    1,
+    5,
+    480,
+    640
+   ],
+   "input_dtype": "float32",
+   "warmup": 50,
+   "timed": 500,
+   "compute": {
+    "p50_ms": 2.9511969769373536,
+    "p90_ms": 3.0596945667639375,
+    "p99_ms": 3.6076682480052114,
+    "max_ms": 4.225974029395729,
+    "mean_ms": 2.9836070894962177,
+    "n": 500
+   },
+   "h2d": {
+    "p50_ms": 0.938876997679472,
+    "p90_ms": 1.061195693910122,
+    "p99_ms": 1.386824182118289,
+    "max_ms": 2.941665006801486,
+    "mean_ms": 0.9636958969058469,
+    "n": 500
+   },
+   "d2h": {
+    "p50_ms": 0.4598985251504928,
+    "p90_ms": 0.5146015668287873,
+    "p99_ms": 0.6774353719083587,
+    "max_ms": 1.5129400417208672,
+    "mean_ms": 0.4748459068359807,
+    "n": 500
+   }
+  }
+ ],
+ "end_to_end": [
+  {
+   "events": 10000,
+   "height": 260,
+   "width": 346,
+   "backend": "pytorch_eager_fp32",
+   "how": "measured",
+   "stages": [
+    "events H2D",
+    "build",
+    "pad",
+    "network",
+    "flow D2H"
+   ],
+   "total": {
+    "p50_ms": 11.040148499887437,
+    "p90_ms": 13.430597580736505,
+    "p99_ms": 16.047739097266458,
+    "max_ms": 19.399379030801356,
+    "mean_ms": 11.406677975901403,
+    "n": 500
+   }
+  },
+  {
+   "events": 100000,
+   "height": 260,
+   "width": 346,
+   "backend": "pytorch_eager_fp32",
+   "how": "measured",
+   "stages": [
+    "events H2D",
+    "build",
+    "pad",
+    "network",
+    "flow D2H"
+   ],
+   "total": {
+    "p50_ms": 11.841855972306803,
+    "p90_ms": 14.46461591986008,
+    "p99_ms": 18.47875035542529,
+    "max_ms": 21.077178011182696,
+    "mean_ms": 12.272146264091134,
+    "n": 500
+   }
+  },
+  {
+   "events": 1000000,
+   "height": 260,
+   "width": 346,
+   "backend": "pytorch_eager_fp32",
+   "how": "measured",
+   "stages": [
+    "events H2D",
+    "build",
+    "pad",
+    "network",
+    "flow D2H"
+   ],
+   "total": {
+    "p50_ms": 19.162980024702847,
+    "p90_ms": 20.3139474557247,
+    "p99_ms": 21.69900879554916,
+    "max_ms": 23.03628798108548,
+    "mean_ms": 19.35122968046926,
+    "n": 500
+   }
+  },
+  {
+   "events": 10000,
+   "height": 260,
+   "width": 346,
+   "backend": "ort_cuda_fp32",
+   "how": "composed",
+   "stages": [
+    "events H2D",
+    "build + pad (torch-CUDA)",
+    "voxel D2H",
+    "ORT H2D",
+    "ORT compute",
+    "flow D2H"
+   ],
+   "total": {
+    "p50_ms": 11.869360518176109,
+    "p90_ms": 14.747175679076465,
+    "p99_ms": 18.148577557876706,
+    "max_ms": 21.617410064209253,
+    "mean_ms": 12.46012028446421,
+    "n": 500,
+    "sum_of_stage_max_ms": 30.705847952049226
+   }
+  },
+  {
+   "events": 10000,
+   "height": 260,
+   "width": 346,
+   "backend": "ort_cuda_fp16",
+   "how": "composed",
+   "stages": [
+    "events H2D",
+    "build + pad (torch-CUDA)",
+    "voxel D2H",
+    "ORT H2D",
+    "ORT compute",
+    "flow D2H"
+   ],
+   "total": {
+    "p50_ms": 10.112337506143376,
+    "p90_ms": 13.054899056442082,
+    "p99_ms": 16.620810159365647,
+    "max_ms": 19.230300036724657,
+    "mean_ms": 10.616223325021565,
+    "n": 500,
+    "sum_of_stage_max_ms": 26.00388409337029
+   }
+  },
+  {
+   "events": 10000,
+   "height": 260,
+   "width": 346,
+   "backend": "ort_trt_fp16",
+   "how": "composed",
+   "stages": [
+    "events H2D",
+    "build + pad (torch-CUDA)",
+    "voxel D2H",
+    "ORT H2D",
+    "ORT compute",
+    "flow D2H"
+   ],
+   "total": {
+    "p50_ms": 8.207841456169263,
+    "p90_ms": 10.990053147543222,
+    "p99_ms": 14.33370980375912,
+    "max_ms": 17.71661004750058,
+    "mean_ms": 8.773035204969347,
+    "n": 500,
+    "sum_of_stage_max_ms": 24.234560958575457
+   }
+  },
+  {
+   "events": 100000,
+   "height": 260,
+   "width": 346,
+   "backend": "ort_cuda_fp32",
+   "how": "composed",
+   "stages": [
+    "events H2D",
+    "build + pad (torch-CUDA)",
+    "voxel D2H",
+    "ORT H2D",
+    "ORT compute",
+    "flow D2H"
+   ],
+   "total": {
+    "p50_ms": 12.35168002313003,
+    "p90_ms": 14.120005303993821,
+    "p99_ms": 16.6861250763759,
+    "max_ms": 17.863354936707765,
+    "mean_ms": 12.645662966300733,
+    "n": 500,
+    "sum_of_stage_max_ms": 25.784381898120046
+   }
+  },
+  {
+   "events": 100000,
+   "height": 260,
+   "width": 346,
+   "backend": "ort_cuda_fp16",
+   "how": "composed",
+   "stages": [
+    "events H2D",
+    "build + pad (torch-CUDA)",
+    "voxel D2H",
+    "ORT H2D",
+    "ORT compute",
+    "flow D2H"
+   ],
+   "total": {
+    "p50_ms": 10.4854280652944,
+    "p90_ms": 12.438050349010155,
+    "p99_ms": 14.980224549071856,
+    "max_ms": 17.418879026081413,
+    "mean_ms": 10.801766006858088,
+    "n": 500,
+    "sum_of_stage_max_ms": 21.08241803944111
+   }
+  },
+  {
+   "events": 100000,
+   "height": 260,
+   "width": 346,
+   "backend": "ort_trt_fp16",
+   "how": "composed",
+   "stages": [
+    "events H2D",
+    "build + pad (torch-CUDA)",
+    "voxel D2H",
+    "ORT H2D",
+    "ORT compute",
+    "flow D2H"
+   ],
+   "total": {
+    "p50_ms": 8.652718010125682,
+    "p90_ms": 10.365310934139416,
+    "p99_ms": 13.08296674105804,
+    "max_ms": 16.033412888646126,
+    "mean_ms": 8.95857788680587,
+    "n": 500,
+    "sum_of_stage_max_ms": 19.313094904646277
+   }
+  },
+  {
+   "events": 1000000,
+   "height": 260,
+   "width": 346,
+   "backend": "ort_cuda_fp32",
+   "how": "composed",
+   "stages": [
+    "events H2D",
+    "build + pad (torch-CUDA)",
+    "voxel D2H",
+    "ORT H2D",
+    "ORT compute",
+    "flow D2H"
+   ],
+   "total": {
+    "p50_ms": 19.261335546616465,
+    "p90_ms": 20.5766488739755,
+    "p99_ms": 23.630193909630176,
+    "max_ms": 27.684105036314577,
+    "mean_ms": 19.46634425560478,
+    "n": 500,
+    "sum_of_stage_max_ms": 40.740336931776255
+   }
+  },
+  {
+   "events": 1000000,
+   "height": 260,
+   "width": 346,
+   "backend": "ort_cuda_fp16",
+   "how": "composed",
+   "stages": [
+    "events H2D",
+    "build + pad (torch-CUDA)",
+    "voxel D2H",
+    "ORT H2D",
+    "ORT compute",
+    "flow D2H"
+   ],
+   "total": {
+    "p50_ms": 17.35123695107177,
+    "p90_ms": 18.906833743676543,
+    "p99_ms": 21.78022227191832,
+    "max_ms": 25.422553007956594,
+    "mean_ms": 17.622447296162136,
+    "n": 500,
+    "sum_of_stage_max_ms": 36.03837307309732
+   }
+  },
+  {
+   "events": 1000000,
+   "height": 260,
+   "width": 346,
+   "backend": "ort_trt_fp16",
+   "how": "composed",
+   "stages": [
+    "events H2D",
+    "build + pad (torch-CUDA)",
+    "voxel D2H",
+    "ORT H2D",
+    "ORT compute",
+    "flow D2H"
+   ],
+   "total": {
+    "p50_ms": 15.552854456473142,
+    "p90_ms": 16.81320577627048,
+    "p99_ms": 19.883810891769823,
+    "max_ms": 23.627715068869293,
+    "mean_ms": 15.779259176109917,
+    "n": 500,
+    "sum_of_stage_max_ms": 34.26904993830249
+   }
+  }
+ ],
+ "environment": {
+  "torch_process": {
+   "python": "3.11.15",
+   "platform": "Linux-6.6.114.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+   "wsl2": true,
+   "cpu": "x86_64",
+   "packages": {
+    "numpy": "2.4.6",
+    "torch": "2.6.0+cu124",
+    "onnx": "1.23.2",
+    "onnxruntime-gpu": "1.30.0",
+    "nvidia-cuda-runtime-cu12": "12.4.127",
+    "nvidia-cudnn-cu12": "9.1.0.70",
+    "nvidia-cublas-cu12": "12.4.5.8"
+   },
+   "gpu": {
+    "name": "NVIDIA RTX A4000",
+    "driver_version": "596.71",
+    "pstate": "P2",
+    "clocks.sm": "1890 MHz",
+    "clocks.max.sm": "2100 MHz",
+    "clocks.mem": "6501 MHz",
+    "clocks.max.mem": "7001 MHz",
+    "power.draw": "63.62 W",
+    "power.limit": "140.00 W",
+    "persistence_mode": "Enabled",
+    "temperature.gpu": "72",
+    "memory.total": "16376 MiB"
+   },
+   "env": {
+    "CUBLAS_WORKSPACE_CONFIG": ":4096:8",
+    "OMP_NUM_THREADS": "4"
+   },
+   "torch": {
+    "version": "2.6.0+cu124",
+    "cuda": "12.4",
+    "cudnn": 90100,
+    "tf32_matmul": false,
+    "tf32_cudnn": false,
+    "cudnn_benchmark": false,
+    "device": "NVIDIA RTX A4000"
+   },
+   "onnxruntime": {
+    "version": "1.30.0",
+    "built_providers": [
+     "TensorrtExecutionProvider",
+     "CUDAExecutionProvider",
+     "CPUExecutionProvider"
+    ],
+    "device": "GPU"
+   }
+  },
+  "ort_process": {
+   "python": "3.11.15",
+   "platform": "Linux-6.6.114.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+   "wsl2": true,
+   "cpu": "x86_64",
+   "packages": {
+    "numpy": "2.4.6",
+    "onnx": "1.23.2",
+    "onnxruntime-gpu": "1.30.0",
+    "tensorrt-cu13": "10.16.1.11",
+    "tensorrt-cu13-libs": "10.16.1.11",
+    "nvidia-cuda-runtime": "13.4.92",
+    "nvidia-cudnn-cu13": "9.27.0.42",
+    "nvidia-cublas": "13.8.1.7"
+   },
+   "gpu": {
+    "name": "NVIDIA RTX A4000",
+    "driver_version": "596.71",
+    "pstate": "P2",
+    "clocks.sm": "1695 MHz",
+    "clocks.max.sm": "2100 MHz",
+    "clocks.mem": "6501 MHz",
+    "clocks.max.mem": "7001 MHz",
+    "power.draw": "113.14 W",
+    "power.limit": "140.00 W",
+    "persistence_mode": "Enabled",
+    "temperature.gpu": "74",
+    "memory.total": "16376 MiB"
+   },
+   "env": {
+    "CUBLAS_WORKSPACE_CONFIG": ":4096:8",
+    "OMP_NUM_THREADS": "4"
+   },
+   "onnxruntime": {
+    "version": "1.30.0",
+    "built_providers": [
+     "TensorrtExecutionProvider",
+     "CUDAExecutionProvider",
+     "CPUExecutionProvider"
+    ],
+    "device": "GPU"
+   },
+   "tensorrt": "10.16.1.11"
+  }
+ },
+ "git_sha": "db4f7c359a2a5a671fc1952a1c1e61ec614aaef2",
+ "git_dirty": false,
+ "bench_git_sha": "15e71432714046f0e64d6dca8d5255ee70839667",
+ "created_by": "scripts/latency_bench.py summarise",
+ "created_at": "2026-10-12T23:23:12+00:00"
+}
