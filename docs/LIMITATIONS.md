@@ -71,6 +71,9 @@ Written in Phase 9: one row per VALIDATION_CHECKLIST.md line.
   `results/v2e_maritime_corpus.json` `units[].video_s`); the class-sliced and clutter results
   rest on the keyframe windows only (one per clip). Attribute levels with fewer than 3 clips are not
   reported, so rough seas and heavy reflections are mostly unrepresented in the clutter study.
+  Some LaRS clips come from SMD footage; a thumbnail check finds none of the corpus's ones closer
+  to any SMD on-board video than two different on-board videos are to each other
+  (`results/maritime/lars_smd_overlap.json`, D-061), but it is a heuristic, not a proof.
 - **Maritime arms selected on driving content (Phase 7, D-056).** CLAUDE.md rule 4 allows
   selection on `mvsec_tune` only, so `maritime_selfsup` and `maritime_teacher` pick their epoch
   on the v2e(mvsec_tune) stream, out of their training domain; the maritime arms are one seed each.
