@@ -44,6 +44,8 @@ the rules below. Current phase is recorded in `docs/STATUS.md` — update it at 
   `dataset`) · `make smoke` · `make train-smoke` · `make reproduce-tables`.
 - Main env `evflow` = uv venv `.venv/` (`source .venv/bin/activate`); v2e runs only in the isolated
   uv venv `external/venvs/v2e/` via `src/evflow/sim/v2e_runner.py` (D-005).
+- ONNX Runtime GPU (parity, latency) runs only in the isolated uv venv `external/venvs/ort/`
+  (CUDA-13 ORT + TensorRT, no torch; D-063); `PYTHONPATH=src`, `evflow.export.bench` is torch-free.
 
 ## Working style
 

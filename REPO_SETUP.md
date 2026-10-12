@@ -61,8 +61,9 @@ python -c "import torch, h5py, hdf5plugin, onnxruntime as ort; print(torch.cuda.
 uv pip freeze > requirements.lock
 ```
 
-`make` targets assume the venv is active. TensorRT EP is optional (install TensorRT matching ORT's
-documented compatibility; record the versions).
+`make` targets assume the venv is active. The main venv's `onnxruntime-gpu` (CUDA-13 build) cannot
+load its CUDA/TensorRT providers next to torch's CUDA-12 libraries; ONNX Runtime GPU work runs in
+the isolated ORT venv (§2.4, D-063).
 
 ### 2.2 v2e env → `external/venvs/v2e/` (isolated on purpose)
 
@@ -87,6 +88,20 @@ uv pip freeze -p external/venvs/v2e > configs/v2e_requirements.lock
 - `eraft` (E-RAFT's own `environment.yml`, Python 3.7) for the Phase 4 reproduction gate.
 - `oracle-gpl` for `tub-rip/event_based_optical_flow` (GPL-3.0) **only** if you want an independent
   contrast-maximisation reference; never vendor or import it.
+
+### 2.4 ORT benchmark env → `external/venvs/ort/` (isolated on purpose, D-063)
+
+ONNX Runtime 1.30 GPU (CUDA-13 build) with its CUDA-13 / cuDNN wheels and TensorRT 10.x, no torch.
+Used only by `scripts/onnx_parity.py ort` and `scripts/latency_bench.py ort` (Phase 8).
+
+```bash
+uv venv -p 3.11 external/venvs/ort
+uv pip install -p external/venvs/ort -r configs/ort_requirements.lock
+# from scratch: uv pip install -p external/venvs/ort "onnxruntime-gpu[cuda,cudnn]==1.30.0" \
+#   "tensorrt-cu13<11" onnx==1.23.2 numpy pyyaml
+PYTHONPATH=src external/venvs/ort/bin/python -c "from evflow.export import bench; \
+  print(bench.resolve_providers(['TensorrtExecutionProvider', 'CUDAExecutionProvider']))"
+```
 
 ## 3. Data acquisition (download only what the plan uses)
 

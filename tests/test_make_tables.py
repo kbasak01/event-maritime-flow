@@ -180,3 +180,78 @@ def test_table_e_refuses_a_t3_unit(root):
     _w(root, rel, {"tier": "T3a", "metrics": met, "ci95": ci, "n_windows": 9})
     with pytest.raises(mt.tables_maritime.TierError):
         mt.render(root)
+
+
+# --- Phase 8: deployment part (scripts/tables_deploy.py) -------------------------------------
+
+def _pct(p50):
+    return {"p50_ms": p50, "p90_ms": p50 + 0.1, "p99_ms": p50 + 0.2, "max_ms": p50 + 1.0,
+            "mean_ms": p50, "n": 500}
+
+
+def _parity_doc(tier="T1"):
+    row = {"status": "ok", "graph_precision": "fp32", "tolerance_max_px": 1e-3, "passed": True,
+           "metrics": {"max_px": 7.0e-5, "max_px_masked": 2.0e-5, "epe_change_px": 3.0e-8}}
+    bad = {"status": "ok", "graph_precision": "fp16", "tolerance_max_px": 5e-2,
+           "passed": False,
+           "metrics": {"max_px": 0.2, "max_px_masked": 0.01, "epe_change_px": 1e-4}}
+    return {"kind": "onnx_parity", "tolerances": {"fp32_max_px": 1e-3, "fp16_max_px": 5e-2,
+                                                  "epe_change_px": 0.01},
+            "window_rule": "50 per sequence", "all_passed": False,
+            "units": [{"tier": tier, "arm": "real_sup", "seed": 1337, "run_id": "r",
+                       "n_windows": 200,
+                       "providers": {"ort_cuda_fp32": row, "ort_cuda_fp16": bad}}]}
+
+
+def _latency_doc():
+    env = {"gpu": {"name": "NVIDIA RTX A4000"}}
+    return {"kind": "latency", "hardware_note": "A4000 stands in.", "claims_note": "No sensor.",
+            "tier_note": "No tier.", "methodology": {"batch_size": 1, "warmup": 50,
+                                                     "timed": 500},
+            "environment": {"torch_process": env, "ort_process": env},
+            "representation_build": [{"events": 10000, "height": 260, "width": 346,
+                                      "build": _pct(5.0), "events_h2d": _pct(0.2)}],
+            "network": [{"height": 260, "width": 346, "padded": [272, 352],
+                         "backend": "pytorch_eager_fp32", "compute": _pct(5.3)},
+                        {"height": 260, "width": 346, "padded": [272, 352], "status": "ok",
+                         "backend": "ort_trt_fp16", "compute": _pct(1.16), "h2d": _pct(0.3),
+                         "d2h": _pct(0.1), "trt_engine_build_cold_s": 25.0,
+                         "node_split": {"TensorrtExecutionProvider": 1}},
+                        {"height": 480, "width": 640, "padded": [480, 640],
+                         "status": "failed", "backend": "ort_cuda_fp16", "error": "x"}],
+            "end_to_end": [{"events": 10000, "height": 260, "width": 346,
+                            "backend": "ort_trt_fp16", "how": "composed",
+                            "total": {**_pct(7.0), "sum_of_stage_max_ms": 12.0}}]}
+
+
+def test_deploy_part_absent_files(root):
+    text = mt.render(root)
+    dep = text[text.index("# Deployment (Phase 8)"):]
+    assert "Not produced yet (`results/onnx_parity.json`)" in dep
+    assert "Not produced yet (`results/latency.json`)" in dep
+    assert text.index("# Maritime tables (T3)") < text.index("# Deployment (Phase 8)")
+
+
+def test_deploy_part_renders(root):
+    _w(root, "results/onnx_parity.json", _parity_doc())
+    _w(root, "results/latency.json", _latency_doc())
+    text = mt.render(root)
+    dep = text[text.index("# Deployment (Phase 8)"):]
+    i = _section(dep, "## Table I-T1")
+    assert "| T1 | real_sup | 1337 | ort_cuda_fp32 | fp32 | 7.00e-05 | 2.00e-05 | 3.00e-08 " \
+           "| 0.001 | PASS |" in i
+    assert "| ort_cuda_fp16 | fp16 | 2.00e-01 | 1.00e-02 | 1.00e-04 | 0.05 | FAIL |" in i
+    assert "All rows pass: **no**" in i
+    j = dep[dep.index("## Table J"):]
+    assert "A4000 stands in." in j and "| T1" not in j
+    assert "| 10000 | 346×260 | 5.000 | 5.100 | 5.200 | 6.000 | 0.200 |" in j
+    assert "| ort_trt_fp16 | 1.160 | 1.260 | 1.360 | 2.160 | 0.300 / 0.100 | 25.0 | " \
+           "Tensorrt 1 |" in j
+    assert "failed: x" in j and "| composed | 7.000 |" in j and "| 12.000 |" in j
+    assert "`results/onnx_parity.json`" in text[text.index("# Sources"):]
+
+
+def test_deploy_parity_refuses_non_t1(root):
+    _w(root, "results/onnx_parity.json", _parity_doc(tier="T3a"))
+    with pytest.raises(mt.tables_deploy.TierError):
+        mt.render(root)

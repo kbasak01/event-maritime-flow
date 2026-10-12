@@ -10,11 +10,12 @@
 | 5 | PASS (CI green) | docs/gates/phase-5.md | 2026-10-11 |
 | 6 | PASS (CI green) | docs/gates/phase-6.md | 2026-10-12 |
 | 7 | PASS (CI green) | docs/gates/phase-7.md | 2026-10-12 |
-| 8 | not started | – | – |
+| 8 | in progress (export-bench job) | – | – |
 | 9 | not started | – | – |
 | 10 | not started | – | – |
 
-Pending GPU jobs: none (Claude may launch GPU jobs after `gpu-job` prep, D-006; one CUDA process at a time on this workstation, D-048b).
+Pending GPU jobs (Claude may launch GPU jobs after `gpu-job` prep, D-006; one CUDA process at a time on this workstation, D-048b):
+- `jobs/2026-10-12_export-bench.sh` → `results/onnx_parity.json`, `results/latency.json`, `results/TABLES.md` (Phase 8, D-063; torch steps in `.venv`, ORT steps in `external/venvs/ort`).
 
 Done GPU jobs (Phase 7):
 - `jobs/2026-10-12_v2e-maritime.sh` → `results/v2e_maritime_corpus.json` (243/243 units, clean at 7fd867c, 11:04–14:02 on 2026-10-12 incl. trials; measured 2.89 GPU-h, budget 19.44/19.5 after the user accepted the overrun, D-059).

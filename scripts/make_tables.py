@@ -18,6 +18,8 @@ separate sub-sections; a T3 record makes the script fail, Phase 7 adds its own s
   E  Maritime arms on MVSEC test (T1; Phase 7, scripts/tables_maritime.py).
 Then a separate part "Maritime tables (T3)" (scripts/tables_maritime.py): F-T3a teacher-EPE
 family, G-T3b FWL/RSAT, H sea-clutter event budget.
+Then "Deployment (Phase 8)" (scripts/tables_deploy.py): I-T1 ONNX parity, J latency (hardware,
+no tier).
 """
 
 from __future__ import annotations
@@ -31,6 +33,7 @@ from pathlib import Path
 from evflow.eval import study
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import tables_deploy  # noqa: E402
 import tables_maritime  # noqa: E402
 
 REPO = Path(__file__).resolve().parents[1]
@@ -353,6 +356,7 @@ def render(root: Path = REPO) -> str:
 
     L += tables_maritime.table_e(root, st.sources)
     L += tables_maritime.t3_part(root, st.sources)
+    L += tables_deploy.deploy_part(root, st.sources)
     L += ["# Sources", ""] + [f"- `{s}`" for s in sorted(st.sources)] + [
         f"- units: {st.summary.get('n_present')}/{st.summary.get('n_expected')} present "
         f"(`results/eval/summary.json`)", ""]

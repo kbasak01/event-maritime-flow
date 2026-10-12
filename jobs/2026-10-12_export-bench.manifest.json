@@ -1,0 +1,77 @@
+{
+ "kind": "gpu_job_manifest",
+ "job": "jobs/2026-10-12_export-bench.sh",
+ "plan_step": "Phase 8 steps 1-3: ONNX export (opset 17, fp32/fp16), parity on 200 fixed mvsec_test windows (ORT CUDA fp32/fp16, TensorRT fp16), latency (representation build, network, end-to-end; PyTorch eager, ORT CUDA EP, ORT TensorRT EP fp16) (D-063)",
+ "configs": [
+  "configs/evflow.yaml",
+  "configs/eval_mvsec.yaml",
+  "configs/ort_requirements.lock",
+  "requirements.lock"
+ ],
+ "config_sha256": {
+  "configs/evflow.yaml": "eeff733146d73718eff4f9ae537c6eb5b4af202deddc4cb124c5c5891d332ed3",
+  "configs/eval_mvsec.yaml": "9d668acf7d2219861ef4f47162502a27485c7e7598ede8da0ef3fca0d34ccc99",
+  "configs/ort_requirements.lock": "ec7ffd1475a25725e22eff50ff05d0e30a3978aec2791eb4f7f4d5cb1ba365b5",
+  "requirements.lock": "2607a788ea54eeee73fb0246318eb1ca8e13eaa5c25f389556ceb66333334078"
+ },
+ "inputs": {
+  "splits/mvsec_test.json": {
+   "manifest_sha256": "b45014a33bfc02740e3804061554ea4a14955d50468e87bfd154fbeef14a8e2e",
+   "file_sha256": "f69191ff48304c7febfacb2cacda033065c3d505b0f6e72efacc9417747bcfc2"
+  },
+  "checkpoints": {
+   "real_sup_voxel5_s1337": {
+    "checkpoint": "runs/train/real_sup_voxel5_s1337/best.pt",
+    "checkpoint_sha256": "0abee62e5a4f40e244fa6e370ed82468205fcf1527c9e1cec06003eb2be8697b",
+    "selection": {
+     "rule": "min of real tune dt1 epe over epochs (mvsec_tune only)",
+     "split": "mvsec_tune",
+     "stream": "real",
+     "selected_epoch": 36,
+     "value": 0.21601891336050252
+    }
+   },
+   "v2e_rand_sup_voxel5_s7": {
+    "checkpoint": "runs/train/v2e_rand_sup_voxel5_s7/best.pt",
+    "checkpoint_sha256": "f8de9fb7d2ad96a2961a82dc08a33b22798a6ac562f1a7677b83486316960f35",
+    "selection": {
+     "rule": "min of v2e tune dt1 epe over epochs (mvsec_tune only)",
+     "split": "mvsec_tune",
+     "stream": "v2e",
+     "selected_epoch": 33,
+     "value": 0.23006125433883573
+    }
+   }
+  },
+  "phase6_per_window_npz": "runs/eval/npz/<arm>/<seed>/mvsec_<seq>_dt1.npz (reference cross-check only)"
+ },
+ "venvs": {
+  "torch steps": ".venv (requirements.lock)",
+  "ORT steps": "external/venvs/ort (configs/ort_requirements.lock)"
+ },
+ "units": [
+  "export (8 ONNX files: primary 3 shapes x 2 precisions, second run 272x352 x 2)",
+  "parity_ref (200 windows, 2 runs)",
+  "parity_ort (2 runs x 3 providers)",
+  "latency_torch (6 build cells, 3 eager cells, 3 e2e cells + composition stages)",
+  "latency_ort (3 shapes x 3 providers, 3 cold TRT builds)",
+  "parity_summary -> results/onnx_parity.json",
+  "latency_summary -> results/latency.json",
+  "tables -> results/TABLES.md"
+ ],
+ "expected_outputs": [
+  "results/onnx_parity.json",
+  "results/latency.json",
+  "results/TABLES.md",
+  "runs/export/<run_id>/m1_<H>x<W>_<fp32|fp16>.onnx (+ .json sidecars, gitignored)",
+  "runs/export/parity/*, runs/export/latency/* (gitignored)"
+ ],
+ "estimated_gpu_hours": 0.3,
+ "estimated_wall_hours": 0.4,
+ "estimated_gpu_hours_basis": "smoke job 2 min 53 s (8 windows, one shape, 2 cold TRT builds ~25 s each); full: 200 windows x 2 runs x 4 backends (~1 min), 5 cold TRT builds (~3 min incl. parity), latency 12 torch cells + 9 ORT cells x 550 iterations (1e6-event build and 640x480 dominate, ~10 min)",
+ "smoke": "SMOKE=1 bash jobs/2026-10-12_export-bench.sh -> runs/export-bench/smoke (2 min 53 s; over the 2-min target only because of 2 cold TensorRT engine builds)",
+ "disk_estimate_gb": 1.5,
+ "disk_estimate_basis": "8 ONNX files (~53 MB fp32 / ~27 MB fp16), parity inputs/flows npz (~0.5 GB compressed), TRT engine caches",
+ "launch": "from the main checkout at the prepared (clean) commit: nohup bash jobs/2026-10-12_export-bench.sh > runs/export-bench/job.log 2>&1 &",
+ "prepared_on_git_sha": "14939bc0af7d30114e577b9f2b4f6b55fa52c61c"
+}

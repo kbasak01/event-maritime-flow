@@ -1,0 +1,20 @@
+# ORT benchmark venv external/venvs/ort (D-063): uv pip freeze, Python 3.11
+flatbuffers==25.12.19
+ml-dtypes==0.6.0
+numpy==2.4.6
+nvidia-cublas==13.8.1.7
+nvidia-cuda-nvrtc==13.4.92
+nvidia-cuda-runtime==13.4.92
+nvidia-cudnn-cu13==9.27.0.42
+nvidia-cufft==12.4.0.43
+nvidia-curand==10.4.4.72
+nvidia-nvjitlink==13.4.92
+onnx==1.23.2
+onnxruntime-gpu==1.30.0
+packaging==26.3
+protobuf==7.36.2
+pyyaml==6.0.3
+tensorrt-cu13==10.16.1.11
+tensorrt-cu13-bindings==10.16.1.11
+tensorrt-cu13-libs==10.16.1.11
+typing-extensions==4.16.0

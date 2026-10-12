@@ -69,11 +69,37 @@ metrics:
     fb_consistency: {alpha1: 0.01, alpha2: 0.5}
   bootstrap: {resamples: 1000, block_seconds: 1.0, ci: 0.95}
 
-latency:
+latency:                              # Phase 8 step 3 (scripts/latency_bench.py, D-063)
   warmup: 50
   timed: 500
   events_per_window: [10000, 100000, 1000000]
-  resolutions: [[256, 256], [260, 346], [480, 640]]
+  resolutions: [[256, 256], [260, 346], [480, 640]]   # network H, W before zero-padding to /16
+  representation: voxel5              # the exported arm's input
+  rep_resolutions: [[260, 346], [480, 640]]           # representation build H, W
+  end_to_end_resolution: [260, 346]   # MVSEC sensor
+  synthetic_window_us: 30000          # synthetic events: uniform x/y/p, sorted uniform t, seeded
+  seed: 1337
+
+export:                               # Phase 8 steps 1-2 (scripts/export_onnx.py, onnx_parity.py)
+  # Checkpoints fixed by a tune-only rule (D-063): primary = lowest real mvsec_tune dt1 EPE of
+  # all runs; second = lowest v2e-stream mvsec_tune dt1 EPE among the v2e arms. Latency uses the
+  # primary (every voxel5 run has the same architecture).
+  runs: [real_sup_voxel5_s1337, v2e_rand_sup_voxel5_s7]
+  opset: 17
+  pad_multiple: 16
+  parity:
+    split: mvsec_test
+    dt: 1
+    sequences: [indoor_flying1, indoor_flying2, indoor_flying3, outdoor_day1]
+    # 50 per sequence = 200 windows, evenly spaced over each unit's window list
+    # (np.unique(np.linspace(0, n - 1, k).round()), as train/tune_eval._subset); fixed before
+    # any ONNX output was produced.
+    windows_per_sequence: 50
+    tolerances: {fp32_max_px: 1.0e-3, fp16_max_px: 5.0e-2, epe_change_px: 0.01}
+    providers:                        # (label, ORT provider, precision)
+      - [ort_cuda_fp32, CUDAExecutionProvider, fp32]
+      - [ort_cuda_fp16, CUDAExecutionProvider, fp16]
+      - [ort_trt_fp16, TensorrtExecutionProvider, fp16]
 
 figures:                              # scripts/make_figures.py (Phase 6 step 3, D-051)
   # Flow panels: windows fixed by position in each test unit's window list, chosen before any
