@@ -69,7 +69,10 @@ def table_e(root: Path, sources: set) -> list[str]:
          "v2e(mvsec_tune) at dt 1, D-056) evaluated with the Table A protocol on real "
          "`mvsec_test` events and real GT; M0a and two v2e arms repeated from Table A-T1 for "
          "reference. EPE (px over the window), mean [95 % CI]; 3-seed rows `r` = range of the "
-         "per-seed means.", ""]
+         "per-seed means. **The maritime rows are zero-shot, out-of-domain results**: those arms "
+         "never trained on MVSEC; MVSEC tune data only picked their epoch, and the selected "
+         "epochs sit on a late-schedule plateau; one seed each (D-062). They are not tuned MVSEC "
+         "models and are not comparable in standing to the 3-seed MVSEC arms.", ""]
     for dt in study.DTS:
         body = []
         for arm, model in (("zero_flow", "M0a"), ("v2e_fixed_sup", "M1"),
@@ -160,6 +163,10 @@ def t3_part(root: Path, sources: set) -> list[str]:
              ("teacher_epe", "teacher_npe_3")),
             ("T3b", "Table G-T3b — motion-compensation self-consistency (T3b)", ("fwl", "rsat"))):
         L += [f"## {title}", ""]
+        if tier == "T3b":
+            L += ["`maritime_selfsup` (and M0b) optimise a contrast-maximisation objective on "
+                  "these very statistics, so leading on FWL/RSAT is partly built in; FWL/RSAT are "
+                  "self-consistency, not accuracy (D-062). Read them beside Table F.", ""]
         if tier == "T3a":
             t = summary.get("teacher", {})
             rows = []
@@ -176,6 +183,10 @@ def t3_part(root: Path, sources: set) -> list[str]:
             for arm, model, seeds in T3_ROWS:
                 body.append([tier, arm + TAG.get(arm, ""), model, seeds] + [
                     _cell(ent.get((tier, arm, u, s, k)), k) for u, s, _ in COLS])
+            if k != "rsat":       # windows with a value; masks do not depend on the model
+                body.append([tier, "n windows", "–", "–"] + [
+                    str((ent.get((tier, "zero_flow", u, s, k)) or {}).get("n_windows", "—"))
+                    for u, s, _ in COLS])
             note = (" — on the windows where RSAT is defined for every model (a flow that warps "
                     "all events off the frame leaves it undefined); n = windows. Off-frame "
                     "events leave the sum, so for border bands (sky, water) read RSAT beside "

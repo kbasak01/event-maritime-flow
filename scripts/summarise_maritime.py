@@ -200,7 +200,7 @@ def main(argv: list[str] | None = None) -> int:
             teacher[unit][slc] = row
 
     doc = {
-        "kind": "maritime_eval_summary", "phase": 7,
+        "kind": "maritime_eval_summary", "phase": 7, "tier": "n/a",
         "tier_note": "T3a (RAFT teacher-EPE family) and T3b (FWL/RSAT) entries carry their "
                      "tier; the T1 rows of the maritime arms on mvsec_test are the unit JSONs in "
                      "results/eval/<arm>/1337/",
