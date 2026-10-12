@@ -184,8 +184,9 @@ def main(argv: list[str] | None = None) -> int:
         a = em.summarise_slice(pw, "all", keys, **kw)
         doc = {"tier": tier, "tier_note": note, **common, "metrics": a["metrics"],
                "ci95": a["ci95"], "n_windows": a["n_windows"],
-               "n_windows_per_metric": a["n_windows_per_metric"],
-               "mean_scored_px": a["mean_scored_px"]}
+               "n_windows_per_metric": a["n_windows_per_metric"]}
+        if tier == "T3a":
+            doc["mean_teacher_mask_px"] = a["mean_scored_px"]
         if sliced:
             doc["by_class"] = {s: em.summarise_slice(pw, s, keys, **kw)
                                for s in em.SLICES if s != "all"}

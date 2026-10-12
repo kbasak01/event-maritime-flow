@@ -52,3 +52,25 @@ Written in Phase 9: one row per VALIDATION_CHECKLIST.md line.
   directly: its peak lies at +0.125 frame (one step of its 1/8-frame grid) on tune, train and the
   indoor sequences, and at +0.375 frame on outdoor_day1 (test sequence, reported only: median NCC
   0.675 at lag 0, 0.686 at the peak).
+- **Maritime results are T3 only (Phase 7, D-054–D-058).** No ground-truth flow exists for the
+  SMD or LaRS video. T3a numbers measure agreement with a frame-based RAFT teacher run on the
+  same frames (the teacher is wrong where brightness constancy fails, e.g. on water and glint;
+  its forward–backward mask removes only the inconsistent part), T3b numbers measure
+  motion-compensation sharpness of the model's own events; neither is accuracy. The events are
+  v2e simulations of 8-bit video: they inherit its dynamic range, motion blur, compression and
+  30 fps sampling, so nothing in the maritime tables says anything about sun-glare or
+  dynamic-range behaviour of a real event sensor (plan §0(1)).
+- **Maritime geometry and timing (Phase 7, D-024, D-054).** Every maritime frame is resized by
+  v2e to 640×360 without keeping the aspect ratio, so LaRS sources that are not 16:9 are
+  stretched (per-unit `native_size` and `scale_xy` in `results/v2e_maritime_corpus.json`); teacher flow, class masks and predictions share
+  that grid, and flow is reported in px per frame interval of that grid. LaRS frame rate is an
+  assumption (30 fps), so v2e's time constants for LaRS and any per-second rate are assumed too.
+- **Small maritime corpus (Phase 7, D-026, D-054).** SMD: every train video over [0, 5.6] s and
+  every test video over [0, min(10 s, last frame)] (most videos are too short for D-026's 15 s
+  segments); LaRS: 110 train clips and 40 evaluation clips (segment lengths per unit in
+  `results/v2e_maritime_corpus.json` `units[].video_s`); the class-sliced and clutter results
+  rest on the keyframe windows only (one per clip, two in clips with two keyframes). Attribute levels with fewer than 3 clips are not
+  reported, so rough seas and heavy reflections are mostly unrepresented in the clutter study.
+- **Maritime arms selected on driving content (Phase 7, D-056).** CLAUDE.md rule 4 allows
+  selection on `mvsec_tune` only, so `maritime_selfsup` and `maritime_teacher` pick their epoch
+  on the v2e(mvsec_tune) stream, out of their training domain; the maritime arms are one seed each.

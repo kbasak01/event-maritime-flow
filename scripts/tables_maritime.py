@@ -52,6 +52,8 @@ def _cell(e, k):
     s = f"{_f(e['mean'], k)} [{_f(e['ci95'][0], k)}, {_f(e['ci95'][1], k)}]"
     if e.get("seed_range"):
         s += f" r [{_f(e['seed_range'][0], k)}, {_f(e['seed_range'][1], k)}]"
+    if k == "rsat":
+        s += f" n={e['n_windows']}"
     return s
 
 
@@ -174,7 +176,12 @@ def t3_part(root: Path, sources: set) -> list[str]:
             for arm, model, seeds in T3_ROWS:
                 body.append([tier, arm + TAG.get(arm, ""), model, seeds] + [
                     _cell(ent.get((tier, arm, u, s, k)), k) for u, s, _ in COLS])
-            L += [f"**{LAB[k]}**", ""] + _table(head, body) + [""]
+            note = (" — on the windows where RSAT is defined for every model (a flow that warps "
+                    "all events off the frame leaves it undefined); n = windows. Off-frame "
+                    "events leave the sum, so for border bands (sky, water) read RSAT beside "
+                    "FWL (D-057)"
+                    if k == "rsat" else "")
+            L += [f"**{LAB[k]}**{note}", ""] + _table(head, body) + [""]
     if summary.get("missing"):
         L += [f"Missing units: {len(summary['missing'])} (listed in "
               "`results/eval_maritime/summary.json`).", ""]

@@ -189,7 +189,8 @@ def test_at_floor_zero_is_the_phase5_loss():
         avg = ts / (cnt + 1e-9)
         ref += float((avg * avg).sum() / (cnt.sum(0) > 0).sum())
     assert float(average_timestamp_loss(ev, f, 64)) == pytest.approx(ref, rel=1e-6)
-    assert float(average_timestamp_loss(ev, f, 64, 0.0)) == pytest.approx(ref, rel=1e-6)
+    # bit-identical to the Phase 5 code path (min_count default 0)
+    assert torch.equal(average_timestamp_loss(ev, f, 64, 0.0), average_timestamp_loss(ev, f, 64))
 
 
 @pytest.mark.parametrize("seed", [0, 1, 2])

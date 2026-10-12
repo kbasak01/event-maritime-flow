@@ -61,6 +61,23 @@ def test_torch_equals_reference():
     np.testing.assert_array_equal(got, ref)
 
 
+def test_torch_equals_reference_rotation_and_out_of_image():
+    h, w = 30, 40
+    ys, xs = np.mgrid[0:h, 0:w].astype(np.float64)
+    th = 0.15
+    cx, cy = w / 2, h / 2
+    f = np.stack([(np.cos(th) - 1) * (xs - cx) - np.sin(th) * (ys - cy),
+                  np.sin(th) * (xs - cx) + (np.cos(th) - 1) * (ys - cy)])
+    b = np.stack([(np.cos(-th) - 1) * (xs - cx) - np.sin(-th) * (ys - cy),
+                  np.sin(-th) * (xs - cx) + (np.cos(-th) - 1) * (ys - cy)])
+    f[0, :, -3:] += 5.0                      # targets beyond the right edge
+    ref = raft.fb_consistency_mask_ref(f, b, A1, A2)
+    got = raft.fb_consistency_mask(torch.from_numpy(f[None]), torch.from_numpy(b[None]), A1,
+                                   A2)[0].numpy()
+    np.testing.assert_array_equal(got, ref)
+    assert ref.mean() > 0.5 and not ref[:, -3:].any()
+
+
 def test_pad_to_multiple():
     x = torch.arange(2 * 3 * 10 * 13, dtype=torch.float32).reshape(2, 3, 10, 13)
     y, (h, w) = raft.pad_to_multiple(x, 8)

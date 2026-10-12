@@ -53,21 +53,33 @@ def _npz(doc: dict) -> dict[str, np.ndarray]:
         return {k: z[k] for k in z.files}
 
 
-def _combine(pws: list[dict], key: str) -> tuple[np.ndarray, np.ndarray, list[float]]:
-    """(seed-mean series on windows finite in every seed, its validity mask, per-seed means)."""
+def _combine(pws: list[dict], key: str, common: np.ndarray | None = None
+             ) -> tuple[np.ndarray, np.ndarray, list[float]]:
+    """(seed-mean series on windows finite in every seed [and in ``common``], its validity
+    mask, per-seed means)."""
+    if not all(np.array_equal(pw["t_start_us"], pws[0]["t_start_us"]) for pw in pws):
+        raise SystemExit(f"{key}: seeds were evaluated on different windows")
     vals = np.stack([pw[key] for pw in pws])
     ok = np.isfinite(vals).all(0)
+    if common is not None:
+        if common.shape != ok.shape:
+            raise SystemExit(f"{key}: common-window mask does not match the windows")
+        ok &= common
     per_seed = [float(v[ok].mean()) for v in vals] if ok.any() else []
     return vals.mean(0), ok, per_seed
 
 
-def entry(tier, arm, model, seeds, unit, slc, metric, pws_by_seq) -> dict | None:
-    """pws_by_seq: {sequence: [per-seed per-window dicts]}; >1 sequence = pooled SMD."""
+def entry(tier, arm, model, seeds, unit, slc, metric, pws_by_seq,
+          common: dict | None = None) -> dict | None:
+    """pws_by_seq: {sequence: [per-seed per-window dicts]}; >1 sequence = pooled SMD.
+    ``common[(sequence, slice)]``: RSAT windows finite for every model (verifier finding 1:
+    a model that pushes every event out of the frame must not drop its window)."""
     key = f"{metric}__{slc}"
     strata, blocks, per_seed_by_seq, n = [], [], [], 0
     cluster_vals = cluster_groups = None
-    for _seq, pws in pws_by_seq.items():
-        v, ok, ps = _combine(pws, key)
+    for seq, pws in pws_by_seq.items():
+        v, ok, ps = _combine(pws, key, (common or {}).get((seq, slc)) if metric == "rsat"
+                             else None)
         if not ok.any():
             continue
         strata.append({"v": v[ok]})
@@ -94,7 +106,10 @@ def entry(tier, arm, model, seeds, unit, slc, metric, pws_by_seq) -> dict | None
         per_seed = per_seed_by_seq[0]
         ci_method = "cluster bootstrap over clips"
     return {"tier": tier, "arm": arm, "model": model, "seeds": seeds, "unit": unit,
-            "slice": slc, "metric": metric, "mean": float(mean), "ci95": [float(lo), float(hi)],
+            "slice": slc, "metric": metric, "mean": float(mean),
+            "window_set": "windows finite for every model" if metric == "rsat"
+            else "windows finite for this model (model-independent masks)",
+            "ci95": [float(lo), float(hi)],
             "seed_range": [float(min(per_seed)), float(max(per_seed))] if len(seeds) > 1
             else None, "n_windows": n, "ci_method": ci_method}
 
@@ -112,6 +127,19 @@ def main(argv: list[str] | None = None) -> int:
                              f"{u['tier']}/{u['arm']} expected")
         if str(d["tier"]).startswith("T3") and "epe" in (d.get("metrics") or {}):
             raise SystemExit(f"{u['path']}: T3 record carries 'epe'")
+
+    # RSAT windows scored for every model of the matrix (per sequence and slice)
+    common: dict[tuple, np.ndarray] = {}
+    for u in present:
+        if u["tier"] != "T3b":
+            continue
+        pw = _npz(docs[u["path"]])
+        for slc in em.SLICES:
+            k = f"rsat__{slc}"
+            if k in pw:
+                f = np.isfinite(pw[k])
+                key = (u["sequence"], slc)
+                common[key] = f if key not in common else (common[key] & f)
 
     groups: dict[tuple, list[dict]] = {}
     for m in sm.models(REPO):
@@ -134,15 +162,15 @@ def main(argv: list[str] | None = None) -> int:
             by_unit = {"smd_test": {v: pws("smd", v) for v in smd}}
             for v in smd:
                 by_unit[f"smd_{v}"] = {v: by_unit["smd_test"][v]}
-            by_unit["lars_eval_kf"] = {"kf": pws("lars", "lars_eval_kf")}
-            by_unit["lars_eval_all"] = {"all": pws("lars", "lars_eval_all")}
+            by_unit["lars_eval_kf"] = {"lars_eval_kf": pws("lars", "lars_eval_kf")}
+            by_unit["lars_eval_all"] = {"lars_eval_all": pws("lars", "lars_eval_all")}
             for unit, pbs in by_unit.items():
                 if any(p is None for p in pbs.values()):
                     continue
                 slices = em.SLICES if unit == "lars_eval_kf" else ("all",)
                 for slc in slices:
                     for k in keys:
-                        e = entry(tier, arm, model, seeds, unit, slc, k, pbs)
+                        e = entry(tier, arm, model, seeds, unit, slc, k, pbs, common)
                         if e is not None:
                             entries.append(e)
 

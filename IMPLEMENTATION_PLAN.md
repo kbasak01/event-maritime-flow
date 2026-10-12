@@ -184,7 +184,8 @@ cells — E-RAFT's convention), `timesurface` (per-polarity exponential decay, �
 - **FWL** (Stoffregen et al. 2020): Var(IWE warped by predicted flow) / Var(IWE with zero flow); > 1
   is better. **RSAT** (Hagenaars et al. 2021). Both are self-supervised; T3b uses only these.
 - **teacher-EPE** (T3a): EPE against RAFT pseudo-GT on pixels passing a forward–backward
-  consistency check (|f + b∘f| < 0.01(|f|²+|b∘f|²) + 0.5 px), reported with the mask coverage.
+  consistency check (|f + b∘f| < 0.01(|f|²+|b∘f|²) + 0.5 px; implemented in the standard squared
+  form |f + b∘f|² < …, D-055), reported with the mask coverage.
 - **Class slices** (maritime): every T3 metric per LaRS class {water, sky, obstacle}, plus all.
 - **Event statistics** (simulator fidelity): events/s per window, ON/OFF ratio, per-pixel rate
   distribution (log histogram), inter-event-interval distribution per pixel, spatial

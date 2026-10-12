@@ -95,6 +95,16 @@ def test_fwl_rsat_zero_flow_is_one_and_true_flow_sharpens(tmp_path):
     pt = em.evaluate([seg], lambda s: Const(*FLOW), height=H, width=W)
     assert (pt["fwl__all"] > 1.0).all() and (pt["rsat__all"] < 1.0).all()
     assert (pt["teacher_epe__all"] < pz["teacher_epe__all"]).all()
+    pr = em.evaluate([seg], lambda s: Const(-FLOW[0], -FLOW[1]), height=H, width=W)
+    for s in em.SLICES:
+        ok = np.isfinite(pt[f"fwl__{s}"]) & np.isfinite(pr[f"fwl__{s}"])
+        assert (pt[f"fwl__{s}"][ok] > pr[f"fwl__{s}"][ok]).all()
+    # RSAT drops events warped off the frame: on this small fixture the sky band is the top rows
+    # and the true (upward) flow pushes its events out, so RSAT ordering is checked where the
+    # slice is not an image-border band (caveat recorded in D-057)
+    for s in ("all", "water"):
+        ok = np.isfinite(pt[f"rsat__{s}"]) & np.isfinite(pr[f"rsat__{s}"])
+        assert ok.any() and (pt[f"rsat__{s}"][ok] < pr[f"rsat__{s}"][ok]).all()
 
 
 def test_unsliced_windows_have_no_class_values(tmp_path):

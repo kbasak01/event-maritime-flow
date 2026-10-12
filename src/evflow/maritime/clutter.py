@@ -96,7 +96,7 @@ def pooled(clips: list[dict], *, resamples: int = 1000, ci: float = 0.95,
             b = boot[k][np.isfinite(boot[k])]
             out[cls][k] = {"mean": float(v),
                            "ci95": [float(np.quantile(b, a)), float(np.quantile(b, 1 - a))]
-                           if b.size else None}
+                           if b.size else None, "n_valid_resamples": int(b.size)}
         out[cls]["n_clips_with_class"] = int((px > 0).sum())
     return out
 
@@ -120,7 +120,8 @@ def spearman_ci(xs: np.ndarray, ys: np.ndarray, *, resamples: int = 1000, ci: fl
             bs.append(spearmanr(xs[i], ys[i]).statistic)
     a = (1.0 - ci) / 2.0
     return {"rho": rho, "ci95": [float(np.quantile(bs, a)), float(np.quantile(bs, 1 - a))]
-            if bs else None, "n": int(xs.size)}
+            if bs else None, "n": int(xs.size), "n_valid_resamples": len(bs),
+            "resamples": resamples}
 
 
 def attribute_breakdown(clips: list[dict], attrs: list[dict], *, seed: int = 0) -> dict:
