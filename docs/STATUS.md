@@ -8,7 +8,7 @@
 | 3 | PASS (CI green) | docs/gates/phase-3.md | 2026-10-09 |
 | 4 | PASS (CI green) | docs/gates/phase-4.md | 2026-10-10 |
 | 5 | PASS (CI green) | docs/gates/phase-5.md | 2026-10-11 |
-| 6 | PASS (CI pending) | docs/gates/phase-6.md | 2026-10-12 |
+| 6 | PASS (CI green) | docs/gates/phase-6.md | 2026-10-12 |
 | 7 | not started | – | – |
 | 8 | not started | – | – |
 | 9 | not started | – | – |

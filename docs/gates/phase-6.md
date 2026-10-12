@@ -17,7 +17,7 @@ supervised; Table C representation ablation; Table D DSEC, R1 `reference_seen_da
 
 ## Overall verdict: **PASS**
 
-CI: pending on the gate push (recorded in a follow-up commit, as for Phases 0–5).
+CI: green on the gate commit 614e872 (GitHub Actions run 38199038270: ruff + pytest + `make_tables.py --check`, CPU).
 
 All 298 planned evaluation units are present (`results/eval/summary.json`: `n_present` 298 of
 `n_expected` 298, `problems` [], `repro_check.pass` true). Every table row carries tier and arm; T1 and
@@ -107,7 +107,6 @@ to end: EPE max relative difference 3.8e-16, count-based metrics bit-identical. 
 
 | Item | Who |
 |---|---|
-| Record the CI run of the gate push (follow-up commit) | Claude |
 | F5 (Info): training manifests' `data.stores.*.manifest_sha256` names the unit-JSON SHA, and T1 units record the real store's filename but not its SHA; rename/add `store_sha256` in later phases | Claude (Phase 7+) |
 | F7 (Info): D-052 timing numbers are operational and cite no log beyond `runs/eval-all/job.attempt1.log` | — (accepted) |
 | Flow-metric-verifier Info: use the reference magnitude in `train/tune_eval.py` before the next training (Phase 7) | Claude (Phase 7) |
