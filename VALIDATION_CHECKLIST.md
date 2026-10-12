@@ -38,12 +38,12 @@ Phase 9 walks every line. Verdict ∈ {met, met-with-caveat, unmet} + evidence p
 
 ## E. Claims
 - [ ] E1 (critical) Every README/docs number traces to a committed `results/*.json` (`claim-trace`).
-- [x] E2 (critical) Every table row carries a tier tag; no T3 row in a T1/T2 section. — Phase 6 gate (`results/TABLES.md`; re-check in Phase 7 when T3 tables are added).
+- [x] E2 (critical) Every table row carries a tier tag; no T3 row in a T1/T2 section. — Phase 6 gate (`results/TABLES.md`; re-checked at the Phase 7 gate with the T3 part, sim2real-study-runner PASS, `docs/gates/phase-7.md`).
 - [ ] E3 (critical) No HDR, glare-robustness or latency-advantage claim derived from v2e events.
 - [ ] E4 "teacher-EPE" never called "EPE" or "accuracy"; FWL never called accuracy.
-- [ ] E5 Maritime metrics reported per class (water/sky/obstacle) wherever LaRS labels exist.
+- [x] E5 Maritime metrics reported per class (water/sky/obstacle) wherever LaRS labels exist. — Phase 7 gate (Tables F, G, H; `results/eval_maritime/summary.json`).
 - [ ] E6 Novelty statements match `IMPLEMENTATION_PLAN.md` §0 positioning (no claim to be first to train flow on synthetic events).
-- [ ] E7 LaRS frame-rate assumption (if any) stated next to every LaRS number.
+- [x] E7 LaRS frame-rate assumption (if any) stated next to every LaRS number. — Phase 7 gate (T3 protocol, Table H, clutter figure; D-024). README to follow in Phase 10.
 
 ## F. Deployment
 - [ ] F1 ONNX fp32 parity ≤ 1e-3 px (TF32 off); fp16 ≤ 5e-2 px; EPE change ≤ 0.01 px.
@@ -55,6 +55,6 @@ Phase 9 walks every line. Verdict ∈ {met, met-with-caveat, unmet} + evidence p
 - [ ] G1 (critical) No GPL code in `src/` or `tests/` (`test_no_gpl_imports.py` + reviewer).
 - [ ] G2 (critical) No dataset frames, event files or GT in git or release assets.
 - [ ] G3 Every figure derived from a CC BY-SA dataset is attributed and marked share-alike.
-- [ ] G4 LaRS / SMD imagery appears only if `docs/LICENSES.md` permits.
+- [ ] G4 LaRS / SMD imagery appears only if `docs/LICENSES.md` permits. — Phase 7: no SMD imagery, LaRS GIFs gitignored; final check at publication (Phase 10).
 - [ ] G5 Vendored MIT code keeps its licence header and is listed in `docs/LICENSES.md`.
 - [x] G6 `make reproduce-tables` regenerates `results/TABLES.md` with no diff. — Phase 6 gate; enforced in CI (`.github/workflows/ci.yml`).
