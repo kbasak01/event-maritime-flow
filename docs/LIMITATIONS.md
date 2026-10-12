@@ -69,7 +69,7 @@ Written in Phase 9: one row per VALIDATION_CHECKLIST.md line.
   every test video over [0, min(10 s, last frame)] (most videos are too short for D-026's 15 s
   segments); LaRS: 110 train clips and 40 evaluation clips (segment lengths per unit in
   `results/v2e_maritime_corpus.json` `units[].video_s`); the class-sliced and clutter results
-  rest on the keyframe windows only (one per clip, two in clips with two keyframes). Attribute levels with fewer than 3 clips are not
+  rest on the keyframe windows only (one per clip). Attribute levels with fewer than 3 clips are not
   reported, so rough seas and heavy reflections are mostly unrepresented in the clutter study.
 - **Maritime arms selected on driving content (Phase 7, D-056).** CLAUDE.md rule 4 allows
   selection on `mvsec_tune` only, so `maritime_selfsup` and `maritime_teacher` pick their epoch

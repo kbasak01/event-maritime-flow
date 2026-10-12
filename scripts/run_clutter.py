@@ -79,7 +79,7 @@ def main(argv: list[str] | None = None) -> int:
     base_clips = clip_rows[mc.ct_tag(1.0)][0]
     attrs = []
     for c in base_clips:
-        kf = c["keyframes"][0]          # 3 clips hold 2 keyframes; the first one's labels
+        kf = c["keyframes"][0]          # a 2-keyframe clip would use the first (none here)
         attrs.append(attrs_all[kf])
     breakdown = clutter.attribute_breakdown(base_clips, attrs)
     ct_ratio = {}
