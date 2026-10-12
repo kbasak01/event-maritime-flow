@@ -14,6 +14,13 @@
    GT and predictions); predictions shown inside the sequence's evaluation region only.
    MVSEC imagery, CC BY-SA 4.0: gitignored, attribution in the caption, publication decided in
    Phase 10 (D-008, D-033).
+3. ``results/figures/clutter_ct.png`` (Phase 7, D-058): sea-clutter event budget vs the v2e
+   contrast-threshold multiplier, from ``results/maritime/clutter.json`` only (T3b, synthetic):
+   per-class event share (pixel share dotted) and events per pixel per frame interval, two
+   panels, one axis each. No imagery, committed. Written with the JSON-only figures.
+4. ``results/figures/maritime_panels/*.png`` (Phase 7 step 6): LaRS frame / events / predicted
+   flow / IWE panels; LaRS imagery (CC BY-NC 4.0): gitignored, publication decided in Phase 10
+   (D-008). SMD imagery is never drawn (docs/LICENSES.md).
 """
 
 from __future__ import annotations
@@ -188,12 +195,149 @@ def flow_panels() -> list[Path]:
     return outs
 
 
+# Phase 7 clutter figure: reference palette slots 1-3 in fixed order (water, sky, obstacle);
+# marker shape and direct labels carry class identity as well (never colour alone).
+CLASS_STYLE = {"water": ("#2a78d6", "o"), "sky": ("#eb6834", "s"), "obstacle": ("#1baf7a", "^")}
+
+
+def clutter_figure() -> Path | None:
+    src = REPO / "results" / "maritime" / "clutter.json"
+    if not src.exists():
+        return None
+    c = json.loads(src.read_text())
+    rows = sorted(c["by_ct"].values(), key=lambda d: d["ct_multiplier"])
+    ct = [d["ct_multiplier"] for d in rows]
+    fig, axes = plt.subplots(1, 2, figsize=(9.0, 3.6), facecolor=SURFACE)
+    for ax, key, title, ylab in (
+            (axes[0], "event_share", "Share of events per class (dotted: share of pixels)",
+             "share of the window"),
+            (axes[1], "events_per_px", "Events per pixel per frame interval", "events / px")):
+        ax.set_facecolor(SURFACE)
+        for cls, (col, mk) in CLASS_STYLE.items():
+            v = [d["pooled"][cls][key] for d in rows]
+            m = [x["mean"] for x in v]
+            lo = [x["ci95"][0] if x["ci95"] else x["mean"] for x in v]
+            hi = [x["ci95"][1] if x["ci95"] else x["mean"] for x in v]
+            ax.fill_between(ct, lo, hi, color=col, alpha=0.15, lw=0)
+            ax.plot(ct, m, color=col, lw=2, marker=mk, ms=8, mec=SURFACE, mew=2, label=cls)
+            if key == "event_share":
+                ps = rows[0]["pooled"][cls]["pixel_share"]["mean"]
+                ax.axhline(ps, color=col, lw=1.2, ls=(0, (1, 2)))
+            ax.annotate(cls, (ct[-1], m[-1]), xytext=(6, 0), textcoords="offset points",
+                        va="center", fontsize=8, color=INK2)
+        if key == "events_per_px":
+            ax.set_yscale("log")
+        ax.set_xticks(ct, [f"×{x:g}" for x in ct])
+        ax.set_xlim(ct[0] - 0.1, ct[-1] + 0.3)
+        ax.set_xlabel("v2e contrast threshold (× calibrated)", color=INK2, fontsize=8)
+        ax.set_ylabel(ylab, color=INK2, fontsize=8)
+        ax.set_title(title, fontsize=9, color=INK, loc="left")
+        ax.grid(axis="y", color=GRID, lw=0.8)
+        ax.tick_params(colors=INK2, labelsize=8)
+        for sp in ("top", "right", "left"):
+            ax.spines[sp].set_visible(False)
+        ax.spines["bottom"].set_color(GRID)
+    axes[0].legend(frameon=False, fontsize=8, loc="upper left")
+    fig.suptitle(f"T3b, synthetic: v2e(LaRS) keyframe windows of {c['n_clips']} lars_eval "
+                 "clips; LaRS frame rate assumed 30 fps; 95 % cluster-bootstrap CI over clips",
+                 fontsize=8, color=INK2, x=0.01, ha="left")
+    fig.tight_layout(rect=(0, 0, 1, 0.94))
+    out = FIG / "clutter_ct.png"
+    fig.savefig(out, dpi=150, facecolor=SURFACE)
+    plt.close(fig)
+    return out
+
+
+LARS_ATTRIBUTION = ("LaRS: Žust, Perš, Kristan, ICCV 2023, CC BY-NC 4.0 (non-commercial); "
+                    "frames resized to 640×360 as v2e did")
+
+
+def maritime_panels(n_clips: int = 2, run_id: str = "maritime_teacher_voxel5_s1337") -> list:
+    """GIF per LaRS clip: frame / events / predicted flow / IWE with the predicted flow, for every
+    window after the warm-up. Clips = the first ``n_clips`` lars_eval corpus clips (fixed before
+    any prediction was viewed); model = the maritime_teacher run. Gitignored (D-008)."""
+    import cv2
+    import imageio.v2 as imageio
+    import torch
+    sys.path.insert(0, str(REPO / "scripts"))
+    from run_eval import NetPredictor, load_run
+
+    from evflow.eval import maritime as em
+    from evflow.flow.iwe import iwe
+    from evflow.io import lars as lars_io
+    from evflow.io.frames import resize_like_v2e
+
+    paths = yaml.safe_load((REPO / "configs/paths.local.yaml").read_text())
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    model, _, man = load_run(Path(paths["outputs"]["runs"]) / "train" / run_id, device)
+    segs = em.segments(paths, "lars", "lars_eval_all")[:n_clips]
+    from evflow.sim import maritime_corpus as mc
+    plan = {u["key"]: u for u in mc.load_plan(paths)["units"]}
+    out_dir = FIG / "maritime_panels"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    outs = []
+    for seg in segs:
+        u = plan[seg.key]
+        prefix, first, _ = u["clip"].rsplit(":", 2)
+        files = lars_io.clip_frames(paths["lars"]["root"], u["subset"], prefix, int(first),
+                                    int(u["clip"].rsplit(":", 1)[1]))
+        net = NetPredictor(model, man["representation"], 360, 640, device)
+        frames = []
+        for w, k in zip(seg.windows, seg.local_k, strict=True):
+            ev = seg.slicer.get_events(w.t_start_us, w.t_end_us)
+            f = net(w, ev)
+            rgb = cv2.cvtColor(resize_like_v2e(cv2.imread(str(files[k + 1])), (640, 360)),
+                               cv2.COLOR_BGR2RGB)
+            img = np.zeros((360, 640))
+            np.add.at(img, (ev["y"].astype(int), ev["x"].astype(int)),
+                      np.where(ev["p"] > 0, 1.0, -1.0))
+            lim = max(np.percentile(np.abs(img[img != 0]), 99), 1.0) if (img != 0).any() else 1
+            xi = torch.from_numpy(ev["x"].astype(np.int64))
+            yi = torch.from_numpy(ev["y"].astype(np.int64))
+            ti = torch.from_numpy(ev["t"].astype(np.int64))
+            im = iwe(xi, yi, ti, torch.from_numpy(f), t_range=(w.t_start_us, w.t_end_us),
+                     t_ref=1.0, height=360, width=640, interpolation="bilinear").numpy()
+            scale = max(float(np.percentile(np.hypot(*f), 99)), 0.5)
+            fig, axes = plt.subplots(1, 4, figsize=(13, 2.5))
+            axes[0].imshow(rgb)
+            axes[0].set_title(f"frame {k + 1}", fontsize=8)
+            axes[1].imshow(img, cmap="gray", vmin=-lim, vmax=lim)
+            axes[1].set_title("v2e events (ON +, OFF −)", fontsize=8)
+            axes[2].imshow(flow_rgb(f, scale))
+            axes[2].set_title(f"predicted flow ({run_id.split('_voxel')[0]}), "
+                              f"sat. {scale:.1f} px", fontsize=8)
+            axes[3].imshow(im, cmap="gray_r", vmax=max(np.percentile(im, 99.5), 1e-6))
+            axes[3].set_title("IWE with predicted flow (t_ref = 1)", fontsize=8)
+            for ax in axes:
+                ax.set_axis_off()
+            fig.suptitle(f"{seg.key}, window {k} -> {k + 1} (one frame interval). T3, synthetic "
+                         f"events, no ground truth. {LARS_ATTRIBUTION}", fontsize=6, x=0.01,
+                         ha="left")
+            fig.tight_layout(rect=(0, 0, 1, 0.9))
+            fig.canvas.draw()
+            frames.append(np.asarray(fig.canvas.buffer_rgba())[..., :3].copy())
+            plt.close(fig)
+        out = out_dir / f"{seg.key.split('/')[-1]}.gif"
+        imageio.mimsave(out, frames, duration=0.4, loop=0)
+        outs.append(out)
+    return outs
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--bars-only", action="store_true")
+    ap.add_argument("--maritime-panels-only", action="store_true",
+                    help="LaRS qualitative GIFs only (needs data and the maritime runs)")
     args = ap.parse_args(argv)
+    if args.maritime_panels_only:
+        for p in maritime_panels():
+            print(f"wrote {p.relative_to(REPO)}")
+        return 0
     for tier in ("T1", "T2"):
         print(f"wrote {epe_figure(tier).relative_to(REPO)}")
+    cf = clutter_figure()
+    print(f"wrote {cf.relative_to(REPO)}" if cf else "clutter figure: results/maritime/"
+          "clutter.json not present")
     if not args.bars_only:
         for p in flow_panels():
             print(f"wrote {p.relative_to(REPO)}")

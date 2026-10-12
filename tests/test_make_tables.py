@@ -122,3 +122,61 @@ def test_repo_tables_render():
         pytest.skip("Phase 6 summaries not generated yet")
     text = mt.render(REPO)
     assert "## Table A-T1" in text and "## Table D" in text
+
+
+# --- Phase 7: Table E (T1) and the separate T3 part (scripts/tables_maritime.py) -------------
+
+def _t3(root, *, tier="T3a", metric="teacher_epe"):
+    e = {"tier": tier, "arm": "zero_flow", "model": "M0a", "seeds": [None], "unit": "lars_eval_kf",
+         "slice": "water", "metric": metric, "mean": 2.25, "ci95": [2.0, 2.5],
+         "seed_range": None, "n_windows": 40}
+    _w(root, "results/eval_maritime/summary.json",
+       {"kind": "maritime_eval_summary", "entries": [e], "missing": [],
+        "teacher": {"lars_eval_kf": {"water": {"teacher_mask_coverage": 0.4,
+                                               "events_px_fraction": 0.3,
+                                               "mean_slice_px_fraction": 0.5}}}})
+    by_ct = {f"ct{k:03d}": {"ct_multiplier": k / 100, "pooled": {
+        c: {q: {"mean": 0.5, "ci95": [0.4, 0.6]} for q in ("event_share", "pixel_share",
+                                                          "enrichment", "events_per_px")}
+        for c in ("water", "sky", "obstacle")}} for k in (67, 100, 150)}
+    _w(root, "results/maritime/clutter.json",
+       {"kind": "clutter_study", "tier": "T3b", "n_clips": 40, "by_ct": by_ct,
+        "attributes_ct100": {"waves": {"levels": {"still": {"n": 2, "reported": False}},
+                                       "spearman": {"reported": False}}}})
+
+
+def test_t3_part_is_separate_and_tagged(root):
+    _t3(root)
+    text = mt.render(root)
+    head = text.index("# Maritime tables (T3)")
+    above, below = text[:head], text[head:]
+    assert "| T3" not in above                                   # no T3 row in Tables A-E
+    assert "| T1 |" not in below and "| T2 |" not in below        # no T1/T2 row in the T3 part
+    f = _section(text, "## Table F-T3a")
+    assert "2.250 [2.000, 2.500]" in f and "teacher-EPE" in f and "| EPE" not in f
+    assert "0.400" in f                                          # coverage row
+    assert "assumed 30 fps (D-024)" in below
+    assert "## Table H" in below and "×0.67" in below
+    assert "## Table E" in above and text.index("## Table E") < head
+
+
+def test_t3_part_refuses_wrong_tiers_and_epe(root):
+    _t3(root, tier="T1")
+    with pytest.raises(mt.tables_maritime.TierError):
+        mt.render(root)
+    _t3(root, metric="epe")
+    with pytest.raises(mt.tables_maritime.TierError):
+        mt.render(root)
+
+
+def test_table_e_refuses_a_t3_unit(root):
+    _w(root, "results/train/maritime_summary.json",
+       {"runs": [{"run_id": "maritime_teacher_voxel5_s1337", "arm": "maritime_teacher",
+                  "seed": 1337, "representation": "voxel5", "status": "done"}]})
+    met, ci = _m(0.9)
+    rel = study.m1_path("maritime_teacher", 1337, study.stem("mvsec", "indoor_flying1", 1))
+    _w(root, rel, {"tier": "T1", "metrics": met, "ci95": ci, "n_windows": 9})
+    assert "0.900 [0.800, 1.000]" in _section(mt.render(root), "## Table E")
+    _w(root, rel, {"tier": "T3a", "metrics": met, "ci95": ci, "n_windows": 9})
+    with pytest.raises(mt.tables_maritime.TierError):
+        mt.render(root)

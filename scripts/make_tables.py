@@ -15,6 +15,9 @@ separate sub-sections; a T3 record makes the script fail, Phase 7 adds its own s
   B  Simulator gap and closure with paired-bootstrap CIs (T1, then T2), and T2 - T1 per model.
   C  Representation ablation (T1, seed 1337).
   D  DSEC-Flow zero-shot generalisation (T1).
+  E  Maritime arms on MVSEC test (T1; Phase 7, scripts/tables_maritime.py).
+Then a separate part "Maritime tables (T3)" (scripts/tables_maritime.py): F-T3a teacher-EPE
+family, G-T3b FWL/RSAT, H sea-clutter event budget.
 """
 
 from __future__ import annotations
@@ -26,6 +29,9 @@ import sys
 from pathlib import Path
 
 from evflow.eval import study
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import tables_maritime  # noqa: E402
 
 REPO = Path(__file__).resolve().parents[1]
 OUT_REL = "results/TABLES.md"
@@ -236,7 +242,8 @@ def render(root: Path = REPO) -> str:
           "**Evidence tiers.** T1 = real events, real ground-truth flow. T2 = v2e events "
           "simulated from the same sensor's APS frames (MVSEC), real ground-truth flow. "
           "Every row carries its tier; T1 and T2 rows never share a table. Maritime T3 "
-          "results are not in this file's sections (Phase 7).", "",
+          "results are in the separate part \"Maritime tables (T3)\" below; no T3 row appears "
+          "in Tables A–E.", "",
           "**Statistics.** Mean over evaluation windows of the per-window mean "
           "(configs/eval_mvsec.yaml). [lo, hi] = 95 % moving-block bootstrap CI over windows "
           f"(block {boot.get('block_seconds', '?')} s of windows, "
@@ -344,7 +351,9 @@ def render(root: Path = REPO) -> str:
         L += [""]
     L += notes.render() + [""]
 
-    L += ["## Sources", ""] + [f"- `{s}`" for s in sorted(st.sources)] + [
+    L += tables_maritime.table_e(root, st.sources)
+    L += tables_maritime.t3_part(root, st.sources)
+    L += ["# Sources", ""] + [f"- `{s}`" for s in sorted(st.sources)] + [
         f"- units: {st.summary.get('n_present')}/{st.summary.get('n_expected')} present "
         f"(`results/eval/summary.json`)", ""]
     return "\n".join(L).rstrip() + "\n"

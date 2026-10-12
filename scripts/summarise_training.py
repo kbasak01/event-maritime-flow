@@ -78,6 +78,9 @@ def run_record(run_dir: Path) -> dict:
     diag = {k.split("_diag_", 1)[1]: _num(v) for k, v in row.items() if "_diag_" in k}
     rec["collapse_diagnostics_at_selected_epoch"] = diag
     rec["final_epoch_train_loss"] = _num(rows[-1].get("train_loss"))
+    clipped = [_num(r.get("clipped_step_fraction")) for r in rows]
+    if any(c is not None for c in clipped):        # logged from Phase 7 on (D-049, D-056)
+        rec["clipped_step_fraction_max"] = max(c for c in clipped if c is not None)
     return rec
 
 
@@ -87,6 +90,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--expect", nargs="*", default=None)
     ap.add_argument("--exclude", nargs="*", default=[], help="RUN_ID=REASON")
     ap.add_argument("--out", default=str(OUT))
+    ap.add_argument("--phase", type=int, default=5)
     a = ap.parse_args(argv)
     paths = yaml.safe_load((REPO / "configs" / "paths.local.yaml").read_text())
     runs = Path(a.runs) if a.runs else Path(paths["outputs"]["runs"]) / "train"
@@ -99,7 +103,7 @@ def main(argv: list[str] | None = None) -> int:
         if rid in excluded:
             rec.update(excluded=True, exclusion_reason=excluded[rid])
         records.append(rec)
-    doc = {"kind": "training_runs", "phase": 5,
+    doc = {"kind": "training_runs", "phase": a.phase,
            "note": "Tune metrics are mvsec_tune selection evidence (T1 real events, T2 v2e "
                    "events, real GT); test results are in results/eval/.",
            "n_expected": len(expect),

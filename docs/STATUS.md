@@ -9,12 +9,16 @@
 | 4 | PASS (CI green) | docs/gates/phase-4.md | 2026-10-10 |
 | 5 | PASS (CI green) | docs/gates/phase-5.md | 2026-10-11 |
 | 6 | PASS (CI green) | docs/gates/phase-6.md | 2026-10-12 |
-| 7 | not started | – | – |
+| 7 | in progress | – | – |
 | 8 | not started | – | – |
 | 9 | not started | – | – |
 | 10 | not started | – | – |
 
-Pending GPU jobs: none (Claude may launch GPU jobs after `gpu-job` prep, D-006; one CUDA process at a time on this workstation, D-048b).
+Pending GPU jobs (Phase 7; Claude launches them after `gpu-job` prep, D-006; one CUDA job at a time, D-048b):
+- `jobs/2026-10-12_v2e-maritime.sh` → `results/v2e_maritime_corpus.json` (running since 2026-10-12 11:13 from the clean worktree at 7fd867c; 243 units).
+- `jobs/2026-10-12_teacher-flows.sh` → `results/teacher/summary.json` (after v2e-maritime).
+- `jobs/2026-10-12_train-maritime.sh` → `results/train/maritime_summary.json` (after teacher-flows).
+- `jobs/2026-10-12_eval-maritime.sh` → `results/eval_maritime/`, `results/maritime/clutter.json`, `results/TABLES.md`, `results/figures/clutter_ct.png` (after train-maritime).
 
 Done GPU jobs (Phase 6):
 - `jobs/2026-10-11_eval-all.sh` → `results/eval/` (298/298 units incl. Phase 4 baselines and Phase 5 gate units; reproduction unit equal to its committed JSON, max diff 0), `results/eval/{summary,aggregate,paired}.json`, `results/TABLES.md`, `results/figures/`. Attempt 1 stopped after 8 min (CPU threads, D-052); attempt 2 at b19e609, 16:31–22:47 on 2026-10-11 (`runs/eval-all/job.log`).
