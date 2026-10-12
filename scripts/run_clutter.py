@@ -86,8 +86,10 @@ def main(argv: list[str] | None = None) -> int:
     for c in lars_io.CLASSES:
         e = {t: np.array([r["classes"][c]["events_per_px"] for r in clip_rows[t][0]])
              for t in clip_rows}
-        ct_ratio[c] = {f"{t}_over_ct100": float(np.nanmedian(e[t] / e["ct100"]))
+        ok = np.isfinite(e["ct100"]) & (e["ct100"] > 0)   # clips with class events at x1.0
+        ct_ratio[c] = {f"{t}_over_ct100": float(np.median(e[t][ok] / e["ct100"][ok]))
                        for t in e if t != "ct100"}
+        ct_ratio[c]["n_clips"] = int(ok.sum())
     doc = {
         "kind": "clutter_study", "tier": "T3b",
         "tier_note": "synthetic: v2e events simulated from LaRS frames (assumed 30 fps, D-024; "

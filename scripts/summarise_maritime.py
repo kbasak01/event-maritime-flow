@@ -83,7 +83,10 @@ def entry(tier, arm, model, seeds, unit, slc, metric, pws_by_seq,
         if not ok.any():
             continue
         strata.append({"v": v[ok]})
-        blocks.append(block_length(pws[0]["t_start_us"][ok], BLOCK_S))
+        # moving blocks need increasing window starts: SMD only (LaRS clips restart at 0 and
+        # use the cluster bootstrap)
+        blocks.append(block_length(pws[0]["t_start_us"][ok], BLOCK_S)
+                      if unit.startswith("smd") else 1)
         per_seed_by_seq.append(ps)
         n += int(ok.sum())
         cluster_vals, cluster_groups = v[ok], pws[0]["group"][ok]
