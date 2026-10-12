@@ -254,6 +254,22 @@ def cmd_ort(args) -> int:
 
 # ---------------------------------------------------------------------------------------------
 
+def _accuracy_note() -> str:
+    """Which backends passed parity (results/onnx_parity.json), so a fast row is not read as a
+    deployable configuration when its numerics failed."""
+    p = REPO / "results" / "onnx_parity.json"
+    if not p.exists():
+        return "Parity not yet measured (results/onnx_parity.json)."
+    doc = json.loads(p.read_text())
+    failed = sorted({lab for u in doc["units"] for lab, r in u["providers"].items()
+                     if not r["passed"]})
+    if not failed:
+        return "Every timed ORT backend passed parity (results/onnx_parity.json)."
+    return (f"Backends that failed parity (results/onnx_parity.json, Table I-T1): "
+            f"{', '.join(failed)}; their timings are not a claim of a deployable "
+            "configuration at the plan's tolerance.")
+
+
 def cmd_summarise(args) -> int:
     from evflow.sim.v2e_runner import git_dirty, git_sha
 
@@ -294,6 +310,7 @@ def cmd_summarise(args) -> int:
                          "embedded latency will differ.",
         "claims_note": "Nothing here measures or implies event-camera sensor latency or a "
                        "latency advantage of event cameras (CLAUDE.md rule 2).",
+        "accuracy_note": _accuracy_note(),
         "methodology": {
             "warmup": td["warmup"], "timed": td["timed"], "batch_size": 1,
             "percentiles": ["p50", "p90", "p99", "max"],
@@ -307,12 +324,18 @@ def cmd_summarise(args) -> int:
             "trt": "fp32 graph with trt_fp16_enable; cold engine build timed from an emptied "
                    "cache, then the cached engine is benchmarked",
             "end_to_end": "PyTorch: one measured bracket. ORT: composed from stages timed in "
-                          "two processes (torch-CUDA build, ORT network; D-063), i-th samples "
-                          "summed; sum_of_stage_max_ms is a hard upper bound",
+                          "two processes and separate loops (torch-CUDA build, ORT network; "
+                          "D-063), i-th samples summed; composed tails assume independent "
+                          "stages; sum_of_stage_max_ms = upper bound over the observed stage "
+                          "samples only (cross-process contention unmeasured). The ORT rows "
+                          "include a voxel D2H + H2D round trip a single-process deployment "
+                          "would not pay. ort_cuda_fp16 rows omit the fp32 -> fp16 cast of the "
+                          "voxel grid (not timed)",
             "representation_events": "synthetic: uniform x, y, p; sorted uniform t over "
                                      f"{td['synthetic_window_us']} us; seed {lc['seed']}",
-            "clocks": "not locked (WSL2 exposes no clock or persistence control); GPU state "
-                      "at measurement in environment.*.gpu",
+            "clocks": "not locked (WSL2 exposes no clock or persistence control); "
+                      "environment.*.gpu is one nvidia-smi snapshot taken at the end of each "
+                      "process (after its timed loops), not a per-cell record",
         },
         "model": {"arm_run": td["run_id"], "checkpoint_sha256": td["checkpoint_sha256"],
                   "n_params": td["n_params"], "representation": td["representation"],

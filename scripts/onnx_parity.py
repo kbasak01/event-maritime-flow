@@ -16,6 +16,8 @@ reference's per-window EPE is checked against the Phase 6 per-window arrays of t
 ``ort``: the same inputs through ORT CUDA EP fp32 (TF32 off) and fp16 (fp16 graph) and the
 TensorRT EP fp16 (fp32 graph, fp16 builder flag); each session must report its provider first,
 and its node split is recorded. An unavailable or failing provider is recorded as such.
+``torch_fp16`` (main venv, diagnostic, not gated): torch eager fp16 on the same inputs, to tell
+fp16 arithmetic apart from ORT / TensorRT effects.
 ``summarise``: max |Δflow| (vector, px) over every pixel and over the mask, and the EPE change
 (mean over windows of the per-window EPE), against the plan's tolerances.
 Intermediate arrays live in ``<outputs.runs>/export/parity/`` (gitignored).
@@ -247,6 +249,47 @@ def cmd_ort(args) -> int:
 
 
 # ---------------------------------------------------------------------------------------------
+# torch_fp16 (main venv): diagnostic, not gated
+
+def cmd_torch_fp16(args) -> int:
+    import copy
+
+    import torch
+    from run_eval import load_run
+
+    torch.backends.cuda.matmul.allow_tf32 = False
+    torch.backends.cudnn.allow_tf32 = False
+    cfg, paths = _cfg(), _paths()
+    work = _work(args)
+    x = np.load(work / "inputs.npz")["x"]
+    h, w = 260, 346
+    for run_id in cfg["export"]["runs"]:
+        out = work / run_id / "torch_cuda_fp16.npz"
+        if out.exists() and not args.force:
+            print(f"skip: {out} exists")
+            continue
+        model, sel, _ = load_run(Path(paths["outputs"]["runs"]) / "train" / run_id,
+                                 args.device)
+        half = copy.deepcopy(model).half().eval()
+        flows = np.empty((x.shape[0], 2, h, w), np.float32)
+        with torch.inference_mode():
+            for i in range(x.shape[0]):
+                inp = torch.from_numpy(x[i: i + 1]).to(args.device).half()
+                flows[i] = half(inp)[-1][0, :, :h, :w].float().cpu().numpy()
+        out.parent.mkdir(parents=True, exist_ok=True)
+        np.savez_compressed(out, flow=flows)
+        out.with_suffix(".json").write_text(json.dumps(
+            {"kind": "parity_diagnostic", "run_id": run_id, "label": "torch_cuda_fp16",
+             "checkpoint_sha256": sel["checkpoint_sha256"], "gated": False,
+             "device": torch.cuda.get_device_name(0) if args.device.startswith("cuda")
+             else "cpu", "torch": torch.__version__,
+             "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds")},
+            indent=1) + "\n")
+        print(f"torch_fp16 {run_id}: done", flush=True)
+    return 0
+
+
+# ---------------------------------------------------------------------------------------------
 # summarise (main venv)
 
 def _mean_epe(flows: np.ndarray, gt: np.ndarray, mask: np.ndarray) -> np.ndarray:
@@ -306,13 +349,32 @@ def cmd_summarise(args) -> int:
                                 "epe_onnx": float(np.mean(epe_test[ok])),
                                 "epe_change_px": d_epe,
                                 "max_window_epe_change_px": float(
-                                    np.max(np.abs(epe_test[ok] - epe_ref[ok])))},
+                                    np.max(np.abs(epe_test[ok] - epe_ref[ok]))),
+                                "n_windows_over_tolerance": int(
+                                    sum(v > thr for v in per_window))},
                        worst_windows=[{"sequence": str(data["sequence"][i]),
                                        "window_index": int(data["window_index"][i]),
                                        "max_px": per_window[i]}
                                       for i in np.argsort(per_window)[::-1][:3]],
                        passed=passed)
             rows[label] = row
+        diagnostics = {}
+        diag = work / run_id / "torch_cuda_fp16.npz"
+        if diag.exists():
+            test = np.load(diag)["flow"]
+            st = parity_stats(ref, test, mask=mask)
+            per_window = st.pop("per_window_max_px")
+            epe_test = _mean_epe(test, gt, mask)
+            ok = np.isfinite(epe_ref) & np.isfinite(epe_test)
+            diagnostics["torch_cuda_fp16"] = {
+                "gated": False,
+                "what": "torch eager fp16 (network cast to half, fp16 input) on the same "
+                        "inputs vs the fp32 reference: separates fp16 arithmetic from ORT / "
+                        "TensorRT effects (scripts/onnx_parity.py torch_fp16)",
+                "metrics": {**st, "epe_change_px": float(abs(np.mean(epe_test[ok])
+                                                             - np.mean(epe_ref[ok]))),
+                            "n_windows_over_fp16_tolerance": int(
+                                sum(v > tol["fp16_max_px"] for v in per_window))}}
         units_out.append({"tier": "T1", "arm": rinfo["arm"], "model": "M1",
                           "seed": rinfo["seed"], "run_id": run_id,
                           "checkpoint_sha256": rinfo["checkpoint_sha256"],
@@ -325,7 +387,8 @@ def cmd_summarise(args) -> int:
                           "reference_vs_phase6_epe_max_abs_diff":
                               rinfo["phase6_epe_max_abs_diff"],
                           "reference_vs_phase6_windows": rinfo["phase6_windows_compared"],
-                          "providers": rows})
+                          "providers": rows,
+                          "diagnostics": diagnostics})
     doc = {
         "kind": "onnx_parity",
         "tier": "T1",
@@ -370,7 +433,7 @@ def cmd_summarise(args) -> int:
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("step", choices=["ref", "ort", "summarise"])
+    ap.add_argument("step", choices=["ref", "ort", "torch_fp16", "summarise"])
     ap.add_argument("--work-dir", help="default: <outputs.runs>/export/parity")
     ap.add_argument("--onnx-dir", help="default: <outputs.runs>/export")
     ap.add_argument("--windows-per-sequence", type=int, help="smoke override")
@@ -381,7 +444,8 @@ def main(argv: list[str] | None = None) -> int:
     if args.out and Path(args.out).resolve().is_relative_to((REPO / "results").resolve()) \
             and Path(args.out).resolve() != OUT_JSON.resolve():
         ap.error("--out must not lie under results/")
-    return {"ref": cmd_ref, "ort": cmd_ort, "summarise": cmd_summarise}[args.step](args)
+    return {"ref": cmd_ref, "ort": cmd_ort, "torch_fp16": cmd_torch_fp16,
+            "summarise": cmd_summarise}[args.step](args)
 
 
 if __name__ == "__main__":

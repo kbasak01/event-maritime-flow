@@ -200,13 +200,16 @@ def _parity_doc(tier="T1"):
             "window_rule": "50 per sequence", "all_passed": False,
             "units": [{"tier": tier, "arm": "real_sup", "seed": 1337, "run_id": "r",
                        "n_windows": 200,
-                       "providers": {"ort_cuda_fp32": row, "ort_cuda_fp16": bad}}]}
+                       "providers": {"ort_cuda_fp32": row, "ort_cuda_fp16": bad},
+                       "diagnostics": {"torch_cuda_fp16": {"gated": False, "metrics": {
+                           "max_px": 0.08, "max_px_masked": 0.07, "epe_change_px": 2e-4}}}}]}
 
 
 def _latency_doc():
     env = {"gpu": {"name": "NVIDIA RTX A4000"}}
     return {"kind": "latency", "hardware_note": "A4000 stands in.", "claims_note": "No sensor.",
-            "tier_note": "No tier.", "methodology": {"batch_size": 1, "warmup": 50,
+            "tier_note": "No tier.", "accuracy_note": "Backends that failed parity: x.",
+            "methodology": {"batch_size": 1, "warmup": 50,
                                                      "timed": 500},
             "environment": {"torch_process": env, "ort_process": env},
             "representation_build": [{"events": 10000, "height": 260, "width": 346,
@@ -242,8 +245,11 @@ def test_deploy_part_renders(root):
            "| 0.001 | PASS |" in i
     assert "| ort_cuda_fp16 | fp16 | 2.00e-01 | 1.00e-02 | 1.00e-04 | 0.05 | FAIL |" in i
     assert "All rows pass: **no**" in i
+    assert "| torch_cuda_fp16 (diagnostic) | fp16 | 8.00e-02 | 7.00e-02 | 2.00e-04 | — " \
+           "| not gated |" in i
     j = dep[dep.index("## Table J"):]
     assert "A4000 stands in." in j and "| T1" not in j
+    assert "**Accuracy.** Backends that failed parity: x." in j
     assert "| 10000 | 346×260 | 5.000 | 5.100 | 5.200 | 6.000 | 0.200 |" in j
     assert "| ort_trt_fp16 | 1.160 | 1.260 | 1.360 | 2.160 | 0.300 / 0.100 | 25.0 | " \
            "Tensorrt 1 |" in j

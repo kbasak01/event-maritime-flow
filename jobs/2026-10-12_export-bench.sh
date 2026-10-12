@@ -44,6 +44,7 @@ if [ "${SMOKE:-0}" = 1 ]; then
   unit export - $PY scripts/export_onnx.py --smoke --out-dir "$S/onnx"
   unit parity_ref "$S/parity/ref.json" $PY scripts/onnx_parity.py ref --work-dir "$S/parity" --windows-per-sequence 2
   unit parity_ort - $ORT_PY scripts/onnx_parity.py ort --work-dir "$S/parity" --onnx-dir "$S/onnx"
+  unit parity_torch_fp16 - $PY scripts/onnx_parity.py torch_fp16 --work-dir "$S/parity"
   unit parity_summary - $PY scripts/onnx_parity.py summarise --work-dir "$S/parity" --out "$S/onnx_parity.json"
   unit latency_torch "$S/latency/torch.json" $PY scripts/latency_bench.py torch --smoke --work-dir "$S/latency"
   unit latency_ort "$S/latency/ort.json" $ORT_PY scripts/latency_bench.py ort --smoke --work-dir "$S/latency" --onnx-dir "$S/onnx"
@@ -55,6 +56,7 @@ fi
 unit export - $PY scripts/export_onnx.py
 unit parity_ref "$RUNS/export/parity/ref.json" $PY scripts/onnx_parity.py ref
 unit parity_ort - $ORT_PY scripts/onnx_parity.py ort
+unit parity_torch_fp16 - $PY scripts/onnx_parity.py torch_fp16   # diagnostic, not gated (auditor F-2)
 unit latency_torch "$RUNS/export/latency/torch.json" $PY scripts/latency_bench.py torch
 unit latency_ort "$RUNS/export/latency/ort.json" $ORT_PY scripts/latency_bench.py ort
 echo "[$(date -Is)] summarise"

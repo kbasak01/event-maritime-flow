@@ -92,8 +92,9 @@ def time_loop(fn: Callable[[], Any], *, warmup: int, timed: int,
 def compose(stages: Sequence[np.ndarray]) -> dict:
     """End-to-end latency composed from stages timed separately (possibly in different
     processes): the i-th samples are summed, i.e. the stages are treated as independent and the
-    sample order as arbitrary. ``sum_of_stage_max_ms`` is a hard upper bound on any one frame
-    built from these stages."""
+    sample order as arbitrary, so the composed tails assume independent stages.
+    ``sum_of_stage_max_ms`` bounds every sum of the *observed* stage samples; it does not bound
+    a real single-process pipeline (cross-process contention is not measured)."""
     arrs = [np.asarray(s, np.float64) for s in stages]
     if len({a.size for a in arrs}) != 1:
         raise ValueError(f"stage sample counts differ: {[a.size for a in arrs]}")

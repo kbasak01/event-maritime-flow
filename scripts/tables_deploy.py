@@ -59,6 +59,11 @@ def parity_table(root: Path, sources: set) -> list[str]:
             rows.append(["T1", u["arm"], str(u["seed"]), label, r["graph_precision"],
                          _e(m.get("max_px")), _e(m.get("max_px_masked")),
                          _e(m.get("epe_change_px")), f"{r['tolerance_max_px']:g}", verdict])
+        for label, r in (u.get("diagnostics") or {}).items():
+            m = r["metrics"]
+            rows.append(["T1", u["arm"], str(u["seed"]), f"{label} (diagnostic)", "fp16",
+                         _e(m.get("max_px")), _e(m.get("max_px_masked")),
+                         _e(m.get("epe_change_px")), "—", "not gated"])
     L += _table(["tier", "arm", "seed", "provider", "graph", "max |Δflow| (px)",
                  "masked max (px)", "EPE change (px)", "tol. max (px)", "verdict"], rows)
     return L + ["", f"All rows pass: **{'yes' if doc['all_passed'] else 'no'}**.", ""]
@@ -76,6 +81,8 @@ def latency_tables(root: Path, sources: set) -> list[str]:
     env = doc["environment"]
     gpu = (env["ort_process"].get("gpu") or {}).get("name", "?")
     L += [f"{doc['hardware_note']} {doc['claims_note']} {doc['tier_note']}", "",
+          f"**Accuracy.** {doc['accuracy_note']}" if doc.get("accuracy_note") else "",
+          "",
           f"GPU {gpu}; batch {meth['batch_size']}; {meth['warmup']} warm-up, "
           f"{meth['timed']} timed iterations per cell; ms, p50 / p90 / p99 / max. Versions "
           "and GPU state: `results/latency.json` `environment`.", ""]
@@ -105,8 +112,10 @@ def latency_tables(root: Path, sources: set) -> list[str]:
                  "TRT cold build (s)", "nodes per EP"], rows) + [""]
     L += ["### J3 — end-to-end (events → flow on the host)", "",
           "PyTorch rows are measured in one bracket; ORT rows are composed from stages timed "
-          "in two processes (sum of i-th samples; D-063) and include a voxel D2H + H2D round "
-          "trip a single-process deployment would not pay.", ""]
+          "in two processes (sum of i-th samples, tails assume independent stages; D-063) and "
+          "include a voxel D2H + H2D round trip a single-process deployment would not pay; "
+          "ort_cuda_fp16 rows omit the fp32 → fp16 cast. Σ stage max bounds the observed stage "
+          "samples only.", ""]
     rows = [[str(r["events"]), f"{r['width']}×{r['height']}", r["backend"], r["how"],
              *_ms(r["total"]),
              f"{r['total']['sum_of_stage_max_ms']:.3f}" if "sum_of_stage_max_ms" in r["total"]
