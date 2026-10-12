@@ -1,0 +1,20 @@
+# Phase 7 training arm `maritime_teacher` (IMPLEMENTATION_PLAN §1.4, Phase 7 step 3): v2e(SMD + LaRS train), RAFT pseudo-GT with forward-backward consistency mask.
+# Events: the calibrated maritime corpus (configs/v2e_corpus_maritime.yaml, D-054), 640x360,
+# windows of one source-frame interval. Selection: the v2e(mvsec_tune) stream at dt 1, as the v2e
+# arms (D-043b; user decision 2026-10-12, D-056). Supervision: teacher flow on FB-consistent
+# pixels (D-055); the tune EPE is against real MVSEC GT on the v2e(tune) events.
+inherit: configs/evflow.yaml
+arm: maritime_teacher
+events:
+  train: maritime           # src/evflow/train/data.py load_maritime
+  tune_select: v2e          # tune stream that selects the epoch (mvsec_tune only)
+  tune_log: [real]          # logged for the diagnostician, never used for a choice
+loss: supervised
+selection: {split: mvsec_tune, metric: epe, mode: min, dt: 1}
+maritime:
+  corpora: [smd_train, lars_train]
+  warmup_windows: 2         # first windows of each unit dropped (D-056)
+  tune_dts: [1]
+train:
+  dts: [1]
+  dt_fractions: {1: 1.0}

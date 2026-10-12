@@ -181,7 +181,9 @@ def train_epoch(model, loader, opt, sched, cfg: dict, device, cm_params, log=Non
             log(f"  step {n}: loss {sums['train_loss'] / n:.4f}, grad norm {gnorms[-1]:.3f}")
     out = {k: v / max(n, 1) for k, v in sums.items()}
     out.update(grad_norm_mean=float(np.mean(gnorms)) if gnorms else math.nan,
-               grad_norm_max=float(np.max(gnorms)) if gnorms else math.nan, steps=n)
+               grad_norm_max=float(np.max(gnorms)) if gnorms else math.nan,
+               clipped_step_fraction=float(np.mean(np.asarray(gnorms) > clip))
+               if gnorms else math.nan, steps=n)   # D-049: share of steps the clip bounded
     return out
 
 
@@ -443,6 +445,9 @@ def main(argv: list[str] | None = None) -> int:
     if a.cm_divergence is not None:
         cfg["losses"]["cm"]["divergence_penalty"] = a.cm_divergence
     cfg["run_suffix"] = a.suffix
+    # the inherited dt_fractions dict is merged key-wise: keep only the arm's own dts
+    cfg["train"]["dt_fractions"] = {int(d): float(cfg["train"]["dt_fractions"][d])
+                                    for d in cfg["train"]["dts"]}
     smoke_args = a.max_train_windows is not None or a.max_tune_windows is not None
     validate(cfg)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -453,6 +458,8 @@ def main(argv: list[str] | None = None) -> int:
     runs = Path(paths["outputs"]["runs"])
 
     if a.smoke:
+        if cfg["events"]["train"] == "maritime":
+            raise SystemExit("--smoke overfits MVSEC GT; use --max-train-windows for maritime arms")
         sm = tcfg["smoke"]
         data = load_mvsec(train_source=cfg["events"]["train"], tune_streams=[], dts=[1],
                           warmup=int(tcfg["warmup_windows"]), hood_row=int(tcfg["hood_row"]),
@@ -474,12 +481,29 @@ def main(argv: list[str] | None = None) -> int:
     streams = list(dict.fromkeys([cfg["events"]["tune_select"],
                                   *cfg["events"].get("tune_log", [])]))
     aug = tcfg["augment"]
-    data = load_mvsec(
-        train_source=cfg["events"]["train"], tune_streams=streams, dts=list(tcfg["dts"]),
-        warmup=int(tcfg["warmup_windows"]), hood_row=int(tcfg["hood_row"]),
-        augment=Augment(crop=tuple(cfg["model_m1"]["crop"]) if aug["random_crop"] else None,
-                        hflip=bool(aug["hflip"]), polarity_flip=bool(aug["polarity_flip"])),
-        max_train_windows=a.max_train_windows, max_tune_windows=a.max_tune_windows)
+    augment = Augment(crop=tuple(cfg["model_m1"]["crop"]) if aug["random_crop"] else None,
+                      hflip=bool(aug["hflip"]), polarity_flip=bool(aug["polarity_flip"]))
+    if cfg["events"]["train"] == "maritime":
+        # Phase 7 maritime arms (D-056): train on v2e(SMD + LaRS train), select on the
+        # v2e(mvsec_tune) stream at dt 1 like the v2e arms (D-043b; CLAUDE.md rule 4)
+        from evflow.train.data import load_maritime
+        mcfg = cfg["maritime"]
+        train_ds, mprov = load_maritime(
+            supervision="teacher" if cfg["loss"] == "supervised" else "none",
+            warmup=int(mcfg["warmup_windows"]), augment=augment,
+            corpora=tuple(mcfg["corpora"]), max_train_windows=a.max_train_windows)
+        data = load_mvsec(
+            train_source=None, tune_streams=streams, dts=list(mcfg["tune_dts"]),
+            warmup=int(tcfg["warmup_windows"]), hood_row=int(tcfg["hood_row"]),
+            augment=None, max_tune_windows=a.max_tune_windows)
+        data.train = train_ds
+        data.provenance = {"train": mprov, "tune": data.provenance}
+    else:
+        data = load_mvsec(
+            train_source=cfg["events"]["train"], tune_streams=streams, dts=list(tcfg["dts"]),
+            warmup=int(tcfg["warmup_windows"]), hood_row=int(tcfg["hood_row"]),
+            augment=augment, max_train_windows=a.max_train_windows,
+            max_tune_windows=a.max_tune_windows)
     sel = run_training(cfg, run_dir, data.train, data.tune, device=device,
                        provenance=data.provenance, num_workers=nw,
                        log=lambda m: print(f"[{datetime.now():%H:%M:%S}] {m}", flush=True))

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import h5py
@@ -74,3 +75,60 @@ def write_fake_dsec(seq_dir: Path, *, n: int = 20_000, width: int = 640, height:
         flows.append((flow, valid))
     return {"t": t, "x": x, "y": y, "p": p, "ms_to_idx": ms_to_idx, "rectify_map": rmap,
             "t_offset": t_offset, "flow_rows": rows, "flows": flows}
+
+
+def write_fake_lars(root: Path, subset: str = "val", *, prefix: str = "fake_seq_01",
+                    first: int = 3, n_frames: int = 12, keyframe_local: int = 9,
+                    size: tuple[int, int] = (64, 48), seed: int = 0) -> dict:
+    """LaRS layout: ``images_seq`` JPGs, one keyframe with a semantic mask (0 obstacle, 1 water,
+    2 sky, 255 ignore), ``image_annotations.json`` and ``panoptic_annotations.json``."""
+    from PIL import Image
+
+    rng = np.random.default_rng(seed)
+    w, h = size
+    d = root / subset
+    (d / "images_seq").mkdir(parents=True)
+    (d / "semantic_masks").mkdir()
+    for n in range(first, first + n_frames):
+        im = rng.integers(0, 255, (h, w, 3), dtype=np.uint8)
+        Image.fromarray(im).save(d / "images_seq" / f"{prefix}_{n:05d}.jpg")
+    kf = f"{prefix}_{first + keyframe_local:05d}"
+    lab = np.full((h, w), 1, np.uint8)            # water below
+    lab[: h // 3] = 2                              # sky on top
+    lab[h // 3: h // 3 + 4, : w // 2] = 0          # an obstacle band
+    lab[-2:, -3:] = 255                            # ignore corner
+    Image.fromarray(lab).save(d / "semantic_masks" / f"{kf}.png")
+    ann = {"info": {}, "licenses": [], "annotations": [{
+        "id": 1, "file_name": f"{kf}.jpg",
+        "labels": {"scene_type": "sea_like", "lighting": "day_like", "reflections": None,
+                   "waves": "moderate",
+                   "special": {"extra_dark": False, "extra_bright": False, "glitter": True,
+                               "dirty_lens": False, "wakes": False, "rain": False,
+                               "fog": False, "plants_debris": False}}}]}
+    (d / "image_annotations.json").write_text(json.dumps(ann))
+    pan = {"info": {}, "images": [], "licenses": [],
+           "categories": [{"id": 1, "name": "Static Obstacle", "supercategory": "obstacle"},
+                          {"id": 3, "name": "Water", "supercategory": "water"},
+                          {"id": 5, "name": "Sky", "supercategory": "sky"}],
+           "annotations": [{"file_name": f"{kf}.png", "segments_info": [
+               {"id": 1, "category_id": 1, "area": int((lab == 0).sum())},
+               {"id": 3, "category_id": 3, "area": int((lab == 1).sum())},
+               {"id": 5, "category_id": 5, "area": int((lab == 2).sum())}]}]}
+    (d / "panoptic_annotations.json").write_text(json.dumps(pan))
+    clip = {"clip": f"{prefix}_{first:05d}", "prefix": prefix, "first": first,
+            "last": first + n_frames - 1, "n_frames": n_frames, "keyframes": [kf]}
+    return {"clip": clip, "label": lab, "keyframe": kf}
+
+
+def write_fake_smd(path: Path, *, n_frames: int = 20, fps: int = 30,
+                   size: tuple[int, int] = (64, 36)) -> dict:
+    """A short MJPG AVI whose frame k has mean intensity ~ 10 k (frame identity survives
+    lossy coding)."""
+    import cv2
+
+    w, h = size
+    vw = cv2.VideoWriter(str(path), cv2.VideoWriter_fourcc(*"MJPG"), fps, (w, h))
+    for k in range(n_frames):
+        vw.write(np.full((h, w, 3), 10 * k, np.uint8))
+    vw.release()
+    return {"n_frames": n_frames, "fps": fps, "size": size}

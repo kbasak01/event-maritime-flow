@@ -43,6 +43,8 @@ class CMLossParams:
     pad_px: int = 64
     max_events: int = 100_000
     charbonnier_eps: float = 1e-3
+    min_count: float = 0.0     # D-049/D-056: pixels with count IWE below this carry no
+                               # average-timestamp term (0 = Phase 5 behaviour)
 
     @classmethod
     def from_config(cls, d: dict) -> CMLossParams:
@@ -115,17 +117,27 @@ def average_timestamp_images(ev: WindowEvents, flow: torch.Tensor, *, t_ref: flo
     return cnt.view(2, hc, wc), wts.view(2, hc, wc)
 
 
-def average_timestamp_loss(ev: WindowEvents, flow: torch.Tensor, pad: int) -> torch.Tensor:
+def average_timestamp_loss(ev: WindowEvents, flow: torch.Tensor, pad: int,
+                           min_count: float = 0.0) -> torch.Tensor:
     """Sum over t_ref in {1 (weights tau), 0 (weights 1 - tau)} of
-    sum_pixels,polarity (weight IWE / count IWE)^2 / #pixels hit by either polarity."""
+    sum_pixels,polarity (weight IWE / count IWE)^2 / #pixels hit by either polarity.
+    ``min_count > 0`` drops (polarity, pixel) cells whose count IWE is below it from both sums:
+    there the ratio's derivative grows like 1/count (bilinear tails), the source of the clipped
+    gradient spikes of D-049."""
     if ev.p is None:
         raise ValueError("average_timestamp needs event polarities")
     tau = ev.tau.to(flow.dtype)
     total = flow.new_zeros(())
     for t_ref, wts in ((1.0, tau), (0.0, 1.0 - tau)):
         cnt, tsum = average_timestamp_images(ev, flow, t_ref=t_ref, weights=wts, pad=pad)
-        avg = tsum / (cnt + 1e-9)
-        hit = (cnt.sum(0) > 0).sum().clamp(min=1)
+        if min_count > 0:
+            keep = cnt >= min_count
+            avg = torch.where(keep, tsum / torch.where(keep, cnt, torch.ones_like(cnt)),
+                              torch.zeros_like(cnt))
+            hit = keep.any(0).sum().clamp(min=1)
+        else:
+            avg = tsum / (cnt + 1e-9)
+            hit = (cnt.sum(0) > 0).sum().clamp(min=1)
         total = total + (avg * avg).sum() / hit
     return total
 
@@ -156,7 +168,7 @@ def cm_loss(flow: torch.Tensor, events: list[WindowEvents], p: CMLossParams
             continue
         ev = subsample(ev, p.max_events)
         if p.objective == "average_timestamp":
-            data_terms.append(average_timestamp_loss(ev, flow[i], p.pad_px))
+            data_terms.append(average_timestamp_loss(ev, flow[i], p.pad_px, p.min_count))
         else:
             data_terms.append(-_contrast_ratio(ev, flow[i], p))
     data = torch.stack(data_terms).mean() if data_terms else flow.sum() * 0

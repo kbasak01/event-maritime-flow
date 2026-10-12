@@ -1,0 +1,23 @@
+# Phase 7 maritime v2e corpus (IMPLEMENTATION_PLAN Phase 7 step 1). Read only by
+# src/evflow/sim/maritime_corpus.py (-> <out_root>/corpus_plan.json). Cuts: D-026 (LaRS), D-054
+# (SMD segments, which supersede D-026's SMD line; LaRS stretched to 640x360; seeds; CT variants).
+out_root: v2e/maritime          # under paths.local.yaml outputs.events
+profile: maritime_640x360       # = mvsec_cal pixel model at 640x360 (configs/v2e_profiles.yaml)
+seed: 1337                      # one simulated sensor for every unit (= mvsec_cal seed, D-032)
+
+smd:                            # segments in seconds from the first frame (D-054)
+  smd_train: {split: smd_train, start_s: 0.0, stop_s: 5.6}     # all 8 videos, 44.8 s
+  smd_test:  {split: smd_test,  start_s: 0.0, stop_s: 10.0}    # all 3 videos, cut at the last frame
+
+lars:                           # every k-th clip of the split, k = n_clips // n (D-026 rule)
+  lars_train: {split: lars_train, n_clips: 110}
+  lars_eval:  {split: lars_eval,  n_clips: 40}
+
+# Sea-clutter study (Phase 7 step 5): lars_eval converted once per multiplier on the calibrated
+# pos/neg and sigma thresholds (read from the profile, never typed here); 1.0 = the profile itself.
+# Training and evaluation use 1.0 only. Same emulator seed -> common random numbers (D-054).
+ct_variants: [0.67, 1.0, 1.5]
+
+trials:                         # <= 5 s smoke of the maritime profile before the corpus (D-026)
+  smd: {split: smd_train, video_index: 0, start_s: 0.0, stop_s: 5.0}
+  lars: {split: lars_train, clip_index: 0, ct: 0.67}    # most events: the lowest threshold

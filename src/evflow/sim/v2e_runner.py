@@ -238,16 +238,6 @@ def export_video_frames(video: str | PathLike, out_dir: str | PathLike, first: i
     return {"frames_dir": str(fdir), "first_frame": first, "last_frame": last, "n_frames": n}
 
 
-def lars_clip_frames(lars_root: str | PathLike, subset: str, prefix: str, first: int,
-                     last: int) -> list[Path]:
-    d = Path(lars_root) / subset / "images_seq"
-    files = [d / f"{prefix}_{n:05d}.jpg" for n in range(first, last + 1)]
-    missing = [f.name for f in files if not f.exists()]
-    if missing:
-        raise FileNotFoundError(f"LaRS clip frames missing: {missing[:3]}")
-    return files
-
-
 def link_frames(files: Sequence[Path], folder: str | PathLike) -> Path:
     """Fresh folder of symlinks ``000000.<ext>``… to ``files`` (v2e reads a whole folder)."""
     folder = Path(folder)
@@ -537,23 +527,35 @@ def main(argv: list[str] | None = None) -> int:
         cache = a.frames_cache / f"smd_{Path(a.video).stem}_{f0:06d}_{f1:06d}"
         ex = export_video_frames(video, cache, f0, f1)
         files = sorted(Path(ex["frames_dir"]).glob("*.png"))
+        from evflow.io.frames import native_size, scale_factors
+
+        nat = native_size(files[0])
         desc = {"dataset": "smd", "video": a.video, "video_sha256": sha256_file(video),
                 "segment_s": [a.start, a.stop], "n_frames": ex["n_frames"],
                 "first_frame": f0, "last_frame": f1,
                 "frames_dir": redact_home(str(Path(ex["frames_dir"]).resolve())),
-                "input_route": "frames decoded by cv2.VideoCapture -> lossless PNG folder (D-025)"}
+                "input_route": "frames decoded by cv2.VideoCapture -> lossless PNG folder (D-025)",
+                "native_size": list(nat), "output_size": [w, h],
+                "scale_xy": list(scale_factors(nat, (w, h)))}
         doc_ = run_unit(**common, input_path=ex["frames_dir"], input_sha256=sha256_frames(files),
                         input_desc=desc, input_frame_rate=fps, frame_rate_source=why,
                         width=w, height=h, source=f"v2e/smd/{Path(a.video).stem}",
                         sensor="v2e(SMD VIS_Onboard video)", t_offset_us=int(round(
                             f0 * 1e6 / fps)))
     else:
+        from evflow.io.frames import native_size, scale_factors
+        from evflow.io.lars import clip_frames
+
         prefix, first, last = a.clip.rsplit(":", 2)
-        files = lars_clip_frames(paths["lars"]["root"], a.subset, prefix, int(first), int(last))
+        files = clip_frames(paths["lars"]["root"], a.subset, prefix, int(first), int(last))
         folder = link_frames(files, Path(a.out) / f"{a.unit}.frames")
         fps = float(doc["lars"]["assumed_fps"])
         w, h = _size_from_args(size)
-        desc = {"dataset": "lars", "subset": a.subset, "clip": a.clip, "n_frames": len(files)}
+        nat = native_size(files[0])
+        desc = {"dataset": "lars", "subset": a.subset, "clip": a.clip, "n_frames": len(files),
+                "native_size": list(nat), "output_size": [w, h],
+                "scale_xy": list(scale_factors(nat, (w, h))),
+                "resize": "v2e cv2.resize INTER_AREA to output size, aspect not kept (D-054)"}
         doc_ = run_unit(**common, input_path=folder, input_sha256=sha256_frames(files),
                         input_desc=desc, input_frame_rate=fps,
                         frame_rate_source=f"assumed ({doc['lars']['assumed_fps_decision']})",

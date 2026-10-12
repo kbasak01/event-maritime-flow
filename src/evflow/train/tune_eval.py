@@ -63,7 +63,7 @@ def batch_window_metrics(pred: torch.Tensor, gt: torch.Tensor, valid: torch.Tens
     def mean(v):
         return torch.where(n > 0, (v * mask).sum((1, 2)) / n.clamp(min=1), nan)
 
-    gmag = torch.linalg.vector_norm(g64, dim=1)
+    gmag = torch.sqrt(g64[:, 0] ** 2 + g64[:, 1] ** 2)   # the metrics_ref formula (D-052)
     out = {"epe": mean(e),
            "outlier_pct": 100.0 * mean(((e > OUTLIER_ABS_PX) & (e > OUTLIER_REL * gmag)).double()),
            "ae_deg": mean(ae_map(p64, g64)), "n_px": n}

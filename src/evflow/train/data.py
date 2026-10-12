@@ -476,6 +476,7 @@ def load_mvsec(*, train_source: str | None, tune_streams: list[str], dts, warmup
         doc = json.loads(man.read_text()) if man.exists() else {}
         prov["stores"][str(path.relative_to(events_root))] = {
             "manifest_sha256": _sha(man) if man.exists() else None,
+            "store_sha256": doc.get("store_sha256") or _sha(path),
             "n_events": doc.get("n_events"), "seed": doc.get("seed"),
             "overrides": doc.get("overrides")}
 
@@ -542,3 +543,126 @@ def load_mvsec(*, train_source: str | None, tune_streams: list[str], dts, warmup
             tune[stream] = WindowDataset(cd, windows, gts, augment=None, hood_row=None)
     return MvsecData(train=train, tune=tune, provenance=prov)
 
+
+
+# ---------------------------------------------------------------------------------------------
+# maritime assembly (Phase 7 step 3; D-056)
+
+MARITIME_TRAIN_SPLITS = ("smd_train", "lars_train")
+MARITIME_HEIGHT, MARITIME_WIDTH = 360, 640
+_KEY = 1_000_000          # window key = clip index * _KEY + source frame k
+
+
+def maritime_key(clip_index: int, k: int) -> int:
+    return int(clip_index) * _KEY + int(k)
+
+
+class MaritimeGT:
+    """``GTCache`` interface for maritime windows keyed by ``maritime_key``. With ``teacher``
+    paths (clip index -> per-unit teacher store) it returns the RAFT forward flow of window k and
+    its forward-backward-consistency mask (``maritime_teacher``); without, zero flow and an empty
+    mask (``maritime_selfsup``: the CM loss reads events only; ``train_epe`` is then 0 over 0 px).
+    Files open lazily per process (fork-safe)."""
+
+    def __init__(self, keys: set[int], teacher: dict[int, Path] | None = None,
+                 height: int = MARITIME_HEIGHT, width: int = MARITIME_WIDTH) -> None:
+        self.keys, self.teacher, self.h, self.w = set(keys), teacher, height, width
+        self._files: dict[int, h5py.File] = {}
+        self._pid = -1
+
+    def __contains__(self, key: int) -> bool:
+        return int(key) in self.keys
+
+    def get(self, key: int) -> tuple[np.ndarray, np.ndarray]:
+        ci, k = divmod(int(key), _KEY)
+        if self.teacher is None:
+            return (np.zeros((2, self.h, self.w), np.float32),
+                    np.zeros((self.h, self.w), bool))
+        if self._pid != os.getpid():
+            self._files, self._pid = {}, os.getpid()
+        f = self._files.get(ci)
+        if f is None:
+            f = self._files[ci] = h5py.File(self.teacher[ci], "r")
+        return f["flow"][k], f["valid"][k]
+
+    def __getstate__(self):
+        d = dict(self.__dict__)
+        d["_files"], d["_pid"] = {}, -1
+        return d
+
+
+def maritime_windows(n_frames: int, warmup: int) -> np.ndarray:
+    """Source-frame starts k of the one-frame-interval windows of a unit: k in
+    [warmup, n_frames - 2] (window k spans frames k -> k+1)."""
+    if n_frames - 2 < warmup:
+        raise ValueError(f"no window after {warmup} warm-up windows in {n_frames} frames")
+    return np.arange(warmup, n_frames - 1, dtype=np.int64)
+
+
+def load_maritime(*, supervision: str, warmup: int, augment: Augment | None,
+                  corpora: tuple[str, ...] = ("smd_train", "lars_train"),
+                  max_train_windows: int | None = None) -> tuple[WindowDataset, dict]:
+    """Train dataset of a maritime arm: every unit of the maritime v2e ``corpora`` (calibrated
+    profile, D-054), windows of one frame interval after ``warmup``, at 640x360.
+    ``supervision`` = "teacher" (RAFT pseudo-GT + FB mask, D-055) or "none" (CM loss).
+    A split guard refuses any unit outside ``MARITIME_TRAIN_SPLITS`` (CLAUDE.md rule 4)."""
+    import yaml
+
+    from evflow.io.frames import frame_times_us
+    from evflow.sim import maritime_corpus as mc
+
+    if supervision not in ("teacher", "none"):
+        raise ValueError(f"supervision must be teacher or none, got {supervision!r}")
+    paths = yaml.safe_load((REPO / "configs" / "paths.local.yaml").read_text())
+    events_root = Path(paths["outputs"]["events"])
+    root = mc.out_root(paths)
+    plan_path = root / "corpus_plan.json"
+    plan = json.loads(plan_path.read_text())
+    prov: dict = {"source": "maritime", "corpus_plan": str(plan_path.relative_to(events_root)),
+                  "corpus_plan_sha256": _sha(plan_path), "corpora": list(corpora),
+                  "supervision": supervision, "warmup_windows": int(warmup), "stores": {},
+                  "teacher": {}}
+    units = [u for u in plan["units"] if u["corpus"] in corpora]
+    if not units:
+        raise ValueError(f"no units of {corpora} in {plan_path}")
+    data, refs, teacher, keys = [], [], {}, set()
+    for ci, u in enumerate(units):
+        if u["split"] not in MARITIME_TRAIN_SPLITS or u["ct_multiplier"] != 1.0:
+            raise LeakageError(f"{u['key']}: maritime training reads calibrated "
+                               f"{MARITIME_TRAIN_SPLITS} units only, not {u['split']} "
+                               f"x{u['ct_multiplier']}")
+        store = root / u["corpus"] / f"{u['name']}.h5"
+        man = json.loads(store.with_suffix(".json").read_text())
+        prov["stores"][str(store.relative_to(events_root))] = {
+            "store_sha256": man["store_sha256"], "manifest_sha256": _sha(store.with_suffix(
+                ".json")), "split": u["split"], "seed": man["seed"],
+            "overrides": man["overrides"]}
+        n = int(u["n_frames"])
+        ft = frame_times_us(n, float(man["input_frame_rate"]),
+                            int(man["conversion"]["t_offset_us"]))
+        ks = maritime_windows(n, warmup)
+        arr = EventArrays.from_store(store, int(ft[ks[0]]), int(ft[ks[-1] + 1]))
+        if arr.end_clamped_us:
+            prov.setdefault("end_clamped_us", {})[u["key"]] = arr.end_clamped_us
+        data.append(ClipData(Clip(u["key"], u["split"], 0, n - 1), [arr]))
+        for k in ks:
+            key = maritime_key(ci, k)
+            keys.add(key)
+            refs.append(WindowRef(ci, 1, key, int(ft[k]), int(ft[k + 1])))
+        if supervision == "teacher":
+            tp = events_root / "teacher" / u["corpus"] / f"{u['name']}.h5"
+            with h5py.File(tp, "r") as f:
+                if f.attrs["frames_sha256"] != man["input"]["sha256"]:
+                    raise ValueError(f"{tp}: teacher frames differ from the v2e unit input")
+                if int(f["flow"].shape[0]) != n - 1:
+                    raise ValueError(f"{tp}: {f['flow'].shape[0]} teacher windows, expected "
+                                     f"{n - 1}")
+            teacher[ci] = tp
+            prov["teacher"][str(tp.relative_to(events_root))] = _sha(tp)
+    windows = thin({1: refs}, max_train_windows)
+    gt = MaritimeGT(keys, teacher if supervision == "teacher" else None)
+    prov["n_units"] = len(units)
+    prov["n_windows"] = len(windows[1])
+    ds = WindowDataset(data, windows, {1: gt}, augment=augment, hood_row=None,
+                       height=MARITIME_HEIGHT, width=MARITIME_WIDTH)
+    return ds, prov

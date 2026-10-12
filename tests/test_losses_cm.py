@@ -171,3 +171,49 @@ def test_at_minimum_at_true_flow_on_grid():
     grid = [(u, v) for u in range(0, 10) for v in range(-7, 2)]
     vals = [float(average_timestamp_loss(ev, _const(u, v)[0], 64)) for u, v in grid]
     assert grid[int(np.argmin(vals))] == (6, -4)
+
+
+# --- low-count floor (D-049 follow-up, D-056) ------------------------------------------------
+
+AT_FLOOR = CMLossParams(objective="average_timestamp", smoothness_weight=0.1,
+                        divergence_penalty=0.3, min_count=1e-2)
+
+
+def test_at_floor_zero_is_the_phase5_loss():
+    from evflow.losses.cm import average_timestamp_images, average_timestamp_loss
+    ev = _dots(1)
+    f = _const(2.3, -1.7)[0]
+    ref = 0.0
+    for t_ref, wts in ((1.0, ev.tau), (0.0, 1.0 - ev.tau)):
+        cnt, ts = average_timestamp_images(ev, f, t_ref=t_ref, weights=wts, pad=64)
+        avg = ts / (cnt + 1e-9)
+        ref += float((avg * avg).sum() / (cnt.sum(0) > 0).sum())
+    assert float(average_timestamp_loss(ev, f, 64)) == pytest.approx(ref, rel=1e-6)
+    assert float(average_timestamp_loss(ev, f, 64, 0.0)) == pytest.approx(ref, rel=1e-6)
+
+
+@pytest.mark.parametrize("seed", [0, 1, 2])
+def test_at_floor_keeps_the_minimum_and_rejects_collapse(seed):
+    ev = _dots(seed)
+    assert _loss(_const(*FLOW), ev, AT_FLOOR) < _loss(_const(0, 0), ev, AT_FLOOR) \
+        < _loss(_const(-FLOW[0], -FLOW[1]), ev, AT_FLOOR)
+    true = _loss(_const(*FLOW), ev, AT_FLOOR)
+    for a in np.linspace(-3, 3, 25):
+        if abs(a) > 1e-9:
+            assert _loss(_contracting(float(a)), ev, AT_FLOOR) > true, a
+
+
+def test_at_floor_bounds_the_low_count_gradient():
+    """An event whose bilinear taps put ~1e-4 weight on a pixel no other event reaches: without
+    the floor that pixel's ratio has a gradient ~1/count; with it the cell is ignored."""
+    from evflow.losses.cm import average_timestamp_loss
+    x = torch.tensor([10, 30]).long()
+    y = torch.tensor([10, 20]).long()
+    ev = WindowEvents(x, y, torch.tensor([0.2, 0.7]), torch.tensor([1, 0]))
+    f = torch.zeros(2, H, W)
+    f[0] = 1e-4 / 0.8          # event 0 moves 1e-4 px by t_ref = 1: a 1e-4 tap on x = 11
+    f.requires_grad_(True)
+    g0 = torch.autograd.grad(average_timestamp_loss(ev, f, 64), f)[0].abs().max()
+    f2 = f.detach().clone().requires_grad_(True)
+    g1 = torch.autograd.grad(average_timestamp_loss(ev, f2, 64, 1e-2), f2)[0].abs().max()
+    assert float(g1) < 1e-2 * float(g0)
