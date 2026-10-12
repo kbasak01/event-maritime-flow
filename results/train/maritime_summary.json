@@ -1,0 +1,172 @@
+{
+ "kind": "training_runs",
+ "phase": 7,
+ "note": "Tune metrics are mvsec_tune selection evidence (T1 real events, T2 v2e events, real GT); test results are in results/eval/.",
+ "n_expected": 2,
+ "n_done": 2,
+ "n_excluded": 0,
+ "runs": [
+  {
+   "run_id": "maritime_selfsup_voxel5_s1337",
+   "status": "done",
+   "arm": "maritime_selfsup",
+   "model": "M1",
+   "representation": "voxel5",
+   "seed": 1337,
+   "loss": "cm",
+   "git_sha": "b552569bb7377ef3c35fcaa2367598cc79d886fa",
+   "git_dirty": false,
+   "config_files": {
+    "configs/evflow.yaml": "d3fae5900be4a1d06bf79b1ab4f4a8c7ffacaadd7063773a19c9112770a46403",
+    "configs/train_maritime_selfsup.yaml": "e1ac343aed367f618eaac03889132f41a074d9e0ed46ec0b57d1b7b98954d809"
+   },
+   "manifest_sha256": "ec65f03844cce8fa137403939f7ec69a038df1a23e357d3540bef44fc5db8754",
+   "train_windows": {
+    "1": 2349
+   },
+   "n_params": 13341192,
+   "epochs_planned": 40,
+   "epochs_done": 40,
+   "checkpoint_sha256": "5965c69739b5a0f5ef60382783fb4f6948aa1fd3521118845a8b850457e0e06d",
+   "selection": {
+    "rule": "max of v2e tune dt1 fwl over epochs (mvsec_tune only)",
+    "split": "mvsec_tune",
+    "stream": "v2e",
+    "metric": "fwl",
+    "dt": 1,
+    "mode": "max",
+    "selected_epoch": 38,
+    "value": 1.144978593103029
+   },
+   "tune_at_selected_epoch": {
+    "v2e_dt1": {
+     "tier": "T2",
+     "events": "v2e",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 1,
+     "used_for_selection": true,
+     "metrics": {
+      "epe": 1.2282799268948068,
+      "outlier_pct": 3.9211360045910184,
+      "npe_1": 52.34817088454414,
+      "npe_3": 3.9211360045910184,
+      "ae_deg": 34.57420784350846,
+      "fwl": 1.144978593103029,
+      "flow_mag": 1.832486639176255
+     }
+    },
+    "real_dt1": {
+     "tier": "T1",
+     "events": "real",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 1,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 1.3165096068683186,
+      "outlier_pct": 5.515104133624934,
+      "npe_1": 54.85002739454968,
+      "npe_3": 5.515104133624934,
+      "ae_deg": 37.674450735406566,
+      "fwl": 1.101703832239111,
+      "flow_mag": 1.764341465698686
+     }
+    }
+   },
+   "collapse_diagnostics_at_selected_epoch": {
+    "flow_mag_events": 2.2772241669893263,
+    "iwe_nonempty_ratio": 0.978174300789833,
+    "iwe_var_ratio": 0.7824942258349665,
+    "abs_div": 0.06083793151658028
+   },
+   "final_epoch_train_loss": 0.6350277004993126,
+   "clipped_step_fraction_max": 0.04794520547945205
+  },
+  {
+   "run_id": "maritime_teacher_voxel5_s1337",
+   "status": "done",
+   "arm": "maritime_teacher",
+   "model": "M1",
+   "representation": "voxel5",
+   "seed": 1337,
+   "loss": "supervised",
+   "git_sha": "b552569bb7377ef3c35fcaa2367598cc79d886fa",
+   "git_dirty": false,
+   "config_files": {
+    "configs/evflow.yaml": "d3fae5900be4a1d06bf79b1ab4f4a8c7ffacaadd7063773a19c9112770a46403",
+    "configs/train_maritime_teacher.yaml": "6e0e7fd55a2e0f5e167168ab692a08bbc069be97e16ddbb426ce4a05409f3919"
+   },
+   "manifest_sha256": "19a45e812ceb4876f1794f927746e4ca67c89b269a006cc7b3bad849c3bfcd03",
+   "train_windows": {
+    "1": 2349
+   },
+   "n_params": 13341192,
+   "epochs_planned": 40,
+   "epochs_done": 40,
+   "checkpoint_sha256": "bd4110ee0ccbd684557df985a2f8291b45661f581382b00d5fed1b0e070ac91d",
+   "selection": {
+    "rule": "min of v2e tune dt1 epe over epochs (mvsec_tune only)",
+    "split": "mvsec_tune",
+    "stream": "v2e",
+    "metric": "epe",
+    "dt": 1,
+    "mode": "min",
+    "selected_epoch": 38,
+    "value": 0.6170661250982257
+   },
+   "tune_at_selected_epoch": {
+    "v2e_dt1": {
+     "tier": "T2",
+     "events": "v2e",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 1,
+     "used_for_selection": true,
+     "metrics": {
+      "epe": 0.6170661250982257,
+      "outlier_pct": 1.5711787068655272,
+      "npe_1": 19.800397190711514,
+      "npe_3": 1.5711787068655272,
+      "ae_deg": 16.232129887133095,
+      "fwl": 1.130047496730789,
+      "flow_mag": 1.2077897797309038
+     }
+    },
+    "real_dt1": {
+     "tier": "T1",
+     "events": "real",
+     "dataset": "mvsec",
+     "sequence": "outdoor_day2",
+     "split": "mvsec_tune",
+     "dt": 1,
+     "used_for_selection": false,
+     "metrics": {
+      "epe": 0.7770276876673815,
+      "outlier_pct": 2.2794084408126163,
+      "npe_1": 24.461800167567368,
+      "npe_3": 2.2794084408126163,
+      "ae_deg": 23.27066774236163,
+      "fwl": 1.0720373808669583,
+      "flow_mag": 1.1508200656739416
+     }
+    }
+   },
+   "collapse_diagnostics_at_selected_epoch": {
+    "flow_mag_events": 1.295549619831145,
+    "iwe_nonempty_ratio": 0.9777132052183152,
+    "iwe_var_ratio": 0.8993104778457951,
+    "abs_div": 0.02822960853925906
+   },
+   "final_epoch_train_loss": 5.723803069493542,
+   "clipped_step_fraction_max": 1.0
+  }
+ ],
+ "git_sha": "b552569bb7377ef3c35fcaa2367598cc79d886fa",
+ "git_dirty": false,
+ "created_by": "scripts/summarise_training.py",
+ "created_at": "2026-10-12T20:11:22+00:00"
+}
