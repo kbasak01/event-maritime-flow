@@ -1,6 +1,6 @@
 # LICENSES
 
-Filled in Phase 0 from SOURCES.md. Every row was checked on the primary page on 2026-10-08. "No raw
+Filled in Phase 0 from SOURCES.md. Every row was checked on the primary page on or after 2026-10-08 (date per row). "No raw
 data" means no frames, event files, GT or v2e outputs of the dataset are committed or released;
 code, metrics and aggregate numbers derived from the data are.
 

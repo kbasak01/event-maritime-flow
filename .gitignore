@@ -21,3 +21,9 @@ __pycache__/
 results/fidelity/figures/
 results/figures/flow_panels/
 results/figures/maritime_panels/
+# added in Phase 9 (repo-publication-reviewer dry run M4): data-like outputs never enter git
+*.npy
+*.gif
+*.mp4
+*.avi
+*.bag

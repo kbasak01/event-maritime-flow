@@ -11,7 +11,7 @@
 | 6 | PASS (CI green) | docs/gates/phase-6.md | 2026-10-12 |
 | 7 | PASS (CI green) | docs/gates/phase-7.md | 2026-10-12 |
 | 8 | PASS with fp16 non-conformance (D-064) (CI green) | docs/gates/phase-8.md | 2026-10-12 |
-| 9 | not started | – | – |
+| 9 | PASS (CI pending) | docs/gates/phase-9.md | 2026-10-12 |
 | 10 | not started | – | – |
 
 Pending GPU jobs: none (Claude may launch GPU jobs after `gpu-job` prep, D-006; one CUDA process at a time on this workstation, D-048b).

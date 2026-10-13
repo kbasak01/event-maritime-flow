@@ -1,9 +1,60 @@
 # LIMITATIONS
 
-Written in Phase 9: one row per VALIDATION_CHECKLIST.md line.
+Written in Phase 9 (2026-10-12, at 8928598 + this sweep): one row per VALIDATION_CHECKLIST.md
+line. **C** = critical (blocks publication if unmet). Commands re-run for this sweep: `make lint`,
+`make test` (393 passed), `make reproduce-tables` and a re-render in a clean worktree of HEAD
+(no diff), `scripts/make_splits.py --check`; gate record `docs/gates/phase-9.md`.
 
 | ID | Verdict (met / met-with-caveat / unmet) | Evidence | Note |
 |---|---|---|---|
+| A1 (C) | met | `docs/gates/phase-1.md` (event-data-auditor); `docs/gates/phase-3.md` criterion 5 (30 v2e MVSEC stores); `docs/gates/phase-7.md` (243 maritime stores); Phase 9: all 8 real MVSEC/DSEC stores re-checked by the eval-reproducibility-auditor (`docs/gates/phase-9.md`); store tests in `make test` | |
+| A2 (C) | met | `docs/gates/phase-1.md`; `docs/DECISIONS.md` (MVSEC column order, µs, polarity) | |
+| A3 | met-with-caveat | `docs/gates/phase-2.md`; D-022 | `scripts/h5_layout.py` stands in for `h5ls -v` (not installed) |
+| A4 | met | `docs/gates/phase-1.md` | |
+| A5 | met | `docs/gates/phase-1.md`; `configs/eval_mvsec.yaml` `pixel_space: raw_distorted` (D-015) | |
+| A6 | met | `docs/gates/phase-2.md`; `scripts/make_splits.py --check` → "splits OK" (re-run in Phase 9); `splits/SHA256SUMS.txt` | |
+| A7 (C) | met-with-caveat | all 33 `runs/**/selection.json` have `split: mvsec_tune`; `split: mvsec_tune` in `results/v2e_calibration.json`, `results/v2e_calibration_timing.json`, `results/baselines/cm_tune.json`, `results/train/cm_sweep.json`, `results/fp16_sensitivity.json`; `configs/evflow.yaml` `selection_split: mvsec_tune`; split guard `src/evflow/train/data.py` (`ALLOWED_SPLITS`); `docs/gates/phase-5.md` (event-data-auditor, selection leakage); clutter CT multipliers fixed a priori (D-054e); maritime arms selected on `mvsec_tune` (D-056) | Test-split names in configs appear only in evaluation-only settings (v2e test corpus, parity windows, figure panels). Caveat (D-064 disclosure): exploratory scratch runs on 50 `mvsec_test` parity windows informed which 8 precision splits the tune-only fp16 script tried; no precision configuration was selected or exported |
+| B1 | met | `docs/gates/phase-2.md`; manifests in `results/v2e_*corpus.json` | |
+| B2 | met | `docs/gates/phase-2.md` | |
+| B3 | met | `docs/gates/phase-2.md`; re-calibration for timing on `mvsec_tune` (D-035, `results/v2e_calibration_timing.json`) | |
+| B4 | met-with-caveat | `docs/gates/phase-3.md`; `results/v2e_alignment.json` | The 1-frame-shift control is not rejected on every group (see "What the alignment check can show" below) |
+| B5 | met | `docs/gates/phase-3.md`; `results/fidelity/test_*.json` | |
+| B6 | met | `docs/gates/phase-2.md`; `results/v2e_throughput.json`; D-026, D-054 | |
+| C1 (C) | met | `docs/gates/phase-1.md`; oracle tests in `make test` | |
+| C2 (C) | met | `docs/gates/phase-1.md`; FWL fixtures in `make test` | |
+| C3 | met | `docs/gates/phase-6.md` (criterion 9) | |
+| C4 | unmet | `configs/eval_mvsec.yaml` (windows, sparse mask, crop rule: complete) | README not written yet; quoting it is Phase 10 work (Claude) |
+| C5 | met | `docs/gates/phase-4.md`; `results/baselines/eraft_reproduction.json` | |
+| C6 | met | `docs/gates/phase-6.md` (criterion 5); D-053 | |
+| D1 | met | `docs/gates/phase-5.md` | |
+| D2 | met-with-caveat | `docs/gates/phase-5.md`; D-043(h), D-046 | Within the 2× gate but above zero flow on `indoor_flying1` dt = 1; reported as a generalisation gap (Table A-T1) |
+| D3 | met | `docs/gates/phase-5.md`; D-047 (collapsed cells stopped and listed) | |
+| D4 | met | `results/train/summary.json`; `docs/gates/phase-5.md` | |
+| D5 | met | `docs/gates/phase-5.md`; Phase 9 check: 403 eval JSONs of trained runs under `results/eval*/` carry `checkpoint_sha256` equal to the run's `selection.json` (0 missing, 0 mismatched) | |
+| D6 | met | `tests/test_train_data.py::test_hflip_consistent_with_warping` (in `make test`) | |
+| E1 (C) | met-with-caveat | `claim-trace` of this file and of D-063 / D-064 in Phase 9 (`docs/gates/phase-9.md`); earlier docs traced at their gates (`docs/gates/phase-3.md` criterion 11, `docs/gates/phase-7.md`) | No README exists yet; the README is traced at the Phase 10 gate |
+| E2 (C) | met | `docs/gates/phase-6.md`, `docs/gates/phase-7.md` (sim2real-study-runner PASS); `tests/test_results_have_tiers.py`; `make_tables._check_tier` / `tables_maritime.py` refuse mixed tiers | |
+| E3 (C) | met | Phase 9 grep of `docs/`, `results/TABLES.md`, `scripts/`, `src/`, `configs/` for HDR / dynamic range / glare / low latency / latency advantage / microsecond: every hit is a disclaimer or a time unit (`results/TABLES.md` T3 tier note and Table J note, `scripts/fidelity_report.py`, `scripts/latency_bench.py`, `scripts/run_clutter.py`, `scripts/tables_maritime.py`, the `docs/CONVENTIONS.md` forbidden-word list, notes in `results/latency.json` and `results/maritime/clutter.json`) | README checked again at Phase 10 |
+| E4 | met | T3 part of `results/TABLES.md` uses `teacher-EPE` only (plain "EPE" occurs only in Tables A–E and I, T1/T2); `tables_maritime.py` refuses the key `epe`; FWL/RSAT notes say "not accuracy" | |
+| E5 | met | `docs/gates/phase-7.md` (Tables F, G, H; `results/eval_maritime/summary.json`) | |
+| E6 | met-with-caveat | Phase 9 grep of docs and table captions: no first / novel / state-of-the-art claim | No README yet; positioning text (plan §0) is written and checked in Phase 10 |
+| E7 | met-with-caveat | `docs/gates/phase-7.md` (T3 protocol, Table H, clutter figure caption "LaRS frame rate assumed 30 fps"; D-024) | README to follow in Phase 10 |
+| F1 | unmet | `results/onnx_parity.json` (`gate_passed: true`, `all_passed: false`, `non_conforming: [ort_cuda_fp16, ort_trt_fp16]`); `docs/gates/phase-8.md`; D-064 | fp32 (max 7.3e-05 px) and EPE change (≤ 1.1e-03 px) clauses met; the fp16 clause (≤ 5e-2 px) is not met (see the D-064 bullet below). Tolerance unchanged |
+| F2 | met | `results/latency.json` `methodology` (warmup 50, timed 500, synchronised, p50/p90/p99/max); `representation_build` timed per event count (10⁴/10⁵/10⁶) separately from the network | |
+| F3 | met | `results/latency.json` `environment.{torch_process,ort_process}`: GPU, driver, CUDA runtime, cuDNN, torch, onnxruntime-gpu, TensorRT versions | |
+| F4 | unmet | Stand-in sentence present in `results/latency.json` `hardware_note` and `results/TABLES.md` Table J | README not written yet: Phase 10 (Claude) |
+| G1 (C) | met | `tests/test_no_gpl_imports.py` (scans `src/`, `tests/`, `scripts/`; in `make test`); `docs/LICENSES.md` (GPL repo not vendored, not imported); repo-publication-reviewer dry run (`docs/gates/phase-9.md`) | |
+| G2 (C) | met | `git ls-files` (778 files): no h5 / npz / npy / bag / video / image data; the only images ever committed (whole history) are three metric plots in `results/figures/`; `.gitignore` covers `data/`, `*.h5`, `*.npz` and the imagery figure folders; no release exists yet | Release assets are checked at Phase 10 |
+| G3 | met-with-caveat | `configs/evflow.yaml` `figures.attribution` (MVSEC, CC BY-SA 4.0, share-alike) in every MVSEC flow-panel caption; `scripts/fidelity_report.py` rate maps marked CC BY-SA 4.0 | Imagery figures are gitignored (D-008, D-033). The committed `epe_mvsec_T1/T2.png` are metric plots without imagery and without a dataset attribution line; the README attributes MVSEC beside them (Phase 10) |
+| G4 | met-with-caveat | `docs/LICENSES.md` (SMD: no imagery; LaRS: imagery allowed with attribution, no redistribution of images); no SMD or LaRS imagery tracked (`results/figures/maritime_panels/` gitignored) | Whether LaRS panels appear in the README is decided in Phase 10 |
+| G5 | met | `src/evflow/models/eraft_ref/*.py` headers + `LICENSE` (MIT E-RAFT, BSD-3 RAFT); `tests/oracles/event_flow_metrics.py` MIT header; both listed in `docs/LICENSES.md` | |
+| G6 | met | `make reproduce-tables` → "results/TABLES.md is current"; clean-worktree re-render, no diff; CI step in `.github/workflows/ci.yml` | |
+
+### Unmet lines
+
+- **Critical:** none.
+- **Non-critical:** C4 and F4 (README not written; Phase 10, Claude); F1 (fp16 parity, accepted
+  non-conformance D-064; no action, deployment claims stay fp32).
 
 ## Known limitations recorded before Phase 9
 
@@ -77,3 +128,25 @@ Written in Phase 9: one row per VALIDATION_CHECKLIST.md line.
 - **Maritime arms selected on driving content (Phase 7, D-056).** CLAUDE.md rule 4 allows
   selection on `mvsec_tune` only, so `maritime_selfsup` and `maritime_teacher` pick their epoch
   on the v2e(mvsec_tune) stream, out of their training domain; the maritime arms are one seed each.
+- **fp16 deployment is non-conforming; deployment claims are fp32 only (Phase 8, T1 parity,
+  D-064).** On the 200 fixed `mvsec_test` dt = 1 parity windows, ORT CUDA EP fp32 matches PyTorch
+  to max |Δflow| 7.3e-05 px (real_sup s1337) and 5.4e-05 px (v2e_rand_sup s7); every fp16 row
+  misses the plan's 5e-2 px tolerance: ORT CUDA fp16 0.093 / 0.24 px, TensorRT EP fp16 0.096 /
+  0.49 px (real_sup / v2e_rand_sup), also inside the evaluation mask, on 85–163 of 200 windows;
+  the EPE change stays ≤ 1.1e-03 px in every row (`results/onnx_parity.json`
+  `units[].providers.*.metrics`). Consequence: no TensorRT configuration conforms (the TensorRT EP
+  row is fp16 only), so Table J's fp16 and TensorRT timings are not a deployable configuration at
+  the plan's tolerance. A tune-only study found no tested fp32/fp16 module split that brings
+  real_sup under the tolerance (`results/fp16_sensitivity.json`, D-064). The A4000 timings stand in
+  for an embedded target and say nothing about event-sensor latency (`results/latency.json`).
+- **Provenance of early results and of runs (Phase 9, eval-reproducibility-auditor m-2, m-3,
+  m-5).** The Phase 2/3 result JSONs (`results/fidelity/*.json`, `v2e_alignment`,
+  `v2e_calibration`, `v2e_calibration_timing`, `v2e_mvsec_corpus`, `v2e_mvsec_corpus_d032_lagged`,
+  `v2e_maritime_corpus`, `v2e_throughput`, `lars_fps_check`) predate the `git_dirty` field; the
+  corpus files record `checks.all_git_clean: true` and every `git_sha` is an ancestor of HEAD. The
+  split manifests were generated at a dirty commit (`splits/README.md`); they regenerate
+  byte-identically (A6). `splits/SHA256SUMS.txt` lists SHA-256 of the canonical JSON, not of the
+  files, so it is not `sha256sum -c` input (`splits/README.md`). `runs/` is gitignored: the
+  committed lineage stops at `results/train/*summary.json` `manifest_sha256`; split and
+  corpus-plan SHAs per run live in `runs/*/manifest.json` (to be shipped or summarised in
+  Phase 10).

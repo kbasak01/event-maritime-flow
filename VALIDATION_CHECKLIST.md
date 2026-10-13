@@ -10,7 +10,7 @@ Phase 9 walks every line. Verdict ∈ {met, met-with-caveat, unmet} + evidence p
 - [x] A4 DSEC events rectified with `rectify_map.h5`; flow PNG decode round-trips; valid mask honoured. — Phase 1 gate: `docs/gates/phase-1.md`.
 - [x] A5 MVSEC GT flow and events refer to the same (distorted/undistorted) pixel space; stated. — Phase 1 gate: `docs/gates/phase-1.md`.
 - [x] A6 Split manifests regenerate byte-identically from the seed; SHA-256 committed. — Phase 2 gate: `docs/gates/phase-2.md`.
-- [ ] A7 (critical) No test sequence used for calibration, CT range, epoch or model selection (grep of configs + run manifests).
+- [x] A7 (critical) No test sequence used for calibration, CT range, epoch or model selection (grep of configs + run manifests). — Phase 9: met-with-caveat (33/33 `selection.json` and every calibration / sweep / fp16 study on `mvsec_tune`; D-064 scratch-run disclosure), `docs/LIMITATIONS.md`.
 
 ## B. Simulator
 - [x] B1 Every v2e output has a manifest (commit, argv, seed, input/output SHA, wall time). — Phase 2 gate: `docs/gates/phase-2.md`.
@@ -24,7 +24,7 @@ Phase 9 walks every line. Verdict ∈ {met, met-with-caveat, unmet} + evidence p
 - [x] C1 (critical) EPE/%Out/NPE/AE match hand-computed fixtures and the vendored MIT oracle to 1e-6. — Phase 1 gate: `docs/gates/phase-1.md`.
 - [x] C2 (critical) FWL = 1 for zero flow exactly; correct flow > wrong-sign flow on analytic fixtures. — Phase 1 gate: `docs/gates/phase-1.md`.
 - [x] C3 Flow units = pixels over the window, forward; dt=1 and dt=4 never mixed in one mean. — Phase 6 gate: `docs/gates/phase-6.md` (criterion 9).
-- [ ] C4 MVSEC eval windows, sparse mask, crop rule written in `configs/eval_mvsec.yaml` and quoted in README.
+- [ ] C4 MVSEC eval windows, sparse mask, crop rule written in `configs/eval_mvsec.yaml` and quoted in README. — Phase 9: **unmet** (YAML complete; README is Phase 10), `docs/LIMITATIONS.md`.
 - [x] C5 Phase 4 reproduction gate met (our metrics on E-RAFT flows = E-RAFT's own, ≤ 1e-3 px; EPE within 10 % of paper) or miss documented. — Phase 4 gate: `docs/gates/phase-4.md` (`results/baselines/eraft_reproduction.json`).
 - [x] C6 Bootstrap CIs use moving blocks of 1 s; paired bootstrap for arm differences. — Phase 6 gate: `docs/gates/phase-6.md` (criterion 5; seed spread D-053).
 
@@ -37,24 +37,24 @@ Phase 9 walks every line. Verdict ∈ {met, met-with-caveat, unmet} + evidence p
 - [x] D6 Augmentation flips flow sign consistently with the image flip (unit test). — `tests/test_train_data.py::test_hflip_consistent_with_warping`.
 
 ## E. Claims
-- [ ] E1 (critical) Every README/docs number traces to a committed `results/*.json` (`claim-trace`).
+- [x] E1 (critical) Every README/docs number traces to a committed `results/*.json` (`claim-trace`). — Phase 9: met-with-caveat (claim-trace of LIMITATIONS, D-063, D-064; 2 findings fixed in D-063; README traced in Phase 10), `docs/LIMITATIONS.md`.
 - [x] E2 (critical) Every table row carries a tier tag; no T3 row in a T1/T2 section. — Phase 6 gate (`results/TABLES.md`; re-checked at the Phase 7 gate with the T3 part, sim2real-study-runner PASS, `docs/gates/phase-7.md`).
-- [ ] E3 (critical) No HDR, glare-robustness or latency-advantage claim derived from v2e events.
-- [ ] E4 "teacher-EPE" never called "EPE" or "accuracy"; FWL never called accuracy.
+- [x] E3 (critical) No HDR, glare-robustness or latency-advantage claim derived from v2e events. — Phase 9: met (grep; only disclaimers), `docs/LIMITATIONS.md`; README re-checked in Phase 10.
+- [x] E4 "teacher-EPE" never called "EPE" or "accuracy"; FWL never called accuracy. — Phase 9: met, `docs/LIMITATIONS.md`.
 - [x] E5 Maritime metrics reported per class (water/sky/obstacle) wherever LaRS labels exist. — Phase 7 gate (Tables F, G, H; `results/eval_maritime/summary.json`).
-- [ ] E6 Novelty statements match `IMPLEMENTATION_PLAN.md` §0 positioning (no claim to be first to train flow on synthetic events).
+- [x] E6 Novelty statements match `IMPLEMENTATION_PLAN.md` §0 positioning (no claim to be first to train flow on synthetic events). — Phase 9: met-with-caveat (no novelty claim in docs; README in Phase 10), `docs/LIMITATIONS.md`.
 - [x] E7 LaRS frame-rate assumption (if any) stated next to every LaRS number. — Phase 7 gate (T3 protocol, Table H, clutter figure; D-024). README to follow in Phase 10.
 
 ## F. Deployment
-- [ ] F1 ONNX fp32 parity ≤ 1e-3 px (TF32 off); fp16 ≤ 5e-2 px; EPE change ≤ 0.01 px.
-- [ ] F2 Latency: ≥ 50 warm-up, ≥ 500 timed, synchronised; p50/p90/p99/max; representation build reported separately vs events per window.
-- [ ] F3 Hardware and software versions (GPU, driver, CUDA, ORT, TensorRT) in `results/latency.json`.
-- [ ] F4 README states the A4000 is a stand-in for an embedded target.
+- [ ] F1 ONNX fp32 parity ≤ 1e-3 px (TF32 off); fp16 ≤ 5e-2 px; EPE change ≤ 0.01 px. — Phase 9: **unmet** (fp16 clause; fp32 and EPE change met; non-conformance accepted, D-064), `docs/LIMITATIONS.md`.
+- [x] F2 Latency: ≥ 50 warm-up, ≥ 500 timed, synchronised; p50/p90/p99/max; representation build reported separately vs events per window. — Phase 8 gate; Phase 9: met (`results/latency.json` `methodology`), `docs/LIMITATIONS.md`.
+- [x] F3 Hardware and software versions (GPU, driver, CUDA, ORT, TensorRT) in `results/latency.json`. — Phase 9: met (`environment.{torch_process,ort_process}`), `docs/LIMITATIONS.md`.
+- [ ] F4 README states the A4000 is a stand-in for an embedded target. — Phase 9: **unmet** (README is Phase 10; sentence present in `results/latency.json` and Table J), `docs/LIMITATIONS.md`.
 
 ## G. Licences and publication
-- [ ] G1 (critical) No GPL code in `src/` or `tests/` (`test_no_gpl_imports.py` + reviewer).
-- [ ] G2 (critical) No dataset frames, event files or GT in git or release assets.
-- [ ] G3 Every figure derived from a CC BY-SA dataset is attributed and marked share-alike.
-- [ ] G4 LaRS / SMD imagery appears only if `docs/LICENSES.md` permits. — Phase 7: no SMD imagery, LaRS GIFs gitignored; final check at publication (Phase 10).
-- [ ] G5 Vendored MIT code keeps its licence header and is listed in `docs/LICENSES.md`.
+- [x] G1 (critical) No GPL code in `src/` or `tests/` (`test_no_gpl_imports.py` + reviewer). — Phase 9: met (test + repo-publication-reviewer dry run, `docs/gates/phase-9.md`), `docs/LIMITATIONS.md`.
+- [x] G2 (critical) No dataset frames, event files or GT in git or release assets. — Phase 9: met for git incl. history (no release yet; release assets checked in Phase 10), `docs/LIMITATIONS.md`.
+- [x] G3 Every figure derived from a CC BY-SA dataset is attributed and marked share-alike. — Phase 9: met-with-caveat (imagery panels attributed + share-alike, gitignored; committed EPE plots carry no imagery, README attributes in Phase 10), `docs/LIMITATIONS.md`.
+- [x] G4 LaRS / SMD imagery appears only if `docs/LICENSES.md` permits. — Phase 7: no SMD imagery, LaRS GIFs gitignored; final check at publication (Phase 10); Phase 9: met-with-caveat (no SMD/LaRS imagery tracked), `docs/LIMITATIONS.md`.
+- [x] G5 Vendored MIT code keeps its licence header and is listed in `docs/LICENSES.md`. — Phase 9: met, `docs/LIMITATIONS.md`.
 - [x] G6 `make reproduce-tables` regenerates `results/TABLES.md` with no diff. — Phase 6 gate; enforced in CI (`.github/workflows/ci.yml`).
