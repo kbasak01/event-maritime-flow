@@ -27,3 +27,8 @@ results/figures/maritime_panels/
 *.mp4
 *.avi
 *.bag
+# added in Phase 10 (D-065, D-067): README gallery media are script outputs and committed;
+# release assets are staged locally and uploaded, never committed (D-066)
+!results/figures/readme/
+!results/figures/readme/*.gif
+release/

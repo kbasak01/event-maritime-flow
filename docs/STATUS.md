@@ -12,9 +12,11 @@
 | 7 | PASS (CI green) | docs/gates/phase-7.md | 2026-10-12 |
 | 8 | PASS with fp16 non-conformance (D-064) (CI green) | docs/gates/phase-8.md | 2026-10-12 |
 | 9 | PASS (CI green) | docs/gates/phase-9.md | 2026-10-12 |
-| 10 | not started | – | – |
+| 10 | PASS (CI pending) | docs/gates/phase-10.md | 2026-10-12 |
 
 Pending GPU jobs: none (Claude may launch GPU jobs after `gpu-job` prep, D-006; one CUDA process at a time on this workstation, D-048b).
+
+Phase 10 (no gpu-job): one short inference pass for the README media (`python scripts/make_figures.py --readme`, seed-1337 runs, seconds of GPU) → `results/figures/readme/`; release assets staged by `scripts/make_release.py` in gitignored `release/` (`docs/RELEASE.md`).
 
 Done GPU jobs (Phase 8):
 - `jobs/2026-10-12_export-bench.sh` → `results/onnx_parity.json`, `results/latency.json`, `results/TABLES.md` (D-063, D-064; run at 15e7143 19:04–19:13, resumed at db4f7c3, 13e34d8 and 5f567c5 (20:32–20:34) for the torch fp16 diagnostic, `results/fp16_sensitivity.json` and summaries; torch steps in `.venv`, ORT steps in `external/venvs/ort`).

@@ -1,7 +1,10 @@
 """Render ``results/TABLES.md`` from committed results JSON (CLAUDE.md rule 3; plan Phase 6 step 2).
 
-    python scripts/make_tables.py            # write results/TABLES.md
+    python scripts/make_tables.py            # write results/TABLES.md + README.md blocks
     python scripts/make_tables.py --check    # regenerate in memory; exit 1 on any difference
+
+The generated blocks of ``README.md`` (``scripts/readme_blocks.py``, Phase 10, D-067) are cut
+from the same rendered text, so README numbers and TABLES.md cannot drift apart.
 
 Reads only committed JSON, so it runs without data (CI, ``make reproduce-tables``):
 ``results/eval/{aggregate,paired,summary}.json`` (``scripts/summarise_eval.py``) and the Phase 4
@@ -33,11 +36,13 @@ from pathlib import Path
 from evflow.eval import study
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import readme_blocks  # noqa: E402
 import tables_deploy  # noqa: E402
 import tables_maritime  # noqa: E402
 
 REPO = Path(__file__).resolve().parents[1]
 OUT_REL = "results/TABLES.md"
+README_REL = "README.md"
 TIERS = ("T1", "T2")
 DIGITS = {"epe": 3, "outlier_pct": 2, "npe_1": 2, "npe_2": 2, "npe_3": 2, "ae_deg": 2,
           "fwl": 3}
@@ -389,25 +394,39 @@ def _c_table(st: Study, dt: int, rows: list[tuple[str, str]], notes: Notes) -> l
     return _table(head, body)
 
 
+def _check(rel: str, old: str, text: str) -> bool:
+    if old == text:
+        print(f"{rel} is current")
+        return True
+    sys.stdout.writelines(difflib.unified_diff(
+        old.splitlines(True), text.splitlines(True), rel, "regenerated"))
+    print(f"{rel} is stale: run python scripts/make_tables.py", file=sys.stderr)
+    return False
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--check", action="store_true", help="exit 1 if results/TABLES.md is stale")
+    ap.add_argument("--check", action="store_true",
+                    help="exit 1 if results/TABLES.md or a README.md block is stale")
     ap.add_argument("--root", default=str(REPO), help=argparse.SUPPRESS)
     args = ap.parse_args(argv)
     root = Path(args.root)
     text = render(root)
-    out = root / OUT_REL
+    out, readme = root / OUT_REL, root / README_REL
+    outputs = [(OUT_REL, out, out.read_text() if out.exists() else "", text)]
+    if readme.exists():          # README blocks (Phase 10); absent in fixture roots
+        old = readme.read_text()
+        outputs.append((README_REL, readme, old, readme_blocks.replace_blocks(
+            old, readme_blocks.render_blocks(root, text))))
     if args.check:
-        old = out.read_text() if out.exists() else ""
-        if old != text:
-            sys.stdout.writelines(difflib.unified_diff(
-                old.splitlines(True), text.splitlines(True), OUT_REL, "regenerated"))
-            print(f"{OUT_REL} is stale: run python scripts/make_tables.py", file=sys.stderr)
-            return 1
-        print(f"{OUT_REL} is current")
-        return 0
-    out.write_text(text)
-    print(f"wrote {OUT_REL}")
+        ok = [_check(rel, old, new) for rel, _, old, new in outputs]
+        return 0 if all(ok) else 1
+    for rel, path, old, new in outputs:
+        if old != new or not path.exists():
+            path.write_text(new)
+            print(f"wrote {rel}")
+        else:
+            print(f"{rel} unchanged")
     return 0
 
 

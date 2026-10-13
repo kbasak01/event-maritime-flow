@@ -24,7 +24,7 @@ Phase 9 walks every line. Verdict ∈ {met, met-with-caveat, unmet} + evidence p
 - [x] C1 (critical) EPE/%Out/NPE/AE match hand-computed fixtures and the vendored MIT oracle to 1e-6. — Phase 1 gate: `docs/gates/phase-1.md`.
 - [x] C2 (critical) FWL = 1 for zero flow exactly; correct flow > wrong-sign flow on analytic fixtures. — Phase 1 gate: `docs/gates/phase-1.md`.
 - [x] C3 Flow units = pixels over the window, forward; dt=1 and dt=4 never mixed in one mean. — Phase 6 gate: `docs/gates/phase-6.md` (criterion 9).
-- [ ] C4 MVSEC eval windows, sparse mask, crop rule written in `configs/eval_mvsec.yaml` and quoted in README. — Phase 9: **unmet** (YAML complete; README is Phase 10), `docs/LIMITATIONS.md`.
+- [x] C4 MVSEC eval windows, sparse mask, crop rule written in `configs/eval_mvsec.yaml` and quoted in README. — Phase 10: met (README `eval-protocol` block), `docs/LIMITATIONS.md`.
 - [x] C5 Phase 4 reproduction gate met (our metrics on E-RAFT flows = E-RAFT's own, ≤ 1e-3 px; EPE within 10 % of paper) or miss documented. — Phase 4 gate: `docs/gates/phase-4.md` (`results/baselines/eraft_reproduction.json`).
 - [x] C6 Bootstrap CIs use moving blocks of 1 s; paired bootstrap for arm differences. — Phase 6 gate: `docs/gates/phase-6.md` (criterion 5; seed spread D-053).
 
@@ -37,7 +37,7 @@ Phase 9 walks every line. Verdict ∈ {met, met-with-caveat, unmet} + evidence p
 - [x] D6 Augmentation flips flow sign consistently with the image flip (unit test). — `tests/test_train_data.py::test_hflip_consistent_with_warping`.
 
 ## E. Claims
-- [x] E1 (critical) Every README/docs number traces to a committed `results/*.json` (`claim-trace`). — Phase 9: met-with-caveat (claim-trace of LIMITATIONS, D-063, D-064; 2 findings fixed in D-063; README traced in Phase 10), `docs/LIMITATIONS.md`.
+- [x] E1 (critical) Every README/docs number traces to a committed `results/*.json` (`claim-trace`). — Phase 10: met (README claim-trace, 6 findings fixed, CLEAN; README numbers generated, D-067), `docs/LIMITATIONS.md`.
 - [x] E2 (critical) Every table row carries a tier tag; no T3 row in a T1/T2 section. — Phase 6 gate (`results/TABLES.md`; re-checked at the Phase 7 gate with the T3 part, sim2real-study-runner PASS, `docs/gates/phase-7.md`).
 - [x] E3 (critical) No HDR, glare-robustness or latency-advantage claim derived from v2e events. — Phase 9: met (grep; only disclaimers), `docs/LIMITATIONS.md`; README re-checked in Phase 10.
 - [x] E4 "teacher-EPE" never called "EPE" or "accuracy"; FWL never called accuracy. — Phase 9: met, `docs/LIMITATIONS.md`.
@@ -49,7 +49,7 @@ Phase 9 walks every line. Verdict ∈ {met, met-with-caveat, unmet} + evidence p
 - [ ] F1 ONNX fp32 parity ≤ 1e-3 px (TF32 off); fp16 ≤ 5e-2 px; EPE change ≤ 0.01 px. — Phase 9: **unmet** (fp16 clause; fp32 and EPE change met; non-conformance accepted, D-064), `docs/LIMITATIONS.md`.
 - [x] F2 Latency: ≥ 50 warm-up, ≥ 500 timed, synchronised; p50/p90/p99/max; representation build reported separately vs events per window. — Phase 8 gate; Phase 9: met (`results/latency.json` `methodology`), `docs/LIMITATIONS.md`.
 - [x] F3 Hardware and software versions (GPU, driver, CUDA, ORT, TensorRT) in `results/latency.json`. — Phase 9: met (`environment.{torch_process,ort_process}`), `docs/LIMITATIONS.md`.
-- [ ] F4 README states the A4000 is a stand-in for an embedded target. — Phase 9: **unmet** (README is Phase 10; sentence present in `results/latency.json` and Table J), `docs/LIMITATIONS.md`.
+- [x] F4 README states the A4000 is a stand-in for an embedded target. — Phase 10: met (README Deployment section and key findings), `docs/LIMITATIONS.md`.
 
 ## G. Licences and publication
 - [x] G1 (critical) No GPL code in `src/` or `tests/` (`test_no_gpl_imports.py` + reviewer). — Phase 9: met (test + repo-publication-reviewer dry run, `docs/gates/phase-9.md`), `docs/LIMITATIONS.md`.

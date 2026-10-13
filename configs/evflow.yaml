@@ -119,3 +119,27 @@ figures:                              # scripts/make_figures.py (Phase 6 step 3,
   panel_runs: [real_sup_voxel5_s1337, v2e_fixed_sup_voxel5_s1337]
   attribution: >-
     MVSEC (Zhu et al., RA-L 2018), CC BY-SA 4.0; derived panels are shared under the same licence.
+  # README gallery media (Phase 10, D-065, D-067): written to results/figures/readme/ and committed.
+  # The hero GIF starts at the outdoor_day1 position 0.25 panel window (fixed in Phase 6, before
+  # any prediction was viewed) and runs n_windows consecutive dt = 1 windows; it shows real
+  # events, v2e(APS) events, GT and the predictions of panel_runs on the real events. No APS
+  # frame is ever drawn (D-008). Maritime GIFs: the existing two lars_eval clips (Phase 7 step 6),
+  # without the LaRS source frame (D-065). All six flow panels are copied (no selection).
+  readme:
+    hero: {sequence: outdoor_day1, position: 0.25, n_windows: 40, frame_s: 0.12}
+    max_width_px: 1100
+    max_bytes: {gif: 6000000, png: 600000}
+    fidelity_figure: results/fidelity/figures/test_outdoor_day1_stats.png
+
+release:                              # scripts/make_release.py (Phase 10, D-066)
+  # MVSEC-trained voxel5 runs only (no maritime weights: LaRS CC BY-NC, SMD no licence). Weights
+  # are released under CC BY-SA 4.0 (trained on MVSEC, CC BY-SA 4.0); code stays MIT.
+  runs: [real_sup_voxel5_s1337, real_sup_voxel5_s2026, real_sup_voxel5_s7,
+         v2e_fixed_sup_voxel5_s1337, v2e_fixed_sup_voxel5_s2026, v2e_fixed_sup_voxel5_s7,
+         v2e_rand_sup_voxel5_s1337, v2e_rand_sup_voxel5_s2026, v2e_rand_sup_voxel5_s7,
+         real_selfsup_voxel5_s1337, v2e_selfsup_voxel5_s1337]
+  # fp32 graphs of the Phase 8 primary checkpoint (D-063); fp16 graphs excluded (D-064).
+  onnx_run: real_sup_voxel5_s1337
+  onnx: [m1_256x256_fp32.onnx, m1_272x352_fp32.onnx, m1_480x640_fp32.onnx]
+  weights_licence: CC BY-SA 4.0
+  tag: phase-10-complete

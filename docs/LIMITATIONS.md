@@ -1,6 +1,7 @@
 # LIMITATIONS
 
-Written in Phase 9 (2026-10-12, at 8928598 + this sweep): one row per VALIDATION_CHECKLIST.md
+Written in Phase 9 (2026-10-12, at 8928598 + this sweep), rows C4, E1, E6, E7, F4, G2–G4 updated in
+Phase 10 (README, release): one row per VALIDATION_CHECKLIST.md
 line. **C** = critical (blocks publication if unmet). Commands re-run for this sweep: `make lint`,
 `make test` (393 passed), `make reproduce-tables` and a re-render in a clean worktree of HEAD
 (no diff), `scripts/make_splits.py --check`; gate record `docs/gates/phase-9.md`.
@@ -23,7 +24,7 @@ line. **C** = critical (blocks publication if unmet). Commands re-run for this s
 | C1 (C) | met | `docs/gates/phase-1.md`; oracle tests in `make test` | |
 | C2 (C) | met | `docs/gates/phase-1.md`; FWL fixtures in `make test` | |
 | C3 | met | `docs/gates/phase-6.md` (criterion 9) | |
-| C4 | unmet | `configs/eval_mvsec.yaml` (windows, sparse mask, crop rule: complete) | README not written yet; quoting it is Phase 10 work (Claude) |
+| C4 | met | `configs/eval_mvsec.yaml` (windows, sparse mask, crop rule) quoted verbatim in `README.md` (generated block `eval-protocol`, Reproduce section; `make_tables.py --check` keeps it current) | Phase 10 |
 | C5 | met | `docs/gates/phase-4.md`; `results/baselines/eraft_reproduction.json` | |
 | C6 | met | `docs/gates/phase-6.md` (criterion 5); D-053 | |
 | D1 | met | `docs/gates/phase-5.md` | |
@@ -32,29 +33,29 @@ line. **C** = critical (blocks publication if unmet). Commands re-run for this s
 | D4 | met | `results/train/summary.json`; `docs/gates/phase-5.md` | |
 | D5 | met | `docs/gates/phase-5.md`; Phase 9 check: 403 eval JSONs of trained runs under `results/eval*/` carry `checkpoint_sha256` equal to the run's `selection.json` (0 missing, 0 mismatched) | |
 | D6 | met | `tests/test_train_data.py::test_hflip_consistent_with_warping` (in `make test`) | |
-| E1 (C) | met-with-caveat | `claim-trace` of this file and of D-063 / D-064 in Phase 9 (`docs/gates/phase-9.md`); earlier docs traced at their gates (`docs/gates/phase-3.md` criterion 11, `docs/gates/phase-7.md`) | No README exists yet; the README is traced at the Phase 10 gate |
+| E1 (C) | met | `claim-trace` of `README.md` in Phase 10 (`docs/gates/phase-10.md`: 6 findings fixed, pass 2 CLEAN; every README number sits in a block generated from committed JSON, D-067, checked by `make reproduce-tables` in CI); Phase 9 traces of this file, D-063, D-064 | |
 | E2 (C) | met | `docs/gates/phase-6.md`, `docs/gates/phase-7.md` (sim2real-study-runner PASS); `tests/test_results_have_tiers.py`; `make_tables._check_tier` / `tables_maritime.py` refuse mixed tiers | |
-| E3 (C) | met | Phase 9 grep of `docs/`, `results/TABLES.md`, `scripts/`, `src/`, `configs/` for HDR / dynamic range / glare / low latency / latency advantage / microsecond: every hit is a disclaimer or a time unit (`results/TABLES.md` T3 tier note and Table J note, `scripts/fidelity_report.py`, `scripts/latency_bench.py`, `scripts/run_clutter.py`, `scripts/tables_maritime.py`, the `docs/CONVENTIONS.md` forbidden-word list, notes in `results/latency.json` and `results/maritime/clutter.json`) | README checked again at Phase 10 |
+| E3 (C) | met | Phase 9 grep of `docs/`, `results/TABLES.md`, `scripts/`, `src/`, `configs/` for HDR / dynamic range / glare / low latency / latency advantage / microsecond: every hit is a disclaimer or a time unit (`results/TABLES.md` T3 tier note and Table J note, `scripts/fidelity_report.py`, `scripts/latency_bench.py`, `scripts/run_clutter.py`, `scripts/tables_maritime.py`, the `docs/CONVENTIONS.md` forbidden-word list, notes in `results/latency.json` and `results/maritime/clutter.json`) | README checked in the Phase 10 claim-trace: glare / dynamic range / latency occur only in disclaimers |
 | E4 | met | T3 part of `results/TABLES.md` uses `teacher-EPE` only (plain "EPE" occurs only in Tables A–E and I, T1/T2); `tables_maritime.py` refuses the key `epe`; FWL/RSAT notes say "not accuracy" | |
 | E5 | met | `docs/gates/phase-7.md` (Tables F, G, H; `results/eval_maritime/summary.json`) | |
-| E6 | met-with-caveat | Phase 9 grep of docs and table captions: no first / novel / state-of-the-art claim | No README yet; positioning text (plan §0) is written and checked in Phase 10 |
-| E7 | met-with-caveat | `docs/gates/phase-7.md` (T3 protocol, Table H, clutter figure caption "LaRS frame rate assumed 30 fps"; D-024) | README to follow in Phase 10 |
+| E6 | met | README Positioning section uses the plan §0 wording; no first / novel / state-of-the-art claim (Phase 10 claim-trace) | |
+| E7 | met | README: LaRS frame rate stated as assumed 30 fps in the key findings, the T3 note box, the T3 protocol block, Table H and every T3 figure; MVSEC protocol stated before the key findings and quoted under Reproduce | |
 | F1 | unmet | `results/onnx_parity.json` (`gate_passed: true`, `all_passed: false`, `non_conforming: [ort_cuda_fp16, ort_trt_fp16]`); `docs/gates/phase-8.md`; D-064 | fp32 (max 7.3e-05 px) and EPE change (≤ 1.1e-03 px) clauses met; the fp16 clause (≤ 5e-2 px) is not met (see the D-064 bullet below). Tolerance unchanged |
 | F2 | met | `results/latency.json` `methodology` (warmup 50, timed 500, synchronised, p50/p90/p99/max); `representation_build` timed per event count (10⁴/10⁵/10⁶) separately from the network | |
 | F3 | met | `results/latency.json` `environment.{torch_process,ort_process}`: GPU, driver, CUDA runtime, cuDNN, torch, onnxruntime-gpu, TensorRT versions | |
-| F4 | unmet | Stand-in sentence present in `results/latency.json` `hardware_note` and `results/TABLES.md` Table J | README not written yet: Phase 10 (Claude) |
+| F4 | met | `README.md` Deployment section and the generated key findings: "The RTX A4000 used here stands in for an embedded target"; also `results/latency.json` `hardware_note`, Table J, `results/figures/readme/latency.png` | Phase 10 |
 | G1 (C) | met | `tests/test_no_gpl_imports.py` (scans `src/`, `tests/`, `scripts/`; in `make test`); `docs/LICENSES.md` (GPL repo not vendored, not imported); repo-publication-reviewer dry run (`docs/gates/phase-9.md`) | |
-| G2 (C) | met | `git ls-files` (778 files): no h5 / npz / npy / bag / video / image data; the only images ever committed (whole history) are three metric plots in `results/figures/`; `.gitignore` covers `data/`, `*.h5`, `*.npz` and the imagery figure folders; no release exists yet | Release assets are checked at Phase 10 |
-| G3 | met-with-caveat | `configs/evflow.yaml` `figures.attribution` (MVSEC, CC BY-SA 4.0, share-alike) in every MVSEC flow-panel caption; `scripts/fidelity_report.py` rate maps marked CC BY-SA 4.0 | Imagery figures are gitignored (D-008, D-033). The committed `epe_mvsec_T1/T2.png` are metric plots without imagery and without a dataset attribution line; the README attributes MVSEC beside them (Phase 10) |
-| G4 | met-with-caveat | `docs/LICENSES.md` (SMD: no imagery; LaRS: imagery allowed with attribution, no redistribution of images); no SMD or LaRS imagery tracked (`results/figures/maritime_panels/` gitignored) | Whether LaRS panels appear in the README is decided in Phase 10 |
+| G2 (C) | met | `git ls-files`: no h5 / npz / npy / bag / video / data files; committed images = metric plots in `results/figures/` and the README media in `results/figures/readme/` (derived visualisations, no raw frames, D-065, D-067); release assets (`docs/RELEASE.md`): checkpoints, fp32 ONNX, manifests, licence text only, `scripts/make_release.py` refuses data / image / video extensions | Phase 10 re-check |
+| G3 | met | MVSEC/DSEC-derived README media (hero GIF, flow panels, fidelity figure, EPE and gap plots) are attributed and marked CC BY-SA 4.0 in their captions (`configs/evflow.yaml` `figures.attribution`; README captions) | Phase 10 |
+| G4 | met | README LaRS media show derived content only, no source frame (D-065), marked CC BY-NC 4.0, attributed; no SMD imagery anywhere; `docs/LICENSES.md` LaRS and released-weights rows | Phase 10 |
 | G5 | met | `src/evflow/models/eraft_ref/*.py` headers + `LICENSE` (MIT E-RAFT, BSD-3 RAFT); `tests/oracles/event_flow_metrics.py` MIT header; both listed in `docs/LICENSES.md` | |
 | G6 | met | `make reproduce-tables` → "results/TABLES.md is current"; clean-worktree re-render, no diff; CI step in `.github/workflows/ci.yml` | |
 
 ### Unmet lines
 
 - **Critical:** none.
-- **Non-critical:** C4 and F4 (README not written; Phase 10, Claude); F1 (fp16 parity, accepted
-  non-conformance D-064; no action, deployment claims stay fp32).
+- **Non-critical:** F1 (fp16 parity, accepted non-conformance D-064; no action, deployment
+  claims stay fp32). C4 and F4 were closed in Phase 10 (README).
 
 ## Known limitations recorded before Phase 9
 
