@@ -1,6 +1,6 @@
 # Phase 9 gate — validation sweep
 
-Date: 2026-10-12 · base commit 8928598 (+ the Phase 9 docs-only commit) · Overall: **PASS**.
+Date: 2026-10-12 · base commit 8928598 (+ the Phase 9 docs-only commit) · Overall: **PASS** · CI green (run 38331490042 on 24571a6).
 No code, config or `results/` file changed in Phase 9 (docs, `VALIDATION_CHECKLIST.md`,
 `.gitignore` only); no GPU job.
 
