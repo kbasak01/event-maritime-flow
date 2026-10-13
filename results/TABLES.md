@@ -460,6 +460,15 @@ ONNX export of M1 (opset 17), numerical parity (T1) and latency. Parity rows are
 
 All rows pass: **no**.
 
+**Non-conforming (D-064):** ort_cuda_fp16, ort_trt_fp16 fail the unchanged tolerance and carry no deployment claim; deployment claims are fp32 only. Gate (every other row passes): **yes**.
+
+**fp16 sensitivity** (mvsec_tune outdoor_day2, 200 windows; diagnostic, not gated): max |Δflow| (px) vs fp32 when only the named part is fp16.
+
+| arm | seed | input fp16 | weights fp16 | whole network fp16 | inter-module activations fp16 | best mixed split |
+|---|---|---|---|---|---|---|
+| real_sup | 1337 | 2.16e-03 | 4.79e-02 | 5.99e-02 | 8.85e-02 | 6.02e-02 (dec23+heads23) |
+| v2e_rand_sup | 7 | 2.21e-03 | 9.84e-02 | 1.16e-01 | 2.82e-02 | 2.80e-02 (enc) |
+
 ## Table J — latency (hardware timing; no evidence tier)
 
 RTX A4000 (desktop, WSL2) stands in for an embedded target; embedded latency will differ. Nothing here measures or implies event-camera sensor latency or a latency advantage of event cameras (CLAUDE.md rule 2). Hardware timing of the M1 network and its input build; not a flow metric, so no evidence tier applies. Inputs are synthetic (seeded).
@@ -529,6 +538,7 @@ PyTorch rows are measured in one bracket; ORT rows are composed from stages time
 - `results/eval/summary.json`
 - `results/eval/v2e_fixed_sup/1337/`
 - `results/eval_maritime/summary.json`
+- `results/fp16_sensitivity.json`
 - `results/latency.json`
 - `results/maritime/clutter.json`
 - `results/onnx_parity.json`

@@ -251,6 +251,13 @@
   "epe_change_px": 0.01
  },
  "all_passed": false,
+ "non_conforming": [
+  "ort_cuda_fp16",
+  "ort_trt_fp16"
+ ],
+ "non_conforming_decision": "D-064: rows listed here fail the unchanged tolerance and are reported as FAIL; they carry no deployment claim. The gate needs every other row to pass.",
+ "gate_passed": true,
+ "fp16_sensitivity": "results/fp16_sensitivity.json (mvsec_tune; where the fp16 error comes from; none of the tested mixed splits brings real_sup under the tolerance)",
  "units": [
   {
    "tier": "T1",
@@ -676,9 +683,9 @@
   }
  ],
  "representation_build": "outside the ONNX graph; identical inputs fed to torch and ONNX",
- "git_sha": "db4f7c359a2a5a671fc1952a1c1e61ec614aaef2",
+ "git_sha": "5f567c545b9a22286db02c70a25c5900a769ddc6",
  "git_dirty": false,
  "ref_git_sha": "15e71432714046f0e64d6dca8d5255ee70839667",
  "created_by": "scripts/onnx_parity.py summarise",
- "created_at": "2026-10-12T23:23:11+00:00"
+ "created_at": "2026-10-13T00:34:00+00:00"
 }
