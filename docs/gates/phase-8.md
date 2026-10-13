@@ -2,7 +2,7 @@
 
 Date: 2026-10-12 · final results at 5f567c5 (job run at 15e7143; resumed at db4f7c3, 13e34d8 and
 5f567c5 for the diagnostics and summaries, all dirty=0) · Overall: **PASS with recorded fp16
-non-conformance (D-064)**.
+non-conformance (D-064)** · CI green (run 38328046713 on f02904e).
 
 History: first gate at 604b0a6 = FAIL (onnx-parity-auditor F-1, fp16 tolerance). The user chose
 "Mixed-precision fix, re-test"; the tune-only sensitivity study (`results/fp16_sensitivity.json`)

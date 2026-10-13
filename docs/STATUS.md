@@ -10,7 +10,7 @@
 | 5 | PASS (CI green) | docs/gates/phase-5.md | 2026-10-11 |
 | 6 | PASS (CI green) | docs/gates/phase-6.md | 2026-10-12 |
 | 7 | PASS (CI green) | docs/gates/phase-7.md | 2026-10-12 |
-| 8 | PASS with fp16 non-conformance (D-064) | docs/gates/phase-8.md | 2026-10-12 |
+| 8 | PASS with fp16 non-conformance (D-064) (CI green) | docs/gates/phase-8.md | 2026-10-12 |
 | 9 | not started | – | – |
 | 10 | not started | – | – |
 
