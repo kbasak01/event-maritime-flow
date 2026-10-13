@@ -257,6 +257,23 @@ def test_deploy_part_renders(root):
     assert "`results/onnx_parity.json`" in text[text.index("# Sources"):]
 
 
+def test_deploy_non_conforming_and_sensitivity(root):
+    doc = _parity_doc()
+    doc.update(non_conforming=["ort_cuda_fp16"], gate_passed=True)
+    _w(root, "results/onnx_parity.json", doc)
+    var = {k: {"max_px": v} for k, v in (("input_rounded_fp16__fp32_compute", 0.002),
+                                          ("weights_rounded_fp16__fp32_compute", 0.05),
+                                          ("fp16_network", 0.06), ("mixed:enc", 0.09),
+                                          ("mixed:all_modules_fp32", 0.088))}
+    _w(root, "results/fp16_sensitivity.json",
+       {"kind": "fp16_sensitivity", "split": "mvsec_tune", "sequence": "outdoor_day2",
+        "n_windows": 200, "units": [{"arm": "real_sup", "seed": 1337, "variants": var}]})
+    i = _section(mt.render(root), "## Table I-T1")
+    assert "**Non-conforming (D-064):** ort_cuda_fp16" in i and "**yes**." in i
+    assert "| real_sup | 1337 | 2.00e-03 | 5.00e-02 | 6.00e-02 | 8.80e-02 | 8.80e-02 " \
+           "(all_modules_fp32) |" in i
+
+
 def test_deploy_parity_refuses_non_t1(root):
     _w(root, "results/onnx_parity.json", _parity_doc(tier="T3a"))
     with pytest.raises(mt.tables_deploy.TierError):

@@ -314,7 +314,8 @@ def cmd_summarise(args) -> int:
     ref_doc = json.loads((work / "ref.json").read_text())
     data = np.load(work / "inputs.npz")
     gt, mask = data["gt"], data["mask"]
-    units_out, all_pass = [], True
+    units_out, all_pass, gate_pass = [], True, True
+    non_conf = list(pc.get("non_conforming") or [])
     for run_id in cfg["export"]["runs"]:
         rinfo = ref_doc["runs"][run_id]
         ref = np.load(work / f"ref_{run_id}.npz")["flow"]
@@ -335,6 +336,7 @@ def cmd_summarise(args) -> int:
             if proof["status"] != "ok":
                 row.update(error=proof.get("error"), passed=False)
                 all_pass = False
+                gate_pass &= label in non_conf
                 rows[label] = row
                 continue
             test = np.load(work / run_id / f"{label}.npz")["flow"]
@@ -344,6 +346,7 @@ def cmd_summarise(args) -> int:
             d_epe = float(abs(np.mean(epe_test[ok]) - np.mean(epe_ref[ok])))
             passed = bool(st["max_px"] <= thr and d_epe <= tol["epe_change_px"])
             all_pass &= passed
+            gate_pass &= passed or label in non_conf
             per_window = st.pop("per_window_max_px")
             row.update(metrics={**st, "epe_torch": float(np.mean(epe_ref[ok])),
                                 "epe_onnx": float(np.mean(epe_test[ok])),
@@ -409,6 +412,13 @@ def cmd_summarise(args) -> int:
                           "EPE_torch|",
         "tolerances": tol,
         "all_passed": bool(all_pass),
+        "non_conforming": non_conf,
+        "non_conforming_decision": "D-064: rows listed here fail the unchanged tolerance and "
+                                  "are reported as FAIL; they carry no deployment claim. The "
+                                  "gate needs every other row to pass." if non_conf else None,
+        "gate_passed": bool(gate_pass),
+        "fp16_sensitivity": "results/fp16_sensitivity.json (mvsec_tune; why fp16 fails and "
+                            "why mixed precision does not fix it)",
         "units": units_out,
         "representation_build": "outside the ONNX graph; identical inputs fed to torch and "
                                 "ONNX",
@@ -427,7 +437,7 @@ def cmd_summarise(args) -> int:
             print(f"{u['run_id']} {label}: max {m.get('max_px')} px (tol "
                   f"{r['tolerance_max_px']}), dEPE {m.get('epe_change_px')} -> "
                   f"{'PASS' if r['passed'] else 'FAIL'}")
-    print(f"all_passed={all_pass} -> {out}")
+    print(f"all_passed={all_pass} gate_passed={gate_pass} non_conforming={non_conf} -> {out}")
     return 0
 
 

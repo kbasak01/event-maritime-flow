@@ -100,6 +100,10 @@ export:                               # Phase 8 steps 1-2 (scripts/export_onnx.p
       - [ort_cuda_fp32, CUDAExecutionProvider, fp32]
       - [ort_cuda_fp16, CUDAExecutionProvider, fp16]
       - [ort_trt_fp16, TensorrtExecutionProvider, fp16]
+    # D-064 (user decision 2026-10-12): fp16 rows miss the unchanged 5e-2 px tolerance and are
+    # recorded as non-conforming (still reported FAIL); deployment claims are fp32 only; the
+    # gate requires every other row to pass. Evidence: results/fp16_sensitivity.json (tune).
+    non_conforming: [ort_cuda_fp16, ort_trt_fp16]
 
 figures:                              # scripts/make_figures.py (Phase 6 step 3, D-051)
   # Flow panels: windows fixed by position in each test unit's window list, chosen before any

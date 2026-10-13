@@ -66,7 +66,40 @@ def parity_table(root: Path, sources: set) -> list[str]:
                          _e(m.get("epe_change_px")), "—", "not gated"])
     L += _table(["tier", "arm", "seed", "provider", "graph", "max |Δflow| (px)",
                  "masked max (px)", "EPE change (px)", "tol. max (px)", "verdict"], rows)
-    return L + ["", f"All rows pass: **{'yes' if doc['all_passed'] else 'no'}**.", ""]
+    L += ["", f"All rows pass: **{'yes' if doc['all_passed'] else 'no'}**."]
+    if doc.get("non_conforming"):
+        L += ["", f"**Non-conforming (D-064):** {', '.join(doc['non_conforming'])} fail the "
+              "unchanged tolerance and carry no deployment claim; deployment claims are fp32 "
+              f"only. Gate (every other row passes): "
+              f"**{'yes' if doc.get('gate_passed') else 'no'}**."]
+    L += [""] + sensitivity_lines(root, sources)
+    return L
+
+
+def sensitivity_lines(root: Path, sources: set) -> list[str]:
+    rel = "results/fp16_sensitivity.json"
+    p = root / rel
+    if not p.exists():
+        return []
+    doc = json.loads(p.read_text())
+    sources.add(rel)
+    L = [f"**fp16 sensitivity** ({doc['split']} {doc['sequence']}, {doc['n_windows']} windows; "
+         "diagnostic, not gated): max |Δflow| (px) vs fp32 when only the named part is fp16.",
+         ""]
+    rows = []
+    for u in doc["units"]:
+        v = u["variants"]
+        mixed = {k: d["max_px"] for k, d in v.items() if k.startswith("mixed:")}
+        best = min(mixed, key=mixed.get)
+        rows.append([u["arm"], str(u["seed"]),
+                     _e(v["input_rounded_fp16__fp32_compute"]["max_px"]),
+                     _e(v["weights_rounded_fp16__fp32_compute"]["max_px"]),
+                     _e(v["fp16_network"]["max_px"]),
+                     _e(v["mixed:all_modules_fp32"]["max_px"]),
+                     f"{_e(mixed[best])} ({best.removeprefix('mixed:')})"])
+    L += _table(["arm", "seed", "input fp16", "weights fp16", "whole network fp16",
+                 "inter-module activations fp16", "best mixed split"], rows)
+    return L + [""]
 
 
 def latency_tables(root: Path, sources: set) -> list[str]:
