@@ -29,7 +29,8 @@ unit() {  # unit <name> <skip-if-exists path or -> <cmd...>
     echo "[$(date -Is)] skip $name ($done_file exists)"
     return 0
   fi
-  if "$@" > "$LOGS/$name.log" 2>&1; then
+  echo "=== [$(date -Is)] $(git rev-parse --short HEAD): $*" >> "$LOGS/$name.log"
+  if "$@" >> "$LOGS/$name.log" 2>&1; then   # appended: a resumed job keeps earlier output
     echo "[$(date -Is)] OK $name: $(grep -v -E '\[W:|\[E:|Warning' "$LOGS/$name.log" | tail -1 | cut -c1-200)"
   else
     echo "[$(date -Is)] FAILED $name (see $LOGS/$name.log)"
@@ -58,6 +59,7 @@ unit parity_ref "$RUNS/export/parity/ref.json" $PY scripts/onnx_parity.py ref
 unit parity_ort - $ORT_PY scripts/onnx_parity.py ort
 unit parity_torch_fp16 - $PY scripts/onnx_parity.py torch_fp16   # diagnostic, not gated (auditor F-2)
 unit latency_torch "$RUNS/export/latency/torch.json" $PY scripts/latency_bench.py torch
+unit fp16_sensitivity - $PY scripts/fp16_sensitivity.py   # mvsec_tune diagnostic (D-064)
 unit latency_ort "$RUNS/export/latency/ort.json" $ORT_PY scripts/latency_bench.py ort
 echo "[$(date -Is)] summarise"
 unit parity_summary - $PY scripts/onnx_parity.py summarise

@@ -9,7 +9,7 @@ measured on **tune** data only (CLAUDE.md rule 4: no precision choice is made on
 reference by max / p99 over all pixels of |Δflow| (vector, px, unpadded 260x346):
 - isolating perturbations in fp32 compute: input rounded to fp16; weights (+ BN buffers)
   rounded to fp16;
-- fp16 network (``.half()``);
+- fp16 network (``.half()``); bf16 autocast (the training precision);
 - mixed precision: listed modules run in fp32 (weights and compute) inside an fp16 network; the
   tensors passed between modules stay fp16. ``all_modules_fp32`` keeps every module in fp32, so
   only the inter-module activations are fp16.
@@ -134,6 +134,8 @@ def main(argv: list[str] | None = None) -> int:
                                                              torch.float32), ref),
             "fp16_network": _stats(run(copy.deepcopy(model).half(), torch.float16), ref),
         }
+        with torch.autocast("cuda", dtype=torch.bfloat16):
+            variants["bf16_autocast"] = _stats(run(model, torch.float32), ref)
         for name, keep in MIXED.items():
             variants[f"mixed:{name}"] = {"fp32_modules": keep,
                                          **_stats(run(_mixed(model, keep), torch.float16),
@@ -153,6 +155,8 @@ def main(argv: list[str] | None = None) -> int:
                       "flow_fp32| (2-vector norm, px), unpadded 260x346 frame",
         "fp16_tolerance_px": cfg["export"]["parity"]["tolerances"]["fp16_max_px"],
         "note": "diagnostic, not gated; tune data only; nothing is chosen from mvsec_test",
+        "tier_note": "T1 inputs (real mvsec_tune events); numbers are numerical deviations "
+                     "from the fp32 prediction, not accuracy against GT",
         "units": units,
         "git_sha": git_sha(), "git_dirty": git_dirty(),
         "created_by": "scripts/fp16_sensitivity.py",

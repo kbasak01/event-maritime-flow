@@ -336,7 +336,7 @@ def cmd_summarise(args) -> int:
             if proof["status"] != "ok":
                 row.update(error=proof.get("error"), passed=False)
                 all_pass = False
-                gate_pass &= label in non_conf
+                gate_pass = False
                 rows[label] = row
                 continue
             test = np.load(work / run_id / f"{label}.npz")["flow"]
@@ -346,7 +346,10 @@ def cmd_summarise(args) -> int:
             d_epe = float(abs(np.mean(epe_test[ok]) - np.mean(epe_ref[ok])))
             passed = bool(st["max_px"] <= thr and d_epe <= tol["epe_change_px"])
             all_pass &= passed
-            gate_pass &= passed or label in non_conf
+            # D-064 waives only the max |Δflow| tolerance of a non-conforming row: it must
+            # still run, stay finite and keep the EPE change within tolerance
+            gate_pass &= passed or (label in non_conf and st["n_non_finite"] == 0
+                                    and d_epe <= tol["epe_change_px"])
             per_window = st.pop("per_window_max_px")
             row.update(metrics={**st, "epe_torch": float(np.mean(epe_ref[ok])),
                                 "epe_onnx": float(np.mean(epe_test[ok])),
@@ -417,8 +420,9 @@ def cmd_summarise(args) -> int:
                                   "are reported as FAIL; they carry no deployment claim. The "
                                   "gate needs every other row to pass." if non_conf else None,
         "gate_passed": bool(gate_pass),
-        "fp16_sensitivity": "results/fp16_sensitivity.json (mvsec_tune; why fp16 fails and "
-                            "why mixed precision does not fix it)",
+        "fp16_sensitivity": "results/fp16_sensitivity.json (mvsec_tune; where the fp16 error "
+                            "comes from; none of the tested mixed splits brings real_sup under "
+                            "the tolerance)",
         "units": units_out,
         "representation_build": "outside the ONNX graph; identical inputs fed to torch and "
                                 "ONNX",
