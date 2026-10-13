@@ -1,6 +1,6 @@
 # Phase 10 gate — publication
 
-Date: 2026-10-12 · base commit 743df7e (Phase 9 closed) + the Phase 10 commit · Overall: **PASS** · CI: recorded below after push.
+Date: 2026-10-12 · base commit 743df7e (Phase 9 closed) + the Phase 10 commit · Overall: **PASS** · CI green (run 38342839377 on 9c76dc4).
 No `src/` code, no evaluation and no GPU training in Phase 10: README, generators
 (`scripts/readme_blocks.py`, `scripts/make_release.py`, `scripts/make_figures.py --readme`),
 README media, release staging and docs. The README media needed one short GPU inference pass
@@ -29,7 +29,7 @@ README media, release staging and docs. The README media needed one short GPU in
 | 9 | Release assets: M1 checkpoints + ONNX + `SHA256SUMS.txt` | PASS | `scripts/make_release.py` → `release/` (gitignored): 11 `m1_<run>.pt` (each = its `selection.json` `checkpoint_sha256`), 3 fp32 ONNX of `real_sup_voxel5_s1337` (= export sidecar hashes), `run_manifests.json`, `WEIGHTS_LICENSE.md`, `SHA256SUMS.txt`; `sha256sum -c` all OK; `make_release.py --check` "release/ matches docs/SHA256SUMS.txt"; record `docs/RELEASE.md`, `docs/SHA256SUMS.txt` (D-066) |
 | 10 | No event data, no frames in repo or release (G2) | PASS | release: allow-listed extensions only (`.pt .onnx .json .md .txt`), no data paths in manifests; repo: README media are derived visualisations (no APS frame, no LaRS source frame, no SMD imagery; D-065), reviewer viewed every PNG and GIF frames; `git log` history has never held a data file (reviewer) |
 | 11 | `repo-publication-reviewer`: SHIP | PASS | `VERDICT: SHIP` (below) |
-| 12 | Tag `phase-10-complete` | PASS after CI | tag pushed only after CI is green on the Phase 10 commit (below); draft GitHub release for the tag with the `release/` assets (D-066) |
+| 12 | Tag `phase-10-complete` | PASS | tag pushed only after CI is green on the Phase 10 commit (below); draft GitHub release for the tag with the `release/` assets (D-066) |
 | 13 | Commands | PASS | below |
 
 ## Claim-trace on README.md (main session)
@@ -103,3 +103,10 @@ $ (cd release && sha256sum -c --quiet SHA256SUMS.txt)   # no output = all OK
 | `src/evflow/io/mvsec.py` `_propagate` restructuring (Phase 9 M3): reviewer re-read it, not blocking | user decision (optional) |
 
 Pending GPU jobs: none.
+
+## CI
+
+PASS — run 38342839377 (https://github.com/kbasak01/event-maritime-flow/actions/runs/38342839377),
+conclusion `success` on 9c76dc4 (ruff, pytest, `make_tables.py --check` incl. README blocks).
+Tag `phase-10-complete` is placed on the commit that records this run; the draft GitHub release
+for that tag carries the `release/` assets.
