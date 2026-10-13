@@ -16,6 +16,8 @@
 
 Pending GPU jobs: none (Claude may launch GPU jobs after `gpu-job` prep, D-006; one CUDA process at a time on this workstation, D-048b).
 
+History rewritten 2026-10-13 (D-069): every commit SHA cited in `docs/`, `results/` and run manifests is pre-rewrite; map in `docs/COMMIT_MAP.md`.
+
 Phase 10 (no gpu-job): one short inference pass for the README media (`python scripts/make_figures.py --readme`, seed-1337 runs, seconds of GPU) → `results/figures/readme/`; release assets staged by `scripts/make_release.py` in gitignored `release/` (`docs/RELEASE.md`).
 
 Done GPU jobs (Phase 8):
