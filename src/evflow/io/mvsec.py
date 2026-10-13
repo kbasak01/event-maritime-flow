@@ -117,25 +117,49 @@ class GTFlow:
         return np.stack([np.asarray(self._x[i], np.float64), np.asarray(self._y[i], np.float64)])
 
 
-def _propagate(field, xs, ys, mask_x, mask_y, scale: float) -> None:
-    """Advance positions by the field looked up at the current (nearest) pixel, in place."""
-    fx = cv2.remap(field[0], xs, ys, cv2.INTER_NEAREST)  # border constant 0 outside the image
-    fy = cv2.remap(field[1], xs, ys, cv2.INTER_NEAREST)
-    mask_x[fx == 0] = False
-    mask_y[fy == 0] = False
-    xs += (fx * scale).astype(np.float32)
-    ys += (fy * scale).astype(np.float32)
+def _interval_schedule(ts: np.ndarray, t_start_us: int, t_end_us: int) -> list[tuple[int, float]]:
+    """(GT interval index, fraction of that interval to advance) for a window that spans at least
+    one full GT interval. The first entry covers the rest of the start interval; every later
+    interval up to and including the first one that reaches ``t_end_us`` follows, fully (1.0) or
+    in part. There is always a last entry, so a window of exactly one aligned GT interval ends
+    with a fraction of 0: that field is still looked up, which only updates the validity masks
+    (D-019, D-068)."""
+    i = int(np.searchsorted(ts, t_start_us, side="right")) - 1
+    sched = [(i, float((ts[i + 1] - t_start_us) / float(ts[i + 1] - ts[i])))]
+    while True:
+        i += 1
+        if ts[i + 1] >= t_end_us:
+            sched.append((i, float((t_end_us - ts[i]) / float(ts[i + 1] - ts[i]))))
+            return sched
+        sched.append((i, 1.0))
+
+
+def _advect(gt: GTFlow, schedule: list[tuple[int, float]]) -> np.ndarray:
+    """Displacement (2, H, W) of every pixel carried through the scheduled fields. Each step
+    looks the field up at the pixel nearest to the current float32 position (cv2.remap
+    INTER_NEAREST, constant 0 outside the image); a component that ever reads exactly 0 is
+    invalid and returned as 0."""
+    h, w = gt.shape
+    pos = np.mgrid[0:h, 0:w].astype(np.float32)[::-1].copy()   # (x, y) positions
+    start = pos.copy()
+    alive = np.ones((2, h, w), bool)
+    for i, frac in schedule:
+        field = gt.field(i)
+        look = np.stack([cv2.remap(field[c], pos[0], pos[1], cv2.INTER_NEAREST)
+                         for c in (0, 1)])
+        alive &= look != 0
+        pos += (look * frac).astype(np.float32)
+    return np.where(alive, pos - start, 0.0).astype(np.float64)
 
 
 def gt_flow_for_window(gt: GTFlow, t_start_us: int, t_end_us: int) -> tuple[np.ndarray, np.ndarray]:
     """GT flow (2, H, W) over [t_start, t_end] (absolute µs) and its validity (H, W).
 
-    Re-implementation of the propagation described in EV-FlowNet (RSS 2018) and its evaluation
-    code (algorithm only; that code's licence forbids redistribution, D-019): within one GT
-    interval the field is scaled linearly; across intervals, pixel positions are advanced through
-    successive fields with nearest-pixel lookup and the partial first/last intervals scaled. A
-    component whose looked-up flow is exactly 0 (including outside the image) is zeroed. Valid =
-    finite and |flow| > 0 (EV-FlowNet's mask rule, configs/eval_mvsec.yaml).
+    Follows the propagation rule described in EV-FlowNet (RSS 2018; written from the paper's
+    description and configs/eval_mvsec.yaml, no code from that repository, D-019, D-068): a
+    window shorter than its GT interval takes that field scaled linearly; a longer window
+    carries every pixel through the overlapped fields (``_interval_schedule``) with
+    nearest-pixel lookup (``_advect``). Valid = finite and |flow| > 0.
     """
     ts = gt.timestamps_us
     if not (ts[0] <= t_start_us < t_end_us <= ts[-1]):
@@ -146,19 +170,6 @@ def gt_flow_for_window(gt: GTFlow, t_start_us: int, t_end_us: int) -> tuple[np.n
     if gt_dt > dt:
         flow = gt.field(it) * (dt / gt_dt)
     else:
-        h, w = gt.shape
-        ys, xs = np.mgrid[0:h, 0:w].astype(np.float32)
-        x0, y0 = xs.copy(), ys.copy()
-        mask_x = np.ones((h, w), bool)
-        mask_y = np.ones((h, w), bool)
-        _propagate(gt.field(it), xs, ys, mask_x, mask_y, (ts[it + 1] - t_start_us) / gt_dt)
-        it += 1
-        while ts[it + 1] < t_end_us:
-            _propagate(gt.field(it), xs, ys, mask_x, mask_y, 1.0)
-            it += 1
-        _propagate(gt.field(it), xs, ys, mask_x, mask_y,
-                   (t_end_us - ts[it]) / float(ts[it + 1] - ts[it]))
-        flow = np.stack([np.where(mask_x, xs - x0, 0.0), np.where(mask_y, ys - y0, 0.0)])
-        flow = flow.astype(np.float64)
+        flow = _advect(gt, _interval_schedule(ts, t_start_us, t_end_us))
     valid = np.all(np.isfinite(flow), axis=0) & (np.hypot(flow[0], flow[1]) > 0)
     return flow, valid

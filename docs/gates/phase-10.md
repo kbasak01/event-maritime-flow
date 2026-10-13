@@ -100,7 +100,7 @@ $ (cd release && sha256sum -c --quiet SHA256SUMS.txt)   # no output = all OK
 |---|---|
 | Make the GitHub repository public and publish the draft release `phase-10-complete` | user |
 | Commit author email in history (Phase 9 M2) and absolute paths in old commits (m7): fine if intended, otherwise one history rewrite before the first public push | user |
-| `src/evflow/io/mvsec.py` `_propagate` restructuring (Phase 9 M3): reviewer re-read it, not blocking | user decision (optional) |
+| `src/evflow/io/mvsec.py` `_propagate` restructuring (Phase 9 M3) | **done** after the gate (user request): D-068, bit-identical on 17,676 real windows; `make test` 420 passed, `make test-data` 28 passed |
 
 Pending GPU jobs: none.
 

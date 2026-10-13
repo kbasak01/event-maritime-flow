@@ -149,3 +149,75 @@ def test_gt_window_outside_span_raises(tmp_path):
         mvsec.gt_flow_for_window(gt, T0_US - 1, T0_US + 10)
     with pytest.raises(ValueError):
         mvsec.gt_flow_for_window(gt, T0_US, T0_US + 3 * GT_DT_US)
+
+
+# --- Phase 10 restructuring (D-068): interval schedule + one advection loop -------------------
+
+def test_interval_schedule_partial_and_full():
+    ts = T0_US + GT_DT_US * np.arange(6, dtype=np.int64)
+    start = T0_US + GT_DT_US // 4
+    end = T0_US + 3 * GT_DT_US + GT_DT_US // 2
+    assert mvsec._interval_schedule(ts, start, end) == [(0, 0.75), (1, 1.0), (2, 1.0), (3, 0.5)]
+
+
+def test_interval_schedule_keeps_zero_length_last_interval():
+    """There is always a first and a last step: a window of exactly one GT interval still looks
+    up the next field with fraction 0, which only updates the masks (kept bit-identical)."""
+    ts = T0_US + GT_DT_US * np.arange(6, dtype=np.int64)
+    assert mvsec._interval_schedule(ts, T0_US, T0_US + GT_DT_US) == [(0, 1.0), (1, 0.0)]
+    assert mvsec._interval_schedule(ts, T0_US, T0_US + 2 * GT_DT_US) == [(0, 1.0), (1, 1.0)]
+
+
+def _reference_step_by_step(gt, t_start_us, t_end_us):
+    """The pre-D-068 formulation (first / middle / last call sites), kept as the oracle."""
+    import cv2
+
+    def step(field, xs, ys, mx, my, scale):
+        fx = cv2.remap(field[0], xs, ys, cv2.INTER_NEAREST)
+        fy = cv2.remap(field[1], xs, ys, cv2.INTER_NEAREST)
+        mx[fx == 0] = False
+        my[fy == 0] = False
+        xs += (fx * scale).astype(np.float32)
+        ys += (fy * scale).astype(np.float32)
+
+    ts = gt.timestamps_us
+    it = int(np.searchsorted(ts, t_start_us, side="right")) - 1
+    gt_dt = float(ts[it + 1] - ts[it])
+    dt = float(t_end_us - t_start_us)
+    if gt_dt > dt:
+        flow = gt.field(it) * (dt / gt_dt)
+    else:
+        h, w = gt.shape
+        ys, xs = np.mgrid[0:h, 0:w].astype(np.float32)
+        x0, y0 = xs.copy(), ys.copy()
+        mx, my = np.ones((h, w), bool), np.ones((h, w), bool)
+        step(gt.field(it), xs, ys, mx, my, (ts[it + 1] - t_start_us) / gt_dt)
+        it += 1
+        while ts[it + 1] < t_end_us:
+            step(gt.field(it), xs, ys, mx, my, 1.0)
+            it += 1
+        step(gt.field(it), xs, ys, mx, my, (t_end_us - ts[it]) / float(ts[it + 1] - ts[it]))
+        flow = np.stack([np.where(mx, xs - x0, 0.0), np.where(my, ys - y0, 0.0)])
+        flow = flow.astype(np.float64)
+    valid = np.all(np.isfinite(flow), axis=0) & (np.hypot(flow[0], flow[1]) > 0)
+    return flow, valid
+
+
+def test_gt_flow_bit_identical_to_step_by_step_reference(tmp_path):
+    rng = np.random.default_rng(7)
+    fields = []
+    for _ in range(8):
+        f = rng.normal(scale=1.5, size=(2, H, W))
+        f[rng.random((2, H, W)) < 0.1] = 0.0          # holes, as in MVSEC GT
+        fields.append(f)
+    gt = _gt_npz(tmp_path / "g.npz", fields)
+    d = GT_DT_US
+    windows = [(T0_US + d // 3, T0_US + d // 2),                 # short: scaled branch
+               (T0_US, T0_US + d), (T0_US, T0_US + 2 * d),       # boundary-aligned
+               (T0_US + d // 4, T0_US + 3 * d + d // 2),          # partial first and last
+               (T0_US + 1, T0_US + 5 * d - 1), (T0_US + d - 1, T0_US + 2 * d + 1)]
+    for a, b in windows:
+        got = mvsec.gt_flow_for_window(gt, a, b)
+        ref = _reference_step_by_step(gt, a, b)
+        np.testing.assert_array_equal(got[0], ref[0])
+        np.testing.assert_array_equal(got[1], ref[1])
