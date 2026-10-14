@@ -98,7 +98,7 @@ $ (cd release && sha256sum -c --quiet SHA256SUMS.txt)   # no output = all OK
 
 | Item | Who |
 |---|---|
-| Make the GitHub repository public and publish the draft release `phase-10-complete` | user |
+| Make the GitHub repository public and publish the draft release `phase-10-complete` | **done** 2026-10-14 (user request, after D-069 and green CI runs 38589081452 / 38589081279 on the rewritten history): repository public; release published with 17 assets, the 16 GitHub asset digests equal to `docs/SHA256SUMS.txt` |
 | Commit author email in history (Phase 9 M2) and absolute paths in old commits (m7) | **done** (D-069): history rewritten, SHAs cited in this file and elsewhere are pre-rewrite, see `docs/COMMIT_MAP.md` |
 | `src/evflow/io/mvsec.py` `_propagate` restructuring (Phase 9 M3) | **done** after the gate (user request): D-068, bit-identical on 17,676 real windows; `make test` 420 passed, `make test-data` 28 passed |
 
